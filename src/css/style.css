@@ -1,0 +1,29 @@
+/*
+    Metadata indicators
+*/
+.fl-circle {
+    -webkit-border-radius: 999px;
+    -moz-border-radius: 999px;
+    border-radius: 999px;
+    behavior: url(PIE.htc);
+    width: 2em;
+    height: 2em;
+    background: #C0C0C0;
+}
+.fl-tooltip {
+    position: absolute;
+    background: #FFFABB;
+    border: 1px solid #C9B857;
+    padding: 3px 5px;
+    font: normal sans-serif;
+}
+.fl-green {
+	background: #00FF00;
+}
+.fl-red {
+	background: #CC6699;
+}
+.fl-grey {
+	background: #C0C0C0;
+}
+
