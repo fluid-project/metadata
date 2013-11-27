@@ -17,7 +17,6 @@ https://github.com/gpii/universal/LICENSE.txt
 (function ($) {
     fluid.registerNamespace("fluid.tests");
 
-    // jqUnit.asyncTest("Test metadata indicator", function () {
     jqUnit.test("Test metadata indicator", function () {
         var that = fluid.metadata.indicator(".flc-indicator");
         var tooltip = $("[id^=ui-tooltip]");
