@@ -47,10 +47,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                             "method": "on",
                             "args": ["input", "{that}.updateActiveState"]
                         },
-                        "onCreate.bindInputEvent": {
+                        "onCreate.keyup": {
                             "this": "{simpleEditor}.dom.content",
                             "method": "keyup",
-                            "args": ["{that}.updateActiveState"]
+                            "args": ["{that}.updateActiveStateForKeys"]
                         },
                         "onCreate.mouseup": {
                             "this": "{simpleEditor}.dom.content",
@@ -101,6 +101,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             updateActiveState: {
                 funcName: "fluid.simpleEditor.button.updateActiveState",
                 args: ["{that}.controlType", "{that}.container", "{that}.options.styles.active"]
+            },
+            updateActiveStateForKeys: {
+                funcName: "fluid.simpleEditor.button.filterKeys",
+                args: ["{arguments}.0", [37, 38, 39, 40], "{that}.updateActiveState"]
             }
         }
     });
@@ -114,6 +118,13 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     fluid.simpleEditor.button.updateActiveState = function (command, elm, activeStyle) {
         var isActive = document.queryCommandState(command);
         elm.toggleClass(activeStyle, isActive);
+    };
+
+    fluid.simpleEditor.button.filterKeys = function (event, keys, handler) {
+        keys = fluid.makeArray(keys);
+        if ($.inArray(event.keyCode, keys) >= 0 || $.inArray(event.which, keys) >= 0) {
+            handler();
+        }
     };
 
 })(jQuery, fluid);
