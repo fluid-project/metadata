@@ -9,12 +9,13 @@ of the Infusion master branch
 
 using the command line
 
-    ant -lib lib/rhino/ customBuild -Dinclude="tooltip" -DnoMinify="true"
+    ant -lib lib/rhino/ customBuild -Dinclude="tooltip, renderer" -DnoMinify="true"
 
 The following directories were stripped out of the build since they contain code that is included in the MyInfusion.js file:
 
     src/lib/infusion/framework/
     src/lib/infusion/components/
+    src/lib/infusion/lib/fastXmlPull/
     src/lib/infusion/lib/jquery/core/
     src/lib/infusion/lib/jquery/plugins/tooltip/js/
     src/lib/infusion/lib/jquery/ui/js/
