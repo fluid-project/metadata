@@ -17,14 +17,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
 (function ($, fluid) {
 
-    fluid.registerNamespace("fluid.simpleEditor");
-
-    fluid.simpleEditor.command = function (event) {
-        var elm = $(event.target);
-        document.execCommand(elm.data("control"), false, null);
-        event.preventDefault();
-    };
-
     fluid.defaults("fluid.simpleEditor", {
         gradeNames: ["fluid.viewComponent", "autoInit"],
         selectors: {
@@ -36,13 +28,92 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 "this": "{that}.dom.content",
                 "method": "attr",
                 "args": [{contentEditable: true}]
-            },
-            "onCreate.bindControls": {
-                "this": "{that}.dom.controls",
-                "method": "click",
-                "args": [fluid.simpleEditor.command]
+            }
+        },
+        dynamicComponents: {
+            controls: {
+                sources: "{that}.dom.controls",
+                type: "fluid.simpleEditor.button",
+                container: "{source}",
+                options: {
+                    listeners: {
+                        "onCreate.focus": {
+                            "this": "{simpleEditor}.dom.content",
+                            "method": "focus",
+                            "args": ["{that}.updateActiveState"]
+                        },
+                        "onCreate.input": {
+                            "this": "{simpleEditor}.dom.content",
+                            "method": "on",
+                            "args": ["input", "{that}.updateActiveState"]
+                        },
+                        "onCreate.bindInputEvent": {
+                            "this": "{simpleEditor}.dom.content",
+                            "method": "keyup",
+                            "args": ["{that}.updateActiveState"]
+                        },
+                        "onCreate.mouseup": {
+                            "this": "{simpleEditor}.dom.content",
+                            "method": "mouseup",
+                            "args": ["{that}.updateActiveState"]
+                        }
+                    }
+                }
             }
         }
     });
+
+    fluid.defaults("fluid.simpleEditor.button", {
+        gradeNames: ["fluid.viewComponent", "autoInit"],
+        members: {
+            controlType: {
+                expander: {
+                    "this": "{that}.container",
+                    "method": "data",
+                    "args": "control"
+                }
+            }
+        },
+        styles: {
+            active: "active"
+        },
+        events: {
+            click: null
+        },
+        listeners: {
+            "onCreate.bindClick": {
+                "this": "{that}.container",
+                "method": "click",
+                "args": ["{that}.events.click.fire"]
+            },
+            "click.handle": {
+                func: "{that}.handleCommand"
+            },
+            "click.updateActiveState": {
+                func: "{that}.updateActiveState"
+            }
+        },
+        invokers: {
+            handleCommand: {
+                funcName: "fluid.simpleEditor.button.command",
+                args: ["{arguments}.0", "{that}.controlType"]
+            },
+            updateActiveState: {
+                funcName: "fluid.simpleEditor.button.updateActiveState",
+                args: ["{that}.controlType", "{that}.container", "{that}.options.styles.active"]
+            }
+        }
+    });
+
+    fluid.simpleEditor.button.command = function (event, command) {
+        var elm = $(event.target);
+        document.execCommand(command, false, null);
+        event.preventDefault();
+    };
+
+    fluid.simpleEditor.button.updateActiveState = function (command, elm, activeStyle) {
+        var isActive = document.queryCommandState(command);
+        elm.toggleClass(activeStyle, isActive);
+    };
 
 })(jQuery, fluid);
