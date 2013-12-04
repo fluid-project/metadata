@@ -127,4 +127,28 @@ https://github.com/gpii/universal/LICENSE.txt
 
     });
 
+    jqUnit.asyncTest("afterChange", function () {
+        var dbname = "test";
+        var ds = fluid.pouchdb.dataSource({
+            databaseName: dbname,
+            listeners: {
+                afterChange: [{
+                    listener: "jqUnit.assert",
+                    args: ["The afterChange event should have fired."]
+                }, "jqUnit.start"]
+            }
+        });
+
+        var doc = {
+            id: "test",
+            "model": "data"
+        };
+
+        ds.database.put({
+            _id: doc.id,
+            "model": doc.model
+        });
+
+    });
+
 })(jQuery);

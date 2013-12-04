@@ -20,6 +20,20 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     fluid.defaults("fluid.pouchdb.dataSource", {
         gradeNames: ["fluid.eventedComponent", "autoInit"],
         databaseName: "",
+        events: {
+            afterChange: null
+        },
+        listeners: {
+            "onCreate.bindChange": {
+                "this": "{that}.database",
+                "method": "changes",
+                "args": [{
+                    since: 0,
+                    continuous: true,
+                    "onChange": "{that}.events.afterChange.fire"
+                }]
+            }
+        },
         members: {
             database: {
                 expander: {
