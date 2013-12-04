@@ -30,6 +30,40 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 "args": [{contentEditable: true}]
             }
         },
+        modelListeners: {
+            "markup": {
+                func: "{dataSource}.set",
+                args: [{id: "markup", model: "{that}.model.markup"}]
+            }
+        },
+        invokers: {
+            setContent: {
+                funcName: "fluid.simpleEditor.setContent",
+                args: ["{that}.dom.content", "{arguments}.0"]
+            },
+            updateModel: {
+                funcName: "fluid.simpleEditor.updateModel",
+                args: ["{that}"]
+            },
+            reset: {
+                funcName: "fluid.simpleEditor.setContent",
+                args: ["{that}.dom.content", ""]
+            }
+        },
+        components: {
+            dataSource: {
+                type: "fluid.pouchdb.dataSource",
+                options: {
+                    databaseName: "simpleEditor",
+                    listeners: {
+                        "onCreate.fetch": {
+                            listener: "{that}.get",
+                            args: [{id: "markup"}, "{simpleEditor}.setContent"]
+                        }
+                    }
+                }
+            }
+        },
         dynamicComponents: {
             controls: {
                 sources: "{that}.dom.controls",
@@ -56,12 +90,30 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                             "this": "{simpleEditor}.dom.content",
                             "method": "mouseup",
                             "args": ["{that}.updateActiveState"]
+                        },
+                        "onCreate.input_updateModel": {
+                            "this": "{simpleEditor}.dom.content",
+                            "method": "on",
+                            "args": ["input", "{simpleEditor}.updateModel"]
+                        },
+                        "click.updateModel": {
+                            listener: "{simpleEditor}.updateModel"
                         }
                     }
                 }
             }
         }
     });
+
+    fluid.simpleEditor.setContent = function (elm, content) {
+        if (content || content === "") {
+            elm.html(content);
+        }
+    };
+
+    fluid.simpleEditor.updateModel = function (that) {
+        that.applier.requestChange("markup", that.locate("content").html());
+    };
 
     fluid.defaults("fluid.simpleEditor.button", {
         gradeNames: ["fluid.viewComponent", "autoInit"],

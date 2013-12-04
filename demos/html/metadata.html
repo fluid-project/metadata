@@ -9,7 +9,10 @@
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
 
         <script type="text/javascript" src="../../src/lib/infusion/MyInfusion.js"></script>
+        <script type="text/javascript" src="../../src/lib/pouchDB/pouchdb-nightly.min.js"></script>
+        <script type="text/javascript" src="../../src/js/pouchDBDataSource.js"></script>
         <script type="text/javascript" src="../js/simpleEditor.js"></script>
+
 
         </head>
     <body>
@@ -22,13 +25,9 @@
                         <li class="flc-simpleEditor-control btn btn-default" role="button" data-control="underline">U</li>
                     </ul>
                 </ul>
-                <div class="flc-simpleEditor-content panel-body">
-
-                    Sample Content
-
-                </div>
+                <div class="flc-simpleEditor-content panel-body"></div>
             </div>
-        <section>
+        </section>
 
         <script type="text/javascript">
             fluid.simpleEditor(".flc-simpleEditor");
