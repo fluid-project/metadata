@@ -47,7 +47,16 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     });
 
     fluid.markupViewer.update = function (elm, content) {
-        elm.text(content);
+        content = "<body>" + content + "</body>";
+        var formatted = markup_beauty({
+            source: content,
+            force_indent: true,
+            mode: "beautify",
+            html: true
+        });
+
+        elm.text(formatted);
+        elm.each(function(i, e) {hljs.highlightBlock(e);});
     };
 
 })(jQuery, fluid);
