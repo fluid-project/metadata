@@ -4,6 +4,7 @@ Third Party Software
 This is a list of publicly available software that is redistributed, categorized by license:
 
 Apache 2.0:
+    * Bootstrap v3.0.3 http://getbootstrap.com/
     * PouchDB (Nightly Build) http://pouchdb.com
 
 BSD License:
