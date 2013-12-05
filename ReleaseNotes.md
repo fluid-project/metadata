@@ -13,4 +13,5 @@ BSD License:
       see: http://developer.yahoo.com/yui/fonts/
 
 Other licenses:
-    * Highlight.js v7.5 http://highlightjs.org (Custom)
+    * Highlight.js v7.5 http://highlightjs.org (Custom Licence: https://github.com/isagalaev/highlight.js/blob/master/LICENSE)
+    * Pretty-diff http://prettydiff.com (Custom Licence: https://github.com/austincheney/Pretty-Diff/blob/master/README.md)
