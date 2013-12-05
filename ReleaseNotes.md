@@ -8,9 +8,6 @@ Apache 2.0:
 
 BSD License:
     * Fluid Infusion v1.5 (pre-release) http://fluidproject.org
-    * fss-base-global.css and fss-base-contextual are based on YUI's CSS base and fonts styling v2.5.2
-      see: http://developer.yahoo.com/yui/base/
-      see: http://developer.yahoo.com/yui/fonts/
 
 Other licenses:
     * Highlight.js v7.5 http://highlightjs.org (Custom Licence: https://github.com/isagalaev/highlight.js/blob/master/LICENSE)
