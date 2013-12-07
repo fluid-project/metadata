@@ -16,21 +16,35 @@
 
         </head>
     <body>
+        <header class="page-header">
+            <div class="container">
+                <div class="row">
+                    <h1 class="col-md-2">flOER</h1>
+                    <div class="col-md-2 col-md-offset-8">
+                        <button class="restart btn btn-default">Restart Demo</button>
+                    </div>
+                </div>
+            </div>
+        </header>
         <section class="container">
             <div class="flc-simpleEditor panel panel-default">
                 <ul class="flc-simpleEditor-toolbar btn-toolbar panel-heading" role="toolbar">
                     <ul class="btn-group">
-                        <li id="bold" class="flc-simpleEditor-control btn btn-default" role="button" data-control="bold">B</li>
+                        <li class="flc-simpleEditor-control btn btn-default" role="button" data-control="bold">B</li>
                         <li class="flc-simpleEditor-control btn btn-default" role="button" data-control="italic">I</li>
                         <li class="flc-simpleEditor-control btn btn-default" role="button" data-control="underline">U</li>
                     </ul>
                 </ul>
                 <div class="flc-simpleEditor-content panel-body"></div>
             </div>
+            <a href="metadataMarkupView.html" target="_blank" class="btn btn-default">View HTML</a>
         </section>
 
         <script type="text/javascript">
-            fluid.simpleEditor(".flc-simpleEditor");
+            var editor = fluid.simpleEditor(".flc-simpleEditor");
+            $(".restart").click(function () {
+                editor.reset();
+            })
         </script>
     </body>
 </html>

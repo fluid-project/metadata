@@ -23,6 +23,9 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             controls: ".flc-simpleEditor-control",
             content: ".flc-simpleEditor-content"
         },
+        events: {
+            afterReset: null
+        },
         listeners: {
             "onCreate.makeEditable": {
                 "this": "{that}.dom.content",
@@ -46,8 +49,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 args: ["{that}"]
             },
             reset: {
-                funcName: "fluid.simpleEditor.setContent",
-                args: ["{that}.dom.content", ""]
+                funcName: "fluid.simpleEditor.reset",
+                args: ["{that}"]
             }
         },
         components: {
@@ -71,6 +74,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 container: "{source}",
                 options: {
                     listeners: {
+                        "{simpleEditor}.events.afterReset": "{that}.updateActiveState",
                         "onCreate.focus": {
                             "this": "{simpleEditor}.dom.content",
                             "method": "focus",
@@ -113,6 +117,12 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
     fluid.simpleEditor.updateModel = function (that) {
         that.applier.requestChange("markup", that.locate("content").html());
+    };
+
+    fluid.simpleEditor.reset = function (that) {
+        that.setContent("");
+        that.updateModel();
+        that.events.afterReset.fire();
     };
 
     fluid.defaults("fluid.simpleEditor.button", {
