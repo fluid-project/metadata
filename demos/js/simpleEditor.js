@@ -259,6 +259,16 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 "method": "click",
                 "args": ["{that}.insertPlaceHolder"]
             },
+            "onCreate.submitActiveState": [
+                {
+                    func: "{that}.updateActiveState"
+                },
+                {
+                    "this": "{that}.dom.url",
+                    "method": "on",
+                    "args": ["input", "{that}.updateActiveState"]
+                }
+            ],
             "afterInsert.updateModel": "{that}.updateModel"
         },
         invokers: {
@@ -269,6 +279,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             updateModel: {
                 funcName: "fluid.simpleEditor.insertVideo.updateModel",
                 args: ["{that}"]
+            },
+            updateActiveState: {
+                funcName: "fluid.simpleEditor.insertVideo.updateActiveState",
+                args: ["{that}.dom.submit", "{that}.dom.url"]
             },
             setModel: {
                 funcName: "fluid.simpleEditor.insertVideo.setModel",
@@ -305,6 +319,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     fluid.simpleEditor.insertVideo.setModel = function (that, model) {
         that.applier.requestChange("", model);
         that.locate("url").val(that.model.url);
+    };
+
+    fluid.simpleEditor.insertVideo.updateActiveState = function (buttonElm, urlField) {
+        buttonElm.attr({disabled: !urlField.val()});
     };
 
 })(jQuery, fluid);
