@@ -80,7 +80,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                         content: "{simpleEditor}.options.selectors.content"
                     },
                     listeners: {
-                        "afterInsert.updateModel": "{simpleEditor}.updateModel",
+                        "afterInsert.updateEditor": "{simpleEditor}.updateModel",
                         "{simpleEditor}.events.onReset": "{that}.reset"
                     },
                     modelListeners: {
@@ -249,6 +249,11 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 "method": "attr",
                 "args": ["placeholder", "{that}.options.strings.urlPlaceHolder"]
             },
+            "onCreate.urlValue": {
+                "this": "{that}.dom.url",
+                "method": "val",
+                "args": "{that}.model.url"
+            },
             "onCreate.submit": {
                 "this": "{that}.dom.submit",
                 "method": "click",
@@ -299,6 +304,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
     fluid.simpleEditor.insertVideo.setModel = function (that, model) {
         that.applier.requestChange("", model);
+        that.locate("url").val(that.model.url);
     };
 
 })(jQuery, fluid);
