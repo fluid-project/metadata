@@ -24,6 +24,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             content: ".flc-simpleEditor-content"
         },
         events: {
+            onReset: null,
             afterReset: null
         },
         listeners: {
@@ -31,7 +32,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 "this": "{that}.dom.content",
                 "method": "attr",
                 "args": [{contentEditable: true}]
-            }
+            },
+            "onReset.reset": "{that}.reset"
         },
         modelListeners: {
             "markup": {
@@ -50,7 +52,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             },
             reset: {
                 funcName: "fluid.simpleEditor.reset",
-                args: ["{that}"]
+                args: ["{that}", "{that}.events.afterReset.fire"]
             }
         },
         components: {
@@ -59,9 +61,13 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 options: {
                     databaseName: "simpleEditor",
                     listeners: {
-                        "onCreate.fetch": {
+                        "onCreate.fetchMarkup": {
                             listener: "{that}.get",
                             args: [{id: "markup"}, "{simpleEditor}.setContent"]
+                        },
+                        "onCreate.fetchMetadata": {
+                            listener: "{that}.get",
+                            args: [{id: "videoMetadata"}, "{insertVideo}.setModel"]
                         }
                     }
                 }
@@ -74,7 +80,14 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                         content: "{simpleEditor}.options.selectors.content"
                     },
                     listeners: {
-                        "afterInsert.updateModel": "{simpleEditor}.updateModel"
+                        "afterInsert.updateModel": "{simpleEditor}.updateModel",
+                        "{simpleEditor}.events.onReset": "{that}.reset"
+                    },
+                    modelListeners: {
+                        "*": {
+                            func: "{dataSource}.set",
+                            args: [{id: "videoMetadata", model: "{that}.model"}]
+                        }
                     }
                 }
             }
@@ -131,10 +144,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         that.applier.requestChange("markup", that.locate("content").html());
     };
 
-    fluid.simpleEditor.reset = function (that) {
+    fluid.simpleEditor.reset = function (that, callback) {
         that.setContent("");
         that.updateModel();
-        that.events.afterReset.fire();
+        callback();
     };
 
     fluid.defaults("fluid.simpleEditor.button", {
@@ -240,12 +253,25 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 "this": "{that}.dom.submit",
                 "method": "click",
                 "args": ["{that}.insertPlaceHolder"]
-            }
+            },
+            "afterInsert.updateModel": "{that}.updateModel"
         },
         invokers: {
             insertPlaceHolder: {
                 funcName: "fluid.simpleEditor.insertVideo.insertPlaceHolder",
                 args: ["{that}.dom.content", "{that}.options.placeHolderID", "{that}.options.markup.placeHolder", "{that}.options.styles.placeHolder", "{that}.events.afterInsert.fire"]
+            },
+            updateModel: {
+                funcName: "fluid.simpleEditor.insertVideo.updateModel",
+                args: ["{that}"]
+            },
+            setModel: {
+                funcName: "fluid.simpleEditor.insertVideo.setModel",
+                args: ["{that}", "{arguments}.0"]
+            },
+            reset: {
+                func: "{that}.setModel",
+                args: [{}] // reset to an empty model
             }
         },
         markup: {
@@ -266,5 +292,13 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             callback();
         }
     };
+
+    fluid.simpleEditor.insertVideo.updateModel = function (that) {
+        that.applier.requestChange("url", that.locate("url").val());
+    };
+
+    fluid.simpleEditor.insertVideo.setModel = function (that, model) {
+        that.applier.requestChange("", model);
+    }
 
 })(jQuery, fluid);

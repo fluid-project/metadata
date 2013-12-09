@@ -52,7 +52,7 @@
         <script type="text/javascript">
             var editor = fluid.simpleEditor(".flc-simpleEditor");
             $(".restart").click(function () {
-                editor.reset();
+                editor.events.onReset.fire();
             })
         </script>
     </body>
