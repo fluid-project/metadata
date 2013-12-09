@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>MetaData Demo: Markup View</title>
+
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="../../src/lib/bootstrap/css/bootstrap.min.css">
+        <!-- Highlight.js -->
+        <link rel="stylesheet" href="../lib/highlight/styles/github.css">
+
+        <script type="text/javascript" src="../../src/lib/infusion/MyInfusion.js"></script>
+        <script src="../lib/highlight/highlight.pack.js"></script>
+
+        <!-- Pretty-Diff -->
+        <script src="../lib/pretty-diff/cleanCSS.js"></script>
+        <script src="../lib/pretty-diff/jspretty.js"></script>
+        <script src="../lib/pretty-diff/fulljsmin.js"></script>
+        <script src="../lib/pretty-diff/markupmin.js"></script>
+        <script src="../lib/pretty-diff/markup_beauty.js"></script>
+
+        <script type="text/javascript" src="../../src/lib/pouchDB/pouchdb-nightly.min.js"></script>
+        <script type="text/javascript" src="../../src/js/pouchDBDataSource.js"></script>
+        <script type="text/javascript" src="../js/markupViewer.js"></script>
+
+        </head>
+    <body>
+        <section class="container">
+            <pre class="flc-markupViewer"></pre>
+        </section>
+
+        <script type="text/javascript">
+            fluid.markupViewer(".flc-markupViewer");
+        </script>
+    </body>
+</html>
