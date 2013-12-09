@@ -275,7 +275,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             }
         },
         markup: {
-            placeHolder: "<a href='#_'>VIDEO PLACEHOLDER</a>"
+            placeHolder: "<section contentEditable='false'><div class='fl-simpleEditor-insertVideo-placeHolder'><div class='fl-simpleEditor-insertVideo-placeHolder-playCircle'><div class='fl-simpleEditor-insertVideo-placeHolder-playTriangle'></div></div></div></section>"
         }
 
     });
@@ -299,6 +299,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
     fluid.simpleEditor.insertVideo.setModel = function (that, model) {
         that.applier.requestChange("", model);
-    }
+    };
 
 })(jQuery, fluid);
