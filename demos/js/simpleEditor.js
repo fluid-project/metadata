@@ -65,6 +65,18 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                         }
                     }
                 }
+            },
+            insertVideo: {
+                type: "fluid.simpleEditor.insertVideo",
+                container: "{that}.container",
+                options: {
+                    selectors: {
+                        content: "{simpleEditor}.options.selectors.content"
+                    },
+                    listeners: {
+                        "afterInsert.updateModel": "{simpleEditor}.updateModel"
+                    }
+                }
             }
         },
         dynamicComponents: {
@@ -186,6 +198,72 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         keys = fluid.makeArray(keys);
         if ($.inArray(event.keyCode, keys) >= 0 || $.inArray(event.which, keys) >= 0) {
             handler();
+        }
+    };
+
+    fluid.defaults("fluid.simpleEditor.insertVideo", {
+        gradeNames: ["fluid.viewComponent", "autoInit"],
+        selectors: {
+            url: ".flc-simpleEditor-insertVideo-url",
+            urlLabel: ".flc-simpleEditor-insertVideo-urlLabel",
+            submit: ".flc-simpleEditor-insertVideo-submit",
+            content: ".flc-simpleEditor-insertVideo-content"
+        },
+        strings: {
+            urlLabel: "Enter web address for video: ",
+            urlPlaceHolder: "www.example.com/video.mp4",
+            submit: "OK"
+        },
+        styles: {
+            placeHolder: "someStyle"
+        },
+        model: {
+            url: ""
+        },
+        placeHolderID: "#videoPlaceHolder",
+        events: {
+            placeHolderFocused: null,
+            afterInsert: null
+        },
+        listeners: {
+            "onCreate.urlLabel": {
+                "this": "{that}.dom.urlLabel",
+                "method": "text",
+                "args": ["{that}.options.strings.urlLabel"]
+            },
+            "onCreate.urlPlaceHolder": {
+                "this": "{that}.dom.url",
+                "method": "attr",
+                "args": ["placeholder", "{that}.options.strings.urlPlaceHolder"]
+            },
+            "onCreate.submit": {
+                "this": "{that}.dom.submit",
+                "method": "click",
+                "args": ["{that}.insertPlaceHolder"]
+            }
+        },
+        invokers: {
+            insertPlaceHolder: {
+                funcName: "fluid.simpleEditor.insertVideo.insertPlaceHolder",
+                args: ["{that}.dom.content", "{that}.options.placeHolderID", "{that}.options.markup.placeHolder", "{that}.options.styles.placeHolder", "{that}.events.afterInsert.fire"]
+            }
+        },
+        markup: {
+            placeHolder: "<a href='#_'>VIDEO PLACEHOLDER</a>"
+        }
+
+    });
+
+    fluid.simpleEditor.insertVideo.insertPlaceHolder = function (content, placeHolderID, markup, styles, callback) {
+        var placeHolder = content.find(placeHolderID);
+        if (!placeHolder.length) {
+            $(markup).attr({
+                "id": placeHolderID.substr(1),
+                "class": styles || ""
+            }).appendTo(content);
+        }
+        if (callback) {
+            callback();
         }
     };
 
