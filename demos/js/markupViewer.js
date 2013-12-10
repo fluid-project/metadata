@@ -22,8 +22,19 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         invokers: {
             update: {
                 funcName: "fluid.markupViewer.update",
-                args: ["{that}.container", "{arguments}.0"]
+                args: ["{that}.container", "{that}.model"]
+            },
+            updateModelMarkup: {
+                func: "{that}.applier.requestChange",
+                args: ["markup", "{arguments}.0"]
+            },
+            updateModelMetadata: {
+                func: "{that}.applier.requestChange",
+                args: ["metadata", "{arguments}.0"]
             }
+        },
+        modelListeners: {
+            "*": "{that}.update"
         },
         components: {
             dataSource: {
@@ -31,25 +42,73 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 options: {
                     databaseName: "simpleEditor",
                     listeners: {
-                        "onCreate.fetch": {
+                        "afterChange.fetchMarkup": {
                             listener: "{that}.get",
-                            args: [{id: "markup"}, "{markupViewer}.update"]
+                            args: [{id: "markup"}, "{markupViewer}.updateModelMarkup"]
                         },
-                        "afterChange.fetch": {
+                        "afterChange.fetchMetadata": {
                             listener: "{that}.get",
-                            args: [{id: "markup"}, "{markupViewer}.update"]
+                            args: [{id: "metadata"}, "{markupViewer}.updateModelMetadata"]
                         }
-
                     }
                 }
             }
         }
     });
 
-    fluid.markupViewer.update = function (elm, content) {
-        content = "<body>" + content + "</body>";
+    fluid.markupViewer.transformToVideoMetadata = function (metadata) {
+        var videoMetatdata = {
+            accessMode: ["visual"],
+            accessibilityHazard: [],
+            accessibilityFeature: [],
+            keywords: metadata.audioKeywords,
+            captions: metadata.captions,
+        };
+
+        if (metadata.audio !== "unavailable") {
+            videoMetatdata.accessMode.push("audio");
+        }
+        if (metadata.highContrast) {
+            videoMetatdata.accessibilityFeature.push("highContrast");
+        }
+        if (metadata.signLanguage) {
+            videoMetatdata.accessibilityFeature.push("signLanguage");
+        }
+        if (metadata.flashing !== "unknown") {
+            videoMetatdata.accessibilityHazard.push(metadata.flashing);
+        }
+
+        return videoMetatdata;
+    };
+
+    fluid.markupViewer.replaceVideoPlaceholder = function (content, placeholderID, metadata) {
+        var placeholder = content.find(placeholderID);
+        if (placeholder.length) {
+            var realMarkup = $("<video></video>");
+            $("<source>").attr({
+                src: metadata.url,
+                type: "video/" + metadata.url.split(".").pop()
+            }).appendTo(realMarkup);
+            fluid.metadata.writer(realMarkup, "http://schema.org/Movie", fluid.markupViewer.transformToVideoMetadata(metadata));
+            fluid.each(meatadata.captions, function (caption) {
+                var captionContainer = $("<span></span>");
+                $("<track>").attr({
+                    src: caption.src,
+                    srclang: caption.language
+                }).appendTo(captionContainer);
+                fluid.metadata.writer(captionContainer, null, {inLanguage: caption.language});
+                captionContainer.appendTo(realMarkup);
+            });
+            placeholder = placeholder.replaceWith(realMarkup);
+        }
+    };
+
+    fluid.markupViewer.update = function (elm, model) {
+        var content = $("<section>" + model.markup + "</section>");
+        fluid.markupViewer.replaceVideoPlaceholder(content, "#videoPlaceHolder", model.metadata);
+        var markup = "<body>" + content.html() + "</body>";
         var formatted = markup_beauty({
-            source: content,
+            source: markup,
             force_indent: true,
             mode: "beautify",
             html: true
