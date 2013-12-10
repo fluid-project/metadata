@@ -91,12 +91,12 @@ var fluid_1_5 = fluid_1_5 || {};
             return;
         }
 
-        var colorClasses = that.options.styles.indicatorState;
+        var stateClasses = that.options.styles.indicatorState;
 
-        fluid.each(colorClasses, function (color) {
-            that.container.removeClass(color);
+        fluid.each(stateClasses, function (state) {
+            that.container.removeClass(state);
         });
-        that.container.addClass(colorClasses[state]);
+        that.container.addClass(stateClasses[state]);
         that.tooltip.updateContent(that.options.tooltipContent[state]);
     };
 

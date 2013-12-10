@@ -37,8 +37,8 @@ https://github.com/gpii/universal/LICENSE.txt
     fluid.tests.checkState = function (that, previousState, currentState) {
         var previousStateCss = fluid.get(that.options.styles.indicatorState, previousState);
         var currentStateCss = fluid.get(that.options.styles.indicatorState, currentState);
-        jqUnit.assertFalse("The previous color css has been removed", that.container.hasClass(previousStateCss));
-        jqUnit.assertTrue("The color to indicate 'available' state has been applied", that.container.hasClass(currentStateCss));
+        jqUnit.assertFalse("The previous state css has been removed", that.container.hasClass(previousStateCss));
+        jqUnit.assertTrue("The new state css has been applied", that.container.hasClass(currentStateCss));
         that.tooltip.open();
         that.tooltip.close();
     };
