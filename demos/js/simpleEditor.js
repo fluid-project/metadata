@@ -24,6 +24,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             content: ".flc-simpleEditor-content"
         },
         events: {
+            onReset: null,
             afterReset: null
         },
         listeners: {
@@ -31,7 +32,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 "this": "{that}.dom.content",
                 "method": "attr",
                 "args": [{contentEditable: true}]
-            }
+            },
+            "onReset.reset": "{that}.reset"
         },
         modelListeners: {
             "markup": {
@@ -50,7 +52,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             },
             reset: {
                 funcName: "fluid.simpleEditor.reset",
-                args: ["{that}"]
+                args: ["{that}", "{that}.events.afterReset.fire"]
             }
         },
         components: {
@@ -59,9 +61,32 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 options: {
                     databaseName: "simpleEditor",
                     listeners: {
-                        "onCreate.fetch": {
+                        "onCreate.fetchMarkup": {
                             listener: "{that}.get",
                             args: [{id: "markup"}, "{simpleEditor}.setContent"]
+                        },
+                        "onCreate.fetchMetadata": {
+                            listener: "{that}.get",
+                            args: [{id: "videoMetadata"}, "{insertVideo}.setModel"]
+                        }
+                    }
+                }
+            },
+            insertVideo: {
+                type: "fluid.simpleEditor.insertVideo",
+                container: "{that}.container",
+                options: {
+                    selectors: {
+                        content: "{simpleEditor}.options.selectors.content"
+                    },
+                    listeners: {
+                        "afterInsert.updateEditor": "{simpleEditor}.updateModel",
+                        "{simpleEditor}.events.onReset": "{that}.reset"
+                    },
+                    modelListeners: {
+                        "*": {
+                            func: "{dataSource}.set",
+                            args: [{id: "videoMetadata", model: "{that}.model"}]
                         }
                     }
                 }
@@ -119,10 +144,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         that.applier.requestChange("markup", that.locate("content").html());
     };
 
-    fluid.simpleEditor.reset = function (that) {
+    fluid.simpleEditor.reset = function (that, callback) {
         that.setContent("");
         that.updateModel();
-        that.events.afterReset.fire();
+        callback();
     };
 
     fluid.defaults("fluid.simpleEditor.button", {
@@ -187,6 +212,117 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         if ($.inArray(event.keyCode, keys) >= 0 || $.inArray(event.which, keys) >= 0) {
             handler();
         }
+    };
+
+    fluid.defaults("fluid.simpleEditor.insertVideo", {
+        gradeNames: ["fluid.viewComponent", "autoInit"],
+        selectors: {
+            url: ".flc-simpleEditor-insertVideo-url",
+            urlLabel: ".flc-simpleEditor-insertVideo-urlLabel",
+            submit: ".flc-simpleEditor-insertVideo-submit",
+            content: ".flc-simpleEditor-insertVideo-content"
+        },
+        strings: {
+            urlLabel: "Enter web address for video: ",
+            urlPlaceHolder: "www.example.com/video.mp4",
+            submit: "OK"
+        },
+        styles: {
+            placeHolder: "someStyle"
+        },
+        model: {
+            url: ""
+        },
+        placeHolderID: "#videoPlaceHolder",
+        events: {
+            placeHolderFocused: null,
+            afterInsert: null
+        },
+        listeners: {
+            "onCreate.urlLabel": {
+                "this": "{that}.dom.urlLabel",
+                "method": "text",
+                "args": ["{that}.options.strings.urlLabel"]
+            },
+            "onCreate.urlPlaceHolder": {
+                "this": "{that}.dom.url",
+                "method": "attr",
+                "args": ["placeholder", "{that}.options.strings.urlPlaceHolder"]
+            },
+            "onCreate.urlValue": {
+                "this": "{that}.dom.url",
+                "method": "val",
+                "args": "{that}.model.url"
+            },
+            "onCreate.submit": {
+                "this": "{that}.dom.submit",
+                "method": "click",
+                "args": ["{that}.insertPlaceHolder"]
+            },
+            "onCreate.submitActiveState": [
+                {
+                    func: "{that}.updateActiveState"
+                },
+                {
+                    "this": "{that}.dom.url",
+                    "method": "on",
+                    "args": ["input", "{that}.updateActiveState"]
+                }
+            ],
+            "afterInsert.updateModel": "{that}.updateModel"
+        },
+        invokers: {
+            insertPlaceHolder: {
+                funcName: "fluid.simpleEditor.insertVideo.insertPlaceHolder",
+                args: ["{that}.dom.content", "{that}.options.placeHolderID", "{that}.options.markup.placeHolder", "{that}.options.styles.placeHolder", "{that}.events.afterInsert.fire"]
+            },
+            updateModel: {
+                funcName: "fluid.simpleEditor.insertVideo.updateModel",
+                args: ["{that}"]
+            },
+            updateActiveState: {
+                funcName: "fluid.simpleEditor.insertVideo.updateActiveState",
+                args: ["{that}.dom.submit", "{that}.dom.url"]
+            },
+            setModel: {
+                funcName: "fluid.simpleEditor.insertVideo.setModel",
+                args: ["{that}", "{arguments}.0"]
+            },
+            reset: {
+                func: "{that}.setModel",
+                args: [{}] // reset to an empty model
+            }
+        },
+        markup: {
+            placeHolder: "<section contentEditable='false'><div class='fl-simpleEditor-insertVideo-placeHolder'><div class='fl-simpleEditor-insertVideo-placeHolder-playCircle'><div class='fl-simpleEditor-insertVideo-placeHolder-playTriangle'></div></div></div></section>"
+        }
+
+    });
+
+    fluid.simpleEditor.insertVideo.insertPlaceHolder = function (content, placeHolderID, markup, styles, callback) {
+        var placeHolder = content.find(placeHolderID);
+        if (!placeHolder.length) {
+            $(markup).attr({
+                "id": placeHolderID.substr(1),
+                "class": styles || ""
+            }).appendTo(content);
+        }
+        if (callback) {
+            callback();
+        }
+    };
+
+    fluid.simpleEditor.insertVideo.updateModel = function (that) {
+        that.applier.requestChange("url", that.locate("url").val());
+    };
+
+    fluid.simpleEditor.insertVideo.setModel = function (that, model) {
+        that.applier.requestChange("", model);
+        that.locate("url").val(that.model.url);
+    };
+
+    fluid.simpleEditor.insertVideo.updateActiveState = function (buttonElm, urlField) {
+        buttonElm.attr({disabled: !urlField.val()});
     };
 
 })(jQuery, fluid);
