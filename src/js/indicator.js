@@ -54,10 +54,10 @@ var fluid_1_5 = fluid_1_5 || {};
         },
         styles: {
             circle: "fl-circle",
-            indicatorColors: {
-                available: "fl-green",
-                unavailable: "fl-red",
-                unknown: "fl-grey"
+            indicatorState: {
+                available: "fl-available",
+                unavailable: "fl-unavailable",
+                unknown: "fl-unknown"
             }
         },
         invokers: {
@@ -72,10 +72,10 @@ var fluid_1_5 = fluid_1_5 || {};
                 method: "addClass",
                 args: "{that}.options.styles.circle"
             },
-            "onCreate.setDefaultColor": {
-                "this": "{that}.container",
-                method: "addClass",
-                args: "{that}.options.styles.indicatorColors.unknown"
+            "onCreate.setDefaultState": {
+                listener: "{that}.applyChange",
+                args: ["{that}.model.value"],
+                dynamic: true
             }
         },
         modelListeners: {
@@ -87,12 +87,16 @@ var fluid_1_5 = fluid_1_5 || {};
     });
 
     fluid.metadata.indicator.applyChange = function (that, state) {
-        var colorClasses = that.options.styles.indicatorColors;
+        if (!state) {
+            return;
+        }
 
-        fluid.each(colorClasses, function (color) {
-            that.container.removeClass(color);
+        var stateClasses = that.options.styles.indicatorState;
+
+        fluid.each(stateClasses, function (state) {
+            that.container.removeClass(state);
         });
-        that.container.addClass(colorClasses[state]);
+        that.container.addClass(stateClasses[state]);
         that.tooltip.updateContent(that.options.tooltipContent[state]);
     };
 
