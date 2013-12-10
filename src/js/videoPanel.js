@@ -35,7 +35,7 @@ var fluid_1_5 = fluid_1_5 || {};
         },
         strings: {
             title: "video",
-            a11yLabel: "Select all that apply",
+            instruction: "Select all that apply",
             highContrastLabel: "Video is high contrast which may improve visibility.",
             signLangLabel: "Video contains sign language translation.",
             flashingLabel: "Video has flashing visuals that some users may want to avoid",
@@ -45,11 +45,11 @@ var fluid_1_5 = fluid_1_5 || {};
         selectors: {
             title: ".flc-video-title",
             icon: ".flc-video-icon",
-            a11yLabel: ".flc-a11y-label",
-            highContrast: ".flc-a11y-highContrast",
-            highContrastLabel: ".flc-a11y-highContrast-label",
-            signLang: ".flc-a11y-signLang",
-            signLangLabel: ".flc-a11y-signLang-label",
+            instruction: ".flc-instruction",
+            highContrast: ".flc-highContrast",
+            highContrastLabel: ".flc-highContrast-label",
+            signLang: ".flc-signLang",
+            signLangLabel: ".flc-signLang-label",
             flashingLabel: ".flc-flashing-label",
             flashingRow: ".flc-flashing-row",
             flashingInput: ".flc-flashing-input",
@@ -58,7 +58,7 @@ var fluid_1_5 = fluid_1_5 || {};
         repeatingSelectors: ["flashingRow"],
         protoTree: {
             title: {messagekey: "title"},
-            a11yLabel: {messagekey: "a11yLabel"},
+            instruction: {messagekey: "instruction"},
             flashingLabel: {messagekey: "flashingLabel"},
             icon: {
                 decorators: {
