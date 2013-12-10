@@ -48,7 +48,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                         },
                         "afterChange.fetchMetadata": {
                             listener: "{that}.get",
-                            args: [{id: "metadata"}, "{markupViewer}.updateModelMetadata"]
+                            args: [{id: "videoMetadata"}, "{markupViewer}.updateModelMetadata"]
                         }
                     }
                 }
@@ -65,7 +65,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             captions: metadata.captions,
         };
 
-        if (metadata.audio !== "unavailable") {
+        if (metadata.audio && metadata.audio !== "unavailable") {
             videoMetatdata.accessMode.push("audio");
         }
         if (metadata.highContrast) {
@@ -74,7 +74,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         if (metadata.signLanguage) {
             videoMetatdata.accessibilityFeature.push("signLanguage");
         }
-        if (metadata.flashing !== "unknown") {
+        if (metadata.flashing && metadata.flashing !== "unknown") {
             videoMetatdata.accessibilityHazard.push(metadata.flashing);
         }
 
@@ -82,6 +82,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     };
 
     fluid.markupViewer.replaceVideoPlaceholder = function (content, placeholderID, metadata) {
+        metadata = metadata || {};
         var placeholder = content.find(placeholderID);
         if (placeholder.length) {
             var realMarkup = $("<video></video>");
@@ -90,7 +91,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 type: "video/" + metadata.url.split(".").pop()
             }).appendTo(realMarkup);
             fluid.metadata.writer(realMarkup, "http://schema.org/Movie", fluid.markupViewer.transformToVideoMetadata(metadata));
-            fluid.each(meatadata.captions, function (caption) {
+            fluid.each(metadata.captions, function (caption) {
                 var captionContainer = $("<span></span>");
                 $("<track>").attr({
                     src: caption.src,
