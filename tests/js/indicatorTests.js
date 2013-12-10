@@ -31,7 +31,6 @@ https://github.com/gpii/universal/LICENSE.txt
         jqUnit.assertTrue("The initial circle css has been applied", that.container.hasClass(that.options.styles.circle));
         jqUnit.assertTrue("The tooltip css has been applied to the tooltip element", tooltip.hasClass(that.options.tooltipOptions.styles.tooltip));
         that.tooltip.open();
-        that.tooltip.close();
     };
 
     fluid.tests.checkState = function (that, previousState, currentState) {
@@ -39,8 +38,9 @@ https://github.com/gpii/universal/LICENSE.txt
         var currentStateCss = fluid.get(that.options.styles.indicatorState, currentState);
         jqUnit.assertFalse("The previous state css has been removed", that.container.hasClass(previousStateCss));
         jqUnit.assertTrue("The new state css has been applied", that.container.hasClass(currentStateCss));
-        that.tooltip.open();
-        that.tooltip.close();
+
+        var expected = fluid.get(that.options.tooltipContent, currentState);
+        jqUnit.assertEquals("The tooltip content has been applied to the tooltip element", expected, $("[id^=ui-tooltip]").text());
     };
 
     jqUnit.test("Test metadata indicator", function () {
@@ -52,13 +52,11 @@ https://github.com/gpii/universal/LICENSE.txt
 
         jqUnit.expect(3);
         var currentState = "available";
-        fluid.tests.addIndicatorListener(that, currentState);
         that.applier.requestChange("value", currentState);
         fluid.tests.checkState(that, "unknown", currentState);
 
         jqUnit.expect(3);
         currentState = "unavailable";
-        fluid.tests.addIndicatorListener(that, currentState);
         that.applier.requestChange("value", currentState);
         fluid.tests.checkState(that, "available", currentState);
     });
