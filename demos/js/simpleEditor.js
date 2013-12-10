@@ -289,8 +289,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 args: ["{that}", "{arguments}.0"]
             },
             reset: {
-                func: "{that}.setModel",
-                args: [{}] // reset to an empty model
+                funcName: "fluid.simpleEditor.insertVideo.reset",
+                args: ["{that}"]
             }
         },
         markup: {
@@ -323,6 +323,11 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
     fluid.simpleEditor.insertVideo.updateActiveState = function (buttonElm, urlField) {
         buttonElm.attr({disabled: !urlField.val()});
+    };
+
+    fluid.simpleEditor.insertVideo.reset = function (that) {
+        that.setModel({});
+        that.updateActiveState();
     };
 
 })(jQuery, fluid);
