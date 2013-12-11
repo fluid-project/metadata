@@ -61,8 +61,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             accessMode: ["visual"],
             accessibilityHazard: [],
             accessibilityFeature: [],
-            keywords: metadata.audioKeywords,
-            captions: metadata.captions,
+            keywords: metadata.audioKeywords
         };
 
         if (metadata.audio && metadata.audio !== "unavailable") {
