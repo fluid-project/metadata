@@ -18,35 +18,39 @@
 
         </head>
     <body>
-        <header class="page-header">
+        <header>
             <div class="container">
                 <div class="row">
-                    <h1 class="col-md-2">flOER</h1>
-                    <div class="col-md-2 col-md-offset-8">
-                        <button class="restart btn btn-default">Restart Demo</button>
+                    <h1 class="col-md-2"><span class="fl-logo-text1">fl</span><span class="fl-logo-text2">OER</span></h1>
+                    <div class="pull-right">
+                        <button class="restart btn btn-default" id="restart">Restart Demo</button>
                     </div>
                 </div>
             </div>
         </header>
         <section class="container">
-            <div class="flc-simpleEditor panel panel-default">
-                <ul class="flc-simpleEditor-toolbar btn-toolbar panel-heading" role="toolbar">
+            <div class="flc-simpleEditor fl-simpleEditor panel panel-default">
+                <div class="flc-simpleEditor-toolbar btn-toolbar panel-heading" role="toolbar">
                     <ul class="btn-group">
                         <li class="flc-simpleEditor-control btn btn-default" role="button" data-control="bold">B</li>
                         <li class="flc-simpleEditor-control btn btn-default" role="button" data-control="italic">I</li>
                         <li class="flc-simpleEditor-control btn btn-default" role="button" data-control="underline">U</li>
                     </ul>
-                    <li class="form-horizontal" role="form">
+                    
+                  <div class="form-horizontal" role="form">
                         <div class="form-group">
-                            <label class="flc-simpleEditor-insertVideo-urlLabel col-sm-3" for="videoInput"></label>
-                            <div class="col-sm-6">
+                            <label class="flc-simpleEditor-insertVideo-urlLabel col-sm-3 control-label" for="videoInput"></label>
+                            <div class="col-sm-5">
                                 <input type="url" class="flc-simpleEditor-insertVideo-url form-control" id="videoInput">
                             </div>
                             <button class="flc-simpleEditor-insertVideo-submit col-sm-1 btn btn-default">OK</button>
                         </div>
-                    </li>
-                </ul>
-                <div class="flc-simpleEditor-content panel-body"></div>
+                    </div>
+                  
+                </div>
+                <div class="flc-simpleEditor-content fl-simpleEditor panel-body">
+                    
+                </div>
             </div>
             <a href="metadataMarkupView.html" target="_blank" class="btn btn-default">View HTML</a>
         </section>
