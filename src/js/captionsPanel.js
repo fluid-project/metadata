@@ -76,4 +76,43 @@ var fluid_1_5 = fluid_1_5 || {};
         });
     };
 
+    fluid.defaults("fluid.metadata.captionsPanel.captionInput", {
+        gradeNames: ["fluid.rendererComponent", "autoInit"],
+        selectors: {
+            urlLabel: "flc-captions-urlLabel",
+            url: "flc-captions-url",
+            languagesLabel: "flc-captions-languagesLabel",
+            languages: "flc-captions-languages",
+        },
+        repeatingSelectors: ["languages"],
+        strings: {
+            urlLabel: "Enter web link to caption:",
+            languagesLabel: "Enter language:",
+            urlPlaceholder: "www.example.com/movie.srt",
+            languages: ["Arabic", "Chinese", "English", "French", "Hindi", "Spanish"]
+        },
+        model: {
+            url: "",
+            language: "en"
+        },
+        renderOnInit: true,
+        controlValues: ["ar", "zh", "en", "fr", "hi", "es"],
+        protoTree: {
+            urlLabel: {messagekey: "urlLabel"},
+            url: {
+                value: "${url}",
+                decorators: {
+                    type: "attrs",
+                    attributes: {placeholder: "${{that}.options.strings.urlPlaceholder}"}
+                }
+            },
+            languagesLabel: {messagekey: "languagesLabel"},
+            languages: {
+                "selection": "${language}",
+                "optionlist": "${{that}.options.controlValues}",
+                "optionnames": "${{that}.options.strings.languages}"
+            }
+        }
+    });
+
 })(jQuery, fluid_1_5);
