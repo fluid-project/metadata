@@ -30,7 +30,10 @@ https://github.com/gpii/universal/LICENSE.txt
     jqUnit.test("fluid.metadata.writer", function () {
         var elm1 = $("<div></div>");
         var elm2 = $("<div></div>");
-        var type = "http://schema.org/Movie";
+        var options = {
+            itemtype: fluid.metadata.itemtype.VIDEO_OBJECT,
+            itemprop: "video"
+        };
         var metadata = {
             accessMode: ["audio", "visual"],
             accessibilityFeature: ["captions"],
@@ -38,16 +41,18 @@ https://github.com/gpii/universal/LICENSE.txt
             accessibilityHazard: "noFlashing"
         };
 
-        fluid.metadata.writer(elm1, null, metadata);
+        fluid.metadata.writer(elm1, metadata);
 
         jqUnit.assertValue("An itemscope should have been added to the container", elm1.attr("itemscope"));
-        jqUnit.assertFalse("No type attribute should have been added to the container", elm1.attr("itemtype"));
+        jqUnit.assertFalse("No itemtype attribute should have been added to the container", elm1.attr("itemtype"));
+        jqUnit.assertFalse("No itemprop attribute should have been added to the container", elm1.attr("itemprop"));
         assertMetaTags(elm1, 6, metadata);
 
-        fluid.metadata.writer(elm2, type, metadata);
+        fluid.metadata.writer(elm2, metadata, options);
 
         jqUnit.assertValue("An itemscope should have been added to the container", elm2.attr("itemscope"));
-        jqUnit.assertEquals("The type attribute should have been added to the container", type, elm2.attr("itemtype"));
+        jqUnit.assertEquals("The itemtype attribute should have been added to the container", options.itemtype, elm2.attr("itemtype"));
+        jqUnit.assertEquals("The itemprop attribute should have been added to the container", options.itemprop, elm2.attr("itemprop"));
         assertMetaTags(elm1, 6, metadata);
 
     });

@@ -20,17 +20,22 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     fluid.registerNamespace("fluid.metadata");
 
     fluid.metadata.itemtype = {
-        "MOVIE": "http://schema.org/Movie"
+        "VIDEO_OBJECT": "http://schema.org/VideoObject"
     };
 
-    fluid.metadata.writer = function (container, type, metadata) {
+    /**
+     * Writes metadata information to an element. The itemscope property is added to this element.
+     * @param {Object} container, a jQuery object for the element to add metadata to.
+     * @param {Object} metadata, key/value pairs where the key represents the itemprop to set, and the value is the content value to assign to it.
+     * These are written out as meta tags within the container.
+     * @param {Object} options, extra attributes to add to the container element, likely only itemprop and itemtype.
+     */
+    fluid.metadata.writer = function (container, metadata, options) {
         var containerAttrs = {
             itemscope: ""
         };
 
-        if (type) {
-            containerAttrs["itemtype"] = type;
-        }
+        $.extend(true, containerAttrs, options);
 
         container.attr(containerAttrs);
 
