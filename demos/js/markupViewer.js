@@ -84,22 +84,27 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         metadata = metadata || {};
         var placeholder = content.find(placeholderID);
         if (placeholder.length) {
-            var realMarkup = $("<video></video>");
-            $("<source>").attr({
+            var realMarkup = $("<div></div>");
+            var videoElm = $('<video></video>');
+            fluid.metadata.writer(realMarkup, fluid.markupViewer.transformToVideoMetadata(metadata), {
+                itemprop: "video",
+                itemtype: fluid.metadata.itemtype.VIDEO_OBJECT
+            });
+            $('<source itemprop="contentUrl">').attr({
                 src: metadata.url,
                 type: "video/" + metadata.url.split(".").pop()
-            }).appendTo(realMarkup);
-            fluid.metadata.writer(realMarkup, fluid.metadata.itemtype.VIDEO_OBJECT, fluid.markupViewer.transformToVideoMetadata(metadata));
+            }).appendTo(videoElm);
             fluid.each(metadata.captions, function (caption) {
                 var captionContainer = $("<span></span>");
+                fluid.metadata.writer(captionContainer, {inLanguage: caption.language});
                 $("<track>").attr({
                     type: "captions",
                     src: caption.src,
                     srclang: caption.language
                 }).appendTo(captionContainer);
-                fluid.metadata.writer(captionContainer, null, {inLanguage: caption.language});
-                captionContainer.appendTo(realMarkup);
+                captionContainer.appendTo(videoElm);
             });
+            realMarkup.append(videoElm);
             placeholder = placeholder.replaceWith(realMarkup);
         }
     };
