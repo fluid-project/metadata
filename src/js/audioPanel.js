@@ -117,8 +117,9 @@ var fluid_1_5 = fluid_1_5 || {};
             "onCreate.init": "fluid.metadata.audioPanel.init"
         },
         modelListeners: {
-            "*": {
-                func: "{that}.refreshView"
+            "audio": {
+                funcName: "fluid.metadata.audioPanel.refreshAll",
+                args: "{that}"
             }
         },
         distributeOptions: {
@@ -136,6 +137,13 @@ var fluid_1_5 = fluid_1_5 || {};
 
     fluid.metadata.audioPanel.getContainerForAttributes = function (container, attributesSelector) {
         return container.find(attributesSelector + ":first");
+    };
+
+    fluid.metadata.audioPanel.refreshAll = function (that) {
+        that.refreshView();
+        that.events.afterRender.addListener(function () {
+            that.attributes.refreshView();
+        });
     };
 
     /*******************************************************************************
@@ -182,7 +190,8 @@ var fluid_1_5 = fluid_1_5 || {};
         },
         resources: {
             template: {
-                url: "../html/audio-attributes-template.html"
+                url: "../html/audio-attributes-template.html",
+                forceCache: true
             }
         },
         invokers: {

@@ -39,44 +39,45 @@ https://github.com/gpii/universal/LICENSE.txt
         }
     });
 
-    fluid.tests.checkInit = function (audioPanel, expectedRadiobuttons, expectedCheckboxes) {
+    fluid.tests.checkAudioState = function (audioPanel, expectedRadiobuttons, expectedCheckboxes, state) {
         return function (that) {
-            var radiobuttons = that.locate("audioRow");
+            that = that.typeName === "fluid.metadata.audioPanel" ? that : audioPanel;
+
+            var radiobuttons = that.container.find("[type='radio']");
             var checkboxes = that.locate("attributes").find("[type='checkbox']");
 
             jqUnit.assertEquals("Expected number of radiobuttons are rendered", expectedRadiobuttons, radiobuttons.length);
             jqUnit.assertEquals("Expected number of checkboxes are rendered", expectedCheckboxes, checkboxes.length);
-            jqUnit.assertTrue("The radio button with the value 'available' is checked", radiobuttons.find("[value='available']").is(":checked"));
-            jqUnit.assertTrue("Appropriate Indicator css class has been applied", that.locate("icon").hasClass("fl-available"));
-
-            var count = 0;
-            checkboxes.each(function () {
-                jqUnit.assertFalse("Checkbox #" + ++count + " is not checked", $(this).is(":checked"));
+            radiobuttons.each(function () {
+                if ($(this).attr("value") === state) {
+                    jqUnit.assertTrue("The radio button with the value '" + state + "' is checked", $(this).is(":checked"));
+                }
             });
+
+            jqUnit.assertTrue("Appropriate Indicator css class has been applied", that.locate("icon").hasClass("fl-" + state));
+
+            if (state === "available") {
+                var count = 0;
+                checkboxes.each(function () {
+                    jqUnit.assertFalse("Checkbox #" + ++count + " is not checked", $(this).is(":checked"));
+                });
+            }
         }
     };
 
-    fluid.tests.checkSoundTrack = function (that, modelPath) {
-        return function () {
-            var checkboxes = that.locate("attributes").find("[type='checkbox']");
-            checkboxes.each(function () {
-                if ($(this).attr("name") === modelPath) {
-                    jqUnit.assertTrue(modelPath + " checkbox is checked", $(this).is(":checked"));
-                } else {
-                    jqUnit.assertFalse("The other checkbox is not checked", $(this).is(":checked"));
-                }
-            });
+    fluid.tests.clickAttribute = function (audioPanel, attribute) {
+        audioPanel.locate("attributes").find("[value='" + attribute + "']").click();
+    };
+
+    fluid.tests.checkAttribute = function (modelPath) {
+        return function (newModel, oldModel, changeReqeust) {
+            var keywords = fluid.get(newModel, "keywords");
+            jqUnit.assertNotEquals("The proper model path has been updated", -1, $.inArray(modelPath, keywords));
         };
     };
 
-    fluid.tests.checkDisabledAttributes = function (that) {
-        return function () {
-            var radiobuttons = that.locate("audioRow");
-
-            jqUnit.assertTrue("The radio button with the value 'unavailable' is checked", radiobuttons.find("[value='unavailable']").is(":checked"));
-            jqUnit.assertTrue("Appropriate Indicator css class has been applied", that.locate("icon").hasClass("fl-unavailable"));
-            jqUnit.assertEquals("Checkboxes for defining audio attributes are not rendered", 0, that.locate("attributes").find("[type='checkbox']").length);
-        };
+    fluid.tests.clickAudioState = function (audioPanel, state) {
+        audioPanel.container.find("[value='" + state + "']").click();
     };
 
     fluid.defaults("fluid.tests.audioPanelTester", {
@@ -87,8 +88,8 @@ https://github.com/gpii/universal/LICENSE.txt
                 expect: 7,
                 name: "Init",
                 sequence: [{
-                    listenerMaker: "fluid.tests.checkInit",
-                    makerArgs: ["{audioPanelTests audioPanel}", 3, 3],
+                    listenerMaker: "fluid.tests.checkAudioState",
+                    makerArgs: ["{audioPanelTests audioPanel}", 3, 3, "available"],
                     spec: {priority: "last"},
                     event: "{audioPanelTests audioPanel}.events.onReady"
                 }]
@@ -97,28 +98,52 @@ https://github.com/gpii/universal/LICENSE.txt
             name: "Test audio panel",
             tests: [{
                 expect: 3,
-                name: "Request change on an audio attribute",
+                name: "Click on an audio attribute",
                 sequence: [{
-                    func: "{audioPanel}.applier.requestChange",
-                    args: ["soundTrack", true]
+                    func: "fluid.tests.clickAttribute",
+                    args: ["{audioPanel}", "dialogue"]
                 }, {
-                    listenerMaker: "fluid.tests.checkSoundTrack",
-                    makerArgs: ["{audioPanel}", "soundTrack"],
-                    spec: {priority: "last"},
-                    event: "{audioPanel}.events.afterAttributesRendered"
+                    listenerMaker: "fluid.tests.checkAttribute",
+                    makerArgs: ["dialogue"],
+                    spec: {path: "keywords", priority: "last"},
+                    changeEvent: "{audioPanel}.applier.modelChanged"
+                }, {
+                    func: "fluid.tests.clickAttribute",
+                    args: ["{audioPanel}", "soundtrack"]
+                }, {
+                    listenerMaker: "fluid.tests.checkAttribute",
+                    makerArgs: ["soundtrack"],
+                    spec: {path: "keywords", priority: "last"},
+                    changeEvent: "{audioPanel}.applier.modelChanged"
+                }, {
+                    func: "fluid.tests.clickAttribute",
+                    args: ["{audioPanel}", "sound effect"]
+                }, {
+                    listenerMaker: "fluid.tests.checkAttribute",
+                    makerArgs: ["sound effect"],
+                    spec: {path: "keywords", priority: "last"},
+                    changeEvent: "{audioPanel}.applier.modelChanged"
                 }]
             }]
         }, {
             name: "Test audio panel",
             tests: [{
-                expect: 3,
-                name: "Request change on audio",
+                expect: 8,
+                name: "Change audio availability",
                 sequence: [{
-                    func: "{audioPanel}.applier.requestChange",
-                    args: ["audio", "unavailable"]
+                    func: "fluid.tests.clickAudioState",
+                    args: ["{audioPanel}", "unavailable"]
                 }, {
-                    listenerMaker: "fluid.tests.checkDisabledAttributes",
-                    makerArgs: ["{audioPanel}"],
+                    listenerMaker: "fluid.tests.checkAudioState",
+                    makerArgs: ["{audioPanel}", 3, 0, "unavailable"],
+                    spec: {priority: "last"},
+                    event: "{audioPanel}.events.afterAttributesRendered"
+                }, {
+                    func: "fluid.tests.clickAudioState",
+                    args: ["{audioPanel}", "unknown"]
+                }, {
+                    listenerMaker: "fluid.tests.checkAudioState",
+                    makerArgs: ["{audioPanel}", 3, 0, "unknown"],
                     spec: {priority: "last"},
                     event: "{audioPanel}.events.afterAttributesRendered"
                 }]
