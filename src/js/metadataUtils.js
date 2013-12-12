@@ -19,6 +19,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
     fluid.registerNamespace("fluid.metadata");
 
+    fluid.metadata.itemtype = {
+        "MOVIE": "http://schema.org/Movie"
+    };
+
     fluid.metadata.writer = function (container, type, metadata) {
         var containerAttrs = {
             itemscope: ""

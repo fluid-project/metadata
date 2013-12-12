@@ -89,7 +89,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 src: metadata.url,
                 type: "video/" + metadata.url.split(".").pop()
             }).appendTo(realMarkup);
-            fluid.metadata.writer(realMarkup, "http://schema.org/Movie", fluid.markupViewer.transformToVideoMetadata(metadata));
+            fluid.metadata.writer(realMarkup, fluid.metadata.itemtype.MOVIE, fluid.markupViewer.transformToVideoMetadata(metadata));
             fluid.each(metadata.captions, function (caption) {
                 var captionContainer = $("<span></span>");
                 $("<track>").attr({
