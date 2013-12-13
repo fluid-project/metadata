@@ -23,95 +23,188 @@ https://github.com/gpii/universal/LICENSE.txt
             captionsInput: {
                 type: "fluid.metadata.captionsPanel.captionInput",
                 container: ".flc-captionsPanel-captionsInput",
-                createOnEvent: "{captionInputTester}.events.onTestCaseStart"
+                createOnEvent: "{captionsInputTester}.events.onTestCaseStart",
+                options: {
+                    resources: {
+                        template: {
+                            url: "../../src/html/captions-input-template.html"
+                        }
+                    }
+                }
             },
-            captionInputTester: {
-                type: "fluid.tests.captionInputTester"
+            captionsInputTester: {
+                type: "fluid.tests.captionsInputTester"
             }
         }
     });
 
-    fluid.defaults("fluid.tests.captionInputTester", {
+    fluid.tests.checkInit = function (that) {
+        jqUnit.assertEquals("The placeholder for the input field is set", that.options.strings.srcPlaceholder, that.locate("src").attr("placeholder"));
+        jqUnit.assertEquals("All language options are rendered in a combo box", that.options.controlValues.length, that.locate(languages).find("option").length);
+    };
+
+    fluid.tests.changeSrc = function (that, newSrcValue) {
+        that.locate("src").val(newSrcValue).change();
+    };
+
+    fluid.tests.changeLanguage = function (that, newLanguageValue) {
+        that.locate("languages").find("[value='" + newLanguageValue + "']").attr("selected", "selected").change();
+    };
+
+    fluid.tests.checkModelValue = function (newSrcValue) {
+        return function (newModel, oldModel, changeRequest) {
+            var path = changeRequest[0].path;
+            jqUnit.assertEquals("The model path '" + path + "' has been updated to the new value", newSrcValue, fluid.get(newModel, path));
+        }
+    };
+
+    fluid.defaults("fluid.tests.captionsInputTester", {
         gradeNames: ["fluid.test.testCaseHolder", "autoInit"],
+        testOptions: {
+            newSrcValue: "http://weblink.com/one.mp4",
+            newLanguage: "hi"
+        },
         modules: [{
-            name: "Test summary panel",
+            name: "Test captions input fields panel",
+            tests: [{
+                expect: 2,
+                name: "Init",
+                sequence: [{
+                    listener: "fluid.tests.checkInit",
+                    event: "{captionsInputTests captionsInput}.events.afterRender"
+                }]
+            }]
+        }, {
+            name: "Test captions input panel",
+            tests: [{
+                expect: 2,
+                name: "Click on captions input fields",
+                sequence: [{
+                    func: "fluid.tests.changeSrc",
+                    args: ["{captionsInput}", "{that}.options.testOptions.newSrcValue"]
+                }, {
+                    listenerMaker: "fluid.tests.checkModelValue",
+                    makerArgs: ["{that}.options.testOptions.newSrcValue"],
+                    spec: {path: "src", priority: "last"},
+                    changeEvent: "{captionsInput}.applier.modelChanged"
+                }, {
+                    func: "fluid.tests.changeLanguage",
+                    args: ["{captionsInput}", "{that}.options.testOptions.newLanguage"]
+                }, {
+                    listenerMaker: "fluid.tests.checkModelValue",
+                    makerArgs: ["{that}.options.testOptions.newLanguage"],
+                    spec: {path: "language", priority: "last"},
+                    changeEvent: "{captionsInput}.applier.modelChanged"
+                }]
+            }]
+        }]
+    });
+
+    fluid.defaults("fluid.tests.captionsPanelTests", {
+        gradeNames: ["fluid.test.testEnvironment", "autoInit"],
+        components: {
+            captionsPanel: {
+                type: "fluid.metadata.captionsPanel",
+                container: ".flc-captionsPanel",
+                createOnEvent: "{captionsPanelTester}.events.onTestCaseStart",
+                options: {
+                    resources: {
+                        template: {
+                            url: "../../src/html/captions-template.html"
+                        }
+                    },
+                    captionsInputTemplate: "../../src/html/captions-input-template.html"
+                }
+            },
+            captionsPanelTester: {
+                type: "fluid.tests.captionsPanelTester"
+            }
+        }
+    });
+
+    fluid.tests.checkInitPanel = function (that) {
+        var srcFields = that.container.find("input");
+        var languageFields = that.container.find("select");;
+
+        jqUnit.assertEquals("Two src fields have been rendered", 2, srcFields.length);
+        jqUnit.assertEquals("Two language fields have been rendered", 2, languageFields.length);
+        srcFields.each(function () {
+            jqUnit.assertEquals("The placeholder for the input field has been set", that.input1.options.strings.srcPlaceholder, $(this).attr("placeholder"));
+        });
+        languageFields.each(function () {
+            jqUnit.assertEquals("All language options have been rendered in a combo box", that.input1.options.controlValues.length, $(this).find("option").length);
+        });
+    };
+
+    fluid.tests.changeSrcByIndex = function (that, newSrcValue, index) {
+        that.container.find("input").eq(index).val(newSrcValue).change();
+    };
+
+    fluid.tests.changeLanguageByIndex = function (that, newLanguageValue, index) {
+        that.container.find("select").eq(index).find("[value='" + newLanguageValue + "']").attr("selected", "selected").change();
+    };
+
+    fluid.tests.checkModelValueByIndex = function (path, newSrcValue, index) {
+        return function (newModel, oldModel, changeRequest) {
+            jqUnit.assertEquals("The model path '" + path + "' has been updated to the new value", newSrcValue, fluid.get(newModel, ["captions", index, path]));
+        }
+    };
+
+    fluid.defaults("fluid.tests.captionsPanelTester", {
+        gradeNames: ["fluid.test.testCaseHolder", "autoInit"],
+        testOptions: {
+            newSrcValue1: "http://weblink.com/one.mp4",
+            newLanguage1: "hi",
+            newSrcValue1: "http://weblink.com/two.mp4",
+            newLanguage1: "zh"
+        },
+        modules: [{
+            name: "Test initial captions panel",
             tests: [{
                 expect: 6,
                 name: "Init",
                 sequence: [{
-                    listenerMaker: "fluid.tests.checkInit",
-                    makerArgs: ["{captionsInputTests captionsInput}", 3, 2],
-                    spec: {priority: "last"},
-                    event: "{captionsInputTests captionsInput}.events.onReady"
+                    listener: "fluid.tests.checkInitPanel",
+                    event: "{captionsPanelTests captionsPanel}.events.onReady"
                 }]
             }]
         }, {
-            name: "Test summary panel",
+            name: "Test captions panel",
             tests: [{
-                expect: 2,
-                name: "Request change on high contrast attribute",
+                expect: 4,
+                name: "Click on captions input fields",
                 sequence: [{
-                    func: "{captionsInput}.applier.requestChange",
-                    args: ["highContrast", true]
+                    func: "fluid.tests.changeSrcByIndex",
+                    args: ["{captionsPanel}", "{that}.options.testOptions.newSrcValue1", 0]
                 }, {
-                    listenerMaker: "fluid.tests.checkCheckboxState",
-                    makerArgs: ["{captionsInput}", "highContrast", true],
-                    spec: {priority: "last"},
-                    event: "{captionsInput}.events.afterRender"
+                    listenerMaker: "fluid.tests.checkModelValueByIndex",
+                    makerArgs: ["src", "{that}.options.testOptions.newSrcValue1", 0],
+                    spec: {path: "captions", priority: "last"},
+                    changeEvent: "{captionsPanel}.applier.modelChanged"
                 }, {
-                    func: "{captionsInput}.applier.requestChange",
-                    args: ["highContrast", false]
+                    func: "fluid.tests.changeLanguageByIndex",
+                    args: ["{captionsPanel}", "{that}.options.testOptions.newLanguage1", 0]
                 }, {
-                    listenerMaker: "fluid.tests.checkCheckboxState",
-                    makerArgs: ["{captionsInput}", "highContrast", false],
-                    spec: {priority: "last"},
-                    event: "{captionsInput}.events.afterRender"
-                }]
-            }]
-        }, {
-            name: "Test summary panel",
-            tests: [{
-                expect: 2,
-                name: "Request change on sign language attribute",
-                sequence: [{
-                    func: "{captionsInput}.applier.requestChange",
-                    args: ["signLang", true]
+                    listenerMaker: "fluid.tests.checkModelValueByIndex",
+                    makerArgs: ["language", "{that}.options.testOptions.newLanguage1", 0],
+                    spec: {path: "captions", priority: "last"},
+                    changeEvent: "{captionsPanel}.applier.modelChanged"
                 }, {
-                    listenerMaker: "fluid.tests.checkCheckboxState",
-                    makerArgs: ["{captionsInput}", "signLang", true],
-                    spec: {priority: "last"},
-                    event: "{captionsInput}.events.afterRender"
+                    func: "fluid.tests.changeSrcByIndex",
+                    args: ["{captionsPanel}", "{that}.options.testOptions.newSrcValue1", 1]
                 }, {
-                    func: "{captionsInput}.applier.requestChange",
-                    args: ["signLang", false]
+                    listenerMaker: "fluid.tests.checkModelValueByIndex",
+                    makerArgs: ["src", "{that}.options.testOptions.newSrcValue1", 1],
+                    spec: {path: "captions", priority: "last"},
+                    changeEvent: "{captionsPanel}.applier.modelChanged"
                 }, {
-                    listenerMaker: "fluid.tests.checkCheckboxState",
-                    makerArgs: ["{captionsInput}", "signLang", false],
-                    spec: {priority: "last"},
-                    event: "{captionsInput}.events.afterRender"
-                }]
-            }]
-        }, {
-            name: "Test summary panel",
-            tests: [{
-                expect: 2,
-                name: "Request change on video",
-                sequence: [{
-                    func: "{captionsInput}.applier.requestChange",
-                    args: ["flashing", "flashing"]
+                    func: "fluid.tests.changeLanguageByIndex",
+                    args: ["{captionsPanel}", "{that}.options.testOptions.newLanguage1", 1]
                 }, {
-                    listenerMaker: "fluid.tests.checkRadioButtonState",
-                    makerArgs: ["{captionsInput}", "flashing"],
-                    spec: {priority: "last"},
-                    event: "{captionsInput}.events.afterRender"
-                }, {
-                    func: "{captionsInput}.applier.requestChange",
-                    args: ["flashing", "noFlashing"]
-                }, {
-                    listenerMaker: "fluid.tests.checkRadioButtonState",
-                    makerArgs: ["{captionsInput}", "noFlashing"],
-                    spec: {priority: "last"},
-                    event: "{captionsInput}.events.afterRender"
+                    listenerMaker: "fluid.tests.checkModelValueByIndex",
+                    makerArgs: ["language", "{that}.options.testOptions.newLanguage1", 1],
+                    spec: {path: "captions", priority: "last"},
+                    changeEvent: "{captionsPanel}.applier.modelChanged"
                 }]
             }]
         }]
@@ -119,7 +212,8 @@ https://github.com/gpii/universal/LICENSE.txt
 
     $(document).ready(function () {
         fluid.test.runTests([
-            "fluid.tests.captionsInputTests"
+            "fluid.tests.captionsInputTests",
+            "fluid.tests.captionsPanelTests"
         ]);
     });
 

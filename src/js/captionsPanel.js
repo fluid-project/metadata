@@ -29,45 +29,148 @@ var fluid_1_5 = fluid_1_5 || {};
     fluid.defaults("fluid.metadata.captionsPanel", {
         gradeNames: ["fluid.rendererComponent", "autoInit"],
         model: {
-            highContrast: false,
-            signLanguage: false,
-            flashing: "unknown", // flashing, noFlashing are alternatives
+            captions: [{
+                src: "",
+                language: "en"
+            }, {
+                src: "",
+                language: "en"
+            }]
+        },
+        components: {
+            input1: {
+                type: "fluid.metadata.captionsPanel.captionInput",
+                container: "{captionsPanel}.dom.input1",
+                createOnEvent: "afterRender",
+                options: {
+                    model: "{captionsPanel}.model.captions.0",
+                    events: {
+                        afterRender: "{captionsPanel}.events.afterRenderInput1"
+                    },
+                    modelListeners: {
+                        "*": {
+                            func: "{captionsPanel}.events.inputModelChanged.fire",
+                            args: ["{change}.path", "{change}.value", 0]
+                        }
+                    }
+                }
+            },
+            input2: {
+                type: "fluid.metadata.captionsPanel.captionInput",
+                container: "{captionsPanel}.dom.input2",
+                createOnEvent: "afterRender",
+                options: {
+                    model: "{captionsPanel}.model.captions.1",
+                    events: {
+                        afterRender: "{captionsPanel}.events.afterRenderInput2"
+                    },
+                    modelListeners: {
+                        "*": {
+                            func: "{captionsPanel}.events.inputModelChanged.fire",
+                            args: ["{change}.path", "{change}.value", 1]
+                        }
+                    }
+                }
+            },
+            // icon: {
+            //     type: "fluid.metadata.indicator",
+            //     container: "{captionsPanel}.dom.icon",
+            //     createOnEvent: "afterRender",
+            //     options: {
+            //         model: {
+            //             expander: {
+            //                 funcName: "fluid.metadata.captionsPanel.convertIconModel",
+            //                 args: "{captionsPanel}.model"
+            //             }
+            //         },
+            //         tooltipContent: {
+            //             "available": "${captionsPanel}.options.strings.captionsAvailable",
+            //             "unavailable": "${captionsPanel}.options.strings.captionsUnavailable",
+            //             "unknown": "${captionsPanel}.options.strings.captionsUnavailable"
+            //         },
+            //         events: {
+            //             afterRender: "{captionsPanel}.events.afterRenderIcon"
+            //         }
+            //     }
+            // }
         },
         strings: {
             title: "Captions",
-            instruction: "Captions provide a real-time, equivalent text version of the spoken word in a video."
+            instruction: "Captions provide a real-time, equivalent text version of the spoken word in a video.",
+            captionsAvailable: "Captions are available in this video.",
+            captionsUnavailable: "Captions are not available in this video."
         },
         selectors: {
             title: ".flc-captions-title",
             icon: ".flc-captions-icon",
-            instruction: ".flc-caption-instruction"
+            instruction: ".flc-caption-instruction",
+            input1: ".flc-captions-input-1",
+            input2: ".flc-captions-input-2"
         },
+        selectorsToIgnore: [/*"icon", */"input1", "input2"],
         protoTree: {
             title: {messagekey: "title"},
-            instruction: {messagekey: "instruction"}
+            instruction: {messagekey: "instruction"},
+            icon: {
+                decorators: {
+                    func: "fluid.metadata.indicator",
+                    type: "fluid",
+                    options: {
+                        model: {
+                            expander: {
+                                funcName: "fluid.metadata.captionsPanel.convertIconModel",
+                                args: "{captionsPanel}.model"
+                            }
+                        },
+                        tooltipContent: {
+                            "available": "${{that}.options.strings.captionsAvailable}",
+                            "unavailable": "${{that}.options.strings.captionsUnavailable}",
+                            "unknown": "${{that}.options.strings.captionsUnavailable}"
+                        }
+                    }
+                }
+            }
         },
         resources: {
             template: {
-                url: "../html/captions-template.html"
+                src: "../html/captions-template.html"
             }
         },
         events: {
+            inputModelChanged: null,
+            afterRenderInput1: null,
+            afterRenderInput2: null,
+            afterRenderIcon: null,
             onReady: {
                 events: {
                     onCreate: "onCreate",
-                    afterRender: "afterRender"
+                    afterRenderInput1: "afterRenderInput1",
+                    afterRenderInput2: "afterRenderInput2",
+                    // afterRenderIcon: "afterRenderIcon"
                 },
                 args: "{that}"
             }
         },
         listeners: {
-            "onCreate.init": "fluid.metadata.captionsPanel.init"
-        },
-        modelListeners: {
-            "*": {
-                func: "{that}.refreshView"
+            "onCreate.init": "fluid.metadata.captionsPanel.init",
+            "inputModelChanged.updateModel": {
+                listener: "fluid.metadata.captionsPanel.updateModel",
+                args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2"]
             }
-        }
+        },
+        // modelListeners: {
+        //     "captions": {
+        //         func: "fluid.metadata.captionsPanel.refreshIcon",
+        //         args: "{that}"
+        //     }
+        // },
+        distributeOptions: [{
+            source: "{that}.options.captionsInputTemplate",
+            target: "{that > input1}.options.resources.template.url"
+        }, {
+            source: "{that}.options.captionsInputTemplate",
+            target: "{that > input2}.options.resources.template.url"
+        }]
     });
 
     fluid.metadata.captionsPanel.init = function (that) {
@@ -76,34 +179,64 @@ var fluid_1_5 = fluid_1_5 || {};
         });
     };
 
+    fluid.metadata.captionsPanel.updateModel = function (captionsPanel, path, value, index) {
+        var captionsModel = fluid.get(captionsPanel.model, "captions");
+        fluid.set(captionsModel, [index, path[0]], value);
+        captionsPanel.applier.requestChange("captions", captionsModel);
+
+        // refresh view to update icon state
+        captionsPanel.refreshView();
+        captionsPanel.events.afterRender.addListener(function () {
+            captionsPanel.input1.refreshView();
+            captionsPanel.input2.refreshView();
+        });
+    };
+
+    fluid.metadata.captionsPanel.convertIconModel = function (captionsModel) {
+        var iconValue = fluid.find(captionsModel.captions, function (caption) {
+            if (caption.src && caption.src !== "") {
+                return "available";
+            }
+        }, "unavailable");
+
+console.log(iconValue);
+        return {value: iconValue};
+    };
+
+    fluid.metadata.captionsPanel.refreshIcon = function (that) {
+        that.icon.refreshView();
+    };
+
+    /*******************************************************************************
+     * The panel to render caption input fields: src and language
+     *******************************************************************************/
+
     fluid.defaults("fluid.metadata.captionsPanel.captionInput", {
         gradeNames: ["fluid.rendererComponent", "autoInit"],
         selectors: {
-            urlLabel: "flc-captions-urlLabel",
-            url: "flc-captions-url",
-            languagesLabel: "flc-captions-languagesLabel",
-            languages: "flc-captions-languages",
+            srcLabel: ".flc-captions-srcLabel",
+            src: ".flc-captions-src",
+            languagesLabel: ".flc-captions-languagesLabel",
+            languages: ".flc-captions-languages"
         },
-        repeatingSelectors: ["languages"],
         strings: {
-            urlLabel: "Enter web link to caption:",
+            srcLabel: "Enter web link to caption:",
             languagesLabel: "Enter language:",
-            urlPlaceholder: "www.example.com/movie.srt",
+            srcPlaceholder: "www.example.com/movie.srt",
             languages: ["Arabic", "Chinese", "English", "French", "Hindi", "Spanish"]
         },
         model: {
-            url: "",
+            src: "",
             language: "en"
         },
-        renderOnInit: true,
         controlValues: ["ar", "zh", "en", "fr", "hi", "es"],
         protoTree: {
-            urlLabel: {messagekey: "urlLabel"},
-            url: {
-                value: "${url}",
+            srcLabel: {messagekey: "srcLabel"},
+            src: {
+                value: "${src}",
                 decorators: {
                     type: "attrs",
-                    attributes: {placeholder: "${{that}.options.strings.urlPlaceholder}"}
+                    attributes: {placeholder: "${{that}.options.strings.srcPlaceholder}"}
                 }
             },
             languagesLabel: {messagekey: "languagesLabel"},
@@ -112,7 +245,22 @@ var fluid_1_5 = fluid_1_5 || {};
                 "optionlist": "${{that}.options.controlValues}",
                 "optionnames": "${{that}.options.strings.languages}"
             }
+        },
+        listeners: {
+            "onCreate.init": "fluid.metadata.captionsPanel.captionInput.init"
+        },
+        resources: {
+            template: {
+                url: "../html/captions-input-template.html",
+                forceCache: true
+            }
         }
     });
+
+    fluid.metadata.captionsPanel.captionInput.init = function (that) {
+        fluid.fetchResources(that.options.resources, function (resourceSpec) {
+            that.refreshView();
+        });
+    };
 
 })(jQuery, fluid_1_5);
