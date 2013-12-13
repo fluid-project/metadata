@@ -37,6 +37,16 @@ header {
     margin-top: 0.2em;
 }
 
+.fl-simpleEditor-greeting .fl-simpleEditor-greeting-title  {
+    font-family: 'RobotoSlab';
+    font-size: 1.6em;
+}
+
+.fl-simpleEditor-greeting .fl-simpleEditor-greeting-text  {
+    font-family: 'OpenSans-Regular';
+    font-size: 1.2em;
+}
+
 .fl-simpleEditor {
     margin-bottom: 0.5em;
 }
