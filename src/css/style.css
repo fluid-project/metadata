@@ -6,8 +6,9 @@
     -moz-border-radius: 999px;
     border-radius: 999px;
     behavior: url(PIE.htc);
-    width: 2em;
-    height: 2em;
+    width: 1em;
+    height: 1em;
+    display: inline-block;
     background: #C0C0C0;
 }
 .fl-tooltip {
@@ -17,13 +18,12 @@
     padding: 3px 5px;
     font: normal sans-serif;
 }
-.fl-green {
+.fl-available {
 	background: #00FF00;
 }
-.fl-red {
+.fl-unavailable {
 	background: #CC6699;
 }
-.fl-grey {
+.fl-unknown {
 	background: #C0C0C0;
 }
-
