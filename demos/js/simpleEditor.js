@@ -17,6 +17,12 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
 (function ($, fluid) {
 
+    fluid.registerNamespace("fluid.simpleEditor");
+
+    fluid.simpleEditor.preventDefault = function (event) {
+        event.preventDefault();
+    };
+
     fluid.defaults("fluid.simpleEditor", {
         gradeNames: ["fluid.viewComponent", "autoInit"],
         selectors: {
@@ -259,6 +265,11 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 "method": "click",
                 "args": ["{that}.insertPlaceHolder"]
             },
+            "onCreate.submitPreventDefault": {
+                "this": "{that}.dom.submit",
+                "method": "click",
+                "args": [fluid.simpleEditor.preventDefault]
+            },
             "onCreate.submitActiveState": [
                 {
                     func: "{that}.updateActiveState"
@@ -326,7 +337,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     };
 
     fluid.simpleEditor.insertVideo.reset = function (that) {
-        that.setModel({});
+        that.setModel({}); // clears the model by setting it to an empty object.
         that.updateActiveState();
     };
 
