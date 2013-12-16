@@ -27,11 +27,15 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         gradeNames: ["fluid.viewComponent", "autoInit"],
         selectors: {
             controls: ".flc-simpleEditor-control",
-            content: ".flc-simpleEditor-content"
+            content: ".flc-simpleEditor-content",
+            videoPanel: ".flc-videoPanel",
+            audioPanel: ".flc-audioPanel",
+            captionsPanel: ".flc-captionsPanel"
         },
         events: {
             onReset: null,
-            afterReset: null
+            afterReset: null,
+            onShowMetadataPanels: null
         },
         listeners: {
             "onCreate.makeEditable": {
@@ -87,6 +91,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     },
                     listeners: {
                         "afterInsert.updateEditor": "{simpleEditor}.updateModel",
+                        "afterInsert.onShowMetadataPanels": "{simpleEditor}.events.onShowMetadataPanels.fire",
                         "{simpleEditor}.events.onReset": "{that}.reset"
                     },
                     modelListeners: {
@@ -96,6 +101,21 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                         }
                     }
                 }
+            },
+            videoPanel: {
+                type: "fluid.metadata.videoPanel",
+                container: "{simpleEditor}.dom.videoPanel",
+                createOnEvent: "onShowMetadataPanels"
+            },
+            audioPanel: {
+                type: "fluid.metadata.audioPanel",
+                container: "{simpleEditor}.dom.audioPanel",
+                createOnEvent: "onShowMetadataPanels"
+            },
+            captionsPanel: {
+                type: "fluid.metadata.captionsPanel",
+                container: "{simpleEditor}.dom.captionsPanel",
+                createOnEvent: "onShowMetadataPanels"
             }
         },
         dynamicComponents: {
@@ -137,7 +157,28 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     }
                 }
             }
-        }
+        },
+        distributeOptions: [{
+            source: "{that}.options.videoPanelTemplate",
+            removeSource: true,
+            target: "{that > videoPanel}.options.resources.template.url"
+        }, {
+            source: "{that}.options.audioPanelTemplate",
+            removeSource: true,
+            target: "{that > audioPanel}.options.resources.template.url"
+        }, {
+            source: "{that}.options.audioAttributesTemplate",
+            removeSource: true,
+            target: "{that > audioPanel}.options.audioAttributesTemplate"
+        }, {
+            source: "{that}.options.captionsPanelTemplate",
+            removeSource: true,
+            target: "{that > captionsPanel}.options.resources.template.url"
+        }, {
+            source: "{that}.options.captionsInputTemplate",
+            removeSource: true,
+            target: "{that > captionsPanel}.options.captionsInputTemplate"
+        }]
     });
 
     fluid.simpleEditor.setContent = function (elm, content) {
