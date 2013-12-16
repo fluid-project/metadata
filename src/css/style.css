@@ -19,11 +19,8 @@
     font: normal sans-serif;
 }
 .fl-available {
-	background: #00FF00;
+    background: #00FF00;
 }
-.fl-unavailable {
-	background: #CC6699;
-}
-.fl-unknown {
-	background: #C0C0C0;
+.fl-unavailable, .fl-unknown {
+    background: #C0C0C0;
 }
