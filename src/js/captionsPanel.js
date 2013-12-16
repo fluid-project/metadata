@@ -72,27 +72,31 @@ var fluid_1_5 = fluid_1_5 || {};
                     }
                 }
             },
-            // icon: {
-            //     type: "fluid.metadata.indicator",
-            //     container: "{captionsPanel}.dom.icon",
-            //     createOnEvent: "afterRender",
-            //     options: {
-            //         model: {
-            //             expander: {
-            //                 funcName: "fluid.metadata.captionsPanel.convertIconModel",
-            //                 args: "{captionsPanel}.model"
-            //             }
-            //         },
-            //         tooltipContent: {
-            //             "available": "${captionsPanel}.options.strings.captionsAvailable",
-            //             "unavailable": "${captionsPanel}.options.strings.captionsUnavailable",
-            //             "unknown": "${captionsPanel}.options.strings.captionsUnavailable"
-            //         },
-            //         events: {
-            //             afterRender: "{captionsPanel}.events.afterRenderIcon"
-            //         }
-            //     }
-            // }
+            icon: {
+                type: "fluid.metadata.indicator",
+                container: "{captionsPanel}.dom.icon",
+                createOnEvent: "afterRender",
+                options: {
+                    model: {
+                        value: {
+                            expander: {
+                                funcName: "{captionsPanel}.getIconModelValue"
+                            }
+                        }
+                    },
+                    tooltipContent: {
+                        "available": "${captionsPanel}.options.strings.captionsAvailable",
+                        "unavailable": "${captionsPanel}.options.strings.captionsUnavailable",
+                        "unknown": "${captionsPanel}.options.strings.captionsUnavailable"
+                    },
+                    events: {
+                        onCreate: {
+                            events: "{captionsPanel}.events.afterRenderIcon",
+                            priority: "last"
+                        }
+                    }
+                }
+            }
         },
         strings: {
             title: "Captions",
@@ -107,33 +111,20 @@ var fluid_1_5 = fluid_1_5 || {};
             input1: ".flc-captions-input-1",
             input2: ".flc-captions-input-2"
         },
-        selectorsToIgnore: [/*"icon", */"input1", "input2"],
+        selectorsToIgnore: ["icon", "input1", "input2"],
         protoTree: {
             title: {messagekey: "title"},
-            instruction: {messagekey: "instruction"},
-            icon: {
-                decorators: {
-                    func: "fluid.metadata.indicator",
-                    type: "fluid",
-                    options: {
-                        model: {
-                            expander: {
-                                funcName: "fluid.metadata.captionsPanel.convertIconModel",
-                                args: "{captionsPanel}.model"
-                            }
-                        },
-                        tooltipContent: {
-                            "available": "${{that}.options.strings.captionsAvailable}",
-                            "unavailable": "${{that}.options.strings.captionsUnavailable}",
-                            "unknown": "${{that}.options.strings.captionsUnavailable}"
-                        }
-                    }
-                }
-            }
+            instruction: {messagekey: "instruction"}
         },
         resources: {
             template: {
                 src: "../html/captions-template.html"
+            }
+        },
+        invokers: {
+            getIconModelValue: {
+                funcName: "fluid.metadata.captionsPanel.getIconModelValue",
+                args: "{that}.model"
             }
         },
         events: {
@@ -146,7 +137,7 @@ var fluid_1_5 = fluid_1_5 || {};
                     onCreate: "onCreate",
                     afterRenderInput1: "afterRenderInput1",
                     afterRenderInput2: "afterRenderInput2",
-                    // afterRenderIcon: "afterRenderIcon"
+                    afterRenderIcon: "afterRenderIcon"
                 },
                 args: "{that}"
             }
@@ -158,12 +149,12 @@ var fluid_1_5 = fluid_1_5 || {};
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2"]
             }
         },
-        // modelListeners: {
-        //     "captions": {
-        //         func: "fluid.metadata.captionsPanel.refreshIcon",
-        //         args: "{that}"
-        //     }
-        // },
+        modelListeners: {
+            "*": {
+                func: "fluid.metadata.captionsPanel.refreshIcon",
+                args: "{that}"
+            }
+        },
         distributeOptions: [{
             source: "{that}.options.captionsInputTemplate",
             target: "{that > input1}.options.resources.template.url"
@@ -183,28 +174,18 @@ var fluid_1_5 = fluid_1_5 || {};
         var captionsModel = fluid.get(captionsPanel.model, "captions");
         fluid.set(captionsModel, [index, path[0]], value);
         captionsPanel.applier.requestChange("captions", captionsModel);
-
-        // refresh view to update icon state
-        captionsPanel.refreshView();
-        captionsPanel.events.afterRender.addListener(function () {
-            captionsPanel.input1.refreshView();
-            captionsPanel.input2.refreshView();
-        });
     };
 
-    fluid.metadata.captionsPanel.convertIconModel = function (captionsModel) {
-        var iconValue = fluid.find(captionsModel.captions, function (caption) {
+    fluid.metadata.captionsPanel.getIconModelValue = function (captionsModel) {
+        return fluid.find(captionsModel.captions, function (caption) {
             if (caption.src && caption.src !== "") {
                 return "available";
             }
         }, "unavailable");
-
-console.log(iconValue);
-        return {value: iconValue};
     };
 
     fluid.metadata.captionsPanel.refreshIcon = function (that) {
-        that.icon.refreshView();
+        that.icon.applier.requestChange("value", that.getIconModelValue());
     };
 
     /*******************************************************************************

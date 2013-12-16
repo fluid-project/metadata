@@ -40,7 +40,7 @@ https://github.com/gpii/universal/LICENSE.txt
 
     fluid.tests.checkInit = function (that) {
         jqUnit.assertEquals("The placeholder for the input field is set", that.options.strings.srcPlaceholder, that.locate("src").attr("placeholder"));
-        jqUnit.assertEquals("All language options are rendered in a combo box", that.options.controlValues.length, that.locate(languages).find("option").length);
+        jqUnit.assertEquals("All language options are rendered in a combo box", that.options.controlValues.length, that.locate("languages").find("option").length);
     };
 
     fluid.tests.changeSrc = function (that, newSrcValue) {
@@ -55,7 +55,7 @@ https://github.com/gpii/universal/LICENSE.txt
         return function (newModel, oldModel, changeRequest) {
             var path = changeRequest[0].path;
             jqUnit.assertEquals("The model path '" + path + "' has been updated to the new value", newSrcValue, fluid.get(newModel, path));
-        }
+        };
     };
 
     fluid.defaults("fluid.tests.captionsInputTester", {
@@ -124,10 +124,11 @@ https://github.com/gpii/universal/LICENSE.txt
 
     fluid.tests.checkInitPanel = function (that) {
         var srcFields = that.container.find("input");
-        var languageFields = that.container.find("select");;
+        var languageFields = that.container.find("select");
 
         jqUnit.assertEquals("Two src fields have been rendered", 2, srcFields.length);
         jqUnit.assertEquals("Two language fields have been rendered", 2, languageFields.length);
+        jqUnit.assertTrue("The icon state has been set to 'unavailable'", that.locate("icon").hasClass(that.icon.options.styles.indicatorState.unavailable));
         srcFields.each(function () {
             jqUnit.assertEquals("The placeholder for the input field has been set", that.input1.options.strings.srcPlaceholder, $(this).attr("placeholder"));
         });
@@ -144,10 +145,11 @@ https://github.com/gpii/universal/LICENSE.txt
         that.container.find("select").eq(index).find("[value='" + newLanguageValue + "']").attr("selected", "selected").change();
     };
 
-    fluid.tests.checkModelValueByIndex = function (path, newSrcValue, index) {
+    fluid.tests.checkModelValueByIndex = function (that, path, newSrcValue, index) {
         return function (newModel, oldModel, changeRequest) {
             jqUnit.assertEquals("The model path '" + path + "' has been updated to the new value", newSrcValue, fluid.get(newModel, ["captions", index, path]));
-        }
+            jqUnit.assertTrue("The icon state has been set to 'available'", that.locate("icon").hasClass(that.icon.options.styles.indicatorState.available));
+        };
     };
 
     fluid.defaults("fluid.tests.captionsPanelTester", {
@@ -155,13 +157,13 @@ https://github.com/gpii/universal/LICENSE.txt
         testOptions: {
             newSrcValue1: "http://weblink.com/one.mp4",
             newLanguage1: "hi",
-            newSrcValue1: "http://weblink.com/two.mp4",
-            newLanguage1: "zh"
+            newSrcValue2: "http://weblink.com/two.mp4",
+            newLanguage2: "zh"
         },
         modules: [{
             name: "Test initial captions panel",
             tests: [{
-                expect: 6,
+                expect: 7,
                 name: "Init",
                 sequence: [{
                     listener: "fluid.tests.checkInitPanel",
@@ -171,14 +173,14 @@ https://github.com/gpii/universal/LICENSE.txt
         }, {
             name: "Test captions panel",
             tests: [{
-                expect: 4,
+                expect: 8,
                 name: "Click on captions input fields",
                 sequence: [{
                     func: "fluid.tests.changeSrcByIndex",
                     args: ["{captionsPanel}", "{that}.options.testOptions.newSrcValue1", 0]
                 }, {
                     listenerMaker: "fluid.tests.checkModelValueByIndex",
-                    makerArgs: ["src", "{that}.options.testOptions.newSrcValue1", 0],
+                    makerArgs: ["{captionsPanel}", "src", "{that}.options.testOptions.newSrcValue1", 0],
                     spec: {path: "captions", priority: "last"},
                     changeEvent: "{captionsPanel}.applier.modelChanged"
                 }, {
@@ -186,23 +188,23 @@ https://github.com/gpii/universal/LICENSE.txt
                     args: ["{captionsPanel}", "{that}.options.testOptions.newLanguage1", 0]
                 }, {
                     listenerMaker: "fluid.tests.checkModelValueByIndex",
-                    makerArgs: ["language", "{that}.options.testOptions.newLanguage1", 0],
+                    makerArgs: ["{captionsPanel}", "language", "{that}.options.testOptions.newLanguage1", 0],
                     spec: {path: "captions", priority: "last"},
                     changeEvent: "{captionsPanel}.applier.modelChanged"
                 }, {
                     func: "fluid.tests.changeSrcByIndex",
-                    args: ["{captionsPanel}", "{that}.options.testOptions.newSrcValue1", 1]
+                    args: ["{captionsPanel}", "{that}.options.testOptions.newSrcValue2", 1]
                 }, {
                     listenerMaker: "fluid.tests.checkModelValueByIndex",
-                    makerArgs: ["src", "{that}.options.testOptions.newSrcValue1", 1],
+                    makerArgs: ["{captionsPanel}", "src", "{that}.options.testOptions.newSrcValue2", 1],
                     spec: {path: "captions", priority: "last"},
                     changeEvent: "{captionsPanel}.applier.modelChanged"
                 }, {
                     func: "fluid.tests.changeLanguageByIndex",
-                    args: ["{captionsPanel}", "{that}.options.testOptions.newLanguage1", 1]
+                    args: ["{captionsPanel}", "{that}.options.testOptions.newLanguage2", 1]
                 }, {
                     listenerMaker: "fluid.tests.checkModelValueByIndex",
-                    makerArgs: ["language", "{that}.options.testOptions.newLanguage1", 1],
+                    makerArgs: ["{captionsPanel}", "language", "{that}.options.testOptions.newLanguage2", 1],
                     spec: {path: "captions", priority: "last"},
                     changeEvent: "{captionsPanel}.applier.modelChanged"
                 }]
