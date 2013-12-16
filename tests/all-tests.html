@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Fluid framework complete tests runner</title>
+
+    <link rel="stylesheet" href="lib/qunit/qunit/css/qunit.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="lib/qunit/qunit/addons/composite/qunit-composite.css">
+    <script src="lib/qunit/qunit/js/qunit.js"></script>
+    <script src="lib/qunit/qunit/addons/composite/qunit-composite.js"></script>
+<!-- Stupid bloody escaping rules:
+    find . -name "*-Test.html" | awk '{print "\""$1"\","}' -->
+    <script>
+    QUnit.testSuites([
+        "./html/indicator-Test.html",
+        "./html/metadataUtils-Test.html",
+        "./html/pouchDBDataSource-Test.html",
+        "./html/videoPanel-Test.html"
+    ]);
+    </script>
+</head>
+<body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture">
+</div>
+</body>
+</html>
