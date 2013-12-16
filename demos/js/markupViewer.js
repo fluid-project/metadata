@@ -111,8 +111,11 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     };
 
     fluid.markupViewer.update = function (elm, model) {
+        // Creating a jQuery element with the markup. The wrapping is to allow retrieving all of the relavent markup
+        // later with a call to html()
         var content = $("<section>" + model.markup + "</section>");
         fluid.markupViewer.replaceVideoPlaceholder(content, "#videoPlaceHolder", model.metadata);
+        // the call to markup_beauty requires that textnodes be wrapped in a tag, or they will be stripped out.
         var markup = "<body>" + content.html() + "</body>";
         var formatted = markup_beauty({
             source: markup,
