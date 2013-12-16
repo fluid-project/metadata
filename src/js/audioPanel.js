@@ -124,7 +124,6 @@ var fluid_1_5 = fluid_1_5 || {};
         },
         distributeOptions: {
             source: "{that}.options.audioAttributesTemplate",
-            removeSource: true,
             target: "{that > attributes}.options.resources.template.url"
         }
     });
