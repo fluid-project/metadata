@@ -57,6 +57,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     });
 
     fluid.markupViewer.transformToVideoMetadata = function (metadata) {
+        //TODO: Update to use model transformations framework
         var videoMetatdata = {
             accessMode: ["visual"],
             accessibilityHazard: [],
