@@ -81,32 +81,36 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         return videoMetatdata;
     };
 
+    fluid.markupViewer.generateVideoElm = function (metadata) {
+        var videoContainer = $("<div></div>");
+        var videoElm = $('<video></video>');
+        fluid.metadata.writer(videoContainer, fluid.markupViewer.transformToVideoMetadata(metadata), {
+            itemprop: "video",
+            itemtype: fluid.metadata.itemtype.VIDEO_OBJECT
+        });
+        $('<source itemprop="contentUrl">').attr({
+            src: metadata.url,
+            type: "video/" + metadata.url.split(".").pop()
+        }).appendTo(videoElm);
+        fluid.each(metadata.captions, function (caption) {
+            var captionContainer = $("<span></span>");
+            fluid.metadata.writer(captionContainer, {inLanguage: caption.language});
+            $("<track>").attr({
+                type: "captions",
+                src: caption.src,
+                srclang: caption.language
+            }).appendTo(captionContainer);
+            captionContainer.appendTo(videoElm);
+        });
+        videoContainer.append(videoElm);
+        return videoContainer;
+    };
+
     fluid.markupViewer.replaceVideoPlaceholder = function (content, placeholderID, metadata) {
         metadata = metadata || {};
         var placeholder = content.find(placeholderID);
         if (placeholder.length) {
-            var realMarkup = $("<div></div>");
-            var videoElm = $('<video></video>');
-            fluid.metadata.writer(realMarkup, fluid.markupViewer.transformToVideoMetadata(metadata), {
-                itemprop: "video",
-                itemtype: fluid.metadata.itemtype.VIDEO_OBJECT
-            });
-            $('<source itemprop="contentUrl">').attr({
-                src: metadata.url,
-                type: "video/" + metadata.url.split(".").pop()
-            }).appendTo(videoElm);
-            fluid.each(metadata.captions, function (caption) {
-                var captionContainer = $("<span></span>");
-                fluid.metadata.writer(captionContainer, {inLanguage: caption.language});
-                $("<track>").attr({
-                    type: "captions",
-                    src: caption.src,
-                    srclang: caption.language
-                }).appendTo(captionContainer);
-                captionContainer.appendTo(videoElm);
-            });
-            realMarkup.append(videoElm);
-            placeholder = placeholder.replaceWith(realMarkup);
+            placeholder = placeholder.replaceWith(fluid.markupViewer.generateVideoElm(metadata));
         }
     };
 
