@@ -105,17 +105,49 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             videoPanel: {
                 type: "fluid.metadata.videoPanel",
                 container: "{simpleEditor}.dom.videoPanel",
-                createOnEvent: "onShowMetadataPanels"
+                createOnEvent: "onShowMetadataPanels",
+                options: {
+                    gradeNames: ["fluid.prefs.modelRelay"],
+                    sourceApplier: "{insertVideo}.applier",
+                    model: {
+                        highContrast: "{insertVideo}.model.highContrast",
+                        signLanguage: "{insertVideo}.model.signLanguage",
+                        flashing: "{insertVideo}.model.flashing"
+                    },
+                    rules: {
+                        highContrast: "highContrast",
+                        signLanguage: "signLanguage",
+                        flashing: "flashing"
+                    }
+                }
             },
             audioPanel: {
                 type: "fluid.metadata.audioPanel",
                 container: "{simpleEditor}.dom.audioPanel",
-                createOnEvent: "onShowMetadataPanels"
+                createOnEvent: "onShowMetadataPanels",
+                options: {
+                    gradeNames: ["fluid.prefs.modelRelay"],
+                    sourceApplier: "{insertVideo}.applier",
+                    rules: {
+                        audio: "audio",
+                        audioKeywords: "keywords"
+                    }
+                }
             },
             captionsPanel: {
                 type: "fluid.metadata.captionsPanel",
                 container: "{simpleEditor}.dom.captionsPanel",
-                createOnEvent: "onShowMetadataPanels"
+                createOnEvent: "onShowMetadataPanels",
+                options: {
+                    gradeNames: ["fluid.prefs.modelRelay"],
+                    sourceApplier: "{insertVideo}.applier",
+                    model: {
+                        captions: "{insertVideo}.model.captions"
+                    },
+                    rules: {
+                        captions: "captions"
+                    }
+                }
             }
         },
         dynamicComponents: {
@@ -195,14 +227,17 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         that.updateModel();
 
         if (that.videoPanel) {
+            that.videoPanel.model = {};
             that.videoPanel.destroy();
             fluid.simpleEditor.emptyPanelContent(that, "videoPanel");
         }
         if (that.audioPanel) {
+            that.audioPanel.model = {};
             that.audioPanel.destroy();
             fluid.simpleEditor.emptyPanelContent(that, "audioPanel");
         }
         if (that.captionsPanel) {
+            that.captionsPanel.model = {};
             that.captionsPanel.destroy();
             fluid.simpleEditor.emptyPanelContent(that, "captionsPanel");
         }
