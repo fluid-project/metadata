@@ -77,7 +77,7 @@ var fluid_1_5 = fluid_1_5 || {};
             highContrastLabel: {messagekey: "highContrastLabel"},
             highContrast: "${highContrast}",
             signLangLabel: {messagekey: "signLangLabel"},
-            signLang: "${signLang}",
+            signLang: "${signLanguage}",
             expander: {
                 type: "fluid.renderer.selection.inputs",
                 rowID: "flashingRow",

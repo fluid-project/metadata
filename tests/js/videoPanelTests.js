@@ -103,7 +103,7 @@ https://github.com/gpii/universal/LICENSE.txt
                 }, {
                     listenerMaker: "fluid.tests.checkModel",
                     makerArgs: ["signLang", true],
-                    spec: {path: "signLang", priority: "last"},
+                    spec: {path: "signLanguage", priority: "last"},
                     changeEvent: "{videoPanel}.applier.modelChanged"
                 }]
             }]
