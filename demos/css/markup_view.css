@@ -1,0 +1,50 @@
+@charset "UTF-8";
+/* CSS Document */
+
+@font-face {
+    font-family: 'RobotoSlab';
+    src: url('fonts/RobotoSlab-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'OpenSans-Regular';
+    src: url('./fonts/OpenSans-Regular.ttf');
+}
+
+/* webpage background */
+
+body {
+    background-color: #C1DCE0;
+    font-family: 'OpenSans-Regular';
+}
+
+/* logo panel background and text */
+
+.fl-logo-text1 {
+        color: #fff;
+        font-size: 2.15em;
+    }
+
+header {
+        margin-bottom: 2em;
+        background-color: #006598;
+    }
+	
+.fl-logo-text2 {
+    background-color: #ed5a24;
+    color: #fff;
+    font-size: 1.45em;
+    padding: 0 0.2em;
+}
+
+/* html viewer panel */
+ 
+.flc-markupViewer {
+		width: 800px;
+		background-color: #EEE;
+		border-color:#E2E2E2;
+}
+
+.fl-HTML-viwer-title {
+		font-size:1.6em;		
+}
