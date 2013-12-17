@@ -88,7 +88,7 @@ https://github.com/gpii/universal/LICENSE.txt
             name: "Click on checkboxes",
             tests: [{
                 expect: 2,
-                name: "Click on an audio attribute",
+                name: "Click on a video attribute",
                 sequence: [{
                     func: "fluid.tests.clickCheckbox",
                     args: ["{videoPanel}", "highContrast"]
