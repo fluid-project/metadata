@@ -160,23 +160,18 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         },
         distributeOptions: [{
             source: "{that}.options.videoPanelTemplate",
-            removeSource: true,
             target: "{that > videoPanel}.options.resources.template.url"
         }, {
             source: "{that}.options.audioPanelTemplate",
-            removeSource: true,
             target: "{that > audioPanel}.options.resources.template.url"
         }, {
             source: "{that}.options.audioAttributesTemplate",
-            removeSource: true,
             target: "{that > audioPanel}.options.audioAttributesTemplate"
         }, {
             source: "{that}.options.captionsPanelTemplate",
-            removeSource: true,
             target: "{that > captionsPanel}.options.resources.template.url"
         }, {
             source: "{that}.options.captionsInputTemplate",
-            removeSource: true,
             target: "{that > captionsPanel}.options.captionsInputTemplate"
         }]
     });
@@ -191,9 +186,27 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         that.applier.requestChange("markup", that.locate("content").html());
     };
 
+    fluid.simpleEditor.emptyPanelContent = function (that, panelSelector) {
+        that.locate(panelSelector).html("");
+    };
+
     fluid.simpleEditor.reset = function (that, callback) {
         that.setContent("");
         that.updateModel();
+
+        if (that.videoPanel) {
+            that.videoPanel.destroy();
+            fluid.simpleEditor.emptyPanelContent(that, "videoPanel");
+        }
+        if (that.audioPanel) {
+            that.audioPanel.destroy();
+            fluid.simpleEditor.emptyPanelContent(that, "audioPanel");
+        }
+        if (that.captionsPanel) {
+            that.captionsPanel.destroy();
+            fluid.simpleEditor.emptyPanelContent(that, "captionsPanel");
+        }
+
         callback();
     };
 
