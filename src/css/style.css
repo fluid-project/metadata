@@ -1,26 +1,96 @@
+@font-face {
+    font-family: 'FloeMetadataIcons';
+    src:url('fonts/floe-metadata.eot?#iefix') format('embedded-opentype'),
+         url('fonts/floe-metadata.eot.eot'),
+         url('fonts/floe-metadata.ttf');
+}
+
+.fl-indent-05 {
+    margin-left: 0.5em;
+}
+
+.fl-indent-10 {
+    margin-left: 1em;
+}
+
 /*
     Metadata indicators
 */
+
 .fl-circle {
     -webkit-border-radius: 999px;
     -moz-border-radius: 999px;
     border-radius: 999px;
     behavior: url(PIE.htc);
-    width: 1em;
-    height: 1em;
+    width: 1.8em;
+    height: 1.8em;
     display: inline-block;
-    background: #C0C0C0;
+    background: #249681;
+    box-shadow: 0.03em 0.03em 0 #fff;
 }
+
+.fl-circle:before {
+    font-family: 'FloeMetadataIcons';
+    color: #fff;
+    font-size: 1.4em;
+    padding-left: 0.2em;
+    line-height:1.3em;
+}
+
+.fl-metadataPanel-title {
+    text-shadow: 0.03em 0.03em 0 #fff;
+}
+
+.fl-audioPanel .fl-circle:before  {
+    content: "\e607";
+}
+
+.fl-videoPanel .fl-circle:before  {
+    content: "\e606";
+}
+
+.fl-captionsPanel .fl-circle:before  {
+    content: "\e602";
+}
+
 .fl-tooltip {
     position: absolute;
     background: #FFFABB;
     border: 1px solid #C9B857;
     padding: 3px 5px;
-    font: normal sans-serif;
+    font-family: 'OpenSans-Light';
 }
 .fl-available {
-    background: #00FF00;
+    background: #249681;
 }
 .fl-unavailable, .fl-unknown {
-    background: #C0C0C0;
+    background: #959595;
+}
+
+.fl-videoPanel .fl-flashing-row{
+    display: inline-block;
+    margin-top: 0.5em;
+}
+
+.fl-captionsPanel .fl-captions-list li {
+    margin-top: 1em;
+}
+
+.fl-captionsPanel .fl-captions-list li input {
+    width: 100%;
+    margin-bottom: 0.5em;
+}
+
+.fl-captionsPanel .fl-captions-list li:nth-of-type(odd){
+    background-color: #d3e3e6;
+    
+}
+
+/* Bootstrap override */
+ul li label {
+    display: inline;
+}
+
+ul li {
+    margin-bottom: 1em;
 }

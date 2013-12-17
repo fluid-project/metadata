@@ -8,25 +8,33 @@
     src: url('./fonts/OpenSans-Regular.ttf');
 }
 
+@font-face {
+    font-family: 'OpenSans-Light';
+    src: url('./fonts/OpenSans-Light.ttf');
+}
+
+
+
 /***********
  * NOTE: This is mobile first styling - styled for mobile layout first, with media queries for larger screens.
  ***********/
 
 body {
-    background-color: #e2e2e2;
-    font-family: 'OpenSans-Regular';
+    background-color: #e8f3f5;
+    font-family: 'OpenSans-Light';
 }
 
-header {
+.fl-demo header {
     font-size: 1.8em;
     margin-bottom: 0;
+    background-color: #006598;
 }
 
-.fl-logo-text1 {
-    color: #7a7a7a;
+.fl-demo .fl-logo-text1 {
+    color: #fff;
 }
 
-.fl-logo-text2 {
+.fl-demo .fl-logo-text2 {
     background-color: #ed5a24;
     color: #fff;
     font-size: 0.8em;
@@ -37,29 +45,35 @@ header {
     margin-top: 0.2em;
 }
 
-.fl-simpleEditor-greeting .fl-simpleEditor-greeting-title  {
+.fl-demo .fl-simpleEditor-greeting .fl-simpleEditor-greeting-title  {
     font-family: 'RobotoSlab';
     font-size: 1.6em;
 }
 
-.fl-simpleEditor-greeting .fl-simpleEditor-greeting-text  {
+.fl-demo .fl-simpleEditor-greeting .fl-simpleEditor-greeting-text  {
     font-family: 'OpenSans-Regular';
     font-size: 1.2em;
 }
 
-.fl-simpleEditor {
+.fl-demo .fl-simpleEditor {
     margin-bottom: 0.5em;
+    background-color: #C1DCE0;
+    border-radius: 0.5em;
+    border: 1px solid #4d4d4d;
 }
 
-.fl-simpleEditor-toolbar {
+.fl-demo .fl-simpleEditor-toolbar {
     padding-top: 0.3em;
+    border-top-left-radius: 0.5em; /* At this resolution, just round these corners. */
+    border-top-right-radius: 0.5em;
+    background-color: #e2e2e2;
 }
 
-.fl-simpleEditor-insertVideo-form div {
+.fl-demo .fl-simpleEditor-insertVideo-form div {
     display: inline-block;
 }
 
-.fl-simpleEditor-insertVideo-urlLabel {
+.fl-demo .fl-simpleEditor-insertVideo-urlLabel {
     font-size: 0.8em;
     margin-left: 2em;
 }
@@ -70,87 +84,90 @@ header {
     margin-left: 2em;
 }
 
-.fl-simpleEditor-content {
+.fl-demo .fl-simpleEditor-content {
     height: 20em;
     box-shadow: 0 1px 1px #9f9f9f inset;
     background-color: #fff;
-    padding: 0.5em 0 0.5em 0;
+    padding: 0.5em;
     overflow-y: auto;
 }
 
-.fl-metadataPanel hr {
-    background: #fff;
-    width: 50%;
-    height: 2px;
+.fl-demo .fl-metadataPanelContainer {
+    margin-left: 1em;
 }
 
-.fl-metadataPanel h2 {
+.fl-demo .fl-metadataPanelContainer hr {
+    background: #fff;
+    width: 50%;
+    height: 1px;
+}
+
+.fl-demo .fl-metadataPanelContainer h2 {
     font-family: 'RobotoSlab';
     font-size: 1.5em;
+    margin-bottom: 0.5em;
 }
 
 /* Bootstrap small width */
-@media (min-width: 768px) {
+@media screen and (min-width: 768px) and (max-width:991px){
 
-    body {
-        background-color: #e8f3f5;
-    }
-
-    .fl-logo-text1 {
-        color: #fff;
+   .fl-demo .fl-logo-text1 {
         font-size: 1.2em;
-    }
-
-    header {
-        margin-bottom: 2em;
-        background-color: #006598;
     }
 
     #restart {
         margin-top: 0.7em;
     }
 
-    .fl-simpleEditor-toolbar {
-        border-top-left-radius: 0.5em; /* At this resolution, just round these corners. */
-        border-top-right-radius: 0.5em;
-        background-color: #e2e2e2;
-    }
-    .fl-simpleEditor {
-        border-radius: 0.5em;
-        border: 1px solid #4d4d4d;
-        background-color: #C1DCE0;
-    }
-    .fl-simpleEditor-content {
+    .fl-demo .fl-simpleEditor-content {
         height: 30em;
     }
 
-    .fl-simpleEditor-insertVideo-urlLabel {
+    .fl-demo .fl-simpleEditor-insertVideo-urlLabel {
         margin-left: 0.3em;
     }
 
     #videoInput {
-        width: 27em;
+        width: 20em;
     }
 }
 
 /* Bootstrap Medium width */
-@media (min-width: 992px) {
-    .fl-simpleEditor-toolbar {
+@media screen and (min-width: 987px) {
+    .fl-demo .fl-simpleEditor .row{
+        margin-right: 0; /* Remove 15px padding Bootstrap adds to this column */
+    }
+    
+    .fl-demo .fl-simpleEditor-toolbar {
         border-top-right-radius: 0; /* At this resolution, this corner is not rounded. */
     }
-    .fl-simpleEditor-content {
+    
+    .fl-demo .fl-simpleEditor-content {
         border-bottom-left-radius: 0.5em; /* At this resolution, round just this corner. */
+        height: 30em;
+    }
+     
+    .fl-demo .fl-metadataPanelContainer {
+        height: 33em;
+        margin-top: 0.2em;
+        padding-right: 2.3em;
+        overflow:auto;
+        margin-left: 0;
+    }
+    
+    .fl-demo .fl-metadataPanelContainer hr {
+        width: 100%;
     }
 }
 
 /* Placeholder for Video */
-.fl-simpleEditor-insertVideo-placeHolder {
+.fl-demo .fl-simpleEditor-insertVideo-placeHolder {
     background: #C0C0C0;
     height: 20em;
     width: 30em;
 }
 
-.fl-simpleEditor-insertVideo-placeHolder-playCircle {
+.fl-demo .fl-simpleEditor-insertVideo-placeHolder-playCircle {
     border: solid 5px #000000;
     position: relative;
     top: 25%;
@@ -160,7 +177,7 @@ header {
     border-radius: 50%;
 }
 
-.fl-simpleEditor-insertVideo-placeHolder-playTriangle {
+.fl-demo .fl-simpleEditor-insertVideo-placeHolder-playTriangle {
     width: 0;
     height: 0;
     position: relative;
@@ -169,4 +186,12 @@ header {
     border-style: solid;
     border-width: 2.5em 0 2.5em 4.3em;
     border-color: transparent transparent transparent #000000;
+}
+
+/*
+ * Bootstrap overrides 
+ */
+ 
+label {
+    font-weight: normal;
 }

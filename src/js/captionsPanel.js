@@ -100,7 +100,7 @@ var fluid_1_5 = fluid_1_5 || {};
         },
         strings: {
             title: "Captions",
-            instruction: "Captions provide a real-time, equivalent text version of the spoken word in a video.",
+            instruction: "Captions provide a synchronized, equivalent text version of spoken word in a video.",
             captionsAvailable: "Captions are available in this video.",
             captionsUnavailable: "Captions are not available in this video."
         },
@@ -202,7 +202,7 @@ var fluid_1_5 = fluid_1_5 || {};
         },
         strings: {
             srcLabel: "Enter web link to caption:",
-            languagesLabel: "Enter language:",
+            languagesLabel: "Select language:",
             srcPlaceholder: "www.example.com/movie.srt",
             languages: ["Arabic", "Chinese", "English", "French", "Hindi", "Spanish"]
         },
