@@ -37,17 +37,17 @@
                     </div>
                 </div>
             </header>
-    
+
             <section class="container">
                 <div class="fl-simpleEditor-greeting">
                     <h1 class="flc-simpleEditor-greeting-title fl-simpleEditor-greeting-title text-center">
-                        Welcome to the flO.E.R. metadata authoring demo.
+                        Welcome to the flO.E.R. metadata authoring demo.
                     </h1>
                     <p class="flc-simpleEditor-greeting-text fl-simpleEditor-greeting-text text-center">
                         Begin by creating a document in the editor window. Insert a video by entering a web address in the text field.
                     </p>
                 </div>
-    
+
                 <div class="flc-simpleEditor fl-simpleEditor clearfix">
                     <div class="row">
                         <div class="col-md-8">
@@ -65,21 +65,21 @@
                                 </ul>
                                 <form class="fl-simpleEditor-insertVideo-form form-inline" role="form">
                                     <div class="form-group">
-    
+
                                         <label class="flc-simpleEditor-insertVideo-urlLabel fl-simpleEditor-insertVideo-urlLabel control-label" for="videoInput"></label>
                                         <input type="text" class="flc-simpleEditor-insertVideo-url form-control input-sm" id="videoInput">
                                         <button class="flc-simpleEditor-insertVideo-submit btn btn-sm btn-info">
                                             OK
                                         </button>
-    
+
                                     </div>
                                 </form>
                             </div>
-    
+
                             <!-- editable area -->
                             <div class="flc-simpleEditor-content fl-simpleEditor-content panel-body"></div>
                         </div>
-    
+
                         <!-- metadata panels -->
                         <div class="flc-metadataPanelContainer fl-metadataPanelContainer col-md-4">
                             <div class="flc-videoPanel fl-videoPanel"></div>
@@ -87,23 +87,21 @@
                             <div class="flc-captionsPanel fl-captionsPanel"></div>
                         </div>
                     </div>
-    
                 </div>
                 <a href="metadataMarkupView.html" target="_blank" class="btn btn-default">View Output HTML</a>
             </section>
-    
-            <script type="text/javascript">
-                var editor = fluid.simpleEditor(".flc-simpleEditor", {
-                    videoPanelTemplate: "../../src/html/video-template.html",
-                    audioPanelTemplate: "../../src/html/audio-template.html",
-                    audioAttributesTemplate: "../../src/html/audio-attributes-template.html",
-                    captionsPanelTemplate: "../../src/html/captions-template.html",
-                    captionsInputTemplate: "../../src/html/captions-input-template.html"
-                });
-                $(".restart").click(function() {
-                    editor.events.onReset.fire();
-                })
-            </script>
         </section>
+        <script type="text/javascript">
+            var editor = fluid.simpleEditor(".flc-simpleEditor", {
+                videoPanelTemplate: "../../src/html/video-template.html",
+                audioPanelTemplate: "../../src/html/audio-template.html",
+                audioAttributesTemplate: "../../src/html/audio-attributes-template.html",
+                captionsPanelTemplate: "../../src/html/captions-template.html",
+                captionsInputTemplate: "../../src/html/captions-input-template.html"
+            });
+            $(".restart").click(function() {
+                editor.events.onReset.fire();
+            })
+        </script>
     </body>
 </html>
