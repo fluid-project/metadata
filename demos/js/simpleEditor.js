@@ -128,6 +128,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 options: {
                     gradeNames: ["fluid.prefs.modelRelay"],
                     sourceApplier: "{insertVideo}.applier",
+                    model: {
+                        audio: "{insertVideo}.model.audio",
+                        keywords: "{insertVideo}.model.audioKeywords"
+                    },
                     rules: {
                         audio: "audio",
                         audioKeywords: "keywords"
