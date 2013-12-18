@@ -58,30 +58,21 @@ body {
 .fl-demo .fl-simpleEditor {
     margin-bottom: 0.5em;
     background-color: #C1DCE0;
-    border-radius: 0.5em;
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
     border: 1px solid #4d4d4d;
 }
 
 .fl-demo .fl-simpleEditor-toolbar {
     padding-top: 0.3em;
+    padding-left: 0.3em;
     border-top-left-radius: 0.5em; /* At this resolution, just round these corners. */
     border-top-right-radius: 0.5em;
     background-color: #e2e2e2;
 }
 
-.fl-demo .fl-simpleEditor-insertVideo-form div {
-    display: inline-block;
-}
-
 .fl-demo .fl-simpleEditor-insertVideo-urlLabel {
     font-size: 0.8em;
-    margin-left: 2em;
-}
-
-#videoInput {
-    display: inline-block;
-    width: 12em;
-    margin-left: 2em;
 }
 
 .fl-demo .fl-simpleEditor-content {
@@ -110,8 +101,8 @@ body {
 
 /* Bootstrap small width */
 @media screen and (min-width: 768px) and (max-width:991px){
-
-   .fl-demo .fl-logo-text1 {
+    
+     .fl-demo .fl-logo-text1 {
         font-size: 1.2em;
     }
 
@@ -127,13 +118,14 @@ body {
         margin-left: 0.3em;
     }
 
-    #videoInput {
-        width: 20em;
-    }
 }
 
 /* Bootstrap Medium width */
-@media screen and (min-width: 987px) {
+@media screen and (min-width: 992px) {
+    .fl-demo .fl-simpleEditor {
+        border-radius: 0.5em;
+    }
+    
     .fl-demo .fl-simpleEditor .row{
         margin-right: 0; /* Remove 15px padding Bootstrap adds to this column */
     }

@@ -283,7 +283,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             content: ".flc-simpleEditor-insertVideo-content"
         },
         strings: {
-            urlLabel: "Enter web address for video: ",
+            urlLabel: "Web address for video: ",
             urlPlaceHolder: "www.example.com/video.mp4",
             submit: "OK"
         },

@@ -52,29 +52,30 @@
                     <div class="row">
                         <div class="col-md-8">
                             <div class="flc-simpleEditor-toolbar fl-simpleEditor-toolbar btn-toolbar" role="toolbar">
-                                <ul class="btn-group">
-                                    <li class="flc-simpleEditor-control btn btn-default" role="button" data-control="bold">
-                                        B
-                                    </li>
-                                    <li class="flc-simpleEditor-control btn btn-default" role="button" data-control="italic">
-                                        I
-                                    </li>
-                                    <li class="flc-simpleEditor-control btn btn-default" role="button" data-control="underline">
-                                        U
-                                    </li>
-                                </ul>
-                                <form class="fl-simpleEditor-insertVideo-form form-inline" role="form">
-                                    <div class="form-group">
-
-                                        <label class="flc-simpleEditor-insertVideo-urlLabel fl-simpleEditor-insertVideo-urlLabel control-label" for="videoInput"></label>
-                                        <input type="text" class="flc-simpleEditor-insertVideo-url form-control input-sm" id="videoInput">
-                                        <button class="flc-simpleEditor-insertVideo-submit btn btn-sm btn-info">
-                                            OK
-                                        </button>
-
-                                    </div>
-                                </form>
-                            </div>
+                                <div class="row">
+                                    <ul class="btn-group col-md-3">
+                                        <li class="flc-simpleEditor-control btn btn-default" role="button" data-control="bold">
+                                            B
+                                        </li>
+                                        <li class="flc-simpleEditor-control btn btn-default" role="button" data-control="italic">
+                                            I
+                                        </li>
+                                        <li class="flc-simpleEditor-control btn btn-default" role="button" data-control="underline">
+                                            U
+                                        </li>
+                                    </ul>
+                                    
+                                    <form class="fl-simpleEditor-insertVideo-form col-md-9" role="form">
+                                        <div class="row">
+                                            <label class="flc-simpleEditor-insertVideo-urlLabel fl-simpleEditor-insertVideo-urlLabel col-md-4 col-sm-3 col-xs-5" for="videoInput"></label>
+                                            <input type="text" class="flc-simpleEditor-insertVideo-url input-sm col-md-7 col-sm-5 col-xs-6" placeholder="www.example.com/video.mp4" id="videoInput">
+                                            <button class="flc-simpleEditor-insertVideo-submit btn btn-sm btn-info col-md-1 col-sm-1 col-xs-1">
+                                                OK
+                                            </button>                                
+                                        </div>
+                                    </form>
+                                </div>
+                           </div>
 
                             <!-- editable area -->
                             <div class="flc-simpleEditor-content fl-simpleEditor-content panel-body"></div>
