@@ -66,6 +66,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             accessMode: ["visual"],
             accessibilityHazard: [],
             accessibilityFeature: [],
+            contentUrl: [metadata.url],
             keywords: metadata.audioKeywords
         };
 
@@ -77,6 +78,9 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }
         if (metadata.signLanguage) {
             videoMetatdata.accessibilityFeature.push("signLanguage");
+        }
+        if (metadata.captions && metadata.captions.length) {
+            videoMetatdata.accessibilityFeature.push("captions");
         }
         if (metadata.flashing && metadata.flashing !== "unknown") {
             videoMetatdata.accessibilityHazard.push(metadata.flashing);
@@ -92,7 +96,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             itemprop: "video",
             itemtype: fluid.metadata.itemtype.VIDEO_OBJECT
         });
-        $('<source itemprop="contentUrl">').attr({
+        $('<source>').attr({
             src: metadata.url,
             type: "video/" + metadata.url.split(".").pop()
         }).appendTo(videoElm);
