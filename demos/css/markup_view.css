@@ -38,12 +38,13 @@ header {
 }
 
 /* html viewer panel */
- 
+
 .flc-markupViewer {
-		width: 800px;
+	
 		background-color: #EEE;
 		border-color:#E2E2E2;
 }
+
 
 .fl-HTML-viwer-title {
 		font-size:1.6em;		
