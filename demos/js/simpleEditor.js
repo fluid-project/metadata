@@ -162,19 +162,19 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         },
         distributeOptions: [{
             source: "{that}.options.videoPanelTemplate",
-            target: "{that > videoPanel}.options.resources.template.url"
+            target: "{that > sidebar > videoPanel}.options.resources.template.url"
         }, {
             source: "{that}.options.audioPanelTemplate",
-            target: "{that > audioPanel}.options.resources.template.url"
+            target: "{that > sidebar > audioPanel}.options.resources.template.url"
         }, {
             source: "{that}.options.audioAttributesTemplate",
-            target: "{that > audioPanel}.options.audioAttributesTemplate"
+            target: "{that > sidebar > audioPanel}.options.audioAttributesTemplate"
         }, {
             source: "{that}.options.captionsPanelTemplate",
-            target: "{that > captionsPanel}.options.resources.template.url"
+            target: "{that > sidebar > captionsPanel}.options.resources.template.url"
         }, {
             source: "{that}.options.captionsInputTemplate",
-            target: "{that > captionsPanel}.options.captionsInputTemplate"
+            target: "{that > sidebar > captionsPanel}.options.captionsInputTemplate"
         }]
     });
 
@@ -422,12 +422,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     },
                     listeners: {
                         "{sidebar}.events.onReset": "{that}.destroy"
-                    },
-                    resources: {
-                        template: {
-                            url: "../../src/html/video-template.html",
-                            forceCache: true
-                        }
                     }
                 }
             },
@@ -448,13 +442,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     },
                     listeners: {
                         "{sidebar}.events.onReset": "{that}.destroy"
-                    },
-                    audioAttributesTemplate: "../../src/html/audio-attributes-template.html",
-                    resources: {
-                        template: {
-                            url: "../../src/html/audio-template.html",
-                            forceCache: true
-                        }
                     }
                 }
             },
@@ -473,13 +460,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     },
                     listeners: {
                         "{sidebar}.events.onReset": "{that}.destroy"
-                    },
-                    captionsInputTemplate: "../../src/html/captions-input-template.html",
-                    resources: {
-                        template: {
-                            url: "../../src/html/captions-template.html",
-                            forceCache: true
-                        }
                     }
                 }
             }
