@@ -56,25 +56,24 @@ https://github.com/gpii/universal/LICENSE.txt
         }
     };
 
-    fluid.tests.checkCheckboxState = function (that, modelPath, state) {
-        return function () {
-            var validationFunc = state ? jqUnit.assertTrue : jqUnit.assertFalse;
-            validationFunc(modelPath + " checkbox is checked", that.locate(modelPath).is(":checked"));
-        };
+    fluid.tests.clickCheckbox = function (videoPanel, attribute) {
+        videoPanel.locate(attribute).click();
     };
 
-    fluid.tests.checkRadioButtonState = function (that, state) {
-        return function () {
-            var radiobuttons = that.locate("flashingRow");
+    fluid.tests.clickFlashing = function (videoPanel, flashingValue) {
+        videoPanel.container.find("[value='" + flashingValue + "']").click();
+    };
 
-            jqUnit.assertTrue("The radio button with the value 'unavailable' is checked", radiobuttons.find("[value='" + state + "']").is(":checked"));
+    fluid.tests.checkModel = function (attribute, value) {
+        return function (newModel) {
+            jqUnit.assertTrue("The model for " + attribute + " has been updated correctly", value, fluid.get(newModel, attribute));
         };
     };
 
     fluid.defaults("fluid.tests.videoPanelTester", {
         gradeNames: ["fluid.test.testCaseHolder", "autoInit"],
         modules: [{
-            name: "Test summary panel",
+            name: "Test video panel",
             tests: [{
                 expect: 6,
                 name: "Init",
@@ -86,72 +85,57 @@ https://github.com/gpii/universal/LICENSE.txt
                 }]
             }]
         }, {
-            name: "Test summary panel",
+            name: "Click on checkboxes",
             tests: [{
                 expect: 2,
-                name: "Request change on high contrast attribute",
+                name: "Click on a video attribute",
                 sequence: [{
-                    func: "{videoPanel}.applier.requestChange",
-                    args: ["highContrast", true]
+                    func: "fluid.tests.clickCheckbox",
+                    args: ["{videoPanel}", "highContrast"]
                 }, {
-                    listenerMaker: "fluid.tests.checkCheckboxState",
-                    makerArgs: ["{videoPanel}", "highContrast", true],
-                    spec: {priority: "last"},
-                    event: "{videoPanel}.events.afterRender"
+                    listenerMaker: "fluid.tests.checkModel",
+                    makerArgs: ["highContrast", true],
+                    spec: {path: "highContrast", priority: "last"},
+                    changeEvent: "{videoPanel}.applier.modelChanged"
                 }, {
-                    func: "{videoPanel}.applier.requestChange",
-                    args: ["highContrast", false]
+                    func: "fluid.tests.clickCheckbox",
+                    args: ["{videoPanel}", "signLang"]
                 }, {
-                    listenerMaker: "fluid.tests.checkCheckboxState",
-                    makerArgs: ["{videoPanel}", "highContrast", false],
-                    spec: {priority: "last"},
-                    event: "{videoPanel}.events.afterRender"
+                    listenerMaker: "fluid.tests.checkModel",
+                    makerArgs: ["signLang", true],
+                    spec: {path: "signLanguage", priority: "last"},
+                    changeEvent: "{videoPanel}.applier.modelChanged"
                 }]
             }]
         }, {
-            name: "Test summary panel",
+            name: "Click on flashing attribute",
             tests: [{
-                expect: 2,
-                name: "Request change on sign language attribute",
+                expect: 3,
+                name: "Click on a flashing attribute",
                 sequence: [{
-                    func: "{videoPanel}.applier.requestChange",
-                    args: ["signLang", true]
+                    func: "fluid.tests.clickFlashing",
+                    args: ["{videoPanel}", "noFlashing"]
                 }, {
-                    listenerMaker: "fluid.tests.checkCheckboxState",
-                    makerArgs: ["{videoPanel}", "signLang", true],
-                    spec: {priority: "last"},
-                    event: "{videoPanel}.events.afterRender"
+                    listenerMaker: "fluid.tests.checkModel",
+                    makerArgs: ["flashing", "noFlashing"],
+                    spec: {path: "flashing", priority: "last"},
+                    changeEvent: "{videoPanel}.applier.modelChanged"
                 }, {
-                    func: "{videoPanel}.applier.requestChange",
-                    args: ["signLang", false]
+                    func: "fluid.tests.clickFlashing",
+                    args: ["{videoPanel}", "unknown"]
                 }, {
-                    listenerMaker: "fluid.tests.checkCheckboxState",
-                    makerArgs: ["{videoPanel}", "signLang", false],
-                    spec: {priority: "last"},
-                    event: "{videoPanel}.events.afterRender"
-                }]
-            }]
-        }, {
-            name: "Test summary panel",
-            tests: [{
-                expect: 2,
-                name: "Request change on video",
-                sequence: [{
-                    func: "{videoPanel}.applier.requestChange",
-                    args: ["flashing", "flashing"]
+                    listenerMaker: "fluid.tests.checkModel",
+                    makerArgs: ["flashing", "unknown"],
+                    spec: {path: "flashing", priority: "last"},
+                    changeEvent: "{videoPanel}.applier.modelChanged"
                 }, {
-                    listenerMaker: "fluid.tests.checkRadioButtonState",
-                    makerArgs: ["{videoPanel}", "flashing"],
-                    spec: {priority: "last"},
-                    event: "{videoPanel}.events.afterRender"
+                    func: "fluid.tests.clickFlashing",
+                    args: ["{videoPanel}", "flashing"]
                 }, {
-                    func: "{videoPanel}.applier.requestChange",
-                    args: ["flashing", "noFlashing"]
-                }, {
-                    listenerMaker: "fluid.tests.checkRadioButtonState",
-                    makerArgs: ["{videoPanel}", "noFlashing"],
-                    spec: {priority: "last"},
-                    event: "{videoPanel}.events.afterRender"
+                    listenerMaker: "fluid.tests.checkModel",
+                    makerArgs: ["flashing", "flashing"],
+                    spec: {path: "flashing", priority: "last"},
+                    changeEvent: "{videoPanel}.applier.modelChanged"
                 }]
             }]
         }]

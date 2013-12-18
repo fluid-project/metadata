@@ -22,8 +22,23 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         invokers: {
             update: {
                 funcName: "fluid.markupViewer.update",
-                args: ["{that}.container", "{arguments}.0"]
+                args: ["{that}.container", "{that}.model", "{that}.options.markup"]
+            },
+            updateModelMarkup: {
+                func: "{that}.applier.requestChange",
+                args: ["markup", "{arguments}.0"]
+            },
+            updateModelMetadata: {
+                func: "{that}.applier.requestChange",
+                args: ["metadata", "{arguments}.0"]
             }
+        },
+        modelListeners: {
+            "*": "{that}.update"
+        },
+        markup: {
+            videoContainer: "<div></div>",
+            captionsContainer: "<span></span>"
         },
         components: {
             dataSource: {
@@ -31,25 +46,91 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 options: {
                     databaseName: "simpleEditor",
                     listeners: {
-                        "onCreate.fetch": {
+                        "afterChange.fetchMarkup": {
                             listener: "{that}.get",
-                            args: [{id: "markup"}, "{markupViewer}.update"]
+                            args: [{id: "markup"}, "{markupViewer}.updateModelMarkup"]
                         },
-                        "afterChange.fetch": {
+                        "afterChange.fetchMetadata": {
                             listener: "{that}.get",
-                            args: [{id: "markup"}, "{markupViewer}.update"]
+                            args: [{id: "videoMetadata"}, "{markupViewer}.updateModelMetadata"]
                         }
-
                     }
                 }
             }
         }
     });
 
-    fluid.markupViewer.update = function (elm, content) {
-        content = "<body>" + content + "</body>";
+    fluid.markupViewer.transformToVideoMetadata = function (metadata) {
+        //TODO: Update to use model transformations framework
+        var videoMetatdata = {
+            accessMode: ["visual"],
+            accessibilityHazard: [],
+            accessibilityFeature: [],
+            contentUrl: [metadata.url],
+            keywords: metadata.audioKeywords
+        };
+
+        if (metadata.audio && metadata.audio !== "unavailable") {
+            videoMetatdata.accessMode.push("audio");
+        }
+        if (metadata.highContrast) {
+            videoMetatdata.accessibilityFeature.push("highContrast");
+        }
+        if (metadata.signLanguage) {
+            videoMetatdata.accessibilityFeature.push("signLanguage");
+        }
+        if (metadata.captions && metadata.captions.length) {
+            videoMetatdata.accessibilityFeature.push("captions");
+        }
+        if (metadata.flashing && metadata.flashing !== "unknown") {
+            videoMetatdata.accessibilityHazard.push(metadata.flashing);
+        }
+
+        return videoMetatdata;
+    };
+
+    fluid.markupViewer.generateVideoElm = function (metadata, videoContainerMarkup, captionsContainerMarkup) {
+        var videoContainer = $(videoContainerMarkup);
+        var videoElm = $('<video></video>');
+        fluid.metadata.writer(videoContainer, fluid.markupViewer.transformToVideoMetadata(metadata), {
+            itemprop: "video",
+            itemtype: fluid.metadata.itemtype.VIDEO_OBJECT
+        });
+        $('<source>').attr({
+            src: metadata.url,
+            type: "video/" + metadata.url.split(".").pop()
+        }).appendTo(videoElm);
+        fluid.each(metadata.captions, function (caption) {
+            var captionContainer = $(captionsContainerMarkup);
+            fluid.metadata.writer(captionContainer, {inLanguage: caption.language});
+            $("<track>").attr({
+                type: "captions",
+                src: caption.src,
+                srclang: caption.language
+            }).appendTo(captionContainer);
+            captionContainer.appendTo(videoElm);
+        });
+        videoContainer.append(videoElm);
+        return videoContainer;
+    };
+
+    fluid.markupViewer.replaceVideoPlaceholder = function (content, placeholderID, metadata, replacementMarkup) {
+        metadata = metadata || {url: ""};
+        var placeholder = content.find(placeholderID);
+        if (placeholder.length) {
+            placeholder = placeholder.replaceWith(fluid.markupViewer.generateVideoElm(metadata, replacementMarkup.videoContainer, replacementMarkup.captionsContainer));
+        }
+    };
+
+    fluid.markupViewer.update = function (elm, model, replacementMarkup) {
+        // Creating a jQuery element with the markup. The wrapping is to allow retrieving all of the relavent markup
+        // later with a call to html()
+        var content = $("<section>" + model.markup + "</section>");
+        fluid.markupViewer.replaceVideoPlaceholder(content, "#videoPlaceHolder", model.metadata, replacementMarkup);
+        // the call to markup_beauty requires that textnodes be wrapped in a tag, or they will be stripped out.
+        var markup = "<body>" + content.html() + "</body>";
         var formatted = markup_beauty({
-            source: content,
+            source: markup,
             force_indent: true,
             mode: "beautify",
             html: true
