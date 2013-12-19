@@ -259,7 +259,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     };
 
     fluid.defaults("fluid.simpleEditor.insertVideo", {
-        gradeNames: ["fluid.viewComponent", "autoInit"],
+        gradeNames: ["fluid.viewComponent", "fluid.simpleEditor.defaultModel", "autoInit"],
         selectors: {
             url: ".flc-simpleEditor-insertVideo-url",
             urlLabel: ".flc-simpleEditor-insertVideo-urlLabel",
@@ -362,7 +362,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     };
 
     fluid.simpleEditor.insertVideo.updateModel = function (that) {
-        that.applier.requestChange("url", that.locate("url").val());
+        var newModel = $.extend(true, {}, that.defaultModel, {url: that.locate("url").val()});
+        that.applier.requestChange("", newModel);
     };
 
     fluid.simpleEditor.insertVideo.setModel = function (that, model) {
@@ -375,7 +376,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     };
 
     fluid.simpleEditor.insertVideo.reset = function (that) {
-        that.setModel({}); // clears the model by setting it to an empty object.
+        that.setModel(that.defaultModel);
         that.updateActiveState();
     };
 
@@ -419,9 +420,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                         highContrast: "highContrast",
                         signLanguage: "signLanguage",
                         flashing: "flashing"
-                    },
-                    listeners: {
-                        "{sidebar}.events.onReset": "{that}.destroy"
                     }
                 }
             },
@@ -439,9 +437,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     rules: {
                         audio: "audio",
                         audioKeywords: "keywords"
-                    },
-                    listeners: {
-                        "{sidebar}.events.onReset": "{that}.destroy"
                     }
                 }
             },
@@ -457,9 +452,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     },
                     rules: {
                         captions: "captions"
-                    },
-                    listeners: {
-                        "{sidebar}.events.onReset": "{that}.destroy"
                     }
                 }
             }
@@ -489,5 +481,26 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             createEvent();
         }
     };
+
+    fluid.defaults("fluid.simpleEditor.defaultModel", {
+        gradeNames: ["fluid.littleComponent", "autoInit"],
+        members: {
+            defaultModel: {
+                url: "",
+                highContrast: false,
+                signLanguage: false,
+                flashing: "unknown",
+                audio: "available",
+                keywords: [],
+                captions: [{
+                    src: "",
+                    language: "en"
+                }, {
+                    src: "",
+                    language: "en"
+                }]
+            }
+        }
+    });
 
 })(jQuery, fluid);
