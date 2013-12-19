@@ -75,6 +75,12 @@ body {
     font-size: 0.8em;
 }
 
+.fl-demo .fl-simpleEditor-insertVideo-url {
+    min-width: 14em;
+    width: 80%;
+    max-width: 20em;
+}
+
 .fl-demo .fl-simpleEditor-content {
     height: 20em;
     box-shadow: 0 1px 1px #9f9f9f inset;
