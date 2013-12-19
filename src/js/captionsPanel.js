@@ -26,6 +26,8 @@ var fluid_1_5 = fluid_1_5 || {};
      * The panel to define captions related metadata
      *******************************************************************************/
 
+    // todo: The creation of captionInput sub-components should be generalized, perhaps by
+    // using dynamic components, due to their similarity.
     fluid.defaults("fluid.metadata.captionsPanel", {
         gradeNames: ["fluid.rendererComponent", "autoInit"],
         model: {
@@ -45,7 +47,7 @@ var fluid_1_5 = fluid_1_5 || {};
                 options: {
                     model: "{captionsPanel}.model.captions.0",
                     events: {
-                        afterRender: "{captionsPanel}.events.afterRenderprimaryCaption"
+                        afterRender: "{captionsPanel}.events.afterRenderPrimaryCaption"
                     },
                     modelListeners: {
                         "*": {
@@ -62,7 +64,7 @@ var fluid_1_5 = fluid_1_5 || {};
                 options: {
                     model: "{captionsPanel}.model.captions.1",
                     events: {
-                        afterRender: "{captionsPanel}.events.afterRendersecondaryCaption"
+                        afterRender: "{captionsPanel}.events.afterRenderSecondaryCaption"
                     },
                     modelListeners: {
                         "*": {
