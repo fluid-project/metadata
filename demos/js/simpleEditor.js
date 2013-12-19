@@ -108,7 +108,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     modelListeners: {
                         "url": {
                             funcName: "fluid.simpleEditor.sidebar.conditionalPanelCreation",
-                            args: ["{change}.value", "{that}.events.onCreatePanels.fire"]
+                            args: ["{change}.value.url", "{that}.events.onCreatePanels.fire"]
                         }
                     },
                     listeners: {
@@ -420,6 +420,18 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                         highContrast: "highContrast",
                         signLanguage: "signLanguage",
                         flashing: "flashing"
+                    },
+                    listeners: {
+                        "{sidebar}.events.onReset": [
+                            {
+                                listener: "{that}.applier.requestChange",
+                                args: ["", {}]
+                            },
+                            {
+                                listener: "{that}.destroy",
+                                priority: "last"
+                            }
+                        ]
                     }
                 }
             },
@@ -437,6 +449,18 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     rules: {
                         audio: "audio",
                         audioKeywords: "keywords"
+                    },
+                    listeners: {
+                        "{sidebar}.events.onReset": [
+                            // {
+                            //     listener: "{that}.applier.requestChange",
+                            //     args: ["", {}]
+                            // },
+                            {
+                                listener: "{that}.destroy",
+                                priority: "last"
+                            }
+                        ]
                     }
                 }
             },
@@ -452,6 +476,18 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     },
                     rules: {
                         captions: "captions"
+                    },
+                    listeners: {
+                        "{sidebar}.events.onReset": [
+                            // {
+                            //     listener: "{that}.applier.requestChange",
+                            //     args: ["", {}]
+                            // },
+                            {
+                                listener: "{that}.destroy",
+                                priority: "last"
+                            }
+                        ]
                     }
                 }
             }
