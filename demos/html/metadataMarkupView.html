@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="../../src/lib/bootstrap/css/bootstrap.min.css">
         <!-- Highlight.js -->
         <link rel="stylesheet" href="../lib/highlight/styles/github.css">
-
+        <link rel="stylesheet" href="../css/markup_view.css">
         <script type="text/javascript" src="../../src/lib/infusion/MyInfusion.js"></script>
         <script src="../lib/highlight/highlight.pack.js"></script>
 
@@ -25,14 +25,26 @@
         <script type="text/javascript" src="../../src/js/metadataUtils.js"></script>
         <script type="text/javascript" src="../js/markupViewer.js"></script>
 
-        </head>
-    <body>
-        <section class="container">
-            <pre class="flc-markupViewer"></pre>
-        </section>
-
-        <script type="text/javascript">
-            fluid.markupViewer(".flc-markupViewer");
-        </script>
+    </head>
+    
+    <body class="fl-demo">
+       <header>
+           <div class="container">
+               <span class="fl-logo-text1">fl</span>
+               <span class="fl-logo-text2">OER</span>
+           </div>
+       </header>
+        
+       <div class="container">
+          <h1 class="flc-HTML-viwer-title fl-HTML-viwer-title">
+             HTML Output Viewer - Metadata Demo
+          </h1>      
+          
+          <pre class="flc-markupViewer fl-markupViewer"></pre>
+       </div>
+        
+       <script type="text/javascript">
+          fluid.markupViewer(".flc-markupViewer");
+       </script>
     </body>
 </html>

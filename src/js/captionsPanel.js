@@ -130,14 +130,14 @@ var fluid_1_5 = fluid_1_5 || {};
         },
         events: {
             inputModelChanged: null,
-            afterRenderprimaryCaption: null,
-            afterRendersecondaryCaption: null,
+            afterRenderPrimaryCaption: null,
+            afterRenderSecondaryCaption: null,
             afterRenderIcon: null,
             onReady: {
                 events: {
                     onCreate: "onCreate",
-                    afterRenderprimaryCaption: "afterRenderprimaryCaption",
-                    afterRendersecondaryCaption: "afterRendersecondaryCaption",
+                    afterRenderprimaryCaption: "afterRenderPrimaryCaption",
+                    afterRendersecondaryCaption: "afterRenderSecondaryCaption",
                     afterRenderIcon: "afterRenderIcon"
                 },
                 args: "{that}"
