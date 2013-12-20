@@ -25,12 +25,8 @@ https://github.com/gpii/universal/LICENSE.txt
                 container: ".flc-audio",
                 createOnEvent: "{audioPanelTester}.events.onTestCaseStart",
                 options: {
-                    resources: {
-                        template: {
-                            url: "../../src/html/audio-template.html"
-                        }
-                    },
-                    audioAttributesTemplate: "../../src/html/audio-attributes-template.html",
+                    audioTemplate: "../../src/html/audio-template.html",
+                    audioAttributesTemplate: "../../src/html/audio-attributes-template.html"
                 }
             },
             audioPanelTester: {
@@ -59,10 +55,10 @@ https://github.com/gpii/universal/LICENSE.txt
             if (state === "available") {
                 var count = 0;
                 checkboxes.each(function () {
-                    jqUnit.assertFalse("Checkbox #" + ++count + " is not checked", $(this).is(":checked"));
+                    jqUnit.assertFalse("Checkbox #" + (++count) + " is not checked", $(this).is(":checked"));
                 });
             }
-        }
+        };
     };
 
     fluid.tests.clickAttribute = function (audioPanel, attribute) {
@@ -137,7 +133,7 @@ https://github.com/gpii/universal/LICENSE.txt
                     listenerMaker: "fluid.tests.checkAudioState",
                     makerArgs: ["{audioPanel}", 3, 0, "unavailable"],
                     spec: {priority: "last"},
-                    event: "{audioPanel}.events.afterAttributesRendered"
+                    event: "{audioPanel}.events.afterRender"
                 }, {
                     func: "fluid.tests.clickAudioState",
                     args: ["{audioPanel}", "unknown"]
@@ -145,7 +141,7 @@ https://github.com/gpii/universal/LICENSE.txt
                     listenerMaker: "fluid.tests.checkAudioState",
                     makerArgs: ["{audioPanel}", 3, 0, "unknown"],
                     spec: {priority: "last"},
-                    event: "{audioPanel}.events.afterAttributesRendered"
+                    event: "{audioPanel}.events.afterRender"
                 }]
             }]
         }]
