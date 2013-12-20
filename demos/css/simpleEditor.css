@@ -79,6 +79,18 @@ body {
     min-width: 9em;
     width: 70%;
     max-width: 20em;
+    
+    /* copy some styling of Bootstrap .form-control so it matches the button */
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    color: #555555;
+    font-size: 0.8em;
+    height: 30px;
+    line-height: 1.42857;
+    padding: 6px 12px;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    vertical-align: middle;
 }
 
 .fl-demo .fl-simpleEditor-content {
@@ -157,28 +169,25 @@ body {
 /* Placeholder for Video */
 .fl-demo .fl-simpleEditor-insertVideo-placeHolder {
     background: #C0C0C0;
-    height: 20em;
-    width: 30em;
+    width: 50%;
+    padding: 10% 0 10% 0;
 }
 
 .fl-demo .fl-simpleEditor-insertVideo-placeHolder-playCircle {
     border: solid 5px #000000;
-    position: relative;
-    top: 25%;
-    left: 33%;
-    height: 10em;
-    width: 10em;
+    height: 5em;
+    width: 5em;
     border-radius: 50%;
+    padding: 0.8em 0 0 1.3em;
+    margin: 0 auto;
 }
 
 .fl-demo .fl-simpleEditor-insertVideo-placeHolder-playTriangle {
     width: 0;
     height: 0;
-    position: relative;
-    top: 25%;
-    left: 33%;
+    
     border-style: solid;
-    border-width: 2.5em 0 2.5em 4.3em;
+    border-width: 1.5em 0 1.5em 2.3em;
     border-color: transparent transparent transparent #000000;
 }
 
