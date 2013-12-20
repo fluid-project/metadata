@@ -1,0 +1,40 @@
+/* CSS Document */
+
+@font-face {
+   font-family: 'OpenSans-Regular';
+   src: url('./fonts/OpenSans-Regular.ttf');
+}
+
+/* webpage background */
+body {
+   background-color: #C1DCE0;
+   font-family: 'OpenSans-Regular';
+}
+
+.fl-demo header {
+   margin-bottom: 2em;
+   background-color: #006598;
+}
+
+/* logo panel background and text */
+.fl-demo .fl-logo-text1 {
+   color: #fff;
+   font-size: 2.15em;
+}
+	
+.fl-demo .fl-logo-text2 {
+   background-color: #ed5a24;
+   color: #fff;
+   font-size: 1.45em;
+   padding: 0 0.2em;
+}
+
+/* html viewer panel */
+.fl-demo .fl-markupViewer {
+   background-color: #EEE;
+   border-color:#E2E2E2;
+}
+
+.fl-demo .fl-HTML-viwer-title {
+   font-size:1.6em;		
+}
