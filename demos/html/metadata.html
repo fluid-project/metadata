@@ -9,10 +9,15 @@
         <link rel="stylesheet" href="../../src/lib/bootstrap/css/bootstrap.min.css">
 
         <link rel="stylesheet" href="../css/simpleEditor.css">
+        <link rel="stylesheet" href="../../src/css/style.css">
 
         <script type="text/javascript" src="../../src/lib/infusion/MyInfusion.js"></script>
         <script type="text/javascript" src="../../src/lib/pouchDB/pouchdb-nightly.min.js"></script>
         <script type="text/javascript" src="../../src/js/pouchDBDataSource.js"></script>
+        <script type="text/javascript" src="../../src/js/indicator.js"></script>
+        <script type="text/javascript" src="../../src/js/videoPanel.js"></script>
+        <script type="text/javascript" src="../../src/js/audioPanel.js"></script>
+        <script type="text/javascript" src="../../src/js/captionsPanel.js"></script>
         <script type="text/javascript" src="../js/simpleEditor.js"></script>
 
     </head>
@@ -75,7 +80,11 @@
                     </div>
 
                     <!-- metadata panels -->
-                    <div class="flc-metadataPanelContainer fl-metadataPanelContainer col-md-4"></div>
+                    <div class="flc-metadataPanelContainer fl-metadataPanelContainer col-md-4">
+                        <div class="flc-videoPanel"></div>
+                        <div class="flc-audioPanel"></div>
+                        <div class="flc-captionsPanel"></div>
+                    </div>
                 </div>
 
             </div>
@@ -83,7 +92,13 @@
         </section>
 
         <script type="text/javascript">
-            var editor = fluid.simpleEditor(".flc-simpleEditor");
+            var editor = fluid.simpleEditor(".flc-simpleEditor", {
+                videoPanelTemplate: "../../src/html/video-template.html",
+                audioPanelTemplate: "../../src/html/audio-template.html",
+                audioAttributesTemplate: "../../src/html/audio-attributes-template.html",
+                captionsPanelTemplate: "../../src/html/captions-template.html",
+                captionsInputTemplate: "../../src/html/captions-input-template.html"
+            });
             $(".restart").click(function() {
                 editor.events.onReset.fire();
             })

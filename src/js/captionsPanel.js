@@ -119,7 +119,8 @@ var fluid_1_5 = fluid_1_5 || {};
         },
         resources: {
             template: {
-                src: "../html/captions-template.html"
+                src: "../html/captions-template.html",
+                forceCache: true
             }
         },
         invokers: {

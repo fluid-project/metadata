@@ -41,6 +41,9 @@ var fluid_1_5 = fluid_1_5 || {};
                 options: {
                     applier: "{audioPanel}.applier",
                     model: "{audioPanel}.model",
+                    resources: {
+                        template: "{audioPanel}.options.resources.attributesTemplate"
+                    },
                     events: {
                         afterRender: "{audioPanel}.events.afterAttributesRendered"
                     }
@@ -100,7 +103,12 @@ var fluid_1_5 = fluid_1_5 || {};
         },
         resources: {
             template: {
-                url: "../html/audio-template.html"
+                url: "../html/audio-template.html",
+                forceCache: true
+            },
+            attributesTemplate: {
+                url: "../html/audio-attributes-template.html",
+                forceCache: true
             }
         },
         events: {
@@ -117,16 +125,15 @@ var fluid_1_5 = fluid_1_5 || {};
             "onCreate.init": "fluid.metadata.audioPanel.init"
         },
         modelListeners: {
-            "audio": {
-                funcName: "fluid.metadata.audioPanel.refreshAll",
-                args: "{that}"
-            }
+            "audio": "{that}.refreshView"
         },
-        distributeOptions: {
+        distributeOptions: [{
+            source: "{that}.options.audioTemplate",
+            target: "{that}.options.resources.template.url"
+        }, {
             source: "{that}.options.audioAttributesTemplate",
-            removeSource: true,
-            target: "{that > attributes}.options.resources.template.url"
-        }
+            target: "{that}.options.resources.attributesTemplate.url"
+        }]
     });
 
     fluid.metadata.audioPanel.init = function (that) {
@@ -137,13 +144,6 @@ var fluid_1_5 = fluid_1_5 || {};
 
     fluid.metadata.audioPanel.getContainerForAttributes = function (container, attributesSelector) {
         return container.find(attributesSelector + ":first");
-    };
-
-    fluid.metadata.audioPanel.refreshAll = function (that) {
-        that.refreshView();
-        that.events.afterRender.addListener(function () {
-            that.attributes.refreshView();
-        });
     };
 
     /*******************************************************************************
@@ -188,28 +188,8 @@ var fluid_1_5 = fluid_1_5 || {};
         model: {
             audio: "available"
         },
-        resources: {
-            template: {
-                url: "../html/audio-attributes-template.html",
-                forceCache: true
-            }
-        },
-        invokers: {
-            renderAttributes: {
-                funcName: "fluid.metadata.audioPanel.attributes.renderAttributes",
-                args: "{that}"
-            }
-        },
-        listeners: {
-            "onCreate.init": "{that}.renderAttributes"
-        }
+        renderOnInit: true
     });
-
-    fluid.metadata.audioPanel.attributes.renderAttributes = function (that) {
-        fluid.fetchResources(that.options.resources, function (resourceSpec) {
-            that.refreshView();
-        });
-    };
 
     fluid.metadata.audioPanel.attributes.enableAttributes = function (audioValue) {
         return audioValue === "available";
