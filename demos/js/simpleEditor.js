@@ -461,13 +461,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 flashing: "unknown",
                 audio: "available",
                 keywords: [],
-                captions: [{
-                    src: "",
-                    language: "en"
-                }, {
-                    src: "",
-                    language: "en"
-                }]
+                captions: []
             }
         }
     });
