@@ -130,10 +130,10 @@ https://github.com/gpii/universal/LICENSE.txt
         jqUnit.assertEquals("Two language fields have been rendered", 2, languageFields.length);
         jqUnit.assertTrue("The icon state has been set to 'unavailable'", that.locate("icon").hasClass(that.icon.options.styles.indicatorState.unavailable));
         srcFields.each(function () {
-            jqUnit.assertEquals("The placeholder for the input field has been set", that.input1.options.strings.srcPlaceholder, $(this).attr("placeholder"));
+            jqUnit.assertEquals("The placeholder for the input field has been set", that.primaryCaption.options.strings.srcPlaceholder, $(this).attr("placeholder"));
         });
         languageFields.each(function () {
-            jqUnit.assertEquals("All language options have been rendered in a combo box", that.input1.options.controlValues.length, $(this).find("option").length);
+            jqUnit.assertEquals("All language options have been rendered in a combo box", that.primaryCaption.options.controlValues.length, $(this).find("option").length);
         });
     };
 

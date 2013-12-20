@@ -26,6 +26,8 @@ var fluid_1_5 = fluid_1_5 || {};
      * The panel to define captions related metadata
      *******************************************************************************/
 
+    // todo: The creation of captionInput sub-components should be generalized, perhaps by
+    // using dynamic components, due to their similarity.
     fluid.defaults("fluid.metadata.captionsPanel", {
         gradeNames: ["fluid.rendererComponent", "autoInit"],
         model: {
@@ -38,14 +40,14 @@ var fluid_1_5 = fluid_1_5 || {};
             }]
         },
         components: {
-            input1: {
+            primaryCaption: {
                 type: "fluid.metadata.captionsPanel.captionInput",
-                container: "{captionsPanel}.dom.input1",
+                container: "{captionsPanel}.dom.primaryCaption",
                 createOnEvent: "afterRender",
                 options: {
                     model: "{captionsPanel}.model.captions.0",
                     events: {
-                        afterRender: "{captionsPanel}.events.afterRenderInput1"
+                        afterRender: "{captionsPanel}.events.afterRenderPrimaryCaption"
                     },
                     modelListeners: {
                         "*": {
@@ -55,14 +57,14 @@ var fluid_1_5 = fluid_1_5 || {};
                     }
                 }
             },
-            input2: {
+            secondaryCaption: {
                 type: "fluid.metadata.captionsPanel.captionInput",
-                container: "{captionsPanel}.dom.input2",
+                container: "{captionsPanel}.dom.secondaryCaption",
                 createOnEvent: "afterRender",
                 options: {
                     model: "{captionsPanel}.model.captions.1",
                     events: {
-                        afterRender: "{captionsPanel}.events.afterRenderInput2"
+                        afterRender: "{captionsPanel}.events.afterRenderSecondaryCaption"
                     },
                     modelListeners: {
                         "*": {
@@ -86,8 +88,7 @@ var fluid_1_5 = fluid_1_5 || {};
                     },
                     tooltipContent: {
                         "available": "${captionsPanel}.options.strings.captionsAvailable",
-                        "unavailable": "${captionsPanel}.options.strings.captionsUnavailable",
-                        "unknown": "${captionsPanel}.options.strings.captionsUnavailable"
+                        "unavailable": "${captionsPanel}.options.strings.captionsUnavailable"
                     },
                     events: {
                         onCreate: {
@@ -107,11 +108,11 @@ var fluid_1_5 = fluid_1_5 || {};
         selectors: {
             title: ".flc-captions-title",
             icon: ".flc-captions-icon",
-            instruction: ".flc-caption-instruction",
-            input1: ".flc-captions-input-1",
-            input2: ".flc-captions-input-2"
+            instruction: ".flc-captions-instruction",
+            primaryCaption: ".flc-captions-input-1",
+            secondaryCaption: ".flc-captions-input-2"
         },
-        selectorsToIgnore: ["icon", "input1", "input2"],
+        selectorsToIgnore: ["icon", "primaryCaption", "secondaryCaption"],
         protoTree: {
             title: {messagekey: "title"},
             instruction: {messagekey: "instruction"}
@@ -129,14 +130,14 @@ var fluid_1_5 = fluid_1_5 || {};
         },
         events: {
             inputModelChanged: null,
-            afterRenderInput1: null,
-            afterRenderInput2: null,
+            afterRenderprimaryCaption: null,
+            afterRendersecondaryCaption: null,
             afterRenderIcon: null,
             onReady: {
                 events: {
                     onCreate: "onCreate",
-                    afterRenderInput1: "afterRenderInput1",
-                    afterRenderInput2: "afterRenderInput2",
+                    afterRenderprimaryCaption: "afterRenderprimaryCaption",
+                    afterRendersecondaryCaption: "afterRendersecondaryCaption",
                     afterRenderIcon: "afterRenderIcon"
                 },
                 args: "{that}"
@@ -157,10 +158,10 @@ var fluid_1_5 = fluid_1_5 || {};
         },
         distributeOptions: [{
             source: "{that}.options.captionsInputTemplate",
-            target: "{that > input1}.options.resources.template.url"
+            target: "{that > primaryCaption}.options.resources.template.url"
         }, {
             source: "{that}.options.captionsInputTemplate",
-            target: "{that > input2}.options.resources.template.url"
+            target: "{that > secondaryCaption}.options.resources.template.url"
         }]
     });
 
