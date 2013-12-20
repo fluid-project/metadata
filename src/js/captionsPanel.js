@@ -136,8 +136,8 @@ var fluid_1_5 = fluid_1_5 || {};
             onReady: {
                 events: {
                     onCreate: "onCreate",
-                    afterRenderprimaryCaption: "afterRenderPrimaryCaption",
-                    afterRendersecondaryCaption: "afterRenderSecondaryCaption",
+                    afterRenderPrimaryCaption: "afterRenderPrimaryCaption",
+                    afterRenderSecondaryCaption: "afterRenderSecondaryCaption",
                     afterRenderIcon: "afterRenderIcon"
                 },
                 args: "{that}"
