@@ -104,19 +104,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 options: {
                     gradeNames: ["fluid.prefs.modelRelay"],
                     model: "{insertVideo}.model",
-                    applier: "{insertVideo}.applier",
-                    modelListeners: {
-                        "url": {
-                            funcName: "fluid.simpleEditor.sidebar.conditionalPanelCreation",
-                            args: ["{change}.value.url", "{that}.events.onCreatePanels.fire"]
-                        }
-                    },
-                    listeners: {
-                        "{simpleEditor}.events.onReset": {
-                            listener: "{that}.reset",
-                            priority: "first"
-                        }
-                    }
+                    applier: "{insertVideo}.applier"
                 }
             }
         },
@@ -381,142 +369,87 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     };
 
     fluid.defaults("fluid.simpleEditor.sidebar", {
-        gradeNames: ["fluid.viewComponent", "autoInit"],
+        gradeNames: ["fluid.rendererComponent", "autoInit"],
         selectors: {
             videoPanel: ".flc-videoPanel",
             audioPanel: ".flc-audioPanel",
             captionsPanel: ".flc-captionsPanel"
         },
         events: {
-            onCreatePanels: null,
-            onReset: null
+            onCreatePanels: null
         },
-        invokers: {
-            reset: {
-                funcName: "fluid.simpleEditor.sidebar.reset",
-                args: ["{that}.container", "{that}.options.markup.reset", "{that}.events.onReset.fire"]
-            }
+        modelListeners: {
+            "url": "{that}.refreshView"
         },
-        listeners: {
-            onCreatePanels: {
-                listener: "{that}.reset",
-                priority: "first"
-            }
-        },
-        components: {
-            videoPanel: {
-                type: "fluid.metadata.videoPanel",
-                container: "{sidebar}.dom.videoPanel",
-                createOnEvent: "onCreatePanels",
-                options: {
-                    gradeNames: ["fluid.prefs.modelRelay"],
-                    sourceApplier: "{insertVideo}.applier",
-                    model: {
-                        highContrast: "{sidebar}.model.highContrast",
-                        signLanguage: "{sidebar}.model.signLanguage",
-                        flashing: "{sidebar}.model.flashing"
-                    },
-                    rules: {
-                        highContrast: "highContrast",
-                        signLanguage: "signLanguage",
-                        flashing: "flashing"
-                    },
-                    listeners: {
-                        "{sidebar}.events.onReset": [
-                            {
-                                listener: "{that}.applier.requestChange",
-                                args: ["", {}]
-                            },
-                            {
-                                listener: "{that}.destroy",
-                                priority: "last"
+        renderOnInit: true,
+        // These sub components are managed through the renderer
+        // to work around issues of creation/destruction.
+        // When using these as subcomponents directly,
+        // the components would be recreated with old model
+        // values after being destroyed.
+        protoTree: {
+            expander: {
+                type: "fluid.renderer.condition",
+                condition: "${url}",
+                trueTree: {
+                    videoPanel: {
+                        decorators: {
+                            type: "fluid",
+                            func: "fluid.metadata.videoPanel",
+                            options: {
+                                gradeNames: ["fluid.prefs.modelRelay"],
+                                sourceApplier: "{insertVideo}.applier",
+                                model: {
+                                    highContrast: "{sidebar}.model.highContrast",
+                                    signLanguage: "{sidebar}.model.signLanguage",
+                                    flashing: "{sidebar}.model.flashing"
+                                },
+                                rules: {
+                                    highContrast: "highContrast",
+                                    signLanguage: "signLanguage",
+                                    flashing: "flashing"
+                                }
                             }
-                        ]
-                    }
-                }
-            },
-            audioPanel: {
-                type: "fluid.metadata.audioPanel",
-                container: "{sidebar}.dom.audioPanel",
-                createOnEvent: "onCreatePanels",
-                options: {
-                    gradeNames: ["fluid.prefs.modelRelay"],
-                    sourceApplier: "{sidebar}.applier",
-                    model: {
-                        audio: "{sidebar}.model.audio",
-                        keywords: "{sidebar}.model.audioKeywords"
+                        }
                     },
-                    rules: {
-                        audio: "audio",
-                        audioKeywords: "keywords"
-                    },
-                    listeners: {
-                        "{sidebar}.events.onReset": [
-                            // {
-                            //     listener: "{that}.applier.requestChange",
-                            //     args: ["", {}]
-                            // },
-                            {
-                                listener: "{that}.destroy",
-                                priority: "last"
+                    audioPanel: {
+                        decorators: {
+                            type: "fluid",
+                            func: "fluid.metadata.audioPanel",
+                            options: {
+                                gradeNames: ["fluid.prefs.modelRelay"],
+                                sourceApplier: "{sidebar}.applier",
+                                model: {
+                                    audio: "{sidebar}.model.audio",
+                                    keywords: "{sidebar}.model.audioKeywords"
+                                },
+                                rules: {
+                                    audio: "audio",
+                                    audioKeywords: "keywords"
+                                }
                             }
-                        ]
-                    }
-                }
-            },
-            captionsPanel: {
-                type: "fluid.metadata.captionsPanel",
-                container: "{sidebar}.dom.captionsPanel",
-                createOnEvent: "onCreatePanels",
-                options: {
-                    gradeNames: ["fluid.prefs.modelRelay"],
-                    sourceApplier: "{sidebar}.applier",
-                    model: {
-                        captions: "{sidebar}.model.captions"
+                        }
                     },
-                    rules: {
-                        captions: "captions"
-                    },
-                    listeners: {
-                        "{sidebar}.events.onReset": [
-                            // {
-                            //     listener: "{that}.applier.requestChange",
-                            //     args: ["", {}]
-                            // },
-                            {
-                                listener: "{that}.destroy",
-                                priority: "last"
+                    captionsPanel: {
+                        decorators: {
+                            type: "fluid",
+                            func: "fluid.metadata.captionsPanel",
+                            options: {
+                                gradeNames: ["fluid.prefs.modelRelay"],
+                                sourceApplier: "{sidebar}.applier",
+                                model: {
+                                    captions: "{sidebar}.model.captions"
+                                },
+                                rules: {
+                                    captions: "captions"
+                                }
                             }
-                        ]
+                        }
                     }
-                }
-            }
-        },
-        markup: {
-            reset: {
-                expander: {
-                    funcName: "fluid.simpleEditor.sidebar.getOriginalMarkup",
-                    args: ["{that}.container"]
                 }
             }
         }
     });
-
-    fluid.simpleEditor.sidebar.getOriginalMarkup = function (container) {
-        return container.html();
-    };
-
-    fluid.simpleEditor.sidebar.reset = function (container, markup, callback) {
-        container.html(markup);
-        callback();
-    };
-
-    fluid.simpleEditor.sidebar.conditionalPanelCreation = function (shouldCreate, createEvent) {
-        // ensure we have a real value returned
-        if (!$.isEmptyObject(shouldCreate)) {
-            createEvent();
-        }
-    };
 
     fluid.defaults("fluid.simpleEditor.defaultModel", {
         gradeNames: ["fluid.littleComponent", "autoInit"],
