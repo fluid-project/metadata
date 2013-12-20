@@ -8,20 +8,13 @@
     src: url('./fonts/OpenSans-Regular.ttf');
 }
 
-@font-face {
-    font-family: 'OpenSans-Light';
-    src: url('./fonts/OpenSans-Light.ttf');
-}
-
-
-
 /***********
  * NOTE: This is mobile first styling - styled for mobile layout first, with media queries for larger screens.
  ***********/
 
 body {
     background-color: #e8f3f5;
-    font-family: 'OpenSans-Light';
+    font-family: 'OpenSans-Regular';
 }
 
 .fl-demo header {
