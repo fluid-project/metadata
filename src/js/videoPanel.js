@@ -34,7 +34,7 @@ var fluid_1_5 = fluid_1_5 || {};
             flashing: "unknown" // flashing, noFlashing are alternatives
         },
         strings: {
-            title: "video",
+            title: "Video",
             instruction: "Select all that apply",
             highContrastLabel: "Video is high contrast which may improve visibility.",
             signLangLabel: "Video contains sign language translation.",

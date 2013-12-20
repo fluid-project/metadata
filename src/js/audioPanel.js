@@ -55,7 +55,7 @@ var fluid_1_5 = fluid_1_5 || {};
         },
         strings: {
             title: "Audio",
-            audio: ["Yes, Choose any that apply", "No, this video has no audio track", "Unsure"],
+            audio: ["Yes, this video has an audio track.", "No, this video has no audio track.", "I am not sure if this video has an audio track."],
             audioAvailable: "Audio Attribute is available.",
             audioUnavailable: "Audio Attribute is unavailable."
         },
@@ -153,7 +153,7 @@ var fluid_1_5 = fluid_1_5 || {};
     fluid.defaults("fluid.metadata.audioPanel.attributes", {
         gradeNames: ["fluid.rendererComponent", "autoInit"],
         strings: {
-            keywords: ["Dialogue or narrative", "Soundtrack", "Sound effects"]
+            keywords: ["Dialogue or narrative.", "Soundtrack.", "Sound effects."]
         },
         selectors: {
             keywordRow: ".flc-audio-keyword",

@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>MetaData Demo</title>
+        <title>flOER Editor with Metadata Demo</title>
 
         <!-- Bootstrap -->
         <link rel="stylesheet" href="../../src/lib/bootstrap/css/bootstrap.min.css">
@@ -22,75 +22,77 @@
 
     </head>
     <body>
-        <header>
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-3 col-sm-2">
-                        <span class="fl-logo-text1">fl</span><span class="fl-logo-text2">OER</span>
-                    </div>
-                    <div class="col-xs-9 col-sm-10">
-                        <button class="restart btn btn-default pull-right btn-sm" id="restart">
-                            Restart Demo
-                        </button>
-                    </div>
+        <section class="fl-demo">
+            <header>
+                <div class="container">
+                    <span class="fl-logo-text1">fl</span><span class="fl-logo-text2">OER</span>
+                    <button class="restart btn btn-default pull-right btn-sm" id="restart">
+                        Restart Demo
+                    </button>
                 </div>
-            </div>
-        </header>
+            </header>
 
-        <section class="container">
-            <div class="fl-simpleEditor-greeting">
-                <h1 class="flc-simpleEditor-greeting-title fl-simpleEditor-greeting-title text-center">
-                    Welcome to the flO.E.R. metadata authoring demo.
-                </h1>
-                <p class="flc-simpleEditor-greeting-text fl-simpleEditor-greeting-text text-center">
-                    Begin by creating a document in the editor window. Insert a video by entering a web address in the text field.
-                </p>
-            </div>
+            <section class="container">
+                <div class="fl-simpleEditor-greeting">
+                    <h1 class="flc-simpleEditor-greeting-title fl-simpleEditor-greeting-title text-center">
+                        Welcome to the flO.E.R. metadata authoring demo.
+                    </h1>
+                    <p class="flc-simpleEditor-greeting-text fl-simpleEditor-greeting-text text-center">
+                        Begin by creating a document in the editor window. Insert a video by entering a web address in the text field.
+                    </p>
+                </div>
 
-            <div class="flc-simpleEditor fl-simpleEditor clearfix">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="flc-simpleEditor-toolbar fl-simpleEditor-toolbar btn-toolbar" role="toolbar">
-                            <ul class="btn-group">
-                                <li class="flc-simpleEditor-control btn btn-default" role="button" data-control="bold">
-                                    B
-                                </li>
-                                <li class="flc-simpleEditor-control btn btn-default" role="button" data-control="italic">
-                                    I
-                                </li>
-                                <li class="flc-simpleEditor-control btn btn-default" role="button" data-control="underline">
-                                    U
-                                </li>
-                            </ul>
-                            <form class="fl-simpleEditor-insertVideo-form form-inline" role="form">
-                                <div class="form-group">
-
-                                    <label class="flc-simpleEditor-insertVideo-urlLabel fl-simpleEditor-insertVideo-urlLabel control-label" for="videoInput"></label>
-                                    <input type="text" class="flc-simpleEditor-insertVideo-url form-control input-sm" id="videoInput">
-                                    <button class="flc-simpleEditor-insertVideo-submit btn btn-sm">
-                                        OK
-                                    </button>
-
+                <div class="flc-simpleEditor fl-simpleEditor clearfix">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="flc-simpleEditor-toolbar fl-simpleEditor-toolbar btn-toolbar" role="toolbar">
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 col-sm-3 col-xs-12">
+                                        <ul class="btn-group">
+                                            <li class="flc-simpleEditor-control btn btn-default" role="button" data-control="bold">
+                                                B
+                                            </li>
+                                            <li class="flc-simpleEditor-control btn btn-default" role="button" data-control="italic">
+                                                I
+                                            </li>
+                                            <li class="flc-simpleEditor-control btn btn-default" role="button" data-control="underline">
+                                                U
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="col-lg-9 col-md-8 col-sm-9 col-xs-12">
+                                        <form class="fl-simpleEditor-insertVideo-form" role="form">
+                                            <div class="row">
+                                                <label class="flc-simpleEditor-insertVideo-urlLabel fl-simpleEditor-insertVideo-urlLabel col-md-3 col-sm-4 col-xs-3" for="videoInput"></label>
+                                                <div class="col-md-9 col-sm-7 col-xs-8">
+                                                    <input type="text" class="flc-simpleEditor-insertVideo-url fl-simpleEditor-insertVideo-url" placeholder="www.example.com/video.mp4" id="videoInput">
+                                                    <button class="flc-simpleEditor-insertVideo-submit fl-simpleEditor-insertVideo-submit btn btn-sm btn-default">
+                                                        OK
+                                                    </button>                          
+                                                </div>
+                                            </div>
+                                        </form>
+                                        
+                                    </div>
                                 </div>
-                            </form>
+                           </div>
+
+                            <!-- editable area -->
+                            <div class="flc-simpleEditor-content fl-simpleEditor-content panel-body"></div>
                         </div>
 
-                        <!-- editable area -->
-                        <div class="flc-simpleEditor-content fl-simpleEditor-content panel-body"></div>
-                    </div>
-
-                    <!-- metadata panels -->
-                    <div class="flc-metadataPanelContainer fl-metadataPanelContainer col-md-4">
-                        <div class="flc-videoPanel"></div>
-                        <div class="flc-audioPanel"></div>
-                        <div class="flc-captionsPanel"></div>
+                        <!-- metadata panels -->
+                        <div class="flc-metadataPanelContainer fl-metadataPanelContainer col-md-4">
+                            <div class="flc-videoPanel fl-videoPanel"></div>
+                            <div class="flc-audioPanel fl-audioPanel"></div>
+                            <div class="flc-captionsPanel fl-captionsPanel"></div>
+                        </div>
                     </div>
                 </div>
-
-            </div>
-            <a href="metadataMarkupView.html" target="_blank" class="btn btn-default">View Output HTML</a>
+                <a href="metadataMarkupView.html" target="_blank" class="btn btn-default">View Output HTML</a>
+            </section>
         </section>
-
         <script type="text/javascript">
             var editor = fluid.simpleEditor(".flc-simpleEditor", {
                 videoPanelTemplate: "../../src/html/video-template.html",
