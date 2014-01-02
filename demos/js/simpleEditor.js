@@ -153,7 +153,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             target: "{that > sidebar > videoPanel}.options.resources.template.url"
         }, {
             source: "{that}.options.audioPanelTemplate",
-            target: "{that > sidebar > audioPanel}.options.resources.template.url"
+            target: "{that > sidebar > audioPanel}.options.audioTemplate"
         }, {
             source: "{that}.options.audioAttributesTemplate",
             target: "{that > sidebar > audioPanel}.options.audioAttributesTemplate"

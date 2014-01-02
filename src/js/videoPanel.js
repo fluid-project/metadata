@@ -93,7 +93,8 @@ var fluid_1_5 = fluid_1_5 || {};
         },
         resources: {
             template: {
-                url: "../html/video-template.html"
+                url: "../html/video-template.html",
+                forceCache: true
             }
         },
         events: {

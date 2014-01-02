@@ -55,6 +55,7 @@ var fluid_1_5 = fluid_1_5 || {};
         },
         strings: {
             title: "Audio",
+            instruction: "Choose all that apply",
             audio: ["Yes, this video has an audio track.", "No, this video has no audio track.", "I am not sure if this video has an audio track."],
             audioAvailable: "Audio Attribute is available.",
             audioUnavailable: "Audio Attribute is unavailable."
@@ -62,6 +63,7 @@ var fluid_1_5 = fluid_1_5 || {};
         controlValues: ["available", "unavailable", "unknown"],
         selectors: {
             title: ".flc-audio-title",
+            instruction: ".flc-audio-instruction",
             icon: ".flc-audio-icon",
             audioRow: ".flc-audio-row",
             audioLabel: ".flc-audio-label",
@@ -72,6 +74,7 @@ var fluid_1_5 = fluid_1_5 || {};
         repeatingSelectors: ["audioRow"],
         protoTree: {
             title: {messagekey: "title"},
+            instruction: {messagekey: "instruction"},
             icon: {
                 decorators: {
                     func: "fluid.metadata.indicator",
