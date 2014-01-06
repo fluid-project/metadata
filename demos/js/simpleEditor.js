@@ -200,10 +200,19 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             click: null
         },
         listeners: {
+            "onCreate.tabIndex": {
+                "this": "{that}.container",
+                "method": "attr",
+                "args": ["tabindex", 0]
+            },
             "onCreate.bindClick": {
                 "this": "{that}.container",
                 "method": "click",
                 "args": ["{that}.events.click.fire"]
+            },
+            "onCreate.activatable": {
+                listener: "fluid.activatable",
+                args: ["{that}.container", "{that}.events.click.fire"]
             },
             "click.handle": {
                 func: "{that}.handleCommand"
