@@ -116,6 +116,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 options: {
                     listeners: {
                         "{simpleEditor}.events.afterReset": "{that}.updateActiveState",
+                        "onCreate.attachKeyboardShortcut": {
+                            listener: "{that}.attachKeyboardShortcut",
+                            args: ["{simpleEditor}.dom.content", "{that}.events.click.fire"]
+                        },
                         "onCreate.focus": {
                             "this": "{simpleEditor}.dom.content",
                             "method": "focus",
@@ -182,14 +186,52 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         callback();
     };
 
+    fluid.registerNamespace("fluid.simpleEditor.button");
+
+    fluid.simpleEditor.button.keyCodes = {
+        B: 66,
+        I: 73,
+        U: 85,
+        CTRL: "ctrlKey",
+        ALT: "altKey",
+        META: "metaKey",
+        COMMAND: "metaKey"
+    };
+
+    fluid.simpleEditor.button.isMacOS = function () {
+        var MAC = "MAC";
+        var os = navigator.platform;
+
+        return os.toUpperCase().indexOf(MAC) >= 0;
+    };
+
+    fluid.enhance.check({
+        "fluid.macOS": "fluid.simpleEditor.button.isMacOS"
+    });
+
+    fluid.defaults("fluid.simpleEditor.button.macOSModifier", {
+        gradeNames: ["fluid.littleComponent", "autoInit"],
+        members: {
+            modifierKey: "META"
+        }
+    });
+
     fluid.defaults("fluid.simpleEditor.button", {
-        gradeNames: ["fluid.viewComponent", "autoInit"],
+        gradeNames: ["fluid.viewComponent", "autoInit", "{that}.getOSGrade"],
         members: {
             controlType: {
                 expander: {
                     "this": "{that}.container",
                     "method": "data",
                     "args": "control"
+                }
+            },
+            modifierKey: "CTRL",
+            shortCutKey: {
+                expander: {
+                    "this": "{that}.container",
+                    "method": "data",
+                    "args": "keycode"
                 }
             }
         },
@@ -226,6 +268,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 funcName: "fluid.simpleEditor.button.command",
                 args: ["{arguments}.0", "{that}.controlType"]
             },
+            attachKeyboardShortcut: {
+                funcName: "fluid.simpleEditor.button.attachKeyboardShortcut",
+                args: ["{arguments}.0", "{arguments}.1", "{that}.shortCutKey", "{that}.modifierKey"]
+            },
             updateActiveState: {
                 funcName: "fluid.simpleEditor.button.updateActiveState",
                 args: ["{that}.controlType", "{that}.container", "{that}.options.styles.active"]
@@ -233,12 +279,15 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             updateActiveStateForKeys: {
                 funcName: "fluid.simpleEditor.button.filterKeys",
                 args: ["{arguments}.0", [37, 38, 39, 40], "{that}.updateActiveState"]
+            },
+            getOSGrade: {
+                funcName: "fluid.simpleEditor.button.checkOS",
+                args: ["{fluid.macOS}", "fluid.simpleEditor.button.macOSModifier"]
             }
         }
     });
 
     fluid.simpleEditor.button.command = function (event, command) {
-        var elm = $(event.target);
         document.execCommand(command, false, null);
         event.preventDefault();
     };
@@ -253,6 +302,24 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         if ($.inArray(event.keyCode, keys) >= 0 || $.inArray(event.which, keys) >= 0) {
             handler();
         }
+    };
+
+    fluid.simpleEditor.button.attachKeyboardShortcut = function (elm, callback, shortCutKey, modifierKey) {
+        var key = fluid.simpleEditor.button.keyCodes[shortCutKey.toUpperCase()];
+        var modifier = modifierKey && fluid.simpleEditor.button.keyCodes[modifierKey.toUpperCase()];
+
+        // needed to use keydown instead of keyup to prevent browser default actions
+        $(elm).keydown(function (event) {
+            var modified = modifier ? event[modifier] : true;
+            if(modified && event.which === key) {
+                callback(event);
+            }
+        });
+
+    };
+
+    fluid.simpleEditor.button.checkOS = function (isOS, gradeName) {
+        return isOS ? gradeName : undefined;
     };
 
     fluid.defaults("fluid.simpleEditor.insertVideo", {
