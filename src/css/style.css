@@ -83,7 +83,7 @@
 
 .fl-captionsPanel .fl-captions-list li:nth-of-type(odd){
     background-color: #d3e3e6;
-    
+
 }
 
 /* Bootstrap override */
@@ -93,4 +93,10 @@ ul li label {
 
 ul li {
     margin-bottom: 1em;
+}
+
+legend {
+    font-size: inherit;
+    margin-bottom: 0;
+    border: none;
 }
