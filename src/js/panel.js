@@ -41,8 +41,8 @@ var fluid_1_5 = fluid_1_5 || {};
             title: "A panel title"
         },
         selectors: {
-            title: ".flc-title",
-            indicator: ".flc-indicator"
+            title: ".flc-panel-title",
+            indicator: ".flc-panel-indicator"
         },
         listeners: {
             "onCreate.setTitle": {
