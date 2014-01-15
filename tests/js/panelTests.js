@@ -28,6 +28,9 @@ https://github.com/gpii/universal/LICENSE.txt
                             sourceApplier: "{panel}.applier",
                             rules: {
                                 "audio": "value"
+                            },
+                            model: {
+                                value: "{panel}.model.audio"
                             }
                         }
                     }
@@ -36,7 +39,7 @@ https://github.com/gpii/universal/LICENSE.txt
 
         jqUnit.expect(2);
         jqUnit.assertEquals("The initial title is properly set", that.options.strings.title, that.locate("title").text());
-        jqUnit.assertTrue("The indicator status is properly set", that.locate("indicator").hasClass(that.indicator.options.styles.circle));
+        jqUnit.assertTrue("The indicator status is properly set", that.locate("indicator").hasClass(that.indicator.options.styles.indicatorState.available));
 
         jqUnit.expect(1);
         var newStatus = "unavailable";
