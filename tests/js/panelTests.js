@@ -22,13 +22,12 @@ https://github.com/gpii/universal/LICENSE.txt
                 model: {
                     audio: "available"
                 },
+                modelTransformationRules: {
+                    "value": "audio"
+                },
                 components: {
                     indicator: {
                         options: {
-                            sourceApplier: "{panel}.applier",
-                            rules: {
-                                "audio": "value"
-                            },
                             model: {
                                 value: "{panel}.model.audio"
                             }

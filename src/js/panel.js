@@ -33,7 +33,18 @@ var fluid_1_5 = fluid_1_5 || {};
                 type: "fluid.metadata.indicator",
                 container: "{panel}.dom.indicator",
                 options: {
-                    gradeNames: "fluid.prefs.modelRelay"
+                    invokers: {
+                        updateModel: {
+                            funcName: "fluid.metadata.panel.updateIndicatorModel",
+                            args: ["{that}", "{arguments}.0", "{arguments}.1"]
+                        }
+                    },
+                    modelListeners: {
+                        "{panel}.model.*": {
+                            func: "{that}.updateModel",
+                            args: ["{panel}.model", "{panel}.options.modelTransformationRules"]
+                        }
+                    }
                 }
             }
         },
@@ -52,5 +63,11 @@ var fluid_1_5 = fluid_1_5 || {};
             }
         }
     });
+
+    fluid.metadata.panel.updateIndicatorModel = function (that, change, transformationRules) {
+        var model = transformationRules ? fluid.model.transform(change, transformationRules) : change;
+        that.applier.requestChange("value", model.value);
+    };
+
 
 })(jQuery, fluid_1_5);
