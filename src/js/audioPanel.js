@@ -31,15 +31,7 @@ var fluid_1_5 = fluid_1_5 || {};
         components: {
             indicator: {
                 createOnEvent: "afterRender",
-                priority: "first",
                 options: {
-                    sourceApplier: "{audioPanel}.applier",
-                    rules: {
-                        audio: "value"
-                    },
-                    model: {
-                        value: "{audioPanel}.model.audio"
-                    },
                     tooltipContent: {
                         "available": "${{that}.options.strings.audioAvailable}",
                         "unavailable": "${{that}.options.strings.audioUnavailable}",
