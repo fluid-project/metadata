@@ -42,7 +42,7 @@ var fluid_1_5 = fluid_1_5 || {};
                     modelListeners: {
                         "{panel}.model.*": {
                             func: "{that}.updateModel",
-                            args: ["{panel}.model", "{panel}.options.modelTransformationRules"]
+                            args: ["{panel}.model", "{panel}.options.indicatorModelRules"]
                         }
                     }
                 }

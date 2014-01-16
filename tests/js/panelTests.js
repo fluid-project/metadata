@@ -22,7 +22,7 @@ https://github.com/gpii/universal/LICENSE.txt
                 model: {
                     audio: "available"
                 },
-                modelTransformationRules: {
+                indicatorModelRules: {
                     "value": "audio"
                 },
                 components: {
