@@ -74,6 +74,9 @@ var fluid_1_5 = fluid_1_5 || {};
         model: {
             audio: "available"
         },
+        indicatorModelRules: {
+            value: "audio"
+        },
         strings: {
             title: "Audio",
             instruction: "Choose all that apply",
