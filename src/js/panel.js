@@ -33,6 +33,12 @@ var fluid_1_5 = fluid_1_5 || {};
                 type: "fluid.metadata.indicator",
                 container: "{panel}.dom.indicator",
                 options: {
+                    model: {
+                        expander: {
+                            funcName: "fluid.model.transform",
+                            args: ["{panel}.model", "{panel}.options.indicatorModelRules"]
+                        }
+                    },
                     invokers: {
                         updateModel: {
                             funcName: "fluid.metadata.panel.updateIndicatorModel",

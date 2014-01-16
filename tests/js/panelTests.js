@@ -24,15 +24,6 @@ https://github.com/gpii/universal/LICENSE.txt
                 },
                 indicatorModelRules: {
                     "value": "audio"
-                },
-                components: {
-                    indicator: {
-                        options: {
-                            model: {
-                                value: "{panel}.model.audio"
-                            }
-                        }
-                    }
                 }
             });
 
