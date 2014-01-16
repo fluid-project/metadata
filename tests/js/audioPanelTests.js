@@ -17,140 +17,121 @@ https://github.com/gpii/universal/LICENSE.txt
 (function ($) {
     fluid.registerNamespace("fluid.tests");
 
-    fluid.defaults("fluid.tests.audioPanelTests", {
-        gradeNames: ["fluid.test.testEnvironment", "autoInit"],
-        components: {
-            audioPanel: {
-                type: "fluid.metadata.audioPanel",
-                container: ".flc-audio",
-                createOnEvent: "{audioPanelTester}.events.onTestCaseStart",
-                options: {
-                    audioTemplate: "../../src/html/audio-template.html",
-                    audioAttributesTemplate: "../../src/html/audio-attributes-template.html"
-                }
-            },
-            audioPanelTester: {
-                type: "fluid.tests.audioPanelTester"
+    fluid.tests.checkAudioState = function (that, expectedRadiobuttons, expectedCheckboxes, state) {
+        that = that.typeName === "fluid.metadata.audioPanel" ? that : audioPanel;
+
+        var radiobuttons = that.container.find("[type='radio']");
+        var checkboxes = that.locate("attributes").find("[type='checkbox']");
+
+        jqUnit.assertEquals("Expected number of radiobuttons are rendered", expectedRadiobuttons, radiobuttons.length);
+        jqUnit.assertEquals("Expected number of checkboxes are rendered", expectedCheckboxes, checkboxes.length);
+        radiobuttons.each(function () {
+            if ($(this).attr("value") === state) {
+                jqUnit.assertTrue("The radio button with the value '" + state + "' is checked", $(this).is(":checked"));
             }
-        }
-    });
+        });
 
-    fluid.tests.checkAudioState = function (audioPanel, expectedRadiobuttons, expectedCheckboxes, state) {
-        return function (that) {
-            that = that.typeName === "fluid.metadata.audioPanel" ? that : audioPanel;
+        jqUnit.assertTrue("Appropriate Indicator css class has been applied", that.locate("indicator").hasClass("fl-" + state));
 
-            var radiobuttons = that.container.find("[type='radio']");
-            var checkboxes = that.locate("attributes").find("[type='checkbox']");
-
-            jqUnit.assertEquals("Expected number of radiobuttons are rendered", expectedRadiobuttons, radiobuttons.length);
-            jqUnit.assertEquals("Expected number of checkboxes are rendered", expectedCheckboxes, checkboxes.length);
-            radiobuttons.each(function () {
-                if ($(this).attr("value") === state) {
-                    jqUnit.assertTrue("The radio button with the value '" + state + "' is checked", $(this).is(":checked"));
-                }
+        if (state === "available") {
+            var count = 0;
+            checkboxes.each(function () {
+                jqUnit.assertFalse("Checkbox #" + (++count) + " is not checked", $(this).is(":checked"));
             });
-
-            jqUnit.assertTrue("Appropriate Indicator css class has been applied", that.locate("icon").hasClass("fl-" + state));
-
-            if (state === "available") {
-                var count = 0;
-                checkboxes.each(function () {
-                    jqUnit.assertFalse("Checkbox #" + (++count) + " is not checked", $(this).is(":checked"));
-                });
-            }
-        };
+        }
     };
 
     fluid.tests.clickAttribute = function (audioPanel, attribute) {
         audioPanel.locate("attributes").find("[value='" + attribute + "']").click();
     };
 
-    fluid.tests.checkAttribute = function (modelPath) {
-        return function (newModel, oldModel, changeReqeust) {
+    fluid.tests.checkAttributeModel = function (audioPanel, modelPath) {
+        audioPanel.applier.modelChanged.addListener("", function (newModel, oldModel, changeReqeust) {
             var keywords = fluid.get(newModel, "keywords");
             jqUnit.assertNotEquals("The proper model path has been updated", -1, $.inArray(modelPath, keywords));
-        };
+            audioPanel.applier.modelChanged.removeListener("checkAttributeModel");
+        }, "checkAttributeModel", null, "last");
     };
 
     fluid.tests.clickAudioState = function (audioPanel, state) {
         audioPanel.container.find("[value='" + state + "']").click();
     };
 
-    fluid.defaults("fluid.tests.audioPanelTester", {
-        gradeNames: ["fluid.test.testCaseHolder", "autoInit"],
-        modules: [{
-            name: "Test audio panel",
-            tests: [{
-                expect: 7,
-                name: "Init",
-                sequence: [{
-                    listenerMaker: "fluid.tests.checkAudioState",
-                    makerArgs: ["{audioPanelTests audioPanel}", 3, 3, "available"],
-                    spec: {priority: "last"},
-                    event: "{audioPanelTests audioPanel}.events.onReady"
-                }]
-            }]
-        }, {
-            name: "Test audio panel",
-            tests: [{
-                expect: 3,
-                name: "Click on an audio attribute",
-                sequence: [{
-                    func: "fluid.tests.clickAttribute",
-                    args: ["{audioPanel}", "dialogue"]
-                }, {
-                    listenerMaker: "fluid.tests.checkAttribute",
-                    makerArgs: ["dialogue"],
-                    spec: {path: "keywords", priority: "last"},
-                    changeEvent: "{audioPanel}.applier.modelChanged"
-                }, {
-                    func: "fluid.tests.clickAttribute",
-                    args: ["{audioPanel}", "soundtrack"]
-                }, {
-                    listenerMaker: "fluid.tests.checkAttribute",
-                    makerArgs: ["soundtrack"],
-                    spec: {path: "keywords", priority: "last"},
-                    changeEvent: "{audioPanel}.applier.modelChanged"
-                }, {
-                    func: "fluid.tests.clickAttribute",
-                    args: ["{audioPanel}", "sound effect"]
-                }, {
-                    listenerMaker: "fluid.tests.checkAttribute",
-                    makerArgs: ["sound effect"],
-                    spec: {path: "keywords", priority: "last"},
-                    changeEvent: "{audioPanel}.applier.modelChanged"
-                }]
-            }]
-        }, {
-            name: "Test audio panel",
-            tests: [{
-                expect: 8,
-                name: "Change audio availability",
-                sequence: [{
-                    func: "fluid.tests.clickAudioState",
-                    args: ["{audioPanel}", "unavailable"]
-                }, {
-                    listenerMaker: "fluid.tests.checkAudioState",
-                    makerArgs: ["{audioPanel}", 3, 0, "unavailable"],
-                    spec: {priority: "last"},
-                    event: "{audioPanel}.events.afterRender"
-                }, {
-                    func: "fluid.tests.clickAudioState",
-                    args: ["{audioPanel}", "unknown"]
-                }, {
-                    listenerMaker: "fluid.tests.checkAudioState",
-                    makerArgs: ["{audioPanel}", 3, 0, "unknown"],
-                    spec: {priority: "last"},
-                    event: "{audioPanel}.events.afterRender"
-                }]
-            }]
-        }]
+    fluid.tests.checkAudioStateChange = function (audioPanel, expectedRadiobuttons, expectedCheckboxes, state) {
+        audioPanel.events.afterAttributesRendered.addListener(function () {
+            fluid.tests.checkAudioState(audioPanel, expectedRadiobuttons, expectedCheckboxes, state);
+            audioPanel.events.afterAttributesRendered.removeListener("checkAudioStateChange");
+        }, "checkAudioStateChange", null, "last");
+    };
+
+    fluid.tests.createAudioPanel = function (container, options) {
+        var defaultOptions = {
+            audioTemplate: "../../src/html/audio-template.html",
+            audioAttributesTemplate: "../../src/html/audio-attributes-template.html"
+        };
+
+        return fluid.metadata.audioPanel(container, $.extend(true, {}, defaultOptions, options));
+    };
+
+    jqUnit.asyncTest("Initial settings", function () {
+        jqUnit.expect(7);
+
+        var options = {
+            listeners: {
+                onReady: function (that) {
+                    fluid.tests.checkAudioState(that, 3, 3, "available");
+                    jqUnit.start();
+                }
+            }
+        };
+
+        fluid.tests.createAudioPanel(".flc-audio-test-init", options);
     });
 
-    $(document).ready(function () {
-        fluid.test.runTests([
-            "fluid.tests.audioPanelTests"
-        ]);
+    jqUnit.asyncTest("Click on attribute checkboxes", function () {
+        jqUnit.expect(3);
+
+        var options = {
+            listeners: {
+                onReady: function (that) {
+                    fluid.tests.checkAttributeModel(that, "dialogue");
+                    fluid.tests.clickAttribute(that, "dialogue");
+
+                    fluid.tests.checkAttributeModel(that, "soundtrack");
+                    fluid.tests.clickAttribute(that, "soundtrack");
+
+                    fluid.tests.checkAttributeModel(that, "sound effect");
+                    fluid.tests.clickAttribute(that, "sound effect");
+
+                    jqUnit.start();
+                }
+            }
+        };
+
+        fluid.tests.createAudioPanel(".flc-audio-test-attributes", options);
+    });
+
+    jqUnit.asyncTest("Click and check the audio availability", function () {
+        jqUnit.expect(15);
+
+        var options = {
+            listeners: {
+                onReady: function (that) {
+                    fluid.tests.checkAudioStateChange(that, 3, 0, "unavailable")
+                    fluid.tests.clickAudioState(that, "unavailable");
+
+                    fluid.tests.checkAudioStateChange(that, 3, 0, "unknown")
+                    fluid.tests.clickAudioState(that, "unknown");
+
+                    fluid.tests.checkAudioStateChange(that, 3, 3, "available")
+                    fluid.tests.clickAudioState(that, "available");
+
+                    jqUnit.start();
+                }
+            }
+        };
+
+        fluid.tests.createAudioPanel(".flc-audio-test-audio-availability", options);
     });
 
 })(jQuery);
