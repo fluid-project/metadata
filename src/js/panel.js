@@ -26,32 +26,12 @@ var fluid_1_5 = fluid_1_5 || {};
      * The base panel component for metadata panels
      *******************************************************************************/
 
-    fluid.defaults("fluid.metadata.panel", {
+    fluid.defaults("fluid.metadata.basePanel", {
         gradeNames: ["fluid.viewComponent", "autoInit"],
         components: {
             indicator: {
                 type: "fluid.metadata.indicator",
-                container: "{panel}.dom.indicator",
-                options: {
-                    model: {
-                        expander: {
-                            funcName: "fluid.model.transform",
-                            args: ["{panel}.model", "{panel}.options.indicatorModelRules"]
-                        }
-                    },
-                    invokers: {
-                        updateModel: {
-                            funcName: "fluid.metadata.panel.updateIndicatorModel",
-                            args: ["{that}", "{arguments}.0", "{arguments}.1"]
-                        }
-                    },
-                    modelListeners: {
-                        "{panel}.model.*": {
-                            func: "{that}.updateModel",
-                            args: ["{panel}.model", "{panel}.options.indicatorModelRules"]
-                        }
-                    }
-                }
+                container: "{basePanel}.dom.indicator"
             }
         },
         strings: {
@@ -70,10 +50,45 @@ var fluid_1_5 = fluid_1_5 || {};
         }
     });
 
-    fluid.metadata.panel.updateIndicatorModel = function (that, change, transformationRules) {
-        var model = transformationRules ? fluid.model.transform(change, transformationRules) : change;
+    /**********************************************************************************
+     * Another panel grade component that brings the base panel grade one step further
+     * with auto-generating the indicator model by transforming the panel model.
+     **********************************************************************************/
+
+    fluid.defaults("fluid.metadata.panel", {
+        gradeNames: ["fluid.metadata.basePanel", "autoInit"],
+        components: {
+            indicator: {
+                options: {
+                    model: {
+                        expander: {
+                            funcName: "{that}.transformPanelModel"
+                        }
+                    },
+                    invokers: {
+                        transformPanelModel: {
+                            funcName: "fluid.metadata.panel.transformPanelModel",
+                            args: ["{panel}.model", "{panel}.options.indicatorModelRules"]
+                        }
+                    },
+                    modelListeners: {
+                        "{panel}.model.*": {
+                            func: "fluid.metadata.panel.updateModel",
+                            args: ["{that}"]
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    fluid.metadata.panel.updateModel = function (that) {
+        var model = that.transformPanelModel();
         that.applier.requestChange("value", model.value);
     };
 
+    fluid.metadata.panel.transformPanelModel = function (panelModel, transformationRules) {
+        return transformationRules ? fluid.model.transform(panelModel, transformationRules) : panelModel;
+    };
 
 })(jQuery, fluid_1_5);
