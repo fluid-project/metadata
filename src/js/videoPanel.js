@@ -27,7 +27,18 @@ var fluid_1_5 = fluid_1_5 || {};
      *******************************************************************************/
 
     fluid.defaults("fluid.metadata.videoPanel", {
-        gradeNames: ["fluid.rendererComponent", "autoInit"],
+        gradeNames: ["fluid.rendererComponent", "fluid.metadata.basePanel", "autoInit"],
+        components: {
+            indicator: {
+                createOnEvent: "afterRender",
+                priority: "first",
+                options: {
+                    model: {
+                        value: "available"
+                    }
+                }
+            }
+        },
         model: {
             highContrast: false,
             signLanguage: false,
@@ -44,7 +55,7 @@ var fluid_1_5 = fluid_1_5 || {};
         controlValues: ["flashing", "noFlashing", "unknown"],
         selectors: {
             title: ".flc-video-title",
-            icon: ".flc-video-icon",
+            indicator: ".flc-video-icon",
             instruction: ".flc-instruction",
             highContrast: ".flc-highContrast",
             highContrastLabel: ".flc-highContrast-label",
@@ -55,25 +66,12 @@ var fluid_1_5 = fluid_1_5 || {};
             flashingInput: ".flc-flashing-input",
             flashingRowLabel: ".flc-flashingRow-label"
         },
+        selectorsToIgnore: ["title", "indicator"],
         repeatingSelectors: ["flashingRow"],
         protoTree: {
             title: {messagekey: "title"},
             instruction: {messagekey: "instruction"},
             flashingLabel: {messagekey: "flashingLabel"},
-            icon: {
-                decorators: {
-                    func: "fluid.metadata.indicator",
-                    type: "fluid",
-                    options: {
-                        model: {
-                            value: "available"
-                        },
-                        tooltipContent: {
-                            "available": "Video attribute is available."
-                        }
-                    }
-                }
-            },
             highContrastLabel: {messagekey: "highContrastLabel"},
             highContrast: "${highContrast}",
             signLangLabel: {messagekey: "signLangLabel"},
@@ -108,6 +106,10 @@ var fluid_1_5 = fluid_1_5 || {};
         },
         listeners: {
             "onCreate.init": "fluid.metadata.videoPanel.init"
+        },
+        distributeOptions: {
+            source: "{that}.options.videoTemplate",
+            target: "{that}.options.resources.template.url"
         }
     });
 
