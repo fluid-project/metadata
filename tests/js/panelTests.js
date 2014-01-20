@@ -17,15 +17,15 @@ https://github.com/gpii/universal/LICENSE.txt
 (function ($) {
     fluid.registerNamespace("fluid.tests");
 
-    jqUnit.test("Test panel", function () {
+    jqUnit.test("Test panel with a defined model and defined rules", function () {
         var that = fluid.metadata.panel(".flc-panel", {
-                model: {
-                    audio: "available"
-                },
-                indicatorModelRules: {
-                    "value": "audio"
-                }
-            });
+            model: {
+                audio: "available"
+            },
+            indicatorModelRules: {
+                "value": "audio"
+            }
+        });
 
         jqUnit.expect(2);
         jqUnit.assertEquals("The initial title is properly set", that.options.strings.title, that.locate("title").text());
@@ -35,6 +35,18 @@ https://github.com/gpii/universal/LICENSE.txt
         var newStatus = "unavailable";
         that.applier.requestChange("audio", newStatus);
         jqUnit.assertTrue("The indicator status is set to " + newStatus, that.locate("indicator").hasClass(that.indicator.options.styles.indicatorState.unavailable));
+    });
+
+    jqUnit.test("Test panel without defined rules", function () {
+        var that = fluid.metadata.panel(".flc-panel", {
+            model: {
+                value: "available"
+            }
+        });
+
+        jqUnit.expect(2);
+        jqUnit.assertEquals("The initial title is properly set", that.options.strings.title, that.locate("title").text());
+        jqUnit.assertTrue("The indicator status is properly set", that.locate("indicator").hasClass(that.indicator.options.styles.indicatorState.available));
     });
 
 })(jQuery);

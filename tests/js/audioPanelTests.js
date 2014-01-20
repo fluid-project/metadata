@@ -17,11 +17,11 @@ https://github.com/gpii/universal/LICENSE.txt
 (function ($) {
     fluid.registerNamespace("fluid.tests");
 
-    fluid.tests.checkAudioState = function (that, expectedRadiobuttons, expectedCheckboxes, state) {
-        that = that.typeName === "fluid.metadata.audioPanel" ? that : audioPanel;
+    fluid.tests.checkAudioState = function (audioPanel, expectedRadiobuttons, expectedCheckboxes, state) {
+        audioPanel = audioPanel.typeName === "fluid.metadata.audioPanel" ? audioPanel : audioPanel;
 
-        var radiobuttons = that.container.find("[type='radio']");
-        var checkboxes = that.locate("attributes").find("[type='checkbox']");
+        var radiobuttons = audioPanel.container.find("[type='radio']");
+        var checkboxes = audioPanel.locate("attributes").find("[type='checkbox']");
 
         jqUnit.assertEquals("Expected number of radiobuttons are rendered", expectedRadiobuttons, radiobuttons.length);
         jqUnit.assertEquals("Expected number of checkboxes are rendered", expectedCheckboxes, checkboxes.length);
@@ -31,7 +31,7 @@ https://github.com/gpii/universal/LICENSE.txt
             }
         });
 
-        jqUnit.assertTrue("Appropriate Indicator css class has been applied", that.locate("indicator").hasClass("fl-" + state));
+        jqUnit.assertTrue("Appropriate Indicator css class has been applied", audioPanel.locate("indicator").hasClass("fl-" + state));
 
         if (state === "available") {
             var count = 0;
