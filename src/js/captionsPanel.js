@@ -26,17 +26,6 @@ var fluid_1_5 = fluid_1_5 || {};
 
     fluid.defaults("fluid.metadata.captionsPanel", {
         gradeNames: ["fluid.metadata.resourceInputPanel", "autoInit"],
-        components: {
-            primaryResource: {
-                createOnEvent: "afterMarkupReady"
-            },
-            secondaryResource: {
-                createOnEvent: "afterMarkupReady"
-            },
-            indicator: {
-                createOnEvent: "afterMarkupReady"
-            }
-        },
         strings: {
             title: "Captions",
             description: "Captions provide a synchronized, equivalent text version of spoken word in a video.",
@@ -50,26 +39,7 @@ var fluid_1_5 = fluid_1_5 || {};
                 srcPlaceholder: "www.example.com/movie.srt",
                 languages: ["Arabic", "Chinese", "English", "French", "Hindi", "Spanish"]
             }
-        },
-        resources: {
-            template: {
-                src: "../html/captions-template.html",
-                forceCache: true
-            }
-        },
-        events: {
-            afterMarkupReady: null
-        },
-        listeners: {
-            "onCreate.init": "fluid.metadata.captionsPanel.init"
         }
     });
-
-    fluid.metadata.captionsPanel.init = function (that) {
-        fluid.fetchResources(that.options.resources, function (resourceSpec) {
-            that.container.append(resourceSpec.template.resourceText);
-            that.events.afterMarkupReady.fire(that);
-        });
-    };
 
 })(jQuery, fluid_1_5);

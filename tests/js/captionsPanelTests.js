@@ -27,10 +27,12 @@ https://github.com/gpii/universal/LICENSE.txt
                 options: {
                     resources: {
                         template: {
-                            url: "../../src/html/captions-template.html"
+                            url: "../../src/html/resourceInputPanel-template.html"
+                        },
+                        resourceInput: {
+                            url: "../../src/html/resourceInput-template.html"
                         }
-                    },
-                    resourceInputTemplate: "../../src/html/resourceInput-template.html"
+                    }
                 }
             },
             captionsPanelTester: {

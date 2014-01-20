@@ -119,10 +119,12 @@ https://github.com/gpii/universal/LICENSE.txt
             styles: {
                 container: styleClass
             },
-            resourceInputTemplate: "../../src/html/resourceInput-template.html",
             resources: {
                 template: {
                     url: "../../src/html/resourceInputPanel-base-template.html"
+                },
+                resourceInput: {
+                    url: "../../src/html/resourceInput-template.html"
                 }
             },
             listeners: {
@@ -150,10 +152,12 @@ https://github.com/gpii/universal/LICENSE.txt
         var description = "Test Description";
 
         var that = fluid.metadata.resourceInputPanel(".flc-resourceInputPanel", {
-            resourceInputTemplate: "../../src/html/resourceInput-template.html",
             resources: {
                 template: {
                     url: "../../src/html/resourceInputPanel-template.html"
+                },
+                resourceInput: {
+                    url: "../../src/html/resourceInput-template.html"
                 }
             },
             strings: {

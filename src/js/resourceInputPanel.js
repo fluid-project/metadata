@@ -226,13 +226,17 @@ var fluid_1_5 = fluid_1_5 || {};
             template: {
                 url: "../html/resourceInputPanel-base-template.html",
                 forceCache: true
+            },
+            resourceInput: {
+                url: "../html/resourceInput-template.html",
+                forceCache: true
             }
         },
         distributeOptions: [{
-            source: "{that}.options.resourceInputTemplate",
+            source: "{that}.options.resources.resourceInput.url",
             target: "{that > primaryResource}.options.resources.template.url"
         }, {
-            source: "{that}.options.resourceInputTemplate",
+            source: "{that}.options.resources.resourceInput.url",
             target: "{that > secondaryResource}.options.resources.template.url"
         }]
     });
