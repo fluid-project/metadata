@@ -201,6 +201,11 @@ var fluid_1_5 = fluid_1_5 || {};
                 "this": "{that}.container",
                 "method": "addClass",
                 "args": "{that}.options.styles.container"
+            },
+            "afterMarkupReady.setTitle": {
+                "this": "{that}.dom.title",
+                "method": "text",
+                "args": ["{that}.options.strings.title"]
             }
         },
         invokers: {

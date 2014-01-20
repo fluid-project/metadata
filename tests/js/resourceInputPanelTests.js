@@ -65,7 +65,7 @@ https://github.com/gpii/universal/LICENSE.txt
             newLanguage: "hi"
         },
         modules: [{
-            name: "Test resource input fields panel",
+            name: "Test resourceInputs",
             tests: [{
                 expect: 2,
                 name: "Init",
@@ -75,7 +75,7 @@ https://github.com/gpii/universal/LICENSE.txt
                 }]
             }]
         }, {
-            name: "Test resource input panel",
+            name: "Test resourceInputs",
             tests: [{
                 expect: 2,
                 name: "Click on resource input fields",
@@ -146,35 +146,6 @@ https://github.com/gpii/universal/LICENSE.txt
         });
     });
 
-    jqUnit.asyncTest("resourceInputPanel", function () {
-        jqUnit.expect(1);
-
-        var description = "Test Description";
-
-        var that = fluid.metadata.resourceInputPanel(".flc-resourceInputPanel", {
-            resources: {
-                template: {
-                    url: "../../src/html/resourceInputPanel-template.html"
-                },
-                resourceInput: {
-                    url: "../../src/html/resourceInput-template.html"
-                }
-            },
-            strings: {
-                description: description
-            },
-            listeners: {
-                onReady: function (that) {
-                    // initial
-                    jqUnit.assertEquals("The description should have been rendered", description, that.locate("description").text());
-
-                    // start
-                    jqUnit.start();
-                }
-            }
-        });
-    });
-
     jqUnit.test("transformation", function () {
 
         var modelTrue = {
@@ -224,7 +195,8 @@ https://github.com/gpii/universal/LICENSE.txt
 
     $(document).ready(function () {
         fluid.test.runTests([
-            "fluid.tests.resourceInputTests"
+            "fluid.tests.resourceInputTests",
+            "fluid.tests.resourceInputPanelTests"
         ]);
     });
 
