@@ -115,6 +115,9 @@ var fluid_1_5 = fluid_1_5 || {};
             tooltip: {},
             resources: {}
         },
+        styles: {
+            container: ""
+        },
         model: {
             resources: [{
                 src: "",
@@ -194,7 +197,12 @@ var fluid_1_5 = fluid_1_5 || {};
             }
         },
         listeners: {
-            "onCreate.fetchTemplate": "fluid.metadata.baseResourceInputPanel.fetchTempalte"
+            "onCreate.fetchTemplate": "fluid.metadata.baseResourceInputPanel.fetchTemplate",
+            "onCreate.applyContainerStyle": {
+                "this": "{that}.container",
+                "method": "addClass",
+                "args": "{that}.options.styles.container"
+            }
         },
         invokers: {
             updateModel: {
@@ -234,7 +242,7 @@ var fluid_1_5 = fluid_1_5 || {};
         that.applier.requestChange(changePath, value);
     };
 
-    fluid.metadata.baseResourceInputPanel.fetchTempalte = function (that) {
+    fluid.metadata.baseResourceInputPanel.fetchTemplate = function (that) {
         fluid.fetchResources(that.options.resources, function (resourceSpec) {
             that.container.append(resourceSpec.template.resourceText);
             that.events.afterMarkupReady.fire(that);

@@ -101,7 +101,7 @@ https://github.com/gpii/universal/LICENSE.txt
     });
 
     jqUnit.asyncTest("baseResourceInputPanel", function () {
-        jqUnit.expect(3);
+        jqUnit.expect(4);
 
         var newModel = {
             resources: [{
@@ -113,7 +113,12 @@ https://github.com/gpii/universal/LICENSE.txt
             }]
         };
 
+        var styleClass = "fl-test-style";
+
         var that = fluid.metadata.baseResourceInputPanel(".flc-baseResourceInputPanel", {
+            styles: {
+                container: styleClass
+            },
             resourceInputTemplate: "../../src/html/resourceInput-template.html",
             resources: {
                 template: {
@@ -124,6 +129,7 @@ https://github.com/gpii/universal/LICENSE.txt
                 onReady: function (that) {
                     // initial
                     jqUnit.assertEquals("The initial indicator model should be set correctly", "unavailable", that.indicator.model.value);
+                    jqUnit.assertTrue("The container class should have been applied", that.container.hasClass(styleClass));
 
                     // model update
                     that.primaryResource.applier.requestChange("src", "http://example.com/primary/video.mp4");
