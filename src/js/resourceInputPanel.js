@@ -129,6 +129,7 @@ var fluid_1_5 = fluid_1_5 || {};
             primaryResource: {
                 type: "fluid.metadata.resourceInput",
                 container: "{that}.dom.primaryResource",
+                createOnEvent: "afterMarkupReady",
                 options: {
                     strings: "{baseResourceInputPanel}.options.strings.resources",
                     model: {
@@ -151,6 +152,7 @@ var fluid_1_5 = fluid_1_5 || {};
             secondaryResource: {
                 type: "fluid.metadata.resourceInput",
                 container: "{that}.dom.secondaryResource",
+                createOnEvent: "afterMarkupReady",
                 options: {
                     strings: "{baseResourceInputPanel}.options.strings.resources",
                     model: {
@@ -171,22 +173,28 @@ var fluid_1_5 = fluid_1_5 || {};
                 }
             },
             indicator: {
+                createOnEvent: "afterMarkupReady",
                 options: {
                     tooltipContent: "{baseResourceInputPanel}.options.strings.tooltip"
                 }
             }
         },
         events: {
+            afterMarkupReady: null,
             afterRenderPrimaryCaption: null,
             afterRenderSecondaryCaption: null,
             onReady: {
                 events: {
                     onCreate: "onCreate",
+                    afterMarkupReady: "afterMarkupReady",
                     afterRenderPrimaryCaption: "afterRenderPrimaryCaption",
                     afterRenderSecondaryCaption: "afterRenderSecondaryCaption",
                 },
                 args: "{that}"
             }
+        },
+        listeners: {
+            "onCreate.fetchTemplate": "fluid.metadata.baseResourceInputPanel.fetchTempalte"
         },
         invokers: {
             updateModel: {
@@ -206,6 +214,12 @@ var fluid_1_5 = fluid_1_5 || {};
                 }
             }
         },
+        resources: {
+            template: {
+                url: "../html/resourceInputPanel-base-template.html",
+                forceCache: true
+            }
+        },
         distributeOptions: [{
             source: "{that}.options.resourceInputTemplate",
             target: "{that > primaryResource}.options.resources.template.url"
@@ -220,6 +234,13 @@ var fluid_1_5 = fluid_1_5 || {};
         that.applier.requestChange(changePath, value);
     };
 
+    fluid.metadata.baseResourceInputPanel.fetchTempalte = function (that) {
+        fluid.fetchResources(that.options.resources, function (resourceSpec) {
+            that.container.append(resourceSpec.template.resourceText);
+            that.events.afterMarkupReady.fire(that);
+        });
+    };
+
     fluid.defaults("fluid.metadata.resourceInputPanel", {
         gradeNames: ["fluid.metadata.baseResourceInputPanel", "autoInit"],
         selectors: {
@@ -229,10 +250,16 @@ var fluid_1_5 = fluid_1_5 || {};
             description: ""
         },
         listeners: {
-            "onCreate.writeDescription": {
+            "afterMarkupReady.writeDescription": {
                 "this": "{that}.dom.description",
                 "method": "text",
                 "args": "{that}.options.strings.description",
+            }
+        },
+        resources: {
+            template: {
+                url: "../html/resourceInputPanel-template.html",
+                forceCache: true
             }
         }
     });
