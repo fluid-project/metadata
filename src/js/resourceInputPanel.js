@@ -111,7 +111,10 @@ var fluid_1_5 = fluid_1_5 || {};
             primaryResource: ".flc-resourceInputPanel-primary",
             secondaryResource: ".flc-resourceInputPanel-secondary",
         },
-
+        strings: {
+            tooltip: {},
+            resources: {}
+        },
         model: {
             resources: [{
                 src: "",
@@ -127,6 +130,7 @@ var fluid_1_5 = fluid_1_5 || {};
                 type: "fluid.metadata.resourceInput",
                 container: "{that}.dom.primaryResource",
                 options: {
+                    strings: "{baseResourceInputPanel}.options.strings.resources",
                     model: {
                         expander: {
                             funcName: "fluid.copy",
@@ -148,6 +152,7 @@ var fluid_1_5 = fluid_1_5 || {};
                 type: "fluid.metadata.resourceInput",
                 container: "{that}.dom.secondaryResource",
                 options: {
+                    strings: "{baseResourceInputPanel}.options.strings.resources",
                     model: {
                         expander: {
                             funcName: "fluid.copy",
@@ -163,6 +168,11 @@ var fluid_1_5 = fluid_1_5 || {};
                     listeners: {
                         afterRender: "{baseResourceInputPanel}.events.afterRenderSecondaryCaption"
                     }
+                }
+            },
+            indicator: {
+                options: {
+                    tooltipContent: "{baseResourceInputPanel}.options.strings.tooltip"
                 }
             }
         },

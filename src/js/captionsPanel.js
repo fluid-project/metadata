@@ -24,36 +24,25 @@ var fluid_1_5 = fluid_1_5 || {};
      * The panel to define captions related metadata *
      *************************************************/
 
-    // todo: The creation of captionInput sub-components should be generalized, perhaps by
-    // using dynamic components, due to their similarity.
     fluid.defaults("fluid.metadata.captionsPanel", {
         gradeNames: ["fluid.metadata.resourceInputPanel", "autoInit"],
         components: {
             primaryResource: {
-                createOnEvent: "afterMarkupReady",
-                options: {
-                    strings: "{captionsPanel}.options.strings.resources"
-                }
+                createOnEvent: "afterMarkupReady"
             },
             secondaryResource: {
-                createOnEvent: "afterMarkupReady",
-                options: {
-                    strings: "{captionsPanel}.options.strings.resources"
-                }
+                createOnEvent: "afterMarkupReady"
             },
             indicator: {
-                createOnEvent: "afterMarkupReady",
-                options: {
-                    tooltipContent: "{captionsPanel}.options.strings.tooltip"
-                }
+                createOnEvent: "afterMarkupReady"
             }
         },
         strings: {
             title: "Captions",
             description: "Captions provide a synchronized, equivalent text version of spoken word in a video.",
             tooltip: {
-                captionsAvailable: "Captions are available in this video.",
-                captionsUnavailable: "Captions are not available in this video."
+                available: "Captions are available in this video.",
+                unavailable: "Captions are not available in this video."
             },
             resources: {
                 srcLabel: "Enter web link to caption:",
