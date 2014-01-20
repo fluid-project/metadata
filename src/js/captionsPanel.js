@@ -33,7 +33,7 @@ var fluid_1_5 = fluid_1_5 || {};
                 available: "Captions are available in this video.",
                 unavailable: "Captions are not available in this video."
             },
-            resources: {
+            resourceInput: {
                 srcLabel: "Enter web link to caption:",
                 languagesLabel: "Select language:",
                 srcPlaceholder: "www.example.com/movie.srt",

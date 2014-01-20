@@ -112,7 +112,7 @@ var fluid_1_5 = fluid_1_5 || {};
         },
         strings: {
             tooltip: {},
-            resources: {}
+            resourceInput: {}
         },
         styles: {
             container: ""
@@ -133,7 +133,7 @@ var fluid_1_5 = fluid_1_5 || {};
                 container: "{that}.dom.primaryResource",
                 createOnEvent: "afterMarkupReady",
                 options: {
-                    strings: "{baseResourceInputPanel}.options.strings.resources",
+                    strings: "{baseResourceInputPanel}.options.strings.resourceInput",
                     model: {
                         expander: {
                             funcName: "fluid.copy",
@@ -156,7 +156,7 @@ var fluid_1_5 = fluid_1_5 || {};
                 container: "{that}.dom.secondaryResource",
                 createOnEvent: "afterMarkupReady",
                 options: {
-                    strings: "{baseResourceInputPanel}.options.strings.resources",
+                    strings: "{baseResourceInputPanel}.options.strings.resourceInput",
                     model: {
                         expander: {
                             funcName: "fluid.copy",
