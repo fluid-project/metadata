@@ -12,12 +12,14 @@
     find . -name "*-Test.html" | awk '{print "\""$1"\","}' -->
     <script>
     QUnit.testSuites([
+        "./html/indicator-Test.html",
+        "./html/panel-Test.html",
+        "./html/resourceInputPanel-Test.html",
         "./html/audioPanel-Test.html",
         "./html/captionsPanel-Test.html",
-        "./html/indicator-Test.html",
+        "./html/videoPanel-Test.html",
         "./html/metadataUtils-Test.html",
-        "./html/pouchDBDataSource-Test.html",
-        "./html/videoPanel-Test.html"
+        "./html/pouchDBDataSource-Test.html"
     ]);
     </script>
 </head>
