@@ -53,6 +53,10 @@
     content: "\e602";
 }
 
+.fl-transcriptsPanel .fl-circle:before  {
+    content: "\e603";
+}
+
 .fl-tooltip {
     position: absolute;
     background: #FFFABB;
