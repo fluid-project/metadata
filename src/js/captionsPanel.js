@@ -39,6 +39,9 @@ var fluid_1_5 = fluid_1_5 || {};
                 srcPlaceholder: "www.example.com/movie.srt",
                 languages: ["Arabic", "Chinese", "English", "French", "Hindi", "Spanish"]
             }
+        },
+        styles: {
+            container: "fl-captionsPanel"
         }
     });
 
