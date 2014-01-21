@@ -217,7 +217,14 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     });
 
     fluid.defaults("fluid.simpleEditor.button", {
-        gradeNames: ["fluid.viewComponent", "autoInit", "{that}.getOSGrade"],
+        gradeNames: ["fluid.viewComponent", "fluid.progressiveCheckerForComponent", "autoInit"],
+        componentName: "fluid.simpleEditor.button",
+        progressiveCheckerOptions: {
+            checks: [{
+                feature: "{fluid.macOS}",
+                contextName: "fluid.simpleEditor.button.macOSModifier"
+            }]
+        },
         members: {
             controlType: {
                 expander: {
@@ -279,10 +286,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             updateActiveStateForKeys: {
                 funcName: "fluid.simpleEditor.button.filterKeys",
                 args: ["{arguments}.0", [37, 38, 39, 40], "{that}.updateActiveState"]
-            },
-            getOSGrade: {
-                funcName: "fluid.simpleEditor.button.checkOS",
-                args: ["{fluid.macOS}", "fluid.simpleEditor.button.macOSModifier"]
             }
         }
     });
@@ -316,10 +319,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             }
         });
 
-    };
-
-    fluid.simpleEditor.button.checkOS = function (isOS, gradeName) {
-        return isOS ? gradeName : undefined;
     };
 
     fluid.defaults("fluid.simpleEditor.insertVideo", {
