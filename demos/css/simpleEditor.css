@@ -38,6 +38,14 @@ body {
     margin-top: 0.2em;
 }
 
+.fl-demo .fl-metadata {
+    margin-bottom: 0.5em;
+    background-color: #C1DCE0;
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
+    border: 1px solid #4d4d4d;
+}
+
 .fl-demo .fl-simpleEditor-greeting .fl-simpleEditor-greeting-title  {
     font-family: 'RobotoSlab';
     font-size: 1.6em;
@@ -46,14 +54,6 @@ body {
 .fl-demo .fl-simpleEditor-greeting .fl-simpleEditor-greeting-text  {
     font-family: 'OpenSans-Regular';
     font-size: 1.2em;
-}
-
-.fl-demo .fl-simpleEditor {
-    margin-bottom: 0.5em;
-    background-color: #C1DCE0;
-    border-top-left-radius: 0.5em;
-    border-top-right-radius: 0.5em;
-    border: 1px solid #4d4d4d;
 }
 
 .fl-demo .fl-simpleEditor-toolbar {
@@ -72,7 +72,7 @@ body {
     min-width: 9em;
     width: 70%;
     max-width: 20em;
-    
+
     /* copy some styling of Bootstrap .form-control so it matches the button */
     border: 1px solid #CCCCCC;
     border-radius: 4px;
@@ -112,7 +112,7 @@ body {
 
 /* Bootstrap small width */
 @media screen and (min-width: 768px) and (max-width:991px){
-    
+
      .fl-demo .fl-logo-text1 {
         font-size: 1.2em;
     }
@@ -132,20 +132,20 @@ body {
     .fl-demo .fl-simpleEditor {
         border-radius: 0.5em;
     }
-    
+
     .fl-demo .fl-simpleEditor .row{
         margin-right: 0; /* Remove 15px padding Bootstrap adds to this column */
     }
-    
+
     .fl-demo .fl-simpleEditor-toolbar {
         border-top-right-radius: 0; /* At this resolution, this corner is not rounded. */
     }
-    
+
     .fl-demo .fl-simpleEditor-content {
         border-bottom-left-radius: 0.5em; /* At this resolution, round just this corner. */
         height: 30em;
     }
-     
+
     .fl-demo .fl-metadataPanelContainer {
         height: 33em;
         margin-top: 0.2em;
@@ -153,7 +153,7 @@ body {
         overflow:auto;
         margin-left: 0;
     }
-    
+
     .fl-demo .fl-metadataPanelContainer hr {
         width: 100%;
     }
@@ -178,16 +178,16 @@ body {
 .fl-demo .fl-simpleEditor-insertVideo-placeHolder-playTriangle {
     width: 0;
     height: 0;
-    
+
     border-style: solid;
     border-width: 1.5em 0 1.5em 2.3em;
     border-color: transparent transparent transparent #000000;
 }
 
 /*
- * Bootstrap overrides 
+ * Bootstrap overrides
  */
- 
+
 label {
     font-weight: normal;
 }

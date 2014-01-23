@@ -1,6 +1,6 @@
 /*
 
-Copyright 2013 OCAD University
+Copyright 2013-2014 OCAD University
 
 Licensed under the Educational Community License (ECL), Version 2.0 or the New
 BSD license. You may not use this file except in compliance with one these
@@ -27,20 +27,17 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         gradeNames: ["fluid.viewComponent", "autoInit"],
         selectors: {
             controls: ".flc-simpleEditor-control",
-            content: ".flc-simpleEditor-content",
-            sidebar: ".flc-metadataPanelContainer"
+            content: ".flc-simpleEditor-content"
         },
         events: {
-            onReset: null,
-            afterReset: null
+            onReset: null
         },
         listeners: {
             "onCreate.makeEditable": {
                 "this": "{that}.dom.content",
                 "method": "attr",
                 "args": [{contentEditable: true}]
-            },
-            "onReset.reset": "{that}.reset"
+            }
         },
         modelListeners: {
             "markup": {
@@ -59,26 +56,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             },
             reset: {
                 funcName: "fluid.simpleEditor.reset",
-                args: ["{that}", "{that}.events.afterReset.fire"]
+                args: ["{that}"]
             }
         },
         components: {
-            dataSource: {
-                type: "fluid.pouchdb.dataSource",
-                options: {
-                    databaseName: "simpleEditor",
-                    listeners: {
-                        "onCreate.fetchMarkup": {
-                            listener: "{that}.get",
-                            args: [{id: "markup"}, "{simpleEditor}.setContent"]
-                        },
-                        "onCreate.fetchMetadata": {
-                            listener: "{that}.get",
-                            args: [{id: "videoMetadata"}, "{insertVideo}.setModel"]
-                        }
-                    }
-                }
-            },
             insertVideo: {
                 type: "fluid.simpleEditor.insertVideo",
                 container: "{that}.container",
@@ -90,21 +71,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                         "afterInsert.updateEditor": "{simpleEditor}.updateModel",
                         "{simpleEditor}.events.onReset": "{that}.reset"
                     },
-                    modelListeners: {
-                        "*": {
-                            func: "{dataSource}.set",
-                            args: [{id: "videoMetadata", model: "{that}.model"}]
-                        }
-                    }
-                }
-            },
-            sidebar: {
-                type: "fluid.simpleEditor.sidebar",
-                container: "{that}.dom.sidebar",
-                options: {
-                    gradeNames: ["fluid.prefs.modelRelay"],
-                    model: "{insertVideo}.model",
-                    applier: "{insertVideo}.applier"
+                    model: "{simpleEditor}.model",
+                    applier: "{simpleEditor}.applier"
                 }
             }
         },
@@ -115,7 +83,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 container: "{source}",
                 options: {
                     listeners: {
-                        "{simpleEditor}.events.afterReset": "{that}.updateActiveState",
+                        "{simpleEditor}.events.onReset": "{that}.updateActiveState",
                         "onCreate.attachKeyboardShortcut": {
                             listener: "{that}.attachKeyboardShortcut",
                             args: ["{simpleEditor}.dom.content", "{that}.events.click.fire"]
@@ -151,23 +119,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     }
                 }
             }
-        },
-        distributeOptions: [{
-            source: "{that}.options.videoPanelTemplate",
-            target: "{that > sidebar > videoPanel}.options.resources.template.url"
-        }, {
-            source: "{that}.options.audioPanelTemplate",
-            target: "{that > sidebar > audioPanel}.options.audioTemplate"
-        }, {
-            source: "{that}.options.audioAttributesTemplate",
-            target: "{that > sidebar > audioPanel}.options.audioAttributesTemplate"
-        }, {
-            source: "{that}.options.captionsPanelTemplate",
-            target: "{that > sidebar > captionsPanel}.options.resources.template.url"
-        }, {
-            source: "{that}.options.captionsInputTemplate",
-            target: "{that > sidebar > captionsPanel}.options.captionsInputTemplate"
-        }]
+        }
     });
 
     fluid.simpleEditor.setContent = function (elm, content) {
@@ -180,10 +132,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         that.applier.requestChange("markup", that.locate("content").html());
     };
 
-    fluid.simpleEditor.reset = function (that, callback) {
+    fluid.simpleEditor.reset = function (that) {
         that.setContent("");
         that.updateModel();
-        callback();
+        that.events.onReset.fire();
     };
 
     fluid.registerNamespace("fluid.simpleEditor.button");
@@ -322,7 +274,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     };
 
     fluid.defaults("fluid.simpleEditor.insertVideo", {
-        gradeNames: ["fluid.viewComponent", "fluid.simpleEditor.defaultModel", "autoInit"],
+        gradeNames: ["fluid.viewComponent", "autoInit"],
         selectors: {
             url: ".flc-simpleEditor-insertVideo-url",
             urlLabel: ".flc-simpleEditor-insertVideo-urlLabel",
@@ -339,6 +291,9 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         },
         model: {
             url: ""
+        },
+        modelListeners: {
+            "url": "{that}.setURLText"
         },
         placeHolderID: "#videoPlaceHolder",
         events: {
@@ -396,9 +351,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 funcName: "fluid.simpleEditor.insertVideo.updateActiveState",
                 args: ["{that}.dom.submit", "{that}.dom.url"]
             },
-            setModel: {
-                funcName: "fluid.simpleEditor.insertVideo.setModel",
-                args: ["{that}", "{arguments}.0"]
+            setURLText: {
+                funcName: "fluid.simpleEditor.insertVideo.setURLText",
+                args: ["{that}.dom.url", "{that}.model.url"],
+                dynamic: true
             },
             reset: {
                 funcName: "fluid.simpleEditor.insertVideo.reset",
@@ -425,13 +381,11 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     };
 
     fluid.simpleEditor.insertVideo.updateModel = function (that) {
-        var newModel = $.extend(true, {}, that.defaultModel, {url: that.locate("url").val()});
-        that.applier.requestChange("", newModel);
+        that.applier.requestChange("url", that.locate("url").val());
     };
 
-    fluid.simpleEditor.insertVideo.setModel = function (that, model) {
-        that.applier.requestChange("", model);
-        that.locate("url").val(that.model.url);
+    fluid.simpleEditor.insertVideo.setURLText = function (urlElm, url) {
+        urlElm.val(url);
     };
 
     fluid.simpleEditor.insertVideo.updateActiveState = function (buttonElm, urlField) {
@@ -439,106 +393,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     };
 
     fluid.simpleEditor.insertVideo.reset = function (that) {
-        that.setModel(that.defaultModel);
+        that.applier.requestChange("url", "");
         that.updateActiveState();
     };
-
-    fluid.defaults("fluid.simpleEditor.sidebar", {
-        gradeNames: ["fluid.rendererComponent", "autoInit"],
-        selectors: {
-            videoPanel: ".flc-videoPanel",
-            audioPanel: ".flc-audioPanel",
-            captionsPanel: ".flc-captionsPanel"
-        },
-        events: {
-            onCreatePanels: null
-        },
-        modelListeners: {
-            "url": "{that}.refreshView"
-        },
-        renderOnInit: true,
-        // These sub components are managed through the renderer
-        // to work around issues of creation/destruction.
-        // When using these as subcomponents directly,
-        // the components would be recreated with old model
-        // values after being destroyed.
-        protoTree: {
-            expander: {
-                type: "fluid.renderer.condition",
-                condition: "${url}",
-                trueTree: {
-                    videoPanel: {
-                        decorators: {
-                            type: "fluid",
-                            func: "fluid.metadata.videoPanel",
-                            options: {
-                                gradeNames: ["fluid.prefs.modelRelay"],
-                                sourceApplier: "{insertVideo}.applier",
-                                model: {
-                                    highContrast: "{sidebar}.model.highContrast",
-                                    signLanguage: "{sidebar}.model.signLanguage",
-                                    flashing: "{sidebar}.model.flashing"
-                                },
-                                rules: {
-                                    highContrast: "highContrast",
-                                    signLanguage: "signLanguage",
-                                    flashing: "flashing"
-                                }
-                            }
-                        }
-                    },
-                    audioPanel: {
-                        decorators: {
-                            type: "fluid",
-                            func: "fluid.metadata.audioPanel",
-                            options: {
-                                gradeNames: ["fluid.prefs.modelRelay"],
-                                sourceApplier: "{sidebar}.applier",
-                                model: {
-                                    audio: "{sidebar}.model.audio",
-                                    keywords: "{sidebar}.model.audioKeywords"
-                                },
-                                rules: {
-                                    audio: "audio",
-                                    audioKeywords: "keywords"
-                                }
-                            }
-                        }
-                    },
-                    captionsPanel: {
-                        decorators: {
-                            type: "fluid",
-                            func: "fluid.metadata.captionsPanel",
-                            options: {
-                                gradeNames: ["fluid.prefs.modelRelay"],
-                                sourceApplier: "{sidebar}.applier",
-                                model: {
-                                    captions: "{sidebar}.model.captions"
-                                },
-                                rules: {
-                                    captions: "captions"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    });
-
-    fluid.defaults("fluid.simpleEditor.defaultModel", {
-        gradeNames: ["fluid.littleComponent", "autoInit"],
-        members: {
-            defaultModel: {
-                url: "",
-                highContrast: false,
-                signLanguage: false,
-                flashing: "unknown",
-                audio: "available",
-                keywords: [],
-                captions: []
-            }
-        }
-    });
 
 })(jQuery, fluid);
