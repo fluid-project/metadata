@@ -127,14 +127,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             onReset: null
         },
         listeners: {
-            "onCreate.setDefaultModel": {
-                listener: "{that}.setModel",
-                args: "{that}.defaultModel"
-            },
-            "onReset.setDefaultModel": {
-                listener: "{that}.setModel",
-                args: "{that}.defaultModel"
-            }
+            "onCreate.setDefaultModel": "{that}.setDefaultModel",
+            "onReset.setDefaultModel": "{that}.setDefaultModel"
         },
         modelListeners: {
             "url": "{that}.refreshView",
@@ -143,12 +137,20 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             setModel: {
                 funcName: "fluid.metadata.metadataPanel.setModel",
                 args: ["{that}", "{arguments}.0"]
+            },
+            setDefaultModel: {
+                funcName: "fluid.metadata.metadataPanel.setDefaultModel",
+                args: ["{that}", "{that}.defaultModel"]
             }
         }
     });
 
     fluid.metadata.metadataPanel.setModel = function (that, model) {
         that.applier.requestChange("", model);
+    };
+
+    fluid.metadata.metadataPanel.setDefaultModel = function (that, defaultModel) {
+        that.setModel(defaultModel);
     };
 
 })(jQuery, fluid);

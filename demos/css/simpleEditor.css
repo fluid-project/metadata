@@ -129,12 +129,16 @@ body {
 
 /* Bootstrap Medium width */
 @media screen and (min-width: 992px) {
-    .fl-demo .fl-simpleEditor {
+    .fl-demo .fl-metadata {
         border-radius: 0.5em;
     }
 
-    .fl-demo .fl-simpleEditor .row{
+    .fl-demo .fl-metadata{
         margin-right: 0; /* Remove 15px padding Bootstrap adds to this column */
+    }
+
+    .fl-demo .fl-metadata .col-md-8{
+        padding-left: 0;
     }
 
     .fl-demo .fl-simpleEditor-toolbar {
