@@ -19,6 +19,11 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
     fluid.registerNamespace("fluid.metadata");
 
+    /****************************************************************
+     * The grade component that renders all panels for defining
+     * metadata for video element.
+     ****************************************************************/
+
     fluid.defaults("fluid.metadata.videoMetadataPanel", {
         gradeNames: ["fluid.rendererComponent", "fluid.metadata.defaultVideoModel", "autoInit"],
         selectors: {
@@ -26,7 +31,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             audioPanel: ".flc-audioPanel",
             captionsPanel: ".flc-captionsPanel"
         },
-        renderOnInit: true,
         // These sub components are managed through the renderer
         // to work around issues of creation/destruction.
         // When using these as subcomponents directly,
@@ -43,16 +47,19 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                             func: "fluid.metadata.videoPanel",
                             options: {
                                 gradeNames: ["fluid.prefs.modelRelay"],
-                                sourceApplier: "{metadataPanel}.applier",
+                                sourceApplier: "{videoMetadataPanel}.applier",
                                 model: {
-                                    highContrast: "{metadataPanel}.model.highContrast",
-                                    signLanguage: "{metadataPanel}.model.signLanguage",
-                                    flashing: "{metadataPanel}.model.flashing"
+                                    highContrast: "{videoMetadataPanel}.model.highContrast",
+                                    signLanguage: "{videoMetadataPanel}.model.signLanguage",
+                                    flashing: "{videoMetadataPanel}.model.flashing"
                                 },
                                 rules: {
                                     highContrast: "highContrast",
                                     signLanguage: "signLanguage",
                                     flashing: "flashing"
+                                },
+                                listeners: {
+                                    afterRender: "{videoMetadataPanel}.events.videoPanelRendered.fire"
                                 }
                             }
                         }
@@ -63,14 +70,17 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                             func: "fluid.metadata.audioPanel",
                             options: {
                                 gradeNames: ["fluid.prefs.modelRelay"],
-                                sourceApplier: "{metadataPanel}.applier",
+                                sourceApplier: "{videoMetadataPanel}.applier",
                                 model: {
-                                    audio: "{metadataPanel}.model.audio",
-                                    keywords: "{metadataPanel}.model.audioKeywords"
+                                    audio: "{videoMetadataPanel}.model.audio",
+                                    keywords: "{videoMetadataPanel}.model.audioKeywords"
                                 },
                                 rules: {
                                     audio: "audio",
                                     audioKeywords: "keywords"
+                                },
+                                listeners: {
+                                    afterRender: "{videoMetadataPanel}.events.audioPanelRendered.fire"
                                 }
                             }
                         }
@@ -81,29 +91,56 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                             func: "fluid.metadata.captionsPanel",
                             options: {
                                 gradeNames: ["fluid.prefs.modelRelay"],
-                                sourceApplier: "{metadataPanel}.applier",
+                                sourceApplier: "{videoMetadataPanel}.applier",
                                 model: {
-                                    captions: "{metadataPanel}.model.captions"
+                                    captions: "{videoMetadataPanel}.model.captions"
                                 },
                                 rules: {
                                     captions: "captions"
+                                },
+                                listeners: {
+                                    afterRender: "{videoMetadataPanel}.events.captionsPanelRendered.fire"
                                 }
                             }
                         }
                     }
                 }
             }
-        }
-    });
-
-    fluid.defaults("fluid.metadata.saveMetadata", {
-        gradeNames: ["fluid.modelComponent", "autoInit"],
-        modelListeners: {
-            "*": {
-                func: "{dataSource}.set",
-                args: [{id: "videoMetadata", model: "{that}.model"}]
+        },
+        events: {
+            videoPanelRendered: null,
+            audioPanelRendered: null,
+            captionsPanelRendered: null,
+            afterSubpanelsRendered: {
+                events: {
+                    videoPanelRendered: "videoPanelRendered",
+                    audioPanelRendered: "audioPanelRendered",
+                    captionsPanelRendered: "captionsPanelRendered"
+                },
+                args: "{that}"
             }
         },
+        distributeOptions: [{
+            source: "{that}.options.videoPanelTemplate",
+            removeSource: true,
+            target: "{that > videoPanel}.options.resources.template.url"
+        }, {
+            source: "{that}.options.audioPanelTemplate",
+            removeSource: true,
+            target: "{that > audioPanel}.options.audioTemplate"
+        }, {
+            source: "{that}.options.audioAttributesTemplate",
+            removeSource: true,
+            target: "{that > audioPanel}.options.audioAttributesTemplate"
+        }, {
+            source: "{that}.options.captionsPanelTemplate",
+            removeSource: true,
+            target: "{that > captionsPanel}.options.resources.template.url"
+        }, {
+            source: "{that}.options.captionsInputTemplate",
+            removeSource: true,
+            target: "{that > captionsPanel}.options.captionsInputTemplate"
+        }]
     });
 
     fluid.defaults("fluid.metadata.defaultVideoModel", {
@@ -120,37 +157,5 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             }
         }
     });
-
-    fluid.defaults("fluid.metadata.metadataPanel", {
-        gradeNames: ["fluid.metadata.videoMetadataPanel", "fluid.metadata.saveMetadata", "autoInit"],
-        events: {
-            onReset: null
-        },
-        listeners: {
-            "onCreate.setDefaultModel": "{that}.setDefaultModel",
-            "onReset.setDefaultModel": "{that}.setDefaultModel"
-        },
-        modelListeners: {
-            "url": "{that}.refreshView",
-        },
-        invokers: {
-            setModel: {
-                funcName: "fluid.metadata.metadataPanel.setModel",
-                args: ["{that}", "{arguments}.0"]
-            },
-            setDefaultModel: {
-                funcName: "fluid.metadata.metadataPanel.setDefaultModel",
-                args: ["{that}", "{that}.defaultModel"]
-            }
-        }
-    });
-
-    fluid.metadata.metadataPanel.setModel = function (that, model) {
-        that.applier.requestChange("", model);
-    };
-
-    fluid.metadata.metadataPanel.setDefaultModel = function (that, defaultModel) {
-        that.setModel(defaultModel);
-    };
 
 })(jQuery, fluid);

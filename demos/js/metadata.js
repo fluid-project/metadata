@@ -44,7 +44,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 type: "fluid.metadata.metadataPanel",
                 container: "{that}.dom.metadataPanel",
                 options: {
-                    gradeNames: ["fluid.prefs.modelRelay"],
+                    gradeNames: ["fluid.prefs.modelRelay", "fluid.metadata.videoMetadataPanel", "fluid.metadata.saveVideoMetadata"],
                     sourceApplier: "{metadata}.applier",
                     rules: {
                         url: "url"
@@ -73,20 +73,35 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         },
         distributeOptions: [{
             source: "{that}.options.videoPanelTemplate",
-            target: "{that > metadataPanel > videoPanel}.options.resources.template.url"
+            removeSource: true,
+            target: "{that > metadataPanel}.options.videoPanelTemplate"
         }, {
             source: "{that}.options.audioPanelTemplate",
-            target: "{that > metadataPanel > audioPanel}.options.audioTemplate"
+            removeSource: true,
+            target: "{that > metadataPanel}.options.audioPanelTemplate"
         }, {
             source: "{that}.options.audioAttributesTemplate",
-            target: "{that > metadataPanel > audioPanel}.options.audioAttributesTemplate"
+            removeSource: true,
+            target: "{that > metadataPanel}.options.audioAttributesTemplate"
         }, {
             source: "{that}.options.captionsPanelTemplate",
-            target: "{that > metadataPanel > captionsPanel}.options.resources.template.url"
+            removeSource: true,
+            target: "{that > metadataPanel}.options.captionsPanelTemplate"
         }, {
             source: "{that}.options.captionsInputTemplate",
-            target: "{that > metadataPanel > captionsPanel}.options.captionsInputTemplate"
+            removeSource: true,
+            target: "{that > metadataPanel}.options.captionsInputTemplate"
         }]
+    });
+
+    fluid.defaults("fluid.metadata.saveVideoMetadata", {
+        gradeNames: ["fluid.modelComponent", "autoInit"],
+        modelListeners: {
+            "*": {
+                func: "{dataSource}.set",
+                args: [{id: "videoMetadata", model: "{that}.model"}]
+            }
+        },
     });
 
 })(jQuery, fluid);
