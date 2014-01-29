@@ -93,10 +93,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                                 gradeNames: ["fluid.prefs.modelRelay"],
                                 sourceApplier: "{videoMetadataPanel}.applier",
                                 model: {
-                                    captions: "{videoMetadataPanel}.model.captions"
+                                    resources: "{videoMetadataPanel}.model.captions"
                                 },
                                 rules: {
-                                    captions: "captions"
+                                    captions: "resources"
                                 },
                                 listeners: {
                                     afterMarkupReady: "{videoMetadataPanel}.events.captionsPanelRendered.fire"
