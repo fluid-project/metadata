@@ -17,9 +17,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
 (function ($, fluid) {
 
-    fluid.registerNamespace("fluid.metadata");
-
-    fluid.defaults("fluid.metadata", {
+    fluid.defaults("demo.metadata", {
         gradeNames: ["fluid.viewComponent", "autoInit"],
         selectors: {
             simpleEditor: ".flc-simpleEditor",
