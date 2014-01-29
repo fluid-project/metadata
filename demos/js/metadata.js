@@ -17,6 +17,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
 (function ($, fluid) {
 
+    var demo = demo || {};
+
     fluid.defaults("demo.metadata", {
         gradeNames: ["fluid.viewComponent", "autoInit"],
         selectors: {
