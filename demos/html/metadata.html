@@ -16,10 +16,14 @@
         <script type="text/javascript" src="../../src/js/pouchDBDataSource.js"></script>
         <script type="text/javascript" src="../../src/js/indicator.js"></script>
         <script type="text/javascript" src="../../src/js/panel.js"></script>
+        <script type="text/javascript" src="../../src/js/resourceInputPanel.js"></script>
         <script type="text/javascript" src="../../src/js/videoPanel.js"></script>
         <script type="text/javascript" src="../../src/js/audioPanel.js"></script>
         <script type="text/javascript" src="../../src/js/captionsPanel.js"></script>
+        <script type="text/javascript" src="../../src/js/videoMetadataPanel.js"></script>
+        <script type="text/javascript" src="../../src/js/metadataPanel.js"></script>
         <script type="text/javascript" src="../js/simpleEditor.js"></script>
+        <script type="text/javascript" src="../js/metadata.js"></script>
 
     </head>
     <body>
@@ -43,64 +47,62 @@
                     </p>
                 </div>
 
-                <div class="flc-simpleEditor fl-simpleEditor clearfix">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="flc-simpleEditor-toolbar fl-simpleEditor-toolbar btn-toolbar" role="toolbar">
-                                <div class="row">
-                                    <div class="col-lg-3 col-md-4 col-sm-3 col-xs-12">
-                                        <ul class="btn-group">
-                                            <li class="flc-simpleEditor-control btn btn-default" role="button" data-control="bold">
-                                                B
-                                            </li>
-                                            <li class="flc-simpleEditor-control btn btn-default" role="button" data-control="italic">
-                                                I
-                                            </li>
-                                            <li class="flc-simpleEditor-control btn btn-default" role="button" data-control="underline">
-                                                U
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    <div class="col-lg-9 col-md-8 col-sm-9 col-xs-12">
-                                        <form class="fl-simpleEditor-insertVideo-form" role="form">
-                                            <div class="row">
-                                                <label class="flc-simpleEditor-insertVideo-urlLabel fl-simpleEditor-insertVideo-urlLabel col-md-3 col-sm-4 col-xs-3" for="videoInput"></label>
-                                                <div class="col-md-9 col-sm-7 col-xs-8">
-                                                    <input type="text" class="flc-simpleEditor-insertVideo-url fl-simpleEditor-insertVideo-url" placeholder="www.example.com/video.mp4" id="videoInput">
-                                                    <button class="flc-simpleEditor-insertVideo-submit fl-simpleEditor-insertVideo-submit btn btn-sm btn-default">
-                                                        OK
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </form>
-
-                                    </div>
+                <div class="flc-metadata fl-metadata row">
+                    <div class="flc-simpleEditor fl-simpleEditor clearfix col-md-8">
+                        <div class="flc-simpleEditor-toolbar fl-simpleEditor-toolbar btn-toolbar" role="toolbar">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 col-sm-3 col-xs-12">
+                                    <ul class="btn-group">
+                                        <li class="flc-simpleEditor-control btn btn-default" role="button" data-control="bold" data-keycode="b">
+                                            B
+                                        </li>
+                                        <li class="flc-simpleEditor-control btn btn-default" role="button" data-control="italic" data-keycode="i">
+                                            I
+                                        </li>
+                                        <li class="flc-simpleEditor-control btn btn-default" role="button" data-control="underline" data-keycode="u">
+                                            U
+                                        </li>
+                                    </ul>
                                 </div>
-                           </div>
 
-                            <!-- editable area -->
-                            <div class="flc-simpleEditor-content fl-simpleEditor-content panel-body"></div>
-                        </div>
+                                <div class="col-lg-9 col-md-8 col-sm-9 col-xs-12">
+                                    <form class="fl-simpleEditor-insertVideo-form" role="form">
+                                        <div class="row">
+                                            <label class="flc-simpleEditor-insertVideo-urlLabel fl-simpleEditor-insertVideo-urlLabel col-md-3 col-sm-4 col-xs-3" for="videoInput"></label>
+                                            <div class="col-md-9 col-sm-7 col-xs-8">
+                                                <input type="text" class="flc-simpleEditor-insertVideo-url fl-simpleEditor-insertVideo-url" placeholder="www.example.com/video.mp4" id="videoInput">
+                                                <button class="flc-simpleEditor-insertVideo-submit fl-simpleEditor-insertVideo-submit btn btn-sm btn-default">
+                                                    OK
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                       </div>
 
-                        <!-- metadata panels -->
-                        <div class="flc-metadataPanelContainer fl-metadataPanelContainer col-md-4">
-                            <div class="flc-videoPanel fl-videoPanel"></div>
-                            <div class="flc-audioPanel fl-audioPanel"></div>
-                            <div class="flc-captionsPanel fl-captionsPanel"></div>
-                        </div>
+                        <!-- editable area -->
+                        <div class="flc-simpleEditor-content fl-simpleEditor-content panel-body"></div>
+
+                    </div>
+
+                    <!-- metadata panels -->
+                    <div class="flc-metadataPanelContainer fl-metadataPanelContainer col-md-4">
+                        <div class="flc-videoPanel fl-videoPanel"></div>
+                        <div class="flc-audioPanel fl-audioPanel"></div>
+                        <div class="flc-captionsPanel fl-captionsPanel"></div>
                     </div>
                 </div>
                 <a href="metadataMarkupView.html" target="_blank" class="btn btn-default">View Output HTML</a>
             </section>
         </section>
         <script type="text/javascript">
-            var editor = fluid.simpleEditor(".flc-simpleEditor", {
+            var editor = demo.metadata(".flc-metadata", {
                 videoPanelTemplate: "../../src/html/video-template.html",
                 audioPanelTemplate: "../../src/html/audio-template.html",
                 audioAttributesTemplate: "../../src/html/audio-attributes-template.html",
-                captionsPanelTemplate: "../../src/html/captions-template.html",
-                captionsInputTemplate: "../../src/html/captions-input-template.html"
+                captionsPanelTemplate: "../../src/html/resourceInputPanel-template.html",
+                captionsInputTemplate: "../../src/html/resourceInput-template.html"
             });
             $(".restart").click(function() {
                 editor.events.onReset.fire();
