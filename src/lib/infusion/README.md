@@ -1,11 +1,11 @@
 
 The version of Infusion included in this folder was created using a custom build from commit
 
-    e4d30d167cecee9069b28d9b6cc3591cc767ca53
+    1fcf03aae2b1b7cf2ec8d8905b49749916c1270d
 
-of the Infusion master branch
+of this branch
 
-    https://github.com/fluid-project/infusion
+    https://github.com/amb26/infusion/tree/FLUID-3674
 
 using the command line
 
@@ -15,11 +15,9 @@ The following directories were stripped out of the build since they contain code
 
     src/lib/infusion/components/
     src/lib/infusion/framework/
-    src/lib/infusion/components/
     src/lib/infusion/lib/fastXmlPull/
     src/lib/infusion/lib/fonts/
     src/lib/infusion/lib/jquery/core/
-    src/lib/infusion/lib/jquery/plugins/tooltip/js/
-    src/lib/infusion/lib/jquery/plugins/touchPounch/
+    src/lib/infusion/lib/jquery/plugins/
     src/lib/infusion/lib/jquery/ui/js/
     src/lib/infusion/lib/json/

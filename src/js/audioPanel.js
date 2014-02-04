@@ -39,7 +39,9 @@ var fluid_1_5 = fluid_1_5 || {};
                     }
                 },
                 options: {
-                    applier: "{audioPanel}.applier",
+                    members: {
+                        applier: "{audioPanel}.applier"
+                    },
                     model: "{audioPanel}.model",
                     resources: {
                         template: "{audioPanel}.options.resources.attributesTemplate"

@@ -34,8 +34,10 @@ var demo = demo || {};
                 type: "fluid.simpleEditor",
                 container: "{that}.dom.simpleEditor",
                 options: {
+                    members: {
+                        applier: "{metadata}.applier"
+                    },
                     model: "{metadata}.model",
-                    applier: "{metadata}.applier",
                     listeners: {
                         "{metadata}.events.onReset": "{that}.reset",
                     }
@@ -102,7 +104,7 @@ var demo = demo || {};
                 func: "{dataSource}.set",
                 args: [{id: "videoMetadata", model: "{that}.model"}]
             }
-        },
+        }
     });
 
 })(jQuery, fluid);

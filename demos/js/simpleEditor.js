@@ -72,7 +72,9 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                         "{simpleEditor}.events.onReset": "{that}.reset"
                     },
                     model: "{simpleEditor}.model",
-                    applier: "{simpleEditor}.applier"
+                    members: {
+                        applier: "{simpleEditor}.applier"
+                    }
                 }
             }
         },
