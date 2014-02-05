@@ -26,8 +26,8 @@ https://github.com/gpii/universal/LICENSE.txt
             videoPanelTemplate: "../../src/html/video-template.html",
             audioPanelTemplate: "../../src/html/audio-template.html",
             audioAttributesTemplate: "../../src/html/audio-attributes-template.html",
-            captionsPanelTemplate: "../../src/html/captions-template.html",
-            captionsInputTemplate: "../../src/html/captions-input-template.html",
+            captionsPanelTemplate: "../../src/html/resourceInputPanel-template.html",
+            captionsInputTemplate: "../../src/html/resourceInput-template.html",
             listeners: {
                 afterSubpanelsRendered: function (that) {
                     jqUnit.expect(4);
@@ -54,8 +54,8 @@ https://github.com/gpii/universal/LICENSE.txt
             videoPanelTemplate: "../../src/html/video-template.html",
             audioPanelTemplate: "../../src/html/audio-template.html",
             audioAttributesTemplate: "../../src/html/audio-attributes-template.html",
-            captionsPanelTemplate: "../../src/html/captions-template.html",
-            captionsInputTemplate: "../../src/html/captions-input-template.html",
+            captionsPanelTemplate: "../../src/html/resourceInputPanel-template.html",
+            captionsInputTemplate: "../../src/html/resourceInput-template.html",
             listeners: {
                 afterRender: function (that) {
                     jqUnit.expect(4);

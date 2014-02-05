@@ -27,8 +27,18 @@ var fluid_1_5 = fluid_1_5 || {};
      *******************************************************************************/
 
     fluid.defaults("fluid.metadata.audioPanel", {
-        gradeNames: ["fluid.rendererComponent", "autoInit"],
+        gradeNames: ["fluid.rendererComponent", "fluid.metadata.panel", "autoInit"],
         components: {
+            indicator: {
+                createOnEvent: "afterRender",
+                options: {
+                    tooltipContent: {
+                        "available": "${{that}.options.strings.audioAvailable}",
+                        "unavailable": "${{that}.options.strings.audioUnavailable}",
+                        "unknown": "${{that}.options.strings.audioUnavailable}"
+                    }
+                }
+            },
             attributes: {
                 type: "fluid.metadata.audioPanel.attributes",
                 createOnEvent: "afterRender",
@@ -48,12 +58,18 @@ var fluid_1_5 = fluid_1_5 || {};
                     },
                     events: {
                         afterRender: "{audioPanel}.events.afterAttributesRendered"
+                    },
+                    modelListeners: {
+                        "audio": "{that}.refreshView"
                     }
                 }
             }
         },
         model: {
             audio: "available"
+        },
+        indicatorModelRules: {
+            value: "audio"
         },
         strings: {
             title: "Audio",
@@ -66,33 +82,16 @@ var fluid_1_5 = fluid_1_5 || {};
         selectors: {
             title: ".flc-audio-title",
             instruction: ".flc-audio-instruction",
-            icon: ".flc-audio-icon",
+            indicator: ".flc-audio-icon",
             audioRow: ".flc-audio-row",
             audioLabel: ".flc-audio-label",
             audioInput: ".flc-audio-input",
             attributes: ".flc-audio-attributes"
         },
-        selectorsToIgnore: ["attributes"],
+        selectorsToIgnore: ["title", "indicator", "attributes"],
         repeatingSelectors: ["audioRow"],
         protoTree: {
-            title: {messagekey: "title"},
             instruction: {messagekey: "instruction"},
-            icon: {
-                decorators: {
-                    func: "fluid.metadata.indicator",
-                    type: "fluid",
-                    options: {
-                        model: {
-                            value: "${audio}"
-                        },
-                        tooltipContent: {
-                            "available": "${{that}.options.strings.audioAvailable}",
-                            "unavailable": "${{that}.options.strings.audioUnavailable}",
-                            "unknown": "${{that}.options.strings.audioUnavailable}"
-                        }
-                    }
-                }
-            },
             expander: {
                 type: "fluid.renderer.selection.inputs",
                 rowID: "audioRow",
@@ -128,9 +127,6 @@ var fluid_1_5 = fluid_1_5 || {};
         },
         listeners: {
             "onCreate.init": "fluid.metadata.audioPanel.init"
-        },
-        modelListeners: {
-            "audio": "{that}.refreshView"
         },
         distributeOptions: [{
             source: "{that}.options.audioTemplate",

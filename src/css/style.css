@@ -37,7 +37,7 @@
     line-height:1.3em;
 }
 
-.fl-metadataPanel-title {
+.fl-panel-title {
     text-shadow: 0.03em 0.03em 0 #fff;
 }
 
@@ -51,6 +51,10 @@
 
 .fl-captionsPanel .fl-circle:before  {
     content: "\e602";
+}
+
+.fl-transcriptsPanel .fl-circle:before  {
+    content: "\e603";
 }
 
 .fl-tooltip {
@@ -72,16 +76,16 @@
     margin-top: 0.5em;
 }
 
-.fl-captionsPanel .fl-captions-list li {
+.fl-captionsPanel .fl-resourceInputPanel-list li {
     margin-top: 1em;
 }
 
-.fl-captionsPanel .fl-captions-list li input {
+.fl-captionsPanel .fl-resourceInputPanel-list li input {
     width: 100%;
     margin-bottom: 0.5em;
 }
 
-.fl-captionsPanel .fl-captions-list li:nth-of-type(odd){
+.fl-captionsPanel .fl-resourceInputPanel-list li:nth-of-type(odd){
     background-color: #d3e3e6;
 
 }

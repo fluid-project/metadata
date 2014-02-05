@@ -93,13 +93,13 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                                 gradeNames: ["fluid.prefs.modelRelay"],
                                 sourceApplier: "{videoMetadataPanel}.applier",
                                 model: {
-                                    captions: "{videoMetadataPanel}.model.captions"
+                                    resources: "{videoMetadataPanel}.model.captions"
                                 },
                                 rules: {
-                                    captions: "captions"
+                                    captions: "resources"
                                 },
                                 listeners: {
-                                    afterRender: "{videoMetadataPanel}.events.captionsPanelRendered.fire"
+                                    afterMarkupReady: "{videoMetadataPanel}.events.captionsPanelRendered.fire"
                                 }
                             }
                         }
@@ -139,7 +139,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }, {
             source: "{that}.options.captionsInputTemplate",
             removeSource: true,
-            target: "{that > captionsPanel}.options.captionsInputTemplate"
+            target: "{that > captionsPanel}.options.resources.resourceInput.url"
         }]
     });
 
