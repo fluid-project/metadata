@@ -105,23 +105,23 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         },
         distributeOptions: [{
             source: "{that}.options.videoPanelTemplate",
-            removeSource: true,
+            // removeSource: true,
             target: "{that > videoPanel}.options.resources.template.url"
         }, {
             source: "{that}.options.audioPanelTemplate",
-            removeSource: true,
+            // removeSource: true,
             target: "{that > audioPanel}.options.audioTemplate"
         }, {
             source: "{that}.options.audioAttributesTemplate",
-            removeSource: true,
+            // removeSource: true,
             target: "{that > audioPanel}.options.audioAttributesTemplate"
         }, {
             source: "{that}.options.captionsPanelTemplate",
-            removeSource: true,
+            // removeSource: true,
             target: "{that > captionsPanel}.options.resources.template.url"
         }, {
             source: "{that}.options.captionsInputTemplate",
-            removeSource: true,
+            // removeSource: true,
             target: "{that > captionsPanel}.options.resources.resourceInput.url"
         }]
     });

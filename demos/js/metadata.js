@@ -30,8 +30,20 @@ var demo = demo || {};
             onCreateMetadataPanel: null,
             onReset: null
         },
+        listeners: {
+            "onReset.destroyMetadataPanel": "{that}.doDestroy"
+        },
+        invokers: {
+            "doDestroy": {
+                funcName: "demo.metadata.doDestroy",
+                args: "{that}"
+            }
+        },
         modelListeners: {
-            "url": "demo.metadata.checkUrl({that}, {change}.value)"
+            "url": {
+                listener: "demo.metadata.checkUrl",
+                args: ["{that}", "{change}.value"]
+            }
         },
         components: {
             simpleEditor: {
@@ -53,16 +65,11 @@ var demo = demo || {};
                 createOnEvent: "onCreateMetadataPanel",
                 options: {
                     gradeNames: ["fluid.metadata.videoMetadataPanel", "fluid.metadata.saveVideoMetadata"],
-                    gradeNames: ["fluid.prefs.modelRelay", "fluid.metadata.videoMetadataPanel", "fluid.metadata.saveVideoMetadata"],
-                    sourceApplier: "{metadata}.applier",
-                    rules: {
-                        url: "url"
-                    },
                     listeners: {
                         "{metadata}.events.onReset": "{that}.events.onReset.fire",
-                        "onCreate.setModel": {
-                            listener: "{that}.setModel",
-                            args: ["{dataSource}.savedModel"]
+                        "onCreate.setInitialModel": {
+                            listener: "demo.metadata.setMetadataPanelInitialModel",
+                            args: ["{metadata}.model.url", "{dataSource}", "{that}.setModel"]
                         }
                     }
                 }
@@ -75,9 +82,9 @@ var demo = demo || {};
                         savedModel: null
                     },
                     invokers: {
-                        saveModel: {
-                            funcName: "demo.metadata.saveModel",
-                            args: ["{metadata}", "{that}.savedModel", "{arguments}.0"]
+                        handleModel: {
+                            funcName: "demo.metadata.handleModel",
+                            args: ["{metadata}", "{that}", "{arguments}.0"]
                         }
                     },
                     listeners: {
@@ -87,7 +94,11 @@ var demo = demo || {};
                         },
                         "onCreate.fetchMetadata": {
                             listener: "{that}.get",
-                            args: [{id: "videoMetadata"}, "{that}.saveModel"]
+                            args: [{id: "videoMetadata"}, "{that}.handleModel"]
+                        },
+                        "{metadata}.events.onReset": {
+                            listener: "demo.metadata.resetDataSource",
+                            args: ["{that}", {id: "markup"}, {id: "videoMetadata"}]
                         }
                     }
                 }
@@ -95,23 +106,18 @@ var demo = demo || {};
         },
         distributeOptions: [{
             source: "{that}.options.videoPanelTemplate",
-            removeSource: true,
             target: "{that > metadataPanel}.options.videoPanelTemplate"
         }, {
             source: "{that}.options.audioPanelTemplate",
-            removeSource: true,
             target: "{that > metadataPanel}.options.audioPanelTemplate"
         }, {
             source: "{that}.options.audioAttributesTemplate",
-            removeSource: true,
             target: "{that > metadataPanel}.options.audioAttributesTemplate"
         }, {
             source: "{that}.options.captionsPanelTemplate",
-            removeSource: true,
             target: "{that > metadataPanel}.options.captionsPanelTemplate"
         }, {
             source: "{that}.options.captionsInputTemplate",
-            removeSource: true,
             target: "{that > metadataPanel}.options.captionsInputTemplate"
         }]
     });
@@ -120,13 +126,40 @@ var demo = demo || {};
         if (!url) {
             return;
         } else if (url.trim() !== "") {
+            that.doDestroy();
             that.events.onCreateMetadataPanel.fire();
         }
     };
 
-    demo.metadata.saveModel = function (that, savedModel, model) {
-        savedModel = model;
-        that.applier.requestChange("url", model.url);
+    demo.metadata.handleModel = function (metadata, that, model) {
+        if (!model || !model.url) {
+            return;
+        }
+
+        that.savedModel = model;
+        // Trigger the creation of metadataPanel
+        metadata.applier.requestChange("url", model.url);
+    };
+
+    demo.metadata.setMetadataPanelInitialModel = function (url, dataSource, setModelFunc) {
+        var savedModel = dataSource.savedModel;
+        setModelFunc($.extend(true, {url: url}, savedModel));
+    };
+
+    demo.metadata.resetDataSource = function (dataSource, markupID, videoMetadataID) {
+        dataSource.savedModel = null;
+        dataSource.delete(markupID);
+        dataSource.delete(videoMetadataID);
+    };
+
+    demo.metadata.doDestroy = function (that) {
+        if (that.metadataPanel) {
+            var metadataPanel = that.metadataPanel;
+            metadataPanel.audioPanel.container.html("");
+            metadataPanel.videoPanel.container.html("");
+            metadataPanel.captionsPanel.container.html("");
+            metadataPanel.destroy();
+        }
     };
 
     fluid.defaults("fluid.metadata.saveVideoMetadata", {
