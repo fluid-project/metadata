@@ -27,7 +27,11 @@ var demo = demo || {};
             metadataPanel: ".flc-metadataPanelContainer"
         },
         events: {
+            onCreateMetadataPanel: null,
             onReset: null
+        },
+        modelListeners: {
+            "url": "demo.metadata.checkUrl({that}, {change}.value)"
         },
         components: {
             simpleEditor: {
@@ -46,14 +50,20 @@ var demo = demo || {};
             metadataPanel: {
                 type: "fluid.metadata.metadataPanel",
                 container: "{that}.dom.metadataPanel",
+                createOnEvent: "onCreateMetadataPanel",
                 options: {
+                    gradeNames: ["fluid.metadata.videoMetadataPanel", "fluid.metadata.saveVideoMetadata"],
                     gradeNames: ["fluid.prefs.modelRelay", "fluid.metadata.videoMetadataPanel", "fluid.metadata.saveVideoMetadata"],
                     sourceApplier: "{metadata}.applier",
                     rules: {
                         url: "url"
                     },
                     listeners: {
-                        "{metadata}.events.onReset": "{that}.events.onReset.fire"
+                        "{metadata}.events.onReset": "{that}.events.onReset.fire",
+                        "onCreate.setModel": {
+                            listener: "{that}.setModel",
+                            args: ["{dataSource}.savedModel"]
+                        }
                     }
                 }
             },
@@ -61,6 +71,15 @@ var demo = demo || {};
                 type: "fluid.pouchdb.dataSource",
                 options: {
                     databaseName: "simpleEditor",
+                    members: {
+                        savedModel: null
+                    },
+                    invokers: {
+                        saveModel: {
+                            funcName: "demo.metadata.saveModel",
+                            args: ["{metadata}", "{that}.savedModel", "{arguments}.0"]
+                        }
+                    },
                     listeners: {
                         "onCreate.fetchMarkup": {
                             listener: "{that}.get",
@@ -68,7 +87,7 @@ var demo = demo || {};
                         },
                         "onCreate.fetchMetadata": {
                             listener: "{that}.get",
-                            args: [{id: "videoMetadata"}, "{metadataPanel}.setModel"]
+                            args: [{id: "videoMetadata"}, "{that}.saveModel"]
                         }
                     }
                 }
@@ -96,6 +115,19 @@ var demo = demo || {};
             target: "{that > metadataPanel}.options.captionsInputTemplate"
         }]
     });
+
+    demo.metadata.checkUrl = function (that, url) {
+        if (!url) {
+            return;
+        } else if (url.trim() !== "") {
+            that.events.onCreateMetadataPanel.fire();
+        }
+    };
+
+    demo.metadata.saveModel = function (that, savedModel, model) {
+        savedModel = model;
+        that.applier.requestChange("url", model.url);
+    };
 
     fluid.defaults("fluid.metadata.saveVideoMetadata", {
         gradeNames: ["fluid.modelComponent", "autoInit"],

@@ -26,35 +26,33 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
      ****************************************************************/
 
     fluid.defaults("fluid.metadata.metadataPanel", {
-        gradeNames: ["fluid.rendererComponent", "autoInit"],
+        gradeNames: ["fluid.viewComponent", "autoInit"],
         events: {
             onReset: null
         },
         listeners: {
-            "onCreate.setDefaultModel": "{that}.setDefaultModel",
-            "onReset.setDefaultModel": "{that}.setDefaultModel"
-        },
-        modelListeners: {
-            "url": "{that}.refreshView"
+            // "onCreate.setDefaultModel": "{that}.setModel",
+            "onReset.setDefaultModel": "{that}.setModel"
         },
         invokers: {
             setModel: {
                 funcName: "fluid.metadata.metadataPanel.setModel",
                 args: ["{that}", "{arguments}.0"]
             },
-            setDefaultModel: {
-                funcName: "fluid.metadata.metadataPanel.setDefaultModel",
-                args: ["{that}", "{that}.defaultModel"]
-            }
+            // setDefaultModel: {
+            //     funcName: "fluid.metadata.metadataPanel.setDefaultModel",
+            //     args: ["{that}", "{that}.defaultModel"]
+            // }
         }
     });
 
     fluid.metadata.metadataPanel.setModel = function (that, model) {
-        that.applier.requestChange("", model);
+        var finalModel = $.extend(true, {}, model, that.defaultModel);
+        that.applier.requestChange("", finalModel);
     };
 
-    fluid.metadata.metadataPanel.setDefaultModel = function (that, defaultModel) {
-        that.setModel(defaultModel);
-    };
+    // fluid.metadata.metadataPanel.setDefaultModel = function (that, defaultModel) {
+    //     that.setModel(defaultModel);
+    // };
 
 })(jQuery, fluid);

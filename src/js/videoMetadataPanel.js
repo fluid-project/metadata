@@ -25,84 +25,67 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
      ****************************************************************/
 
     fluid.defaults("fluid.metadata.videoMetadataPanel", {
-        gradeNames: ["fluid.rendererComponent", "fluid.metadata.defaultVideoModel", "autoInit"],
+        gradeNames: ["fluid.viewComponent", "fluid.metadata.defaultVideoModel", "autoInit"],
         selectors: {
             videoPanel: ".flc-videoPanel",
             audioPanel: ".flc-audioPanel",
             captionsPanel: ".flc-captionsPanel"
         },
-        // These sub components are managed through the renderer
-        // to work around issues of creation/destruction.
-        // When using these as subcomponents directly,
-        // the components would be recreated with old model
-        // values after being destroyed.
-        protoTree: {
-            expander: {
-                type: "fluid.renderer.condition",
-                condition: "${url}",
-                trueTree: {
-                    videoPanel: {
-                        decorators: {
-                            type: "fluid",
-                            func: "fluid.metadata.videoPanel",
-                            options: {
-                                gradeNames: ["fluid.prefs.modelRelay"],
-                                sourceApplier: "{videoMetadataPanel}.applier",
-                                model: {
-                                    highContrast: "{videoMetadataPanel}.model.highContrast",
-                                    signLanguage: "{videoMetadataPanel}.model.signLanguage",
-                                    flashing: "{videoMetadataPanel}.model.flashing"
-                                },
-                                rules: {
-                                    highContrast: "highContrast",
-                                    signLanguage: "signLanguage",
-                                    flashing: "flashing"
-                                },
-                                listeners: {
-                                    afterRender: "{videoMetadataPanel}.events.videoPanelRendered.fire"
-                                }
-                            }
-                        }
+        components: {
+            videoPanel: {
+                type: "fluid.metadata.videoPanel",
+                container: "{videoMetadataPanel}.dom.videoPanel",
+                options: {
+                    gradeNames: ["fluid.prefs.modelRelay"],
+                    sourceApplier: "{videoMetadataPanel}.applier",
+                    model: {
+                        highContrast: "{videoMetadataPanel}.model.highContrast",
+                        signLanguage: "{videoMetadataPanel}.model.signLanguage",
+                        flashing: "{videoMetadataPanel}.model.flashing"
                     },
-                    audioPanel: {
-                        decorators: {
-                            type: "fluid",
-                            func: "fluid.metadata.audioPanel",
-                            options: {
-                                gradeNames: ["fluid.prefs.modelRelay"],
-                                sourceApplier: "{videoMetadataPanel}.applier",
-                                model: {
-                                    audio: "{videoMetadataPanel}.model.audio",
-                                    keywords: "{videoMetadataPanel}.model.audioKeywords"
-                                },
-                                rules: {
-                                    audio: "audio",
-                                    audioKeywords: "keywords"
-                                },
-                                listeners: {
-                                    afterRender: "{videoMetadataPanel}.events.audioPanelRendered.fire"
-                                }
-                            }
-                        }
+                    rules: {
+                        highContrast: "highContrast",
+                        signLanguage: "signLanguage",
+                        flashing: "flashing"
                     },
-                    captionsPanel: {
-                        decorators: {
-                            type: "fluid",
-                            func: "fluid.metadata.captionsPanel",
-                            options: {
-                                gradeNames: ["fluid.prefs.modelRelay"],
-                                sourceApplier: "{videoMetadataPanel}.applier",
-                                model: {
-                                    resources: "{videoMetadataPanel}.model.captions"
-                                },
-                                rules: {
-                                    captions: "resources"
-                                },
-                                listeners: {
-                                    afterMarkupReady: "{videoMetadataPanel}.events.captionsPanelRendered.fire"
-                                }
-                            }
-                        }
+                    listeners: {
+                        afterRender: "{videoMetadataPanel}.events.videoPanelRendered.fire"
+                    }
+                }
+            },
+            audioPanel: {
+                type: "fluid.metadata.audioPanel",
+                container: "{videoMetadataPanel}.dom.audioPanel",
+                options: {
+                    gradeNames: ["fluid.prefs.modelRelay"],
+                    sourceApplier: "{videoMetadataPanel}.applier",
+                    model: {
+                        audio: "{videoMetadataPanel}.model.audio",
+                        keywords: "{videoMetadataPanel}.model.audioKeywords"
+                    },
+                    rules: {
+                        audio: "audio",
+                        audioKeywords: "keywords"
+                    },
+                    listeners: {
+                        afterRender: "{videoMetadataPanel}.events.audioPanelRendered.fire"
+                    }
+                }
+            },
+            captionsPanel: {
+                type: "fluid.metadata.captionsPanel",
+                container: "{videoMetadataPanel}.dom.captionsPanel",
+                options: {
+                    gradeNames: ["fluid.prefs.modelRelay"],
+                    sourceApplier: "{videoMetadataPanel}.applier",
+                    model: {
+                        resources: "{videoMetadataPanel}.model.captions"
+                    },
+                    rules: {
+                        captions: "resources"
+                    },
+                    listeners: {
+                        afterMarkupReady: "{videoMetadataPanel}.events.captionsPanelRendered.fire"
                     }
                 }
             }
