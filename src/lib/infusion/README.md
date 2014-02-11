@@ -1,11 +1,11 @@
 
 The version of Infusion included in this folder was created using a custom build from commit
 
-    1fcf03aae2b1b7cf2ec8d8905b49749916c1270d
+    9b56b7588bd77d9fc117d3e7dc7e02311c2f3b2b
 
-of this branch
+of the Infusion master branch
 
-    https://github.com/amb26/infusion/tree/FLUID-3674
+    https://github.com/fluid-project/infusion
 
 using the command line
 

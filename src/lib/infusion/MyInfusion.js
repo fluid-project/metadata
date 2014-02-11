@@ -17997,7 +17997,10 @@ var fluid = fluid || fluid_1_5;
      * be checked for <code>false</code> in which case further listeners will be shortcircuited, and this
      * will be the return value of fire()
      */
-    fluid.makeEventFirer = function (unicast, preventable, name) {
+    fluid.makeEventFirer = function (unicast, preventable, name, ownerId) {
+        var listeners; // = {}
+        var byId; // = {}
+        var sortedListeners; // = []
         
         function fireToListeners(listeners, args, wrapper) {
             if (!listeners) { return; }
@@ -18060,6 +18063,8 @@ var fluid = fluid || fluid_1_5;
             that.addListener.apply(null, arguments);
         };
         that = {
+            eventId: fluid.allocateGuid(),
+            ownerId: ownerId,
             name: name,
             typeName: "fluid.event.firer",
             addListener: function () {
@@ -18186,7 +18191,7 @@ var fluid = fluid || fluid_1_5;
                 event = fluid.event.resolveEvent(that, eventKey, eventSpec);
             }
         } else {
-            event = fluid.makeEventFirer(eventSpec === "unicast", eventSpec === "preventable", fluid.event.nameEvent(that, eventKey));
+            event = fluid.makeEventFirer(eventSpec === "unicast", eventSpec === "preventable", fluid.event.nameEvent(that, eventKey), that.id);
         }
         return event;
     };
@@ -19086,7 +19091,7 @@ var fluid = fluid || fluid_1_5;
                 }
             }
             if (value) {
-                that.options[key] = fluid.makeEventFirer(null, null, key);
+                that.options[key] = fluid.makeEventFirer(null, null, key, that.id);
                 fluid.event.addListenerToFirer(that.options[key], value);
             }
         });
@@ -19428,18 +19433,25 @@ var fluid_1_5 = fluid_1_5 || {};
 
     // Don't clobber any existing jQuery.browser in case it's different
     if (!$.browser) {
-        matched = fluid.uaMatch(navigator.userAgent);
-        browser = {};
-      
-        if (matched.browser) {
-            browser[matched.browser] = true;
-            browser.version = matched.version;
-        }
-        // Chrome is Webkit, but Webkit is also Safari.
-        if (browser.chrome) {
-            browser.webkit = true;
-        } else if (browser.webkit) {
-            browser.safari = true;
+        if (!!navigator.userAgent.match(/Trident\/7\./)) {
+            browser = { // From http://stackoverflow.com/questions/18684099/jquery-fail-to-detect-ie-11
+                msie: true,
+                version: 11
+            }
+        } else {
+            matched = fluid.uaMatch(navigator.userAgent);
+            browser = {};
+          
+            if (matched.browser) {
+                browser[matched.browser] = true;
+                browser.version = matched.version;
+            }
+            // Chrome is Webkit, but Webkit is also Safari.
+            if (browser.chrome) {
+                browser.webkit = true;
+            } else if (browser.webkit) {
+                browser.safari = true;
+            }
         }
         $.browser = browser;
     }
@@ -19514,7 +19526,23 @@ var fluid_1_5 = fluid_1_5 || {};
         fluid.setScopedData(target, ENABLEMENT_KEY, true);
     };
     
-    // This function is necessary since simulation of focus events by jQuery under IE
+    // This utility is required through the use of newer versions of jQuery which will obscure the original
+    // event responsible for interaction with a target. This is currently use in Tooltip.js and FluidView.js
+    // "dead man's blur" but would be of general utility
+    
+    fluid.resolveEventTarget = function (event) {
+        while (event.originalEvent && event.originalEvent.target) {
+            event = event.originalEvent;
+        }
+        return event.target;
+    };
+    
+    // These function (fluid.focus() and fluid.blur()) serve several functions. They should be used by
+    // all implementation both in test cases and component implementation which require to trigger a focus
+    // event. Firstly, they restore the old behaviour in jQuery versions prior to 1.10 in which a focus 
+    // trigger synchronously relays to a focus handler. In newer jQueries this defers to the real browser
+    // relay with numerous platform and timing-dependent effects. 
+    // Secondly, they are necessary since simulation of focus events by jQuery under IE
     // is not sufficiently good to intercept the "focusin" binding. Any code which triggers
     // focus or blur synthetically throughout the framework and client code must use this function,
     // especially if correct cross-platform interaction is required with the "deadMansBlur" function.
@@ -19522,12 +19550,14 @@ var fluid_1_5 = fluid_1_5 || {};
     function applyOp(node, func) {
         node = $(node);
         node.trigger("fluid-"+func);
+        node.triggerHandler(func);
         node[func]();
+        return node;
     }
     
     $.each(["focus", "blur"], function(i, name) {
         fluid[name] = function(elem) {
-            applyOp(elem, name);
+            return applyOp(elem, name);
         }
     });
     
@@ -20763,14 +20793,16 @@ var fluid_1_5 = fluid_1_5 || {};
         });
         delete shadow.listeners;
     };
-
+    
     // unsupported, non-API function
     fluid.recordListener = function (event, listener, shadow) {
-        var listeners = shadow.listeners;
-        if (!listeners) {
-            listeners = shadow.listeners = [];
+        if (event.ownerId !== shadow.that.id) { // don't bother recording listeners registered from this component itself
+            var listeners = shadow.listeners;
+            if (!listeners) {
+                listeners = shadow.listeners = [];
+            }
+            listeners.push({event: event, listener: listener});
         }
-        listeners.push({event: event, listener: listener});
     };
 
     var idToInstantiator = {};
@@ -20824,6 +20856,7 @@ var fluid_1_5 = fluid_1_5 || {};
             if (created) {
                 idToInstantiator[component.id] = that;
                 var shadow = that.idToShadow[component.id] = {};
+                shadow.that = component;
                 shadow.path = path;
             }
             if (that.pathToComponent[path]) {
@@ -21700,6 +21733,7 @@ outer:  for (var i = 0; i < exist.length; ++i) {
             fluid.popActivity();
             return togo;
         };
+        fluid.event.impersonateListener(listener, togo);
         return togo;
     };
 
@@ -21954,7 +21988,7 @@ outer:  for (var i = 0; i < exist.length; ++i) {
         }
         fluid.each(source, function (value, key) {
             // TODO: hack here to avoid corrupting old-style model references which were listed with "preserve" - eliminate this along with that mergePolicy
-            if (fluid.isPlainObject(value) && !(userOptions && key === "model" && segs.length === 0)) {
+            if (fluid.isPlainObject(value) && !fluid.isDOMish(value) && !(userOptions && key === "model" && segs.length === 0)) {
                 target[key] = fluid.freshContainer(value);
                 segs.push(key);
                 fluid.expandCompactRec(segs, target[key], value);
@@ -22566,7 +22600,7 @@ var fluid_1_5 = fluid_1_5 || {};
             enlist = {
                 that: that,
                 complete: fluid.isModelComplete(that) 
-            }
+            };
             instantiator.modelTransactions.init[that.id] = enlist;
         }
         return enlist;
@@ -22655,7 +22689,7 @@ var fluid_1_5 = fluid_1_5 || {};
             }  
         });
         return updates;
-    }
+    };
     
     fluid.transformToAdapter = function (transform, targetPath) {
         var basedTransform = {};
@@ -22675,7 +22709,7 @@ var fluid_1_5 = fluid_1_5 || {};
     fluid.parseValidModelReference = function (that, name, ref) {
         var reject = function (message) {
             fluid.fail("Error in " + name + ": " + ref + message);
-        }
+        };
         var parsed, target;
         if (ref.charAt(0) === "{") {
             parsed = fluid.parseModelReference(that, ref);
@@ -22694,7 +22728,7 @@ var fluid_1_5 = fluid_1_5 || {};
             parsed = {
                 path: ref,
                 modelSegs: that.applier.parseEL(ref)
-            }
+            };
         }
         if (!target.applier) {
             fluid.getForComponent(target, ["applier"]);
@@ -22757,11 +22791,9 @@ var fluid_1_5 = fluid_1_5 || {};
                 transRec[applier.applierId] = {transaction: trans}; // enlist the outer user's original transaction
             }
             var existing = transRec[applierId];
-            // var initRecord = instantiator.modelTransactions.init[target.id];
-            // var noRelay = initRecord && initRecord[linkId] === "noRelay";
             transRec[linkId] = transRec[linkId] || 0;
             // Crude "oscillation prevention" system limits each link to maximum of 2 operations per cycle (presumably in opposite directions)
-            var relay = (transRec[linkId] < 2); // && !noRelay;
+            var relay = transRec[linkId] < 2;
             if (relay) {
                 ++transRec[linkId];
                 if (!existing) {
@@ -22796,14 +22828,19 @@ var fluid_1_5 = fluid_1_5 || {};
     // "options" will be transformPackage
     fluid.connectModelRelay = function (source, sourceSegs, target, targetSegs, options) {
         var linkId = fluid.allocateGuid();
-        var enlist = fluid.enlistModelComponent(target);
-
-        if (enlist.complete) {
-            var shadow = fluid.shadowForComponent(target);
-            if (shadow.modelComplete) {
-                enlist.completeOnInit = true;
-            }
+        function enlistComponent(component) {
+            var enlist = fluid.enlistModelComponent(component);
+    
+            if (enlist.complete) {
+                var shadow = fluid.shadowForComponent(component);
+                if (shadow.modelComplete) {
+                    enlist.completeOnInit = true;
+                }
+            }         
         }
+        enlistComponent(target);
+        enlistComponent(source); // role of "source" and "target" may have been swapped in a modelRelay document
+ 
         if (options.update) { // it is a call via parseImplicitRelay for a relay document
             if (options.targetApplier) {
                 // register changes from the model onto changes to the model relay document
@@ -22840,14 +22877,14 @@ var fluid_1_5 = fluid_1_5 || {};
         };
         that.forwardAdapter = function () { // create a stable function reference for this possibly changing adapter
             that.forwardAdapterImpl.apply(null, arguments);
-        }
+        };
         // fired from fluid.model.updateRelays via invalidator event
         that.runTransform = function (trans, transRec) {
             trans.commit(); // this will reach the special "half-transactional listener" registered in fluid.connectModelRelay,
             // branch with options.targetApplier - by committing the transaction, we update the relay document in bulk and then cause
             // it to execute (via "transducer")
             trans.reset();
-        }
+        };
         that.forwardApplier = fluid.makeNewChangeApplier(that.forwardHolder);
         that.forwardApplier.isRelayApplier = true; // special annotation so these can be discovered in the transaction record
         that.invalidator = fluid.makeEventFirer(null, null, "Invalidator for model relay with applier " + that.forwardApplier.applierId);
@@ -22855,14 +22892,15 @@ var fluid_1_5 = fluid_1_5 || {};
             that.backwardApplier = fluid.makeNewChangeApplier(that.backwardHolder);
             that.backwardAdapter = function () {
                 that.backwardAdapterImpl.apply(null, arguments);
-            }
+            };
         }
         that.update = that.invalidator.fire; // necessary so that both routes to fluid.connectModelRelay from here hit the first branch
         var implicitOptions = {
             relayCount: 0, // this count is updated in fluid.model.updateRelays
             targetApplier: that.forwardApplier, // this special field identifies us to fluid.connectModelRelay
             update: that.update,
-            refCount: 0};
+            refCount: 0
+        };
         that.forwardHolder.model = fluid.parseImplicitRelay(componentThat, transform, [], implicitOptions); 
         that.refCount = implicitOptions.refCount; 
         that.generateAdapters();
@@ -22875,7 +22913,7 @@ var fluid_1_5 = fluid_1_5 || {};
         var withPath = $.extend(true, {valuePath: ""}, singleTransform);
         return {
             "": {
-                 transform: withPath
+                transform: withPath
             }
         };
     };
@@ -22921,7 +22959,7 @@ var fluid_1_5 = fluid_1_5 || {};
                 segs.push(key);
                 var innerTrans = fluid.parseImplicitRelay(that, innerValue, segs, options);
                 if (innerTrans !== undefined) {
-                     value[key] = innerTrans;
+                    value[key] = innerTrans;
                 }
                 segs.pop();
             });
@@ -23227,7 +23265,7 @@ var fluid_1_5 = fluid_1_5 || {};
     fluid.model.stepTargetAccess = function (target, type, segs, startpos, endpos, options) {
         for (var i = startpos; i < endpos; ++ i) {
             var oldTrunk = target[segs[i]];
-            var target = fluid.model.traverseWithStrategy(target, segs, i, options[type === "ADD" ? "resolverSetConfig" : "resolverGetConfig"], 
+            target = fluid.model.traverseWithStrategy(target, segs, i, options[type === "ADD" ? "resolverSetConfig" : "resolverGetConfig"], 
                 segs.length - i - 1);
             if (oldTrunk !== target && options.changeMap) {
                 fluid.model.setChangedPath(options, segs.slice(0, i + 1), "ADD");
@@ -23241,7 +23279,7 @@ var fluid_1_5 = fluid_1_5 || {};
         options.resolverSetConfig = options.resolverSetConfig || fluid.model.defaultSetConfig;
         options.resolverGetConfig = options.resolverGetConfig || fluid.model.defaultGetConfig;
         return options;      
-    }
+    };
     
     // After the 1.5 release, this will replace the old "applyChangeRequest"
     // Changes: "MERGE" action abolished
@@ -23362,7 +23400,7 @@ var fluid_1_5 = fluid_1_5 || {};
         }
         that.modelChanged.addListener = function (spec, listener, namespace, softNamespace) {
             if (typeof(spec) === "string") {
-                spec = {path: spec}
+                spec = {path: spec};
             } else {
                 spec = fluid.copy(spec);
             }
@@ -23403,7 +23441,7 @@ var fluid_1_5 = fluid_1_5 || {};
                 reset: function () {
                     trans.newHolder = { model: fluid.copy(holder.model) };
                     trans.changeRecord.changes = 0;
-                    trans.changeRecord.changeMap = {}
+                    trans.changeRecord.changeMap = {};
                 },
                 commit: function (code) {
                     that.preCommit.fire(trans, that, code);
@@ -23659,7 +23697,7 @@ var fluid_1_5 = fluid_1_5 || {};
             }
             if (pathSpec.charAt(0) === "!") {
                 transactional = true;
-                pathSpec = pathSpec.substring(1)
+                pathSpec = pathSpec.substring(1);
             }
             var wrapped = function (changePath, fireSpec, accum) {
                 var guid = fluid.event.identifyListener(listener);
@@ -23924,7 +23962,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 var fluid_1_5 = fluid_1_5 || {};
 var fluid = fluid || fluid_1_5;
 
-(function ($) {
+(function ($, fluid) {
     "use strict";
 
     fluid.registerNamespace("fluid.model.transform");
@@ -24550,7 +24588,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 var fluid_1_5 = fluid_1_5 || {};
 var fluid = fluid || fluid_1_5;
 
-(function ($) {
+(function ($, fluid) {
     "use strict";
 
     fluid.registerNamespace("fluid.model.transform");
@@ -24880,7 +24918,7 @@ var fluid = fluid || fluid_1_5;
 
         fluid.each(options, function (outPath, key) {
             // write to output path given in options the value <presentValue> or <missingValue> depending on whether key is found in user input
-            var outVal = (value.indexOf(key) !== -1) ? transformSpec.presentValue : transformSpec.missingValue;
+            var outVal = ($.inArray(key, value) !== -1) ? transformSpec.presentValue : transformSpec.missingValue;
             fluid.model.transform.setValue(outPath, outVal, transform);
         });
         // TODO: Why does this transform make no return?
@@ -26291,7 +26329,7 @@ var fluid_1_5 = fluid_1_5 || {};
     var dismissList = {}; 
      
     $(document).click(function (event) { 
-        var target = event.target; 
+        var target = fluid.resolveEventTarget(event);
         while (target) { 
             if (dismissList[target.id]) { 
                 return; 
@@ -26333,6 +26371,7 @@ var fluid_1_5 = fluid_1_5 || {};
         return Date.now ? Date.now() : (new Date()).getTime();
     };
     
+    
     /** Sets an interation on a target control, which morally manages a "blur" for
      * a possibly composite region.
      * A timed blur listener is set on the control, which waits for a short period of
@@ -26345,7 +26384,8 @@ var fluid_1_5 = fluid_1_5 || {};
      */
     
     fluid.deadMansBlur = function (control, options) {
-        var that = fluid.initLittleComponent("fluid.deadMansBlur", options);
+        // TODO: This should be rewritten as a proper component
+        var that = {options: $.extend(true, {}, fluid.defaults("fluid.deadMansBlur"), options)};
         that.blurPending = false;
         that.lastCancel = 0;
         that.canceller = function (event) {
@@ -26817,20 +26857,16 @@ var fluid_1_5 = fluid_1_5 || {};
         } 
     };
     
-    // Because of strange dispatching within tooltip widget's "_open" method 
+    // Note that fluid.resolveEventTarget is required 
+    // because of strange dispatching within tooltip widget's "_open" method 
     // ->   this._trigger( "open", event, { tooltip: tooltip };
-    // the target of the outer event will incorrect
-    fluid.tooltip.resolveTarget = function (event) {
-        while (event.originalEvent && event.originalEvent.target) {
-            event = event.originalEvent;
-        }
-        return event.target;
-    };
+    // the target of the outer event will be incorrect
+
     
     fluid.tooltip.makeOpenHandler = function (that) {
         return function (event, tooltip) {
            fluid.tooltip.closeAll(that);
-           var originalTarget = fluid.tooltip.resolveTarget(event);
+           var originalTarget = fluid.resolveEventTarget(event);
            that.openIdMap[fluid.allocateSimpleId(originalTarget)] = true;
            if (that.initialised) {
                that.events.afterOpen.fire(that, originalTarget, tooltip.tooltip, event);
@@ -26841,7 +26877,9 @@ var fluid_1_5 = fluid_1_5 || {};
     fluid.tooltip.makeCloseHandler = function (that) {
         return function (event, tooltip) {
             if (that.initialised) { // underlying jQuery UI component will fire various spurious close events after it has been destroyed
-                that.events.afterClose.fire(that, fluid.tooltip.resolveTarget(event), tooltip.tooltip, event);
+                var originalTarget = fluid.resolveEventTarget(event);
+                delete that.openIdMap[originalTarget.id];
+                that.events.afterClose.fire(that, originalTarget, tooltip.tooltip, event);
             }
         };
     };
@@ -27075,7 +27113,7 @@ var fluid_1_5 = fluid_1_5 || {};
     fluid.XMLP._errs[fluid.XMLP.ERR_CLOSE_ENTITY = 5 ] = "Entity: missing closing sequence"; 
     fluid.XMLP._errs[fluid.XMLP.ERR_PI_TARGET = 6 ] = "PI: target is required"; 
     fluid.XMLP._errs[fluid.XMLP.ERR_ELM_EMPTY = 7 ] = "Element: cannot be both empty and closing"; 
-    fluid.XMLP._errs[fluid.XMLP.ERR_ELM_NAME = 8 ] = "Element: name must immediatly follow \"<\""; 
+    fluid.XMLP._errs[fluid.XMLP.ERR_ELM_NAME = 8 ] = "Element: name must immediately follow \"<\""; 
     fluid.XMLP._errs[fluid.XMLP.ERR_ELM_LT_NAME = 9 ] = "Element: \"<\" not allowed in element names"; 
     fluid.XMLP._errs[fluid.XMLP.ERR_ATT_VALUES = 10] = "Attribute: values are required and must be in quotes"; 
     fluid.XMLP._errs[fluid.XMLP.ERR_ATT_LT_NAME = 11] = "Element: \"<\" not allowed in attribute names"; 
@@ -27274,7 +27312,8 @@ var fluid_1_5 = fluid_1_5 || {};
                     attrval = attrname;
                     valRegex = that.attrStartRegex;
                     }
-                if (!that.m_attributes[attrname]) {
+                if (!that.m_attributes[attrname] || that.m_attributes[attrname] === attrval) {
+                    // last branch required because of fresh duplicate attribute bug introduced in IE10 and above - FLUID-5204 
                     that.m_attributes[attrname] = attrval;
                     }
                 else { 
@@ -35018,28 +35057,38 @@ var fluid_1_5 = fluid_1_5 || {};
     fluid.prefs.addCommonOptions = function (root, path, commonOptions, templateValues) {
         templateValues = templateValues || {};
 
-        var typeObject = fluid.get(root, path);
-        var opts = {};
+        var existingValue = fluid.get(root, path);
+
+        if (!existingValue) {
+            return root;
+        }
+
+        var opts = {}, mergePolicy = {};
 
         fluid.each(commonOptions, function (value, key) {
-            var canAdd = true;
-
-            // Execute the validation function to decide if this common option should be added
-            if (value.func) {
-                canAdd = fluid.invokeGlobalFunction(value.func, [root, path, commonOptions, templateValues]);
-                value = value.value;
+            // Adds "container" option only for view and renderer components
+            if (key === "container") {
+                var componentType = fluid.get(root, [path, "type"]);
+                var componentOptions = fluid.defaults(componentType);
+                // Note that this approach is not completely reliable, although it has been reviewed as "good enough" - 
+                // a grade which modifies the creation signature of its principal type would cause numerous other problems.
+                // We can review this awkward kind of "anticipatory logic" when the new renderer arrives. 
+                if (fluid.get(componentOptions, ["argumentMap", "container"]) === undefined) {
+                    return false;
+                }
+            }
+            // Merge grade names defined in aux schema and system default grades
+            if (key.indexOf("gradeNames") !== -1) {
+                mergePolicy[key] = fluid.arrayConcatPolicy;
             }
 
-            if (canAdd) {
-                key = fluid.stringTemplate(key, templateValues);
-                value = typeof (value) === "string" ? fluid.stringTemplate(value, templateValues) : value;
-                fluid.set(opts, key, value);
-            }
+            key = fluid.stringTemplate(key, templateValues);
+            value = typeof (value) === "string" ? fluid.stringTemplate(value, templateValues) : value;
+
+            fluid.set(opts, key, value);
         });
 
-        if (typeObject) {
-            $.extend(true, root[path], $.extend(true, typeObject, opts));
-        }
+        fluid.set(root, path, fluid.merge(mergePolicy, existingValue, opts));
 
         return root;
     };
@@ -35069,7 +35118,7 @@ var fluid_1_5 = fluid_1_5 || {};
 
         if (componentName) {
 
-            var cmp = components[memberName] = {
+            components[memberName] = {
                 type: componentName,
                 options: componentOptions
             };
@@ -35148,9 +35197,8 @@ var fluid_1_5 = fluid_1_5 || {};
         return expandedSchema;
     };
 
-    fluid.prefs.expandCompositePanels = function (auxSchema, compositePanelList, panelIndex, compositePanelCommonOptions, subPanelCommonOptions,
+    fluid.prefs.expandCompositePanels = function (auxSchema, compositePanelList, panelIndex, panelCommonOptions, subPanelCommonOptions,
         compositePanelBasedOnSubCommonOptions, mappedDefaults) {
-        var type = "panel";
         var panelsToIgnore = [];
 
         fluid.each(compositePanelList, function (compositeDetail, compositeKey) {
@@ -35212,7 +35260,6 @@ var fluid_1_5 = fluid_1_5 || {};
                     if (fluid.prefs.checkPrimarySchema(prefSchema, subPanelPrefsKey)) {
                         var opts;
                         if (internalPath.indexOf("model.") === 0) {
-                            var internalModelName = internalPath.slice(6);
                             // Set up the binding in "rules" accepted by the modelRelay base grade of every panel
                             fluid.set(compositePanelOptions, ["options", "rules", safeSubPanelPrefsKey], safeSubPanelPrefsKey);
                             fluid.set(compositePanelOptions, ["options", "model", safeSubPanelPrefsKey], prefSchema[primaryPath]);
@@ -35256,7 +35303,7 @@ var fluid_1_5 = fluid_1_5 || {};
 
             components[compositeKey] = compositePanelOptions;
 
-            fluid.prefs.addCommonOptions(components, compositeKey, compositePanelCommonOptions, {
+            fluid.prefs.addCommonOptions(components, compositeKey, panelCommonOptions, {
                 prefKey: compositeKey
             });
 
@@ -35279,7 +35326,7 @@ var fluid_1_5 = fluid_1_5 || {};
         var compositePanelList = fluid.get(auxSchema, "groups");
         if (compositePanelList) {
             fluid.prefs.expandCompositePanels(auxSchema, compositePanelList, fluid.get(indexes, "panel"),
-                fluid.get(elementCommonOptions, "compositePanel"), fluid.get(elementCommonOptions, "subPanel"),
+                fluid.get(elementCommonOptions, "panel"), fluid.get(elementCommonOptions, "subPanel"),
                 fluid.get(elementCommonOptions, "compositePanelBasedOnSub"), mappedDefaults);
         }
 
@@ -35366,12 +35413,6 @@ var fluid_1_5 = fluid_1_5 || {};
                 "options.gradeNames": "fluid.prefs.prefsEditorConnections",
                 "options.resources.template": "{templateLoader}.resources.%prefKey"
             },
-            compositePanel: {
-                "createOnEvent": "onPrefsEditorMarkupReady",
-                "container": "{prefsEditor}.dom.%prefKey",
-                "options.gradeNames": ["fluid.prefs.prefsEditorConnections", "fluid.prefs.compositePanel"],
-                "options.resources.template": "{templateLoader}.resources.%prefKey"
-            },
             compositePanelBasedOnSub: {
                 "%subPrefKey": "{templateLoader}.resources.%subPrefKey"
             },
@@ -35380,11 +35421,7 @@ var fluid_1_5 = fluid_1_5 || {};
             },
             enactor: {
                 "options.gradeNames": "fluid.prefs.uiEnhancerConnections",
-                // Conditional handling. Add value to the path only if the execution of func returns true.
-                "container": {
-                    value: "{uiEnhancer}.container",
-                    func: "fluid.prefs.containerNeeded"
-                }
+                "container": "{uiEnhancer}.container"
             }
         },
         indexes: {

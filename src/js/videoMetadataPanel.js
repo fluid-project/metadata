@@ -25,29 +25,63 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
      ****************************************************************/
 
     fluid.defaults("fluid.metadata.videoMetadataPanel", {
-        gradeNames: ["fluid.viewComponent", "fluid.metadata.defaultVideoModel", "autoInit"],
+        gradeNames: ["fluid.viewComponent", "fluid.metadata.defaultVideoModel", "fluid.standardRelayComponent", "autoInit"],
         selectors: {
             videoPanel: ".flc-videoPanel",
             audioPanel: ".flc-audioPanel",
             captionsPanel: ".flc-captionsPanel"
         },
+        // modelRelay: [{
+        //     source: "{that}.model.metadata",
+        //     target: "{videoPanel}.model.highContrast",
+        //     singleTransform: {
+        //         type: "fluid.metadata.transforms.decomposeFeatures",
+        //         feature: "highContrast",
+        //         inputPath: "accessibilityFeature"
+        //     }
+        // }, {
+        //     source: "{that}.model.metadata",
+        //     target: "{videoPanel}.model.signLanguage",
+        //     singleTransform: {
+        //         type: "fluid.metadata.transforms.decomposeFeatures",
+        //         feature: "signLanguage",
+        //         inputPath: "accessibilityFeature"
+        //     }
+        // }],
         components: {
             videoPanel: {
                 type: "fluid.metadata.videoPanel",
                 container: "{videoMetadataPanel}.dom.videoPanel",
                 options: {
-                    gradeNames: ["fluid.prefs.modelRelay"],
-                    sourceApplier: "{videoMetadataPanel}.applier",
-                    model: {
-                        highContrast: "{videoMetadataPanel}.model.highContrast",
-                        signLanguage: "{videoMetadataPanel}.model.signLanguage",
-                        flashing: "{videoMetadataPanel}.model.flashing"
-                    },
-                    rules: {
-                        highContrast: "highContrast",
-                        signLanguage: "signLanguage",
-                        flashing: "flashing"
-                    },
+                    // gradeNames: ["fluid.prefs.modelRelay"],
+                    // sourceApplier: "{videoMetadataPanel}.applier",
+                    // model: {
+                    //     highContrast: "{videoMetadataPanel}.model.highContrast",
+                    //     signLanguage: "{videoMetadataPanel}.model.signLanguage",
+                    //     flashing: "{videoMetadataPanel}.model.flashing"
+                    // },
+                    // rules: {
+                    //     highContrast: "highContrast",
+                    //     signLanguage: "signLanguage",
+                    //     flashing: "flashing"
+                    // },
+                    modelRelay: [{
+                        source: "{videoMetadataPanel}.model.metadata",
+                        target: "{that}.model.highContrast",
+                        singleTransform: {
+                            type: "fluid.metadata.transforms.decomposeFeatures",
+                            feature: "highContrast",
+                            inputPath: "accessibilityFeature"
+                        }
+                    }, {
+                        source: "{videoMetadataPanel}.model.metadata",
+                        target: "{that}.model.signLanguage",
+                        singleTransform: {
+                            type: "fluid.metadata.transforms.decomposeFeatures",
+                            feature: "signLanguage",
+                            inputPath: "accessibilityFeature"
+                        }
+                    }],
                     listeners: {
                         afterRender: "{videoMetadataPanel}.events.videoPanelRendered.fire"
                     }
@@ -126,8 +160,11 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         members: {
             defaultModel: {
                 url: "",
-                highContrast: false,
-                signLanguage: false,
+                metadata: {
+                    accessibilityFeature: []
+                },
+                // highContrast: false,
+                // signLanguage: false,
                 flashing: "unknown",
                 audio: "available",
                 keywords: [],
