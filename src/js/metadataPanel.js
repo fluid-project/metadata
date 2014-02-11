@@ -30,6 +30,9 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         events: {
             onReset: null
         },
+        listeners: {
+            "onCreate.setInitialModel": "{that}.setModel"
+        },
         invokers: {
             setModel: {
                 funcName: "fluid.metadata.metadataPanel.setModel",
