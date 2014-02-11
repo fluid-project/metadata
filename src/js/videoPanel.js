@@ -27,7 +27,7 @@ var fluid_1_5 = fluid_1_5 || {};
      *******************************************************************************/
 
     fluid.defaults("fluid.metadata.videoPanel", {
-        gradeNames: ["fluid.rendererComponent", "fluid.metadata.basePanel", "fluid.standardRelayComponent", "autoInit"],
+        gradeNames: ["fluid.rendererRelayComponent", "fluid.metadata.basePanel", "autoInit"],
         components: {
             indicator: {
                 createOnEvent: "afterRender",

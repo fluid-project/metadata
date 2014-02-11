@@ -25,7 +25,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
      ****************************************************************/
 
     fluid.defaults("fluid.metadata.videoMetadataPanel", {
-        gradeNames: ["fluid.viewComponent", "fluid.metadata.defaultVideoModel", "fluid.standardRelayComponent", "autoInit"],
+        gradeNames: ["fluid.viewRelayComponent", "fluid.metadata.defaultVideoModel", "autoInit"],
         selectors: {
             videoPanel: ".flc-videoPanel",
             audioPanel: ".flc-audioPanel",
