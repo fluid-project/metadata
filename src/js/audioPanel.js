@@ -86,9 +86,10 @@ var fluid_1_5 = fluid_1_5 || {};
             audioInput: ".flc-audio-input",
             attributes: ".flc-audio-attributes"
         },
-        selectorsToIgnore: ["title", "indicator", "attributes"],
+        selectorsToIgnore: ["indicator", "attributes"],
         repeatingSelectors: ["audioRow"],
         protoTree: {
+            title: {messagekey: "title"},
             instruction: {messagekey: "instruction"},
             expander: {
                 type: "fluid.renderer.selection.inputs",
