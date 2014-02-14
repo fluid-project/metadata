@@ -190,7 +190,7 @@ var fluid_1_5 = fluid_1_5 || {};
                     onCreate: "onCreate",
                     afterMarkupReady: "afterMarkupReady",
                     afterRenderPrimaryCaption: "afterRenderPrimaryCaption",
-                    afterRenderSecondaryCaption: "afterRenderSecondaryCaption",
+                    afterRenderSecondaryCaption: "afterRenderSecondaryCaption"
                 },
                 args: "{that}"
             }
