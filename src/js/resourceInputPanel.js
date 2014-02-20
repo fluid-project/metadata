@@ -82,6 +82,54 @@ var fluid_1_5 = fluid_1_5 || {};
      * conditionAny transformation spec *
      ************************************/
 
+    /*
+     * The conditionAny transform is similar to that of the standard condition transform found in Infusion.
+     * However, it determines the condition state by testing a specified path in each object of an array of objects,
+     * and returns true if any of the values are truthy. (conceptually it's like performing an || over the values of
+     * the array). After the first truthy value is found, the transformation will be returned.
+     *
+     * transform spec:
+     * ==============
+     *
+     * condition (optional) - an array of objects to test
+     * conditionPath (optional) - a path to the array of objects to test (takes priority over condition)
+     * innerPath - the path into an object to use for testing.
+     *             A signle path can be specified, and is used for all objects specifed in the condition or condtionPath
+     * true - the value to return if the 'true' condition is met
+     * false - the value to return if the 'false' condition is met
+     *
+     * Example :
+     * =========
+     *
+     *  var model = {
+     *     resources: [{
+     *          src: "",
+     *          language: "en"
+     *      }, {
+     *          src: "www.example.com/video.mp4",
+     *          language: "fr"
+     *      }]
+     *  };
+     *
+     *  var rules = {
+     *      value: {
+     *          transform: {
+     *              type: "fluid.transforms.conditionAny",
+     *              conditionPath: "resources",
+     *              innerPath: "src",
+     *              "true": "available",
+     *              "false": "unavailable"
+     *          }
+     *      }
+     *  };
+     *
+     *  var transformed = fluid.model.transform(model, rules);
+     *
+     *  transformed === {
+     *      value: "available"
+     *  };
+     */
+
     fluid.defaults("fluid.transforms.conditionAny", {
         gradeNames: [ "fluid.multiInputTransformFunction", "fluid.standardOutputTransformFunction" ]
     });
@@ -90,7 +138,7 @@ var fluid_1_5 = fluid_1_5 || {};
 
         var conditions = transformSpec.conditionPath ? fluid.get(transform.source, transformSpec.conditionPath) : transformSpec.condition;
         var innerPath = transformSpec.innerPath || "";
-        for (var i=0; i <= conditions.length; i++) {
+        for (var i=0; i < conditions.length; i++) {
             var condition = conditions[i];
             if (fluid.get(condition, innerPath)) {
                 return transformSpec["true"];
