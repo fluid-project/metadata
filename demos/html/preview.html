@@ -3,15 +3,12 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>MetaData Demo: Markup View</title>
+        <title>MetaData Demo: Preview</title>
 
         <!-- Bootstrap -->
         <link rel="stylesheet" href="../../src/lib/bootstrap/css/bootstrap.min.css">
-        <!-- Highlight.js -->
-        <link rel="stylesheet" href="../lib/highlight/styles/github.css">
-        <link rel="stylesheet" href="../css/markup_view.css">
+
         <script type="text/javascript" src="../../src/lib/infusion/MyInfusion.js"></script>
-        <script src="../lib/highlight/highlight.pack.js"></script>
 
         <!-- Pretty-Diff -->
         <script src="../lib/pretty-diff/cleanCSS.js"></script>
@@ -24,27 +21,15 @@
         <script type="text/javascript" src="../../src/js/pouchDBDataSource.js"></script>
         <script type="text/javascript" src="../../src/js/metadataUtils.js"></script>
         <script type="text/javascript" src="../js/markup.js"></script>
-        <script type="text/javascript" src="../js/markupViewer.js"></script>
+        <script type="text/javascript" src="../js/viewer.js"></script>
 
     </head>
 
     <body>
-        <section class="fl-demo">
-            <header>
-                <div class="container">
-                    <span class="fl-logo-text1">fl</span><span class="fl-logo-text2">OER</span>
-                </div>
-            </header>
-
-            <div class="container">
-                <h1 class="flc-HTML-viwer-title fl-HTML-viwer-title"> HTML Output Viewer - Metadata Demo </h1>
-                <pre class="flc-markupViewer fl-markupViewer"></pre>
-
-            </div>
-        </section>
+        <section class="flc-viewer"></section>
 
         <script type="text/javascript">
-            fluid.markupViewer(".flc-markupViewer");
+            fluid.viewer(".flc-viewer");
         </script>
     </body>
 </html>

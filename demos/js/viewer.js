@@ -1,6 +1,6 @@
 /*
 
-Copyright 2013 OCAD University
+Copyright 2014 OCAD University
 
 Licensed under the Educational Community License (ECL), Version 2.0 or the New
 BSD license. You may not use this file except in compliance with one these
@@ -17,12 +17,13 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
 (function ($, fluid) {
 
-    fluid.defaults("fluid.markupViewer", {
+    fluid.defaults("fluid.viewer", {
         gradeNames: ["fluid.viewComponent", "fluid.markup", "autoInit"],
         invokers: {
             render: {
-                "funcName": "fluid.markupViewer.render",
-                "args": ["{that}.container", {
+                "this": "{that}.container",
+                "method": "html",
+                "args": [{
                     expander: {
                         func: "{that}.generateMarkup"
                     }
@@ -34,10 +35,5 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             "*": "{that}.render"
         }
     });
-
-    fluid.markupViewer.render = function (elm, markup) {
-        elm.text(markup);
-        elm.each(function(i, e) {hljs.highlightBlock(e);});
-    };
 
 })(jQuery, fluid);
