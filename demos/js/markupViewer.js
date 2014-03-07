@@ -19,10 +19,13 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
     fluid.defaults("fluid.markupViewer", {
         gradeNames: ["fluid.viewComponent", "fluid.markup", "autoInit"],
+        selectors: {
+            code: ".flc-markupViewer-code"
+        },
         invokers: {
             render: {
                 "funcName": "fluid.markupViewer.render",
-                "args": ["{that}.container", {
+                "args": ["{that}.dom.code", {
                     expander: {
                         func: "{that}.generateMarkup"
                     }
@@ -37,6 +40,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
     fluid.markupViewer.render = function (elm, markup) {
         elm.text(markup);
+        // TODO: Would switch to Prism.js for syntax highlighting.
+        // but currently it causes the first line to indent.
         elm.each(function(i, e) {hljs.highlightBlock(e);});
     };
 
