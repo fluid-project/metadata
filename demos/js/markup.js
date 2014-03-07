@@ -90,7 +90,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
     fluid.markup.generateVideoElm = function (metadata, videoContainerMarkup, captionsContainerMarkup) {
         var videoContainer = $(videoContainerMarkup);
-        var videoElm = $('<video></video>');
+        var videoElm = $("<video controls></video>");
         fluid.metadata.writer(videoContainer, fluid.markup.transformToVideoMetadata(metadata), {
             itemprop: "video",
             itemtype: fluid.metadata.itemtype.VIDEO_OBJECT
