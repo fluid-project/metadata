@@ -225,7 +225,9 @@ var fluid_1_5 = fluid_1_5 || {};
             indicator: {
                 createOnEvent: "afterMarkupReady",
                 options: {
-                    tooltipContent: "{baseResourceInputPanel}.options.strings.tooltip"
+                    strings: {
+                        tooltipContent: "{baseResourceInputPanel}.options.strings.tooltip"
+                    }
                 }
             }
         },
