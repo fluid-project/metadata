@@ -34,6 +34,10 @@ body {
     border-color: #E2E2E2;
 }
 
+.fl-demo .fl-markupViewer code {
+    background-color: inherit;
+}
+
 .fl-demo .fl-HTML-viwer-title {
     font-size: 1.6em;
 }
