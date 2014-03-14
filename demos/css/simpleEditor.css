@@ -39,12 +39,18 @@ body {
 }
 
 .fl-demo .fl-metadata {
-    margin-bottom: 0.5em;
     background-color: #C1DCE0;
     border-top-left-radius: 0.5em;
     border-top-right-radius: 0.5em;
     border: 1px solid #4d4d4d;
+    margin: 0.5em;
 }
+
+.fl-demo .fl-metadata .col-sm-8 {
+    padding-left: 0;
+    padding-right: 0;
+}
+
 
 .fl-demo .fl-simpleEditor-greeting .fl-simpleEditor-greeting-title  {
     font-family: 'RobotoSlab';
@@ -54,6 +60,10 @@ body {
 .fl-demo .fl-simpleEditor-greeting .fl-simpleEditor-greeting-text  {
     font-family: 'OpenSans-Regular';
     font-size: 1.2em;
+    background-color: #d1ebda;
+    border-radius: 0.2em;
+    padding: 0.5em 0.2em;
+    margin: 0.5em;
 }
 
 .fl-demo .fl-simpleEditor-toolbar {
@@ -64,8 +74,13 @@ body {
     background-color: #e2e2e2;
 }
 
+.fl-demo .fl-simpleEditor-toolbar-buttonGroup {
+    padding-top: 0.5em;
+}
+
 .fl-demo .fl-simpleEditor-insertVideo-urlLabel {
     font-size: 0.8em;
+    display:block;
 }
 
 .fl-demo .fl-simpleEditor-insertVideo-url {
@@ -110,9 +125,8 @@ body {
     margin-bottom: 0.5em;
 }
 
-/* Bootstrap small width */
-@media screen and (min-width: 768px) and (max-width:991px){
-
+/* Bootstrap small width and larger*/
+@media screen and (min-width: 768px) {
      .fl-demo .fl-logo-text1 {
         font-size: 1.2em;
     }
@@ -125,20 +139,8 @@ body {
         height: 30em;
     }
 
-}
-
-/* Bootstrap Medium width */
-@media screen and (min-width: 992px) {
     .fl-demo .fl-metadata {
         border-radius: 0.5em;
-    }
-
-    .fl-demo .fl-metadata{
-        margin-right: 0; /* Remove 15px padding Bootstrap adds to this column */
-    }
-
-    .fl-demo .fl-metadata .col-md-8{
-        padding-left: 0;
     }
 
     .fl-demo .fl-simpleEditor-toolbar {
