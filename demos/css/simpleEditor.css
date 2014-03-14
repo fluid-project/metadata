@@ -4,8 +4,14 @@
 }
 
 @font-face {
-    font-family: 'OpenSans-Regular';
-    src: url('./fonts/OpenSans-Regular.ttf');
+    font-family: 'OpenSans';
+    src: url('./fonts/OpenSans.ttf');
+}
+
+@font-face {
+    font-family: "OpenSans";
+    src: url("fonts/OpenSans-Bold.ttf");
+    font-weight: bold;
 }
 
 /***********
@@ -14,7 +20,7 @@
 
 body {
     background-color: #e8f3f5;
-    font-family: 'OpenSans-Regular';
+    font-family: 'OpenSans';
 }
 
 .fl-demo header {
@@ -58,7 +64,7 @@ body {
 }
 
 .fl-demo .fl-simpleEditor-greeting .fl-simpleEditor-greeting-text  {
-    font-family: 'OpenSans-Regular';
+    font-family: 'OpenSans';
     font-size: 1.2em;
     background-color: #d1ebda;
     border-radius: 0.2em;
