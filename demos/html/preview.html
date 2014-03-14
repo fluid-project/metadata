@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>MetaData Demo: Preview</title>
+        <title>Metadata Demo: Preview</title>
 
         <!-- Bootstrap -->
         <link rel="stylesheet" href="../../src/lib/bootstrap/css/bootstrap.min.css">
@@ -26,8 +26,20 @@
     </head>
 
     <body>
-        <section class="flc-viewer"></section>
 
+        <div class="container">        
+            <section>
+                <h1><small>A preview of the video should appear on this page.</small></h1>
+                <p><b>If a video does not appear</b>, the video you provided was either invalid or not supported by your browser.</p>
+                <p>Try one of the following web addresses instead:
+                    <ul>
+                        <li><a href="http://build.fluidproject.org/videoPlayer/demos/videos/Mammals/Mammals.mp4">http://build.fluidproject.org/videoPlayer/demos/videos/Mammals/Mammals.mp4</a> (Chrome, Safari, IE9+)</li>
+                        <li><a href="http://build.fluidproject.org/videoPlayer/demos/videos/Mammals/Mammals.webm">http://build.fluidproject.org/videoPlayer/demos/videos/Mammals/Mammals.webm</a> (Firefox)</li>
+                    </ul>
+                </p>
+                <div class="flc-viewer"></div>
+            </section>
+        </div>
         <script type="text/javascript">
             fluid.viewer(".flc-viewer");
         </script>
