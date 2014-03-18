@@ -128,19 +128,24 @@ https://github.com/gpii/universal/LICENSE.txt
                 }
             },
             listeners: {
-                onReady: function (that) {
-                    // initial
-                    jqUnit.assertEquals("The initial indicator model should be set correctly", "unavailable", that.indicator.model.value);
-                    jqUnit.assertTrue("The container class should have been applied", that.container.hasClass(styleClass));
+                onReady: {
+                    listener: function (that) {
+                        // initial
+                        jqUnit.assertEquals("The initial indicator model should be set correctly", "unavailable", that.indicator.model.value);
+                        jqUnit.assertTrue("The container class should have been applied", that.container.hasClass(styleClass));
 
-                    // model update
-                    that.primaryResource.applier.requestChange("src", "http://example.com/primary/video.mp4");
-                    that.secondaryResource.applier.requestChange("src", "http://example.com/secondary/video.mp4");
-                    jqUnit.assertDeepEq("The parent model should have been updated.", newModel, that.model);
-                    jqUnit.assertEquals("The indicator model should be updated correctly", "available", that.indicator.model.value);
+                        // model update
+                        //
+                        fluid.each(that.inputs, function (input, idx) {
+                            input.applier.requestChange("src", newModel.resources[idx].src);
+                        });
+                        jqUnit.assertDeepEq("The parent model should have been updated.", newModel, that.model);
+                        jqUnit.assertEquals("The indicator model should be updated correctly", "available", that.indicator.model.value);
 
-                    // start
-                    jqUnit.start();
+                        // start
+                        jqUnit.start();
+                    },
+                    priority: "last"
                 }
             }
         });
@@ -191,6 +196,41 @@ https://github.com/gpii/universal/LICENSE.txt
         jqUnit.assertDeepEq("The model should be transformed", expectedTrue, fluid.model.transform(modelTrue, rules));
         jqUnit.assertDeepEq("The model should be transformed", expectedFalse, fluid.model.transform(modelFalse, rules));
 
+    });
+
+    // This test should have been included in fluid.tests.resourceInputPanelTester from
+    // resourceInputPanelTestUtils.js. However at the time it wasn't possible to declare
+    // listeners for multiple events (onReady, afterRender) in a sequence. This is because
+    // all of these events are triggered by the creation of the parent compnoent.
+    jqUnit.asyncTest("resourceInputPanel initialization", function () {
+        var count = 0;
+        var that = fluid.metadata.resourceInputPanel(".flc-resourceInputPanel-init", {
+            dynamicComponents: {
+                input: {
+                    options: {
+                        listeners: {
+                            afterRender: {
+                                listener: function (input) {
+                                    fluid.tests.checkInitInput(input);
+                                    count++;
+                                    if (count >= that.model.resources.length) {
+                                        jqUnit.start();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            resources: {
+                template: {
+                    url: "../../src/html/resourceInputPanel-template.html"
+                },
+                resourceInput: {
+                    url: "../../src/html/resourceInput-template.html"
+                }
+            }
+        });
     });
 
     $(document).ready(function () {

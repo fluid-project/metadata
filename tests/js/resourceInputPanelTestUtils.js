@@ -42,23 +42,16 @@ https://github.com/gpii/universal/LICENSE.txt
     });
 
     fluid.tests.checkInitPanel = function (that) {
-        var srcFields = that.container.find("input");
-        var languageFields = that.container.find("select");
-
         jqUnit.assertEquals("The title should have been rendered", that.options.strings.title, that.locate("title").text());
         jqUnit.assertEquals("The description should have been rendered", that.options.strings.description, that.locate("description").text());
-        jqUnit.assertEquals("Two src fields have been rendered", 2, srcFields.length);
-        jqUnit.assertEquals("Two language fields have been rendered", 2, languageFields.length);
         jqUnit.assertTrue("The indicator state has been set to 'unavailable'", that.locate("indicator").hasClass(that.indicator.options.styles.indicatorState.unavailable));
+    };
 
-        srcFields.each(function (idx, elm) {
-            jqUnit.assertEquals("The placeholder for the input field has been set", that.primaryResource.options.strings.srcPlaceholder, $(elm).attr("placeholder"));
-        });
+    fluid.tests.checkInitInput = function (that) {
+        jqUnit.assertEquals("The placeholder for the input field has been set", that.options.strings.srcPlaceholder, that.locate("src").attr("placeholder"));
 
-        languageFields.each(function (idx, elm) {
-            $("option", elm).each(function (idx, optElm) {
-                jqUnit.assertEquals("All language option should have been rendered in a combo box", that.primaryResource.options.controlValues[idx], $(optElm).val());
-            });
+        $("option", that.locate("languages")).each(function (idx, optElm) {
+            jqUnit.assertEquals("All language option should have been rendered in a combo box", that.options.controlValues[idx], $(optElm).val());
         });
     };
 
@@ -88,10 +81,11 @@ https://github.com/gpii/universal/LICENSE.txt
         modules: [{
             name: "Test initial resourceInput panel",
             tests: [{
-                expect: 19,
+                expect: 3,
                 name: "Init",
                 sequence: [{
                     listener: "fluid.tests.checkInitPanel",
+                    spec: {priority: "last"},
                     event: "{resourceInputPanelTests resourceInputPanel}.events.onReady"
                 }]
             }]

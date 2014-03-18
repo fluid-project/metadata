@@ -155,8 +155,8 @@ var fluid_1_5 = fluid_1_5 || {};
     fluid.defaults("fluid.metadata.baseResourceInputPanel", {
         gradeNames: ["fluid.metadata.panel", "autoInit"],
         selectors: {
-            primaryResource: ".flc-resourceInputPanel-primary",
-            secondaryResource: ".flc-resourceInputPanel-secondary",
+            inputs: ".flc-resourceInputPanel-inputs",
+            input: ".flc-resourceInputPanel-input",
         },
         strings: {
             tooltip: {},
@@ -174,58 +174,49 @@ var fluid_1_5 = fluid_1_5 || {};
                 language: "en"
             }]
         },
+        members: {
+            inputs: []
+        },
+        dynamicComponents: {
+            input: {
+                createOnEvent: "onCreateInput",
+                type: "fluid.metadata.resourceInput",
+                container: "{arguments}.0",
+                options: {
+                    source: "{arguments}",
+                    strings: "{baseResourceInputPanel}.options.strings.resourceInput",
+                    model: {
+                        expander: {
+                            funcName: "fluid.copy",
+                            args: "{that}.options.source.1"
+                        }
+                    },
+                    modelListeners: {
+                        "*": {
+                            func: "{baseResourceInputPanel}.updateModel",
+                            args: ["{change}.value", "{change}.path", "{that}.options.source.2"]
+                        }
+                    },
+                    listeners: {
+                        onCreate: {
+                            "this": "{baseResourceInputPanel}.inputs",
+                            "method": "push"
+                        }
+                    }
+                }
+            }
+        },
         components: {
-            //TODO: use dynamic components instead of hard coding two resources
-            primaryResource: {
-                type: "fluid.metadata.resourceInput",
-                container: "{that}.dom.primaryResource",
-                createOnEvent: "afterMarkupReady",
-                options: {
-                    strings: "{baseResourceInputPanel}.options.strings.resourceInput",
-                    model: {
-                        expander: {
-                            funcName: "fluid.copy",
-                            args: "{baseResourceInputPanel}.model.resources.0"
-                        }
-                    },
-                    modelListeners: {
-                        "*": {
-                            func: "{baseResourceInputPanel}.updateModel",
-                            args: ["{change}.value", "{change}.path", 0]
-                        }
-                    },
-                    listeners: {
-                        afterRender: "{baseResourceInputPanel}.events.afterRenderPrimaryCaption"
-                    }
-                }
-            },
-            secondaryResource: {
-                type: "fluid.metadata.resourceInput",
-                container: "{that}.dom.secondaryResource",
-                createOnEvent: "afterMarkupReady",
-                options: {
-                    strings: "{baseResourceInputPanel}.options.strings.resourceInput",
-                    model: {
-                        expander: {
-                            funcName: "fluid.copy",
-                            args: "{baseResourceInputPanel}.model.resources.1"
-                        }
-                    },
-                    modelListeners: {
-                        "*": {
-                            func: "{baseResourceInputPanel}.updateModel",
-                            args: ["{change}.value", "{change}.path", 1]
-                        }
-                    },
-                    listeners: {
-                        afterRender: "{baseResourceInputPanel}.events.afterRenderSecondaryCaption"
-                    }
-                }
-            },
             indicator: {
                 createOnEvent: "afterMarkupReady",
                 options: {
-                    tooltipContent: "{baseResourceInputPanel}.options.strings.tooltip"
+                    tooltipContent: "{baseResourceInputPanel}.options.strings.tooltip",
+                    listeners: {
+                        onAttach: {
+                            listener: "{baseResourceInputPanel}.events.afterIndicatorReady",
+                            priority: "last"
+                        }
+                    }
                 }
             }
         },
@@ -233,12 +224,14 @@ var fluid_1_5 = fluid_1_5 || {};
             afterMarkupReady: null,
             afterRenderPrimaryCaption: null,
             afterRenderSecondaryCaption: null,
+            onCreateInput: null,
+            onRenderInputContainer: null,
+            afterIndicatorReady: null,
             onReady: {
                 events: {
                     onCreate: "onCreate",
                     afterMarkupReady: "afterMarkupReady",
-                    afterRenderPrimaryCaption: "afterRenderPrimaryCaption",
-                    afterRenderSecondaryCaption: "afterRenderSecondaryCaption"
+                    afterIndicatorReady: "afterIndicatorReady"
                 },
                 args: "{that}"
             }
@@ -254,13 +247,28 @@ var fluid_1_5 = fluid_1_5 || {};
                 "this": "{that}.dom.title",
                 "method": "text",
                 "args": ["{that}.options.strings.title"]
-            }
+            },
+            "afterMarkupReady.getInputContainer": {
+                funcName: "fluid.metadata.baseResourceInputPanel.cloneInputContainer",
+                args: ["{that}", "{that}.dom.input"],
+                priority: "first"
+            },
+            "afterMarkupReady.initInputs": "{that}.initInputs",
+            "onRenderInputContainer.renderInputContainer": "{that}.renderInputContainer"
         },
         invokers: {
             updateModel: {
                 funcName: "fluid.metadata.baseResourceInputPanel.updateModel",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "resources"],
                 dynamic: true
+            },
+            initInputs: {
+                funcName: "fluid.each",
+                args: ["{that}.model.resources", "{that}.events.onRenderInputContainer.fire"]
+            },
+            renderInputContainer: {
+                funcName: "fluid.metadata.baseResourceInputPanel.renderInputContainer",
+                args: ["{that}.dom.inputs", "{that}.inputTemplate", "{arguments}.0", "{arguments}.1", "{that}.events.onCreateInput.fire"]
             }
         },
         indicatorModelRules: {
@@ -286,10 +294,7 @@ var fluid_1_5 = fluid_1_5 || {};
         },
         distributeOptions: [{
             source: "{that}.options.resources.resourceInput.url",
-            target: "{that > primaryResource}.options.resources.template.url"
-        }, {
-            source: "{that}.options.resources.resourceInput.url",
-            target: "{that > secondaryResource}.options.resources.template.url"
+            target: "{that > resourceInput}.options.resources.template.url"
         }]
     });
 
@@ -303,6 +308,16 @@ var fluid_1_5 = fluid_1_5 || {};
             that.container.append(resourceSpec.template.resourceText);
             that.events.afterMarkupReady.fire(that);
         });
+    };
+
+    fluid.metadata.baseResourceInputPanel.cloneInputContainer = function (that, elm) {
+        that.inputTemplate = elm.remove();
+    };
+
+    fluid.metadata.baseResourceInputPanel.renderInputContainer = function (container, elm, model, idx, callback) {
+        var input = elm.clone();
+        container.append(input);
+        callback(input, model, idx);
     };
 
     fluid.defaults("fluid.metadata.resourceInputPanel", {
