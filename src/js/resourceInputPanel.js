@@ -138,14 +138,12 @@ var fluid_1_5 = fluid_1_5 || {};
 
         var conditions = transformSpec.conditionPath ? fluid.get(transform.source, transformSpec.conditionPath) : transformSpec.condition;
         var innerPath = transformSpec.innerPath || "";
-        for (var i=0; i < conditions.length; i++) {
-            var condition = conditions[i];
-            if (fluid.get(condition, innerPath)) {
-                return transformSpec["true"];
-            }
-        }
+        var result = fluid.find(conditions, function (condition) {
+            // ensures that if a falsey  value is found it treats it as undefined.
+            return fluid.get(condition, innerPath) || undefined;
+        });
 
-        return transformSpec["false"];
+        return transformSpec[result ? "true" : "false"];
     };
 
     /************************
