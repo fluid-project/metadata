@@ -62,7 +62,7 @@ var fluid_1_5 = fluid_1_5 || {};
             }
         },
         listeners: {
-            "onCreate.init": "fluid.metadata.resourceInput.init"
+            "onCreate.loadTemplate": "fluid.metadata.resourceInput.loadTemplate"
         },
         resources: {
             template: {
@@ -72,7 +72,7 @@ var fluid_1_5 = fluid_1_5 || {};
         }
     });
 
-    fluid.metadata.resourceInput.init = function (that) {
+    fluid.metadata.resourceInput.loadTemplate = function (that) {
         fluid.fetchResources(that.options.resources, function (resourceSpec) {
             that.refreshView();
         });
