@@ -176,7 +176,7 @@ https://github.com/gpii/universal/LICENSE.txt
         var rules = {
             value: {
                 transform: {
-                    type: "fluid.transforms.conditionAny",
+                    type: "fluid.transforms.find",
                     conditionPath: "resources",
                     innerPath: "src",
                     "true": "available",

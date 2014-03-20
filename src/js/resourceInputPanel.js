@@ -79,11 +79,11 @@ var fluid_1_5 = fluid_1_5 || {};
     };
 
     /************************************
-     * conditionAny transformation spec *
+     * find transformation spec *
      ************************************/
 
     /*
-     * The conditionAny transform is similar to that of the standard condition transform found in Infusion.
+     * The find transform is similar to that of the standard condition transform found in Infusion.
      * However, it determines the condition state by testing a specified path in each object of an array of objects,
      * and returns true if any of the values are truthy. (conceptually it's like performing an || over the values of
      * the array). After the first truthy value is found, the transformation will be returned.
@@ -114,7 +114,7 @@ var fluid_1_5 = fluid_1_5 || {};
      *  var rules = {
      *      value: {
      *          transform: {
-     *              type: "fluid.transforms.conditionAny",
+     *              type: "fluid.transforms.find",
      *              conditionPath: "resources",
      *              innerPath: "src",
      *              "true": "available",
@@ -130,11 +130,11 @@ var fluid_1_5 = fluid_1_5 || {};
      *  };
      */
 
-    fluid.defaults("fluid.transforms.conditionAny", {
+    fluid.defaults("fluid.transforms.find", {
         gradeNames: [ "fluid.multiInputTransformFunction", "fluid.standardOutputTransformFunction" ]
     });
 
-    fluid.transforms.conditionAny = function (inputs, transformSpec, transform) {
+    fluid.transforms.find = function (inputs, transformSpec, transform) {
 
         var conditions = transformSpec.conditionPath ? fluid.get(transform.source, transformSpec.conditionPath) : transformSpec.condition;
         var innerPath = transformSpec.innerPath || "";
@@ -274,7 +274,7 @@ var fluid_1_5 = fluid_1_5 || {};
         indicatorModelRules: {
             value: {
                 transform: {
-                    type: "fluid.transforms.conditionAny",
+                    type: "fluid.transforms.find",
                     conditionPath: "resources",
                     innerPath: "src",
                     "true": "available",
