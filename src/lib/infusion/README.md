@@ -1,7 +1,7 @@
 
 The version of Infusion included in this folder was created using a custom build from commit
 
-    9b56b7588bd77d9fc117d3e7dc7e02311c2f3b2b
+    6c8ea3098c80bf4297ae773cda144c4e58939017
 
 of the Infusion master branch
 
@@ -9,15 +9,12 @@ of the Infusion master branch
 
 using the command line
 
-ant -lib lib/rhino/ customBuild -Dinclude="tooltip, renderer, preferences" -DnoMinify="true"
+grunt custom --source=true --include="tooltip, renderer, enhancement"
 
-The following directories were stripped out of the build since they contain code that is included in the MyInfusion.js file:
+The following directories were stripped out of the build since they contain code that is included in the infusion-custom.js file:
 
     src/lib/infusion/components/
     src/lib/infusion/framework/
     src/lib/infusion/lib/fastXmlPull/
-    src/lib/infusion/lib/fonts/
     src/lib/infusion/lib/jquery/core/
-    src/lib/infusion/lib/jquery/plugins/
     src/lib/infusion/lib/jquery/ui/js/
-    src/lib/infusion/lib/json/

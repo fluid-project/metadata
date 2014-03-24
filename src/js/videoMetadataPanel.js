@@ -25,61 +25,54 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
      ****************************************************************/
 
     fluid.defaults("fluid.metadata.videoMetadataPanel", {
-        gradeNames: ["fluid.viewRelayComponent", "fluid.metadata.defaultVideoModel", "autoInit"],
+        gradeNames: ["fluid.viewRelayComponent", "fluid.metadata.defaultVideoModel", "fluid.metadata.defaultVideoModelRelay", "autoInit"],
         selectors: {
             videoPanel: ".flc-videoPanel",
             audioPanel: ".flc-audioPanel",
             captionsPanel: ".flc-captionsPanel"
         },
-        // modelRelay: [{
-        //     source: "{that}.model.metadata",
-        //     target: "{videoPanel}.model.highContrast",
-        //     singleTransform: {
-        //         type: "fluid.metadata.transforms.decomposeFeatures",
-        //         feature: "highContrast",
-        //         inputPath: "accessibilityFeature"
-        //     }
-        // }, {
-        //     source: "{that}.model.metadata",
-        //     target: "{videoPanel}.model.signLanguage",
-        //     singleTransform: {
-        //         type: "fluid.metadata.transforms.decomposeFeatures",
-        //         feature: "signLanguage",
-        //         inputPath: "accessibilityFeature"
-        //     }
-        // }],
         components: {
             videoPanel: {
                 type: "fluid.metadata.videoPanel",
                 container: "{videoMetadataPanel}.dom.videoPanel",
                 options: {
-                    // gradeNames: ["fluid.prefs.modelRelay"],
-                    // sourceApplier: "{videoMetadataPanel}.applier",
-                    // model: {
-                    //     highContrast: "{videoMetadataPanel}.model.highContrast",
-                    //     signLanguage: "{videoMetadataPanel}.model.signLanguage",
-                    //     flashing: "{videoMetadataPanel}.model.flashing"
-                    // },
-                    // rules: {
-                    //     highContrast: "highContrast",
-                    //     signLanguage: "signLanguage",
-                    //     flashing: "flashing"
-                    // },
+                    model: {
+                        highContrast: "{videoMetadataPanel}.model.modelInTransit.highContrast",
+                        signLanguage: "{videoMetadataPanel}.model.modelInTransit.signLanguage"
+                    },
                     modelRelay: [{
-                        source: "{videoMetadataPanel}.model.metadata",
-                        target: "{that}.model.highContrast",
+                        source: "{videoMetadataPanel}.model.modelInTransit",
+                        target: "{that}.model.flashing",
                         singleTransform: {
-                            type: "fluid.metadata.transforms.decomposeFeatures",
-                            feature: "highContrast",
-                            inputPath: "accessibilityFeature"
-                        }
-                    }, {
-                        source: "{videoMetadataPanel}.model.metadata",
-                        target: "{that}.model.signLanguage",
-                        singleTransform: {
-                            type: "fluid.metadata.transforms.decomposeFeatures",
-                            feature: "signLanguage",
-                            inputPath: "accessibilityFeature"
+                            type: "fluid.transforms.condition",
+                            conditionPath: "flashing",
+                            "true": {
+                                transform: {
+                                    type: "fluid.transforms.literalValue",
+                                    value: "flashing",
+                                    outputPath: "flashing"
+                                }
+                            },
+                            "false": {
+                                transform: {
+                                    type: "fluid.transforms.condition",
+                                    conditionPath: "noflashing",
+                                    "true": {
+                                        transform: {
+                                            type: "fluid.transforms.literalValue",
+                                            value: "noflashing",
+                                            outputPath: "flashing"
+                                        }
+                                    },
+                                    "false": {
+                                        transform: {
+                                            type: "fluid.transforms.literalValue",
+                                            value: "unknown",
+                                            outputPath: "flashing"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }],
                     listeners: {
@@ -91,15 +84,9 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 type: "fluid.metadata.audioPanel",
                 container: "{videoMetadataPanel}.dom.audioPanel",
                 options: {
-                    gradeNames: ["fluid.prefs.modelRelay"],
-                    sourceApplier: "{videoMetadataPanel}.applier",
                     model: {
-                        audio: "{videoMetadataPanel}.model.audio",
-                        keywords: "{videoMetadataPanel}.model.audioKeywords"
-                    },
-                    rules: {
-                        audio: "audio",
-                        audioKeywords: "keywords"
+                        audio: "{videoMetadataPanel}.model.metadata.audio",
+                        keywords: "{videoMetadataPanel}.model.metadata.keywords"
                     },
                     listeners: {
                         afterRender: "{videoMetadataPanel}.events.audioPanelRendered.fire"
@@ -110,19 +97,17 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 type: "fluid.metadata.captionsPanel",
                 container: "{videoMetadataPanel}.dom.captionsPanel",
                 options: {
-                    gradeNames: ["fluid.prefs.modelRelay"],
-                    sourceApplier: "{videoMetadataPanel}.applier",
                     model: {
-                        resources: "{videoMetadataPanel}.model.captions"
-                    },
-                    rules: {
-                        captions: "resources"
+                        resources: "{videoMetadataPanel}.model.metadata.captions"
                     },
                     listeners: {
                         afterMarkupReady: "{videoMetadataPanel}.events.captionsPanelRendered.fire"
                     }
                 }
             }
+        },
+        listeners: {
+            onCreate: "console.log"
         },
         events: {
             videoPanelRendered: null,
@@ -161,16 +146,40 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             defaultModel: {
                 url: "",
                 metadata: {
-                    accessibilityFeature: []
+                    accessibilityFeature: [],
+                    accessibilityHazard: [],
+                    keywords: [],
+                    flashing: "unknown",
+                    audio: "available"
                 },
-                // highContrast: false,
-                // signLanguage: false,
-                flashing: "unknown",
-                audio: "available",
-                keywords: [],
                 captions: []
             }
         }
+    });
+
+    fluid.defaults("fluid.metadata.defaultVideoModelRelay", {
+        gradeNames: ["fluid.standardRelayComponent", "autoInit"],
+        modelRelay: [{
+            source: "{defaultVideoModelRelay}.model.metadata.accessibilityFeature",
+            target: "{defaultVideoModelRelay}.model.modelInTransit",
+            singleTransform: {
+                type: "fluid.transforms.arrayToSetMembership",
+                options: {
+                    "highContrast": "highContrast",
+                    "signLanguage": "signLanguage"
+                }
+            }
+        }, {
+            source: "{defaultVideoModelRelay}.model.metadata.accessibilityHazard",
+            target: "{defaultVideoModelRelay}.model.modelInTransit",
+            singleTransform: {
+                type: "fluid.transforms.arrayToSetMembership",
+                options: {
+                    "flashing": "flashing",
+                    "noflashing": "noflashing"
+                }
+            }
+        }]
     });
 
 })(jQuery, fluid);

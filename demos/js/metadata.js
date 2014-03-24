@@ -21,7 +21,7 @@ var demo = demo || {};
 
 
     fluid.defaults("demo.metadata", {
-        gradeNames: ["fluid.viewComponent", "autoInit"],
+        gradeNames: ["fluid.viewRelayComponent", "autoInit"],
         selectors: {
             simpleEditor: ".flc-simpleEditor",
             metadataPanel: ".flc-metadataPanelContainer"
@@ -50,9 +50,6 @@ var demo = demo || {};
                 type: "fluid.simpleEditor",
                 container: "{that}.dom.simpleEditor",
                 options: {
-                    members: {
-                        applier: "{metadata}.applier"
-                    },
                     model: "{metadata}.model",
                     listeners: {
                         "{metadata}.events.onReset": "{that}.reset",
@@ -65,12 +62,14 @@ var demo = demo || {};
                 createOnEvent: "onCreateMetadataPanel",
                 options: {
                     gradeNames: ["fluid.metadata.videoMetadataPanel", "fluid.metadata.saveVideoMetadata"],
-                    listeners: {
-                        "{metadata}.events.onReset": "{that}.events.onReset.fire",
-                        "onCreate.setInitialModel": {
-                            listener: "demo.metadata.setMetadataPanelInitialModel",
-                            args: ["{metadata}.model.url", "{dataSource}", "{that}.setModel"]
+                    savedModel: {
+                        expander: {
+                            func: "demo.metadata.getMetadataPanelSavedModel",
+                            args: ["{metadata}.model.url", "{dataSource}"]
                         }
+                    },
+                    listeners: {
+                        "{metadata}.events.onReset": "{that}.events.onReset.fire"
                     }
                 }
             },
@@ -141,9 +140,12 @@ var demo = demo || {};
         metadata.applier.requestChange("url", model.url);
     };
 
-    demo.metadata.setMetadataPanelInitialModel = function (url, dataSource, setModelFunc) {
+    demo.metadata.getMetadataPanelSavedModel = function (url, dataSource, setModelFunc) {
         var savedModel = dataSource.savedModel;
-        setModelFunc($.extend(true, {url: url}, savedModel));
+        console.log("savedModel: ", savedModel, $.extend(true, {url: url}, savedModel));
+        var model = $.extend(true, {url: url}, savedModel);
+        return model;
+        // setModelFunc($.extend(true, {url: url}, savedModel));
     };
 
     demo.metadata.resetDataSource = function (dataSource, markupID, videoMetadataID) {
@@ -163,9 +165,9 @@ var demo = demo || {};
     };
 
     fluid.defaults("fluid.metadata.saveVideoMetadata", {
-        gradeNames: ["fluid.modelComponent", "autoInit"],
+        gradeNames: ["fluid.standardRelayComponent", "autoInit"],
         modelListeners: {
-            "*": {
+            "": {
                 func: "{dataSource}.set",
                 args: [{id: "videoMetadata", model: "{that}.model"}]
             }

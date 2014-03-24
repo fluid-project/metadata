@@ -27,7 +27,7 @@ var fluid_1_5 = fluid_1_5 || {};
      *******************************************************************************/
 
     fluid.defaults("fluid.metadata.audioPanel", {
-        gradeNames: ["fluid.rendererComponent", "fluid.metadata.panel", "autoInit"],
+        gradeNames: ["fluid.rendererRelayComponent", "fluid.metadata.panel", "autoInit"],
         components: {
             indicator: {
                 createOnEvent: "afterRender",
@@ -49,9 +49,6 @@ var fluid_1_5 = fluid_1_5 || {};
                     }
                 },
                 options: {
-                    members: {
-                        applier: "{audioPanel}.applier"
-                    },
                     model: "{audioPanel}.model",
                     resources: {
                         template: "{audioPanel}.options.resources.attributesTemplate"
@@ -61,6 +58,10 @@ var fluid_1_5 = fluid_1_5 || {};
                     },
                     modelListeners: {
                         "audio": "{that}.refreshView"
+                        // "*": {
+                        //     listener: "console.log",
+                        //     args: ["attributes", "{arguments}.0"]
+                        // }
                     }
                 }
             }
@@ -68,6 +69,12 @@ var fluid_1_5 = fluid_1_5 || {};
         model: {
             audio: "available"
         },
+        // modelListeners: {
+        //     "*": {
+        //         listener: "console.log",
+        //         args: ["audioPanel", "{arguments}.0"]
+        //     }
+        // },
         indicatorModelRules: {
             value: "audio"
         },
@@ -88,9 +95,10 @@ var fluid_1_5 = fluid_1_5 || {};
             audioInput: ".flc-audio-input",
             attributes: ".flc-audio-attributes"
         },
-        selectorsToIgnore: ["title", "indicator", "attributes"],
+        selectorsToIgnore: ["indicator", "attributes"],
         repeatingSelectors: ["audioRow"],
         protoTree: {
+            title: {messagekey: "title"},
             instruction: {messagekey: "instruction"},
             expander: {
                 type: "fluid.renderer.selection.inputs",
@@ -152,7 +160,7 @@ var fluid_1_5 = fluid_1_5 || {};
      *******************************************************************************/
 
     fluid.defaults("fluid.metadata.audioPanel.attributes", {
-        gradeNames: ["fluid.rendererComponent", "autoInit"],
+        gradeNames: ["fluid.rendererRelayComponent", "autoInit"],
         strings: {
             keywords: ["Dialogue or narrative.", "Soundtrack.", "Sound effects."]
         },
@@ -188,8 +196,7 @@ var fluid_1_5 = fluid_1_5 || {};
         },
         model: {
             audio: "available"
-        },
-        renderOnInit: true
+        }
     });
 
     fluid.metadata.audioPanel.attributes.enableAttributes = function (audioValue) {

@@ -18,7 +18,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 (function ($, fluid) {
 
     fluid.defaults("fluid.markupViewer", {
-        gradeNames: ["fluid.viewComponent", "fluid.markup", "autoInit"],
+        gradeNames: ["fluid.viewRelayComponent", "fluid.markup", "autoInit"],
         selectors: {
             code: ".flc-markupViewer-code"
         },

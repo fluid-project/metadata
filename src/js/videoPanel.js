@@ -66,7 +66,7 @@ var fluid_1_5 = fluid_1_5 || {};
             flashingInput: ".flc-flashing-input",
             flashingRowLabel: ".flc-flashingRow-label"
         },
-        selectorsToIgnore: ["title", "indicator"],
+        selectorsToIgnore: ["indicator"],
         repeatingSelectors: ["flashingRow"],
         protoTree: {
             title: {messagekey: "title"},

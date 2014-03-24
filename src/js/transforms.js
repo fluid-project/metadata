@@ -33,10 +33,11 @@ var fluid_1_5 = fluid_1_5 || {};
     };
 
     fluid.metadata.transforms.decomposeFeatures.invert = function (transformSpec, transform) {
+        console.log("in fluid.metadata.transforms.decomposeFeatures.invert");
         var togo = fluid.copy(transformSpec);
         togo.type = "fluid.metadata.transforms.composeFeatures";
         togo.outputPath = transformSpec.inputPath;
-        delete togo.inputPath;
+        togo.inputPath = transform.outputPrefix;
         return togo;
     };
 
@@ -46,7 +47,7 @@ var fluid_1_5 = fluid_1_5 || {};
     });
 
     fluid.metadata.transforms.composeFeatures = function (inputs, transformSpec, transform) {
-        var inputValue = fluid.get(transform.source, transformSpec.feature),
+        var inputValue = fluid.get(transform.source, transformSpec.inputPath),
             featureValue = [];
 
         if (inputValue) {
@@ -60,7 +61,7 @@ var fluid_1_5 = fluid_1_5 || {};
         var togo = fluid.copy(transformSpec);
         togo.type = "fluid.metadata.transforms.decomposeFeatures";
         togo.inputPath = transform.outputPrefix + "." + transformSpec.outputPath;
-        togo.outputPath = transformSpec.feature;
+        togo.outputPath = transformSpec.inputPath;
         return togo;
     };
 

@@ -27,7 +27,7 @@ var fluid_1_5 = fluid_1_5 || {};
      ******************/
 
     fluid.defaults("fluid.metadata.resourceInput", {
-        gradeNames: ["fluid.rendererComponent", "autoInit"],
+        gradeNames: ["fluid.rendererRelayComponent", "autoInit"],
         selectors: {
             srcLabel: ".flc-resourceInput-srcLabel",
             src: ".flc-resourceInput-src",

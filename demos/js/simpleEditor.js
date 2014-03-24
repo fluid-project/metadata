@@ -24,7 +24,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     };
 
     fluid.defaults("fluid.simpleEditor", {
-        gradeNames: ["fluid.viewComponent", "autoInit"],
+        gradeNames: ["fluid.viewRelayComponent", "autoInit"],
         selectors: {
             controls: ".flc-simpleEditor-control",
             content: ".flc-simpleEditor-content"
@@ -41,8 +41,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         },
         modelListeners: {
             "markup": {
-                func: "{dataSource}.set",
-                args: [{id: "markup", model: "{that}.model.markup"}]
+                func: "fluid.simpleEditor.saveMarkup",
+                args: ["{dataSource}.set", "{change}.value"]
             }
         },
         invokers: {
@@ -71,10 +71,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                         "afterInsert.updateEditor": "{simpleEditor}.updateModel",
                         "{simpleEditor}.events.onReset": "{that}.reset"
                     },
-                    model: "{simpleEditor}.model",
-                    members: {
-                        applier: "{simpleEditor}.applier"
-                    }
+                    model: "{simpleEditor}.model"
                 }
             }
         },
@@ -124,7 +121,13 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }
     });
 
+    fluid.simpleEditor.saveMarkup = function (setFunc, newValue) {
+        console.log("saving markup", newValue);
+        setFunc({id: "markup", model: newValue});
+    };
+
     fluid.simpleEditor.setContent = function (elm, content) {
+        console.log("getting markup into simpleEditor", content);
         if (content || content === "") {
             elm.html(content);
         }
@@ -171,7 +174,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     });
 
     fluid.defaults("fluid.simpleEditor.button", {
-        gradeNames: ["fluid.viewComponent", "fluid.progressiveCheckerForComponent", "autoInit"],
+        gradeNames: ["fluid.viewRelayComponent", "fluid.progressiveCheckerForComponent", "autoInit"],
         componentName: "fluid.simpleEditor.button",
         progressiveCheckerOptions: {
             checks: [{
@@ -276,7 +279,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     };
 
     fluid.defaults("fluid.simpleEditor.insertVideo", {
-        gradeNames: ["fluid.viewComponent", "autoInit"],
+        gradeNames: ["fluid.viewRelayComponent", "autoInit"],
         selectors: {
             url: ".flc-simpleEditor-insertVideo-url",
             urlLabel: ".flc-simpleEditor-insertVideo-urlLabel",

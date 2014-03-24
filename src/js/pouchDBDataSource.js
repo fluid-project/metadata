@@ -71,6 +71,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     };
 
     fluid.pouchdb.dataSource.set = function (database, directModel, callback) {
+        if (typeof directModel.model === "undefined") {
+            return;
+        }
+
         database.get(directModel.id, function (err, result) {
             var doc = {
                 _id: directModel.id,
