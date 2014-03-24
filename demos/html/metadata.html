@@ -43,16 +43,17 @@
                         Welcome to the flO.E.R. metadata authoring demo.
                     </h1>
                     <p class="flc-simpleEditor-greeting-text fl-simpleEditor-greeting-text text-center">
-                        Begin by creating a document in the editor window. Insert a video by entering a web address in the text field.
+                        This is a text editor - begin by adding text in the editor window.<br/>
+                        <strong>Insert a video</strong> by typing some text in the web address field.
                     </p>
                 </div>
 
                 <div class="flc-metadata fl-metadata row">
-                    <div class="flc-simpleEditor fl-simpleEditor clearfix col-md-8">
+                    <div class="flc-simpleEditor fl-simpleEditor clearfix col-sm-8">
                         <div class="flc-simpleEditor-toolbar fl-simpleEditor-toolbar btn-toolbar" role="toolbar">
                             <div class="row">
-                                <div class="col-lg-3 col-md-4 col-sm-3 col-xs-12">
-                                    <ul class="btn-group">
+                                <div class="col-xs-4 col-sm-5 col-md-4">
+                                    <ul class="btn-group fl-simpleEditor-toolbar-buttonGroup">
                                         <li class="flc-simpleEditor-control btn btn-default" role="button" data-control="bold" data-keycode="b">
                                             B
                                         </li>
@@ -65,17 +66,13 @@
                                     </ul>
                                 </div>
 
-                                <div class="col-lg-9 col-md-8 col-sm-9 col-xs-12">
+                                <div class="col-xs-8 col-sm-7 col-md-8">
                                     <form class="fl-simpleEditor-insertVideo-form" role="form">
-                                        <div class="row">
-                                            <label class="flc-simpleEditor-insertVideo-urlLabel fl-simpleEditor-insertVideo-urlLabel col-md-3 col-sm-4 col-xs-3" for="videoInput"></label>
-                                            <div class="col-md-9 col-sm-7 col-xs-8">
-                                                <input type="text" class="flc-simpleEditor-insertVideo-url fl-simpleEditor-insertVideo-url" placeholder="www.example.com/video.mp4" id="videoInput">
-                                                <button class="flc-simpleEditor-insertVideo-submit fl-simpleEditor-insertVideo-submit btn btn-sm btn-default">
-                                                    OK
-                                                </button>
-                                            </div>
-                                        </div>
+                                        <label class="flc-simpleEditor-insertVideo-urlLabel fl-simpleEditor-insertVideo-urlLabel" for="videoInput"></label>
+                                        <input type="text" class="flc-simpleEditor-insertVideo-url fl-simpleEditor-insertVideo-url" placeholder="www.example.com/video.mp4" id="videoInput">
+                                        <button class="flc-simpleEditor-insertVideo-submit fl-simpleEditor-insertVideo-submit btn btn-sm btn-default">
+                                            OK
+                                        </button>
                                     </form>
                                 </div>
                             </div>
@@ -87,7 +84,7 @@
                     </div>
 
                     <!-- metadata panels -->
-                    <div class="flc-metadataPanelContainer fl-metadataPanelContainer col-md-4">
+                    <div class="flc-metadataPanelContainer fl-metadataPanelContainer col-sm-4">
                         <div class="flc-videoPanel fl-videoPanel"></div>
                         <div class="flc-audioPanel fl-audioPanel"></div>
                         <div class="flc-captionsPanel fl-captionsPanel"></div>
