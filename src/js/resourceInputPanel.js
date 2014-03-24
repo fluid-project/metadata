@@ -62,7 +62,7 @@ var fluid_1_5 = fluid_1_5 || {};
             }
         },
         listeners: {
-            "onCreate.init": "fluid.metadata.resourceInput.init"
+            "onCreate.loadTemplate": "fluid.metadata.resourceInput.loadTemplate"
         },
         resources: {
             template: {
@@ -72,32 +72,78 @@ var fluid_1_5 = fluid_1_5 || {};
         }
     });
 
-    fluid.metadata.resourceInput.init = function (that) {
+    fluid.metadata.resourceInput.loadTemplate = function (that) {
         fluid.fetchResources(that.options.resources, function (resourceSpec) {
             that.refreshView();
         });
     };
 
     /************************************
-     * conditionAny transformation spec *
+     * find transformation spec *
      ************************************/
 
-    fluid.defaults("fluid.transforms.conditionAny", {
+    /*
+     * The find transform is similar to that of the standard condition transform found in Infusion.
+     * However, it determines the condition state by testing a specified path in each object of an array of objects,
+     * and returns true if any of the values are truthy. (conceptually it's like performing an || over the values of
+     * the array). After the first truthy value is found, the transformation will be returned.
+     *
+     * transform spec:
+     * ==============
+     *
+     * condition (optional) - an array of objects to test
+     * conditionPath (optional) - a path to the array of objects to test (takes priority over condition)
+     * innerPath - the path into an object to use for testing.
+     *             A signle path can be specified, and is used for all objects specifed in the condition or condtionPath
+     * true - the value to return if the 'true' condition is met
+     * false - the value to return if the 'false' condition is met
+     *
+     * Example :
+     * =========
+     *
+     *  var model = {
+     *     resources: [{
+     *          src: "",
+     *          language: "en"
+     *      }, {
+     *          src: "www.example.com/video.mp4",
+     *          language: "fr"
+     *      }]
+     *  };
+     *
+     *  var rules = {
+     *      value: {
+     *          transform: {
+     *              type: "fluid.transforms.find",
+     *              conditionPath: "resources",
+     *              innerPath: "src",
+     *              "true": "available",
+     *              "false": "unavailable"
+     *          }
+     *      }
+     *  };
+     *
+     *  var transformed = fluid.model.transform(model, rules);
+     *
+     *  transformed === {
+     *      value: "available"
+     *  };
+     */
+
+    fluid.defaults("fluid.transforms.find", {
         gradeNames: [ "fluid.multiInputTransformFunction", "fluid.standardOutputTransformFunction" ]
     });
 
-    fluid.transforms.conditionAny = function (inputs, transformSpec, transform) {
+    fluid.transforms.find = function (inputs, transformSpec, transform) {
 
         var conditions = transformSpec.conditionPath ? fluid.get(transform.source, transformSpec.conditionPath) : transformSpec.condition;
         var innerPath = transformSpec.innerPath || "";
-        for (var i=0; i <= conditions.length; i++) {
-            var condition = conditions[i];
-            if (fluid.get(condition, innerPath)) {
-                return transformSpec["true"];
-            }
-        }
+        var result = fluid.find(conditions, function (condition) {
+            // ensures that if a falsey  value is found it treats it as undefined.
+            return fluid.get(condition, innerPath) || undefined;
+        });
 
-        return transformSpec["false"];
+        return transformSpec[result ? "true" : "false"];
     };
 
     /************************
@@ -107,8 +153,8 @@ var fluid_1_5 = fluid_1_5 || {};
     fluid.defaults("fluid.metadata.baseResourceInputPanel", {
         gradeNames: ["fluid.metadata.panel", "autoInit"],
         selectors: {
-            primaryResource: ".flc-resourceInputPanel-primary",
-            secondaryResource: ".flc-resourceInputPanel-secondary",
+            inputs: ".flc-resourceInputPanel-inputs",
+            input: ".flc-resourceInputPanel-input",
         },
         strings: {
             tooltip: {},
@@ -126,58 +172,51 @@ var fluid_1_5 = fluid_1_5 || {};
                 language: "en"
             }]
         },
+        members: {
+            inputs: []
+        },
+        dynamicComponents: {
+            input: {
+                createOnEvent: "onCreateInput",
+                type: "fluid.metadata.resourceInput",
+                container: "{arguments}.0",
+                options: {
+                    source: "{arguments}",
+                    strings: "{baseResourceInputPanel}.options.strings.resourceInput",
+                    model: {
+                        expander: {
+                            funcName: "fluid.copy",
+                            args: "{that}.options.source.1"
+                        }
+                    },
+                    modelListeners: {
+                        "*": {
+                            func: "{baseResourceInputPanel}.updateModel",
+                            args: ["{change}.value", "{change}.path", "{that}.options.source.2"]
+                        }
+                    },
+                    listeners: {
+                        onCreate: {
+                            "this": "{baseResourceInputPanel}.inputs",
+                            "method": "push"
+                        }
+                    }
+                }
+            }
+        },
         components: {
-            //TODO: use dynamic components instead of hard coding two resources
-            primaryResource: {
-                type: "fluid.metadata.resourceInput",
-                container: "{that}.dom.primaryResource",
-                createOnEvent: "afterMarkupReady",
-                options: {
-                    strings: "{baseResourceInputPanel}.options.strings.resourceInput",
-                    model: {
-                        expander: {
-                            funcName: "fluid.copy",
-                            args: "{baseResourceInputPanel}.model.resources.0"
-                        }
-                    },
-                    modelListeners: {
-                        "*": {
-                            func: "{baseResourceInputPanel}.updateModel",
-                            args: ["{change}.value", "{change}.path", 0]
-                        }
-                    },
-                    listeners: {
-                        afterRender: "{baseResourceInputPanel}.events.afterRenderPrimaryCaption"
-                    }
-                }
-            },
-            secondaryResource: {
-                type: "fluid.metadata.resourceInput",
-                container: "{that}.dom.secondaryResource",
-                createOnEvent: "afterMarkupReady",
-                options: {
-                    strings: "{baseResourceInputPanel}.options.strings.resourceInput",
-                    model: {
-                        expander: {
-                            funcName: "fluid.copy",
-                            args: "{baseResourceInputPanel}.model.resources.1"
-                        }
-                    },
-                    modelListeners: {
-                        "*": {
-                            func: "{baseResourceInputPanel}.updateModel",
-                            args: ["{change}.value", "{change}.path", 1]
-                        }
-                    },
-                    listeners: {
-                        afterRender: "{baseResourceInputPanel}.events.afterRenderSecondaryCaption"
-                    }
-                }
-            },
             indicator: {
                 createOnEvent: "afterMarkupReady",
                 options: {
-                    tooltipContent: "{baseResourceInputPanel}.options.strings.tooltip"
+                    strings: {
+                        tooltipContent: "{baseResourceInputPanel}.options.strings.tooltip"
+                    },
+                    listeners: {
+                        onAttach: {
+                            listener: "{baseResourceInputPanel}.events.afterIndicatorReady",
+                            priority: "last"
+                        }
+                    }
                 }
             }
         },
@@ -185,12 +224,14 @@ var fluid_1_5 = fluid_1_5 || {};
             afterMarkupReady: null,
             afterRenderPrimaryCaption: null,
             afterRenderSecondaryCaption: null,
+            onCreateInput: null,
+            onRenderInputContainer: null,
+            afterIndicatorReady: null,
             onReady: {
                 events: {
                     onCreate: "onCreate",
                     afterMarkupReady: "afterMarkupReady",
-                    afterRenderPrimaryCaption: "afterRenderPrimaryCaption",
-                    afterRenderSecondaryCaption: "afterRenderSecondaryCaption",
+                    afterIndicatorReady: "afterIndicatorReady"
                 },
                 args: "{that}"
             }
@@ -206,19 +247,34 @@ var fluid_1_5 = fluid_1_5 || {};
                 "this": "{that}.dom.title",
                 "method": "text",
                 "args": ["{that}.options.strings.title"]
-            }
+            },
+            "afterMarkupReady.getInputContainer": {
+                funcName: "fluid.metadata.baseResourceInputPanel.cloneInputContainer",
+                args: ["{that}", "{that}.dom.input"],
+                priority: "first"
+            },
+            "afterMarkupReady.initInputs": "{that}.initInputs",
+            "onRenderInputContainer.renderInputContainer": "{that}.renderInputContainer"
         },
         invokers: {
             updateModel: {
                 funcName: "fluid.metadata.baseResourceInputPanel.updateModel",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "resources"],
                 dynamic: true
+            },
+            initInputs: {
+                funcName: "fluid.each",
+                args: ["{that}.model.resources", "{that}.events.onRenderInputContainer.fire"]
+            },
+            renderInputContainer: {
+                funcName: "fluid.metadata.baseResourceInputPanel.renderInputContainer",
+                args: ["{that}.dom.inputs", "{that}.inputTemplate", "{arguments}.0", "{arguments}.1", "{that}.events.onCreateInput.fire"]
             }
         },
         indicatorModelRules: {
             value: {
                 transform: {
-                    type: "fluid.transforms.conditionAny",
+                    type: "fluid.transforms.find",
                     conditionPath: "resources",
                     innerPath: "src",
                     "true": "available",
@@ -238,10 +294,7 @@ var fluid_1_5 = fluid_1_5 || {};
         },
         distributeOptions: [{
             source: "{that}.options.resources.resourceInput.url",
-            target: "{that > primaryResource}.options.resources.template.url"
-        }, {
-            source: "{that}.options.resources.resourceInput.url",
-            target: "{that > secondaryResource}.options.resources.template.url"
+            target: "{that > resourceInput}.options.resources.template.url"
         }]
     });
 
@@ -255,6 +308,16 @@ var fluid_1_5 = fluid_1_5 || {};
             that.container.append(resourceSpec.template.resourceText);
             that.events.afterMarkupReady.fire(that);
         });
+    };
+
+    fluid.metadata.baseResourceInputPanel.cloneInputContainer = function (that, elm) {
+        that.inputTemplate = elm.remove();
+    };
+
+    fluid.metadata.baseResourceInputPanel.renderInputContainer = function (container, elm, model, idx, callback) {
+        var input = elm.clone();
+        container.append(input);
+        callback(input, model, idx);
     };
 
     fluid.defaults("fluid.metadata.resourceInputPanel", {

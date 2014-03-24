@@ -32,10 +32,12 @@ var fluid_1_5 = fluid_1_5 || {};
             indicator: {
                 createOnEvent: "afterRender",
                 options: {
-                    tooltipContent: {
-                        "available": "${{that}.options.strings.audioAvailable}",
-                        "unavailable": "${{that}.options.strings.audioUnavailable}",
-                        "unknown": "${{that}.options.strings.audioUnavailable}"
+                    strings: {
+                        tooltipContent: {
+                            "available": "${{that}.options.strings.audioAvailable}",
+                            "unavailable": "${{that}.options.strings.audioUnavailable}",
+                            "unknown": "${{that}.options.strings.audioUnavailable}"
+                        }
                     }
                 }
             },
