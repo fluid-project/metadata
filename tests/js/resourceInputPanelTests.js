@@ -100,6 +100,28 @@ https://github.com/gpii/universal/LICENSE.txt
         }]
     });
 
+    var baseResources = {
+        template: {
+            url: "../../src/html/resourceInputPanel-base-template.html"
+        },
+        resourceInput: {
+            url: "../../src/html/resourceInput-template.html"
+        }
+    };
+
+    var verifyInitialBaseResourceState = function (that, styleClass) {
+        jqUnit.assertEquals("The initial indicator model should be set correctly", "unavailable", that.indicator.model.value);
+        jqUnit.assertTrue("The container class should have been applied", that.container.hasClass(styleClass));
+    };
+
+    var verifyModelChanges = function (that, expectedModel) {
+        fluid.each(that.inputs, function (input, idx) {
+            input.applier.requestChange("src", expectedModel.resources[idx].src);
+        });
+        jqUnit.assertDeepEq("The parent model should have been updated.", expectedModel, that.model);
+        jqUnit.assertEquals("The indicator model should be updated correctly", "available", that.indicator.model.value);
+    };
+
     jqUnit.asyncTest("baseResourceInputPanel", function () {
         jqUnit.expect(4);
 
@@ -119,34 +141,20 @@ https://github.com/gpii/universal/LICENSE.txt
             styles: {
                 container: styleClass
             },
-            resources: {
-                template: {
-                    url: "../../src/html/resourceInputPanel-base-template.html"
-                },
-                resourceInput: {
-                    url: "../../src/html/resourceInput-template.html"
-                }
-            },
+            resources: baseResources,
             listeners: {
-                onReady: {
-                    listener: function (that) {
-                        // initial
-                        jqUnit.assertEquals("The initial indicator model should be set correctly", "unavailable", that.indicator.model.value);
-                        jqUnit.assertTrue("The container class should have been applied", that.container.hasClass(styleClass));
-
-                        // model update
-                        //
-                        fluid.each(that.inputs, function (input, idx) {
-                            input.applier.requestChange("src", newModel.resources[idx].src);
-                        });
-                        jqUnit.assertDeepEq("The parent model should have been updated.", newModel, that.model);
-                        jqUnit.assertEquals("The indicator model should be updated correctly", "available", that.indicator.model.value);
-
-                        // start
-                        jqUnit.start();
-                    },
+                onReady: [{
+                    listener: verifyInitialBaseResourceState,
+                    args: ["{that}", styleClass],
                     priority: "last"
-                }
+                }, {
+                    listener: verifyModelChanges,
+                    args: ["{that}", newModel],
+                    priority: "last"
+                }, {
+                    listener: "jqUnit.start",
+                    priority: "last"
+                }]
             }
         });
     });
@@ -198,6 +206,15 @@ https://github.com/gpii/universal/LICENSE.txt
 
     });
 
+    var rsourceInputPanelResources = {
+        template: {
+            url: "../../src/html/resourceInputPanel-template.html"
+        },
+        resourceInput: {
+            url: "../../src/html/resourceInput-template.html"
+        }
+    };
+
     // This test should have been included in fluid.tests.resourceInputPanelTester from
     // resourceInputPanelTestUtils.js. However at the time it wasn't possible to declare
     // listeners for multiple events (onReady, afterRender) in a sequence. This is because
@@ -222,14 +239,7 @@ https://github.com/gpii/universal/LICENSE.txt
                     }
                 }
             },
-            resources: {
-                template: {
-                    url: "../../src/html/resourceInputPanel-template.html"
-                },
-                resourceInput: {
-                    url: "../../src/html/resourceInput-template.html"
-                }
-            }
+            resources: rsourceInputPanelResources
         });
     });
 
