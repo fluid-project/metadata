@@ -22,6 +22,7 @@
         <script type="text/javascript" src="../../src/js/metadataPanel.js"></script>
         <script type="text/javascript" src="../js/simpleEditor.js"></script>
         <script type="text/javascript" src="../js/metadata.js"></script>
+        <script type="text/javascript" src="../js/predefinedOER.js"></script>
 
     </head>
     <body>
@@ -94,6 +95,7 @@
         </section>
         <script type="text/javascript">
             var editor = demo.metadata(".flc-metadata", {
+                oerMaterial: demo.metadata.predefinedOER,
                 videoPanelTemplate: "../../src/html/video-template.html",
                 audioPanelTemplate: "../../src/html/audio-template.html",
                 audioAttributesTemplate: "../../src/html/audio-attributes-template.html",

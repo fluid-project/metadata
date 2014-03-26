@@ -22,12 +22,25 @@ var demo = demo || {};
 
     fluid.defaults("demo.metadata", {
         gradeNames: ["fluid.viewComponent", "autoInit"],
+        oerMaterial: null, // If not null, populate the given OER material
         selectors: {
             simpleEditor: ".flc-simpleEditor",
             metadataPanel: ".flc-metadataPanelContainer"
         },
         events: {
-            onReset: null
+            onReset: null,
+            onMarkupFetched: null,
+            onModelFetched: null
+        },
+        listeners: {
+            "onMarkupFetched.setMarkup": {
+                listener: "demo.metadata.setMarkup",
+                args: ["{arguments}.0", "{that}.options.oerMaterial", "{simpleEditor}.setContent"]
+            },
+            "onModelFetched.setModel": {
+                listener: "demo.metadata.setModel",
+                args: ["{arguments}.0", "{that}.options.oerMaterial", "{metadataPanel}.setModel"]
+            }
         },
         components: {
             simpleEditor: {
@@ -37,7 +50,7 @@ var demo = demo || {};
                     model: "{metadata}.model",
                     applier: "{metadata}.applier",
                     listeners: {
-                        "{metadata}.events.onReset": "{that}.reset",
+                        "{metadata}.events.onReset": "{that}.reset"
                     }
                 }
             },
@@ -62,11 +75,11 @@ var demo = demo || {};
                     listeners: {
                         "onCreate.fetchMarkup": {
                             listener: "{that}.get",
-                            args: [{id: "markup"}, "{simpleEditor}.setContent"]
+                            args: [{id: "markup"}, "{metadata}.events.onMarkupFetched.fire"]
                         },
                         "onCreate.fetchMetadata": {
                             listener: "{that}.get",
-                            args: [{id: "videoMetadata"}, "{metadataPanel}.setModel"]
+                            args: [{id: "videoMetadata"}, "{metadata}.events.onModelFetched.fire"]
                         }
                     }
                 }
@@ -95,14 +108,31 @@ var demo = demo || {};
         }]
     });
 
+    demo.metadata.setMarkup = function (fetchedMarkup, oerMaterial, setMarkupFunc) {
+        if (oerMaterial && !fetchedMarkup) {
+            setMarkupFunc(oerMaterial.content);
+        } else {
+            setMarkupFunc(fetchedMarkup);
+        }
+    };
+
+    demo.metadata.setModel = function (fetchedModel, oerMaterial, setModelFunc) {
+        if (oerMaterial && !fetchedModel.url) {
+            var mergedModel = $.extend(true, {}, fetchedModel, {url: oerMaterial.url});
+            setModelFunc(mergedModel);
+        } else {
+            setModelFunc(fetchedModel);
+        }
+    };
+
     fluid.defaults("fluid.metadata.saveVideoMetadata", {
         gradeNames: ["fluid.modelComponent", "autoInit"],
         modelListeners: {
-            "*": {
+            "": {
                 func: "{dataSource}.set",
                 args: [{id: "videoMetadata", model: "{that}.model"}]
             }
-        },
+        }
     });
 
 })(jQuery, fluid);
