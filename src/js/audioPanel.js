@@ -82,7 +82,6 @@ var fluid_1_5 = fluid_1_5 || {};
         },
         strings: {
             title: "Audio",
-            instruction: "Choose all that apply",
             audio: ["Yes, this video has an audio track.", "No, this video has no audio track.", "I am not sure if this video has an audio track."],
             audioAvailable: "Audio Attribute is available.",
             audioUnavailable: "Audio Attribute is unavailable."
@@ -90,7 +89,6 @@ var fluid_1_5 = fluid_1_5 || {};
         controlValues: ["available", "unavailable", "unknown"],
         selectors: {
             title: ".flc-audio-title",
-            instruction: ".flc-audio-instruction",
             indicator: ".flc-audio-icon",
             audioRow: ".flc-audio-row",
             audioLabel: ".flc-audio-label",
@@ -101,7 +99,6 @@ var fluid_1_5 = fluid_1_5 || {};
         repeatingSelectors: ["audioRow"],
         protoTree: {
             title: {messagekey: "title"},
-            instruction: {messagekey: "instruction"},
             expander: {
                 type: "fluid.renderer.selection.inputs",
                 rowID: "audioRow",
@@ -164,9 +161,11 @@ var fluid_1_5 = fluid_1_5 || {};
     fluid.defaults("fluid.metadata.audioPanel.attributes", {
         gradeNames: ["fluid.rendererRelayComponent", "autoInit"],
         strings: {
+            instruction: "Choose all that apply",
             keywords: ["Dialogue or narrative.", "Soundtrack.", "Sound effects."]
         },
         selectors: {
+            instruction: ".flc-audio-instruction",
             keywordRow: ".flc-audio-keyword",
             keywordValue: ".flc-audio-keyword-value",
             keywordLabel: ".flc-audio-keyword-label"
@@ -174,6 +173,7 @@ var fluid_1_5 = fluid_1_5 || {};
         controlValues: ["dialogue", "soundtrack", "sound effect"],
         repeatingSelectors: ["keywordRow"],
         protoTree: {
+            instruction: {messagekey: "instruction"},
             expander: {
                 "type": "fluid.renderer.condition",
                 "condition": {
