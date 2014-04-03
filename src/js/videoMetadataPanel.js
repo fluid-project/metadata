@@ -44,7 +44,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                         source: "{videoMetadataPanel}.model.modelInTransit",
                         target: "{that}.model.flashing",
                         singleTransform: {
-                            type: "fluid.transforms.condition",
+                            type: "fluid.metadata.transforms.condition",
                             conditionPath: "flashing",
                             "true": {
                                 transform: {
@@ -55,7 +55,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                             },
                             "false": {
                                 transform: {
-                                    type: "fluid.transforms.condition",
+                                    type: "fluid.metadata.transforms.condition",
                                     conditionPath: "noflashing",
                                     "true": {
                                         transform: {
@@ -105,9 +105,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     }
                 }
             }
-        },
-        listeners: {
-            onCreate: "console.log"
         },
         events: {
             videoPanelRendered: null,
@@ -176,7 +173,18 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 type: "fluid.transforms.arrayToSetMembership",
                 options: {
                     "flashing": "flashing",
-                    "noflashing": "noflashing"
+                    "noflashing": "noflashing",
+                    "sound": "sound",
+                    "nosoundHazard": "nosoundHazard"
+                }
+            }
+        }, {
+            source: "{defaultVideoModelRelay}.model.metadata.accessibilityHazard",
+            target: "{defaultVideoModelRelay}.model.modelInTransit",
+            singleTransform: {
+                type: "fluid.transforms.arrayToSetMembership",
+                options: {
+                    "audio": "audio"
                 }
             }
         }]

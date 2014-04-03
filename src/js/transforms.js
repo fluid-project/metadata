@@ -22,46 +22,62 @@ var fluid_1_5 = fluid_1_5 || {};
 
     fluid.registerNamespace("fluid.metadata.transforms");
 
-    fluid.defaults("fluid.metadata.transforms.decomposeFeatures", {
-        gradeNames: ["fluid.multiInputTransformFunction", "fluid.standardOutputTransformFunction"],
-        invertConfiguration: "fluid.metadata.transforms.decomposeFeatures.invert"
+    fluid.defaults("fluid.metadata.transforms.condition", {
+        gradeNames: ["fluid.transforms.condition", "fluid.lens"],
+        invertConfiguration: "fluid.metadata.transforms.condition.invert"
     });
 
-    fluid.metadata.transforms.decomposeFeatures = function (inputs, transformSpec, transform) {
-        var inputValue = fluid.get(transform.source, transformSpec.inputPath);
-        return $.inArray(transformSpec.feature, inputValue) !== -1;
+    fluid.metadata.transforms.condition = fluid.transforms.condition;
+
+    fluid.metadata.transforms.condition.createLiteralTransform = function (outputPath, outputValue) {
+        return {
+            type: "fluid.transforms.literalValue",
+            value: outputValue,
+            outputPath: outputPath
+        };
     };
 
-    fluid.metadata.transforms.decomposeFeatures.invert = function (transformSpec, transform) {
-        console.log("in fluid.metadata.transforms.decomposeFeatures.invert");
-        var togo = fluid.copy(transformSpec);
-        togo.type = "fluid.metadata.transforms.composeFeatures";
-        togo.outputPath = transformSpec.inputPath;
-        togo.inputPath = transform.outputPrefix;
+    fluid.metadata.transforms.condition.processOneCondition = function (togo, transformSpec, mapOptionTransform) {
+        var type = fluid.get(transformSpec, "type");
+        if (type === "fluid.transforms.literalValue") {
+            fluid.set(togo, "inputPath", fluid.get(transformSpec, "outputPath"));
+            var optionKey = fluid.get(transformSpec, "value");
+            fluid.set(togo, ["options", optionKey, "outputValue", "transform"], mapOptionTransform);
+        } else if (type === "fluid.metadata.transforms.condition") {
+            var conditionPath = fluid.get(transformSpec, "conditionPath");
+            fluid.each(transformSpec, function (value, key) {
+                if (key === "true" || key === "false") {
+                    var keyTree = fluid.get(transformSpec, key);
+
+                    if (keyTree) {
+                        var nextMapOptionTransform = fluid.copy(mapOptionTransform);
+                        nextMapOptionTransform.push(fluid.metadata.transforms.condition.createLiteralTransform(conditionPath, key === "true" ? true : false));
+                        togo = fluid.metadata.transforms.condition.processOneCondition(togo, fluid.get(keyTree, "transform"), nextMapOptionTransform);
+                    }
+                }
+            });
+        }
         return togo;
     };
 
-    fluid.defaults("fluid.metadata.transforms.composeFeatures", {
-        gradeNames: ["fluid.multiInputTransformFunction", "fluid.standardOutputTransformFunction"],
-        invertConfiguration: "fluid.metadata.transforms.composeFeatures.invert"
-    });
+    fluid.metadata.transforms.condition.invert = function (transformSpec, transform) {
+        var togo = {
+                type: "fluid.transforms.valueMapper"
+            };
 
-    fluid.metadata.transforms.composeFeatures = function (inputs, transformSpec, transform) {
-        var inputValue = fluid.get(transform.source, transformSpec.inputPath),
-            featureValue = [];
+        var conditionPath = fluid.get(transformSpec, "conditionPath");
 
-        if (inputValue) {
-            featureValue.push(transformSpec.feature);
-        }
+        fluid.each(transformSpec, function (value, key) {
+            if (key === "true" || key === "false") {
+                var keyTree = fluid.get(transformSpec, key);
 
-        return featureValue;
-    };
-
-    fluid.metadata.transforms.composeFeatures.invert = function (transformSpec, transform) {
-        var togo = fluid.copy(transformSpec);
-        togo.type = "fluid.metadata.transforms.decomposeFeatures";
-        togo.inputPath = transform.outputPrefix + "." + transformSpec.outputPath;
-        togo.outputPath = transformSpec.inputPath;
+                if (keyTree) {
+                    var mapOptionTransform = [];
+                    mapOptionTransform.push(fluid.metadata.transforms.condition.createLiteralTransform(conditionPath, key === "true" ? true : false));
+                    togo = fluid.metadata.transforms.condition.processOneCondition(togo, fluid.get(keyTree, "transform"), mapOptionTransform);
+                }
+            }
+        });
         return togo;
     };
 

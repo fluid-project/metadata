@@ -19,157 +19,177 @@ https://github.com/gpii/universal/LICENSE.txt
 
     jqUnit.module("Metadata Model Transformation");
 
-    function testOneTransform(message, model, transform, method, expected, expandWrap) {
-        if (expandWrap) {
-            transform = {
-                value: {
-                    transform: transform
+    var invertConditionTests = [{
+        message: "A conditional transform with inversion",
+        rules: {
+            transform: {
+                type: "fluid.metadata.transforms.condition",
+                conditionPath: "hasHazard",
+                "true": {
+                    transform: {
+                        type: "fluid.transforms.literalValue",
+                        value: "flashing",
+                        outputPath: "hazard"
+                    }
+                },
+                "false": {
+                    transform: {
+                        type: "fluid.transforms.literalValue",
+                        value: "noflashing",
+                        outputPath: "hazard"
+                    }
                 }
-            };
-        }
-        var transformed = fluid.model.transform(model, transform);
-        jqUnit[method].apply(null, [message, expected, (expandWrap ? transformed.value : transformed) ]);
-    }
-
-    function testOneInversion (test) {
-        var inverseRules = fluid.model.transform.invertConfiguration(test.transform);
-        jqUnit.assertDeepEq(test.message + " -- inverted rules", test.invertedRules, inverseRules);
-        if (test.fullyinvertible) {
-            var transformed = fluid.model.transform(test.expected, inverseRules);
-            jqUnit.assertDeepEq(test.message + " -- result transformation with inverse", test.model, transformed);
-        }
-    }
-
-    var testOneStructure = function (tests) {
-        fluid.each(tests, function (v) {
-            testOneTransform(v.message, v.model, v.transform, v.method, v.expected, v.expandWrap);
-            if (v.invertedRules) {
-                testOneInversion(v);
             }
-        });
+        },
+        invertedRules: {
+            transform: [{
+                type: "fluid.transforms.valueMapper",
+                inputPath: "hazard",
+                options: {
+                    "flashing": {
+                        outputValue: {
+                            transform: [{
+                                type: "fluid.transforms.literalValue",
+                                value: true,
+                                outputPath: "hasHazard"
+                            }]
+                        }
+                    },
+                    "noflashing": {
+                        outputValue: {
+                            transform: [{
+                                type: "fluid.transforms.literalValue",
+                                value: false,
+                                outputPath: "hasHazard"
+                            }]
+                        }
+                    }
+                }
+            }]
+        },
+        expectPerfectInversion: true,
+        model: {
+            hasHazard: true
+        },
+        expected: {
+            hazard: "flashing"
+        },
+        method: "assertDeepEq"
+    }, {
+        message: "A nested conditional transform with inversion",
+        rules: {
+            transform: {
+                type: "fluid.metadata.transforms.condition",
+                conditionPath: "audio",
+                "true": {
+                    transform: {
+                        type: "fluid.metadata.transforms.condition",
+                        conditionPath: "sound",
+                        "true": {
+                            transform: {
+                                type: "fluid.transforms.literalValue",
+                                value: "available",
+                                outputPath: "audio"
+                            }
+                        },
+                        "false": {
+                            transform: {
+                                type: "fluid.transforms.literalValue",
+                                value: "unknown",
+                                outputPath: "audio"
+                            }
+                        }
+                    }
+                },
+                "false": {
+                    transform: {
+                        type: "fluid.metadata.transforms.condition",
+                        conditionPath: "nosoundHazard",
+                        "true": {
+                            transform: {
+                                type: "fluid.transforms.literalValue",
+                                value: "unavailable",
+                                outputPath: "audio"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        invertedRules: {
+            transform: [{
+                type: "fluid.transforms.valueMapper",
+                inputPath: "audio",
+                options: {
+                    "available": {
+                        "outputValue": {
+                            transform: [{
+                                type: "fluid.transforms.literalValue",
+                                value: true,
+                                outputPath: "audio"
+                            }, {
+                                type: "fluid.transforms.literalValue",
+                                value: true,
+                                outputPath: "sound"
+                            }]
+                        }
+                    },
+                    "unknown": {
+                        "outputValue": {
+                            transform: [{
+                                type: "fluid.transforms.literalValue",
+                                value: true,
+                                outputPath: "audio"
+                            }, {
+                                type: "fluid.transforms.literalValue",
+                                value: false,
+                                outputPath: "sound"
+                            }]
+                        }
+                    },
+                    "unavailable": {
+                        "outputValue": {
+                            transform: [{
+                                type: "fluid.transforms.literalValue",
+                                value: false,
+                                outputPath: "audio"
+                            }, {
+                                type: "fluid.transforms.literalValue",
+                                value: true,
+                                outputPath: "nosoundHazard"
+                            }]
+                        }
+                    }
+                }
+            }]
+        },
+        expectPerfectInversion: true,
+        model: {
+            audio: false,
+            nosoundHazard: true
+        },
+        expected: {
+            audio: "unavailable"
+        },
+        method: "assertDeepEq"
+    }];
+
+    var testInvertConditions = function (json) {
+        var description = json.message;
+        var transformed = fluid.model.transformWithRules(json.model, json.rules);
+        jqUnit.assertDeepEq(description + " forward transformation", json.expected, transformed);
+        var inverseRules = fluid.model.transform.invertConfiguration(json.rules);
+        jqUnit.assertDeepEq(description + " inverted rules", json.invertedRules, inverseRules);
+        if (json.expectPerfectInversion === true) {
+            var inverseTransformed = fluid.model.transformWithRules(json.expected, json.invertedRules);
+            jqUnit.assertDeepEq(description + " inverted transformation", json.model, inverseTransformed);
+        }
     };
 
-    var transformsTests = [{
-        message: "A defined feature is transformed correctly",
-        transform: {
-            "output": {
-                transform: {
-                    type: "fluid.metadata.transforms.decomposeFeatures",
-                    feature: "highContrast",
-                    inputPath: "metadata.features"
-                }
-            }
-        },
-        invertedRules: {
-            transform: [{
-                type: "fluid.metadata.transforms.composeFeatures",
-                outputPath: "metadata.features",
-                feature: "highContrast",
-                inputPath: "output"
-            }]
-        },
-        fullyinvertible: true,
-        model: {
-            metadata: {
-                features: ["highContrast"]
-            }
-        },
-        expected: {
-            output: true
-        },
-        method: "assertDeepEq"
-    }, {
-        message: "An undefined features is transformed correctly",
-        transform: {
-            "output": {
-                transform: {
-                    type: "fluid.metadata.transforms.decomposeFeatures",
-                    feature: "signLanguage",
-                    inputPath: "metadata.features"
-                }
-            }
-        },
-        invertedRules: {
-            transform: [{
-                type: "fluid.metadata.transforms.composeFeatures",
-                outputPath: "metadata.features",
-                inputPath: "output",
-                feature: "signLanguage"
-            }]
-        },
-        fullyinvertible: true,
-        expected: {
-            output: false
-        },
-        model: {
-            metadata: {
-                features: []
-            }
-        },
-        method: "assertDeepEq"
-    }, {
-        message: "A feature with true value is transformed correctly",
-        transform: {
-            "metadata": {
-                transform: {
-                    type: "fluid.metadata.transforms.composeFeatures",
-                    feature: "highContrast",
-                    outputPath: "features",
-                    inputPath: "input"
-                }
-            }
-        },
-        invertedRules: {
-            transform: [{
-                type: "fluid.metadata.transforms.decomposeFeatures",
-                inputPath: "metadata.features",
-                outputPath: "input",
-                feature: "highContrast"
-            }]
-        },
-        fullyinvertible: true,
-        model: {
-            input: true
-        },
-        expected: {
-            metadata: {
-                features: ["highContrast"]
-            }
-        },
-        method: "assertDeepEq"
-    }/*, {
-        message: "A feature with false value is transformed correctly",
-        transform: {
-            "metadata": {
-                transform: {
-                    type: "fluid.metadata.transforms.composeFeatures",
-                    feature: "signLanguage",
-                    outputPath: "features"
-                }
-            }
-        },
-        invertedRules: {
-            transform: [{
-                type: "fluid.metadata.transforms.decomposeFeatures",
-                inputPath: "metadata.features",
-                outputPath: "signLanguage",
-                feature: "signLanguage"
-            }]
-        },
-        fullyinvertible: true,
-        model: {
-            signLanguage: false
-        },
-        expected: {
-            metadata: {
-                features: []
-            }
-        },
-        method: "assertDeepEq"
-    }*/];
-
-    jqUnit.test("Metadata transforms tests", function () {
-        testOneStructure(transformsTests);
+    jqUnit.test("Inverted conditional transform tests", function () {
+        fluid.each(invertConditionTests, function (v) {
+            testInvertConditions(v);
+        });
     });
 
 })(jQuery);
