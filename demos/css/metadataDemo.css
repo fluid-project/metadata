@@ -1,0 +1,151 @@
+@font-face {
+    font-family: 'RobotoSlab';
+    src: url('fonts/RobotoSlab-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'OpenSans';
+    src: url('./fonts/OpenSans-Regular.ttf');
+}
+
+@font-face {
+    font-family: "OpenSans";
+    src: url("fonts/OpenSans-Bold.ttf");
+    font-weight: bold;
+}
+
+.gpii-metadata-demo {
+    font-family: "OpenSans";
+    background-color: #F4F4F4;
+
+}
+
+
+/* Header area */
+
+.gpii-metadata-header {
+    background-color: #fff;
+}
+
+.gpii-metadata-header-logo {
+    margin: 0.5rem 0.5rem 0 0;
+}
+
+.gpii-metadata-header-logo img {
+    width: 7rem;
+}
+
+.gpii-metadata-header-title {
+    padding-top: 1rem;
+    margin-left: 1rem;
+}
+
+.gpii-metadata-header-title h1 {
+    text-transform: uppercase;
+    font-size: 2.3rem;
+}
+
+.gpii-metadata-header-title .gpii-metadata-header-tagline {
+    text-transform: uppercase;
+}
+
+.gpii-metadata-header-restart {
+    margin: 1rem 0;
+}
+
+/* Landing Page */
+
+.gpii-metadata-resource {
+    background-color: #fff;
+    border-top: 0.1rem solid #81D0EC;
+    height: 10rem;
+}
+
+
+.gpii-metadata-resource-first {
+    border-top: 0.3rem solid #81D0EC;
+}
+
+.gpii-metadata-editColumn {
+    background-color: #EAF2F4;
+    height: 100%;
+    padding-top: 4rem;
+}
+
+.gpii-metadata-resources-title {
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.gpii-metadata-resource-title {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+/* Tabs */
+.gpii-metadata-tab-list {
+    margin-right: 2rem;
+    margin-bottom: 0;
+}
+
+.gpii-metadata-tab-list a {
+    text-transform: lowercase;
+    height: 2.9rem;
+    padding: 0.7rem;
+    color: #000;
+    background-color: #B4C7CC;
+    min-width: 8rem;
+}
+
+.gpii-metadata-tab-list li {
+    margin-left: 0.5rem;
+}
+
+.gpii-metadata-tab-list li.gpii-metadata-tab-active { /* Active Tab Styling */
+    margin-left: 0.5rem;
+}
+
+.gpii-metadata-tab-list .gpii-metadata-tab-active a { /* Active Tab Styling */
+    background-color: #81D0EC;
+    height: 3rem;
+}
+
+/* Toolbar */
+.gpii-metadata-toolbar {
+    padding: 0.7rem;
+    border-right: 0.1rem solid #fff;
+    background-color: #81D0EC;
+    height: 5.5rem;
+}
+
+.gpii-metadata-toolbar-url {
+    display: inline-block;
+}
+
+.gpii-metadata-sidebar-title {
+    background-color: #68B8CE;
+    height: 5.5rem;
+}
+
+.gpii-metadata-sidebar-title h3{
+    font-family: RobotoSlab;
+    color: #fff;
+    padding-top: 1rem;
+}
+
+/* Editor area */
+
+.gpii-metadata-simpleEditor-container,
+.gpii-metadata-panel-container {
+    height: 20rem;
+    padding-top: 0.4rem;
+}
+
+.gpii-metadata-simpleEditor-container {
+    background-color: #fff;
+
+}
+
+.gpii-metadata-panel-container {
+    background-color: #e7e7e7;
+}
