@@ -21,7 +21,7 @@ var demo = demo || {};
 
     fluid.registerNamespace("demo.metadata");
 
-    fluid.defaults("demo.metadata.resetDb", {
+    fluid.defaults("demo.metadata.setDb", {
         gradeNames: ["fluid.pouchdb.dataSource", "autoInit"],
         content: {
             markup: "",
@@ -31,8 +31,8 @@ var demo = demo || {};
             onMarkupEmptied: null,
             onMetadataEmptied: null,
 
-            onReset: null,
-            afterReset: {
+            onSet: null,
+            afterSet: {
                 events: {
                     "onMarkupEmptied": "onMarkupEmptied",
                     "onMetadataEmptied": "onMetadataEmptied"
@@ -40,7 +40,7 @@ var demo = demo || {};
             }
         },
         listeners: {
-            "onReset": [{
+            "onSet": [{
                 listener: "{that}.set",
                 args: [{id: "markup", model: "{that}.options.content.markup"}, "{that}.events.onMarkupEmptied.fire"]
             }, {
@@ -49,7 +49,7 @@ var demo = demo || {};
             }]
         },
         invokers: {
-            "reset": "{that}.events.onReset.fire"
+            "setAll": "{that}.events.onSet.fire"
         }
     });
 
@@ -57,59 +57,59 @@ var demo = demo || {};
         window.location = url;
     };
 
-    fluid.defaults("demo.metadata.redirect", {
+    fluid.defaults("demo.metadata.launcher", {
         gradeNames: ["fluid.eventedComponent", "autoInit"],
         members: {
-            redirectURL: {
+            url: {
                 expander: {
-                    funcName: "demo.metadata.redirect.getRedirectURL",
-                    args: ["{that}.options.redirectURL", "{that}.options.dbName"]
+                    funcName: "demo.metadata.launcher.getRedirectURL",
+                    args: ["{that}.options.url", "{that}.options.dbName"]
                 }
             }
         },
         dbName: "new",
         components: {
-            resetDB: {
-                type: "demo.metadata.resetDb",
+            setDB: {
+                type: "demo.metadata.setDb",
                 options: {
-                    databaseName: "{redirect}.options.dbName",
-                    content: "{redirect}.options.content",
+                    databaseName: "{launcher}.options.dbName",
+                    content: "{launcher}.options.content",
                     listeners: {
-                        "afterReset": "{redirect}.events.afterReset"
+                        "afterSet": "{launcher}.events.afterSet"
                     }
                 }
             }
         },
         events: {
-            onReset: null,
-            afterReset: null,
+            onSet: null,
+            afterSet: null,
             onRedirect: null,
             onDbError: null
         },
         invokers: {
-            redirect: {
-                funcName: "demo.metadata.redirect.redirect",
+            launch: {
+                funcName: "demo.metadata.launcher.launch",
                 args: "{that}"
             }
         }
     });
 
-    demo.metadata.redirect.redirect = function (that) {
-        that.events.afterReset.addListener(function (err, response) {
+    demo.metadata.launcher.launch = function (that) {
+        var listenerNamespace = "redirectListener";
+        that.events.afterSet.addListener(function (err, response) {
             if (!err) {
-                demo.metadata.redirectURL(that.redirectURL);
+                demo.metadata.redirectURL(that.url);
             } else {
                 that.events.onDbError.fire(err, response);
-                console.log(response);
             }
-            that.events.afterReset.removeListener("redirectListener");
-        }, "redirectListener");
+            that.events.afterSet.removeListener(listenerNamespace);
+        }, listenerNamespace);
 
-        that.resetDB.reset();
+        that.setDB.setAll();
     };
 
-    demo.metadata.redirect.getRedirectURL = function (redirectURL, dbName) {
-        return fluid.stringTemplate(redirectURL, {
+    demo.metadata.launcher.getRedirectURL = function (url, dbName) {
+        return fluid.stringTemplate(url, {
             dbName: dbName
         });
     };
