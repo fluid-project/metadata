@@ -7,9 +7,14 @@
 
         <!-- Custom build of Foundation -->
         <link rel="stylesheet" href="../lib/foundation/css/foundation.min.css">
-
         <link rel="stylesheet" href="../css/metadataDemo.css">
         
+        <script type="text/javascript" src="../../src/lib/infusion/MyInfusion.js"></script>
+        <script type="text/javascript" src="../../src/lib/pouchDB/pouchdb-nightly.min.js"></script>
+        <script type="text/javascript" src="../../src/js/pouchDBDataSource.js"></script>
+        <script type="text/javascript" src="../js/predefinedOER.js"></script>
+        <script type="text/javascript" src="../js/redirect.js"></script>
+
     </head>
     <body class="gpii-metadata-demo">
         <header class="gpii-metadata-header">
@@ -44,7 +49,7 @@
                             <span class="gpii-metadata-resource-description">As global temperature rises, how does this affect your world?</span>               
                         </div>
                         <div class="small-2 columns text-center gpii-metadata-editColumn">
-                            <a class="gpiic-metadata-edit-climateChange" href="resource.html?name=climateChange">edit</a>
+                            <a class="gpiic-metadata-edit-climateChange" href="#">edit</a>
                         </div>
                     </div>
                     
@@ -56,12 +61,36 @@
                             <h3 class="gpii-metadata-resource-title">Create new resource</h3>
                         </div>
                         <div class="small-2 columns text-center gpii-metadata-editColumn">
-                            <a class="gpiic-metadata-create" href="resource.html">create</a>
+                            <a class="gpiic-metadata-create" href="#">create</a>
                         </div>
                     </div>
                 </div>
                 
             </div>
         </section>
+        <script type="text/javascript">
+            $(".gpiic-metadata-create").click(function(e) {
+                var that = demo.metadata.redirect({
+                    dbName: "new",
+                    redirectURL: "resource.html?name=%dbName"
+                });
+                that.redirect();
+                e.preventDefault();
+            });
+            $(".gpiic-metadata-edit-climateChange").click(function(e) {
+                var that = demo.metadata.redirect({
+                    dbName: "climateChange",
+                    redirectURL: "resource.html?name=%dbName",
+                    content: {
+                        markup: demo.metadata.predefinedOER.content,
+                        metadata: {
+                            url: demo.metadata.predefinedOER.url
+                        }
+                    }
+                });
+                that.redirect();
+                e.preventDefault();
+            });
+        </script>
     </body>
 </html>
