@@ -1,4 +1,4 @@
-/*! infusion - v1.5.0-SNAPSHOT Thursday, March 27th, 2014, 1:02:16 PM*/
+/*! infusion - v1.5.0-SNAPSHOT Monday, April 7th, 2014, 10:29:08 AM*/
 /*!
  * jQuery JavaScript Library v1.11.0
  * http://jquery.com/
@@ -16962,6 +16962,7 @@ var fluid_1_5 = fluid_1_5 || {};
 var fluid = fluid || fluid_1_5;
 
 (function ($, fluid) {
+    "use strict";
 
     fluid.version = "Infusion 1.5";
 
@@ -23234,7 +23235,9 @@ var fluid_1_5 = fluid_1_5 || {};
             ++ options.changes;
             notePath("changeMap");
         }
-        notePath("deltaMap");
+        if (!fluid.model.isChangedPath(options.deltaMap, segs)) {
+            notePath("deltaMap");
+        }
     };
 
     fluid.model.fetchChangeChildren = function (target, i, segs, source, options) {
@@ -23270,7 +23273,8 @@ var fluid_1_5 = fluid_1_5 || {};
             if (!fluid.model.isSameValue(targetSlot, source)) {
                 changedValue = source;
             }
-        } else if (targetCode !== sourceCode) { // RH is not primitive - array or object and mismatching
+        } else if (targetCode !== sourceCode || sourceCode === "array" && source.length !== targetSlot.length) {
+            // RH is not primitive - array or object and mismatching or any array rewrite
             changedValue = fluid.freshContainer(source);
         }
         if (changedValue !== fluid.NO_VALUE) {
