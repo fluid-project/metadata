@@ -186,10 +186,81 @@ https://github.com/gpii/universal/LICENSE.txt
         }
     };
 
-    jqUnit.test("Inverted conditional transform tests", function () {
+    jqUnit.test("Customized invertible conditional transform tests", function () {
         fluid.each(invertConditionTests, function (v) {
             testInvertConditions(v);
         });
+    });
+
+    fluid.defaults("fluid.tests.inversionInRelay", {
+        gradeNames: ["fluid.standardRelayComponent", "autoInit"],
+        model: {
+            noflashing: false
+        },
+        components: {
+            sub: {
+                type: "fluid.standardRelayComponent",
+                options: {
+                    modelRelay: [{
+                        source: "{inversionInRelay}.model",
+                        target: "{that}.model",
+                        singleTransform: {
+                            type: "fluid.metadata.transforms.condition",
+                            conditionPath: "flashing",
+                            "true": {
+                                transform: {
+                                    type: "fluid.transforms.literalValue",
+                                    value: "flashing",
+                                    outputPath: "flashing"
+                                }
+                            },
+                            "false": {
+                                transform: {
+                                    type: "fluid.metadata.transforms.condition",
+                                    conditionPath: "noflashing",
+                                    "true": {
+                                        transform: {
+                                            type: "fluid.transforms.literalValue",
+                                            value: "noflashing",
+                                            outputPath: "flashing"
+                                        }
+                                    },
+                                    "false": {
+                                        transform: {
+                                            type: "fluid.transforms.literalValue",
+                                            value: "unknown",
+                                            outputPath: "flashing"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }]
+                }
+            }
+        }
+    });
+
+    jqUnit.test("Model relay with the customized invertible conditional transform", function () {
+        var that = fluid.tests.inversionInRelay();
+        var expectedSubModel = {
+            flashing: "unknown"
+        };
+
+        jqUnit.assertDeepEq("The initial forward transformation is performed correctly", expectedSubModel, that.sub.model);
+
+        var expectedTransformedSubModel = {
+            "flashing": "noflashing"
+        };
+        that.applier.requestChange("noflashing", true);
+        jqUnit.assertDeepEq("The relay is performed correctly when a change request is issued at the top model", expectedTransformedSubModel, that.sub.model);
+
+        var expectedTransformedTopModel = {
+            "flashing": true,
+            "noflashing": true
+        };
+        that.sub.applier.requestChange("flashing", "flashing");
+        jqUnit.assertDeepEq("The backward transformation is performed correctly", expectedTransformedTopModel, that.model);
     });
 
 })(jQuery);

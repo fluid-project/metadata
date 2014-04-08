@@ -42,7 +42,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     },
                     modelRelay: [{
                         source: "{videoMetadataPanel}.model.modelInTransit",
-                        target: "{that}.model.flashing",
+                        target: "{that}.model",
                         singleTransform: {
                             type: "fluid.metadata.transforms.condition",
                             conditionPath: "flashing",
@@ -146,7 +146,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     accessibilityFeature: [],
                     accessibilityHazard: [],
                     keywords: [],
-                    flashing: "unknown",
                     audio: "available"
                 },
                 captions: []
