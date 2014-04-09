@@ -37,14 +37,14 @@
                     <h2>Create new resource</h2>
                     
                     <ul class="inline-list right gpii-metadata-tab-list">
-                        <li class="text-center gpii-metadata-tab-edit"><a href="#">Edit</a></li>
-                        <li class="text-center gpii-metadata-tab-preview"><a href="#">Preview content</a></li>
-                        <li class="text-center gpii-metadata-tab-outputHTML"><a href="#">View output HTML</a></li>
+                        <li class="text-center gpii-metadata-tab-edit"><a href="#gpii-metadata-resourceEditor">Edit</a></li>
+                        <li class="text-center gpii-metadata-tab-previewContent"><a href="#gpii-metadata-previewContent">Preview content</a></li>
+                        <li class="text-center gpii-metadata-tab-outputHTML"><a href="#gpii-metadata-outputHTML">View output HTML</a></li>
                     </ul>
                 </div>
             </div>
             
-            <section class="gpii-metadata-resourceEditor">
+            <div class="gpii-metadata-resourceEditor" id="gpii-metadata-resourceEditor">
                 <div class="row gpii-metadata-resourceEditor-headRow">
                     <div class="small-12 medium-8 columns gpii-metadata-resourceEditor-toolbar-column">
                         <div class="button-bar gpii-metadata-resourceEditor-toolbar">
@@ -79,7 +79,7 @@
                 
                 <div class="row gpii-metadata-resourceEditor-editor-container">
                     <div class="small-12 medium-8 columns">
-                        <div class="gpii-metadata-resourceEditor-textEditor">foo</div>
+                        <div class="gpii-metadata-resourceEditor-textEditor">Resource content goes here.</div>
                     </div>
                     <div class="show-for-small-only small-12 columns">
                         <div class="gpii-metadata-resourceEditor-metadataPanel-header">
@@ -87,11 +87,19 @@
                         </div>
                     </div>
                     <div class="small-12 medium-4 columns">    
-                        <div class="gpii-metadata-resourceEditor-metadataPanel">bar</div>
+                        <div class="gpii-metadata-resourceEditor-metadataPanel">Metadata Panels go here</div>
                     </div>
                    
                 </div>
-            </section>             
+            </div>
+            
+            <div class="row gpii-metadata-previewContent" id="gpii-metadata-previewContent">
+                Preview goes here.
+            </div>
+            
+            <div class="row gpii-metadata-outputHTML" id="gpii-metadata-outputHTML">
+                HTML output goes here.
+            </div>      
         </section>
     </body>
 </html>

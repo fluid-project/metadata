@@ -111,30 +111,23 @@
     display:block;
 }
 
-.gpii-metadata-preview {
+.gpii-metadata-previewContent {
     display:none;
 }
 
-.gpii-metadata-preview-active .gpii-metadata-preview{
+.gpii-metadata-previewContent-active .gpii-metadata-previewContent{
     display:block;
 }
 
 
-/* Active Tab - Edit */
-
+/* Active Tab  */
+.gpii-metadata-preview-active .gpii-metadata-tab-list .gpii-metadata-tab-preview a,
 .gpii-metadata-resourceEditor-active .gpii-metadata-tab-list .gpii-metadata-tab-edit a { /* Active Tab Styling */
     background-color: #81D0EC;
     height: 3rem;
     font-weight: bold;
 }
 
-/* Active Tab - Preview */
-
-.gpii-metadata-preview .gpii-metadata-tab-list .gpii-metadata-tab-preview a { /* Active Tab Styling */
-    background-color: #81D0EC;
-    height: 3rem;
-    font-weight: bold;
-}
 
 
 
@@ -186,7 +179,7 @@
 /* Resource Editor text editor area */
 
 .gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-editor-container .columns{
-    height: 20rem;
+    height: 25rem;
     padding: 0;
 }
 
@@ -195,13 +188,17 @@
     height: inherit;
 }
 
+.gpii-metadata-previewContent-active .gpii-metadata-previewContent,
 .gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-metadataPanel,
 .gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-textEditor {
     height: 100%;
+    padding: 1.5rem;
+    overflow-y: auto;
 }
 
 .gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-textEditor {
     background-color: #fff;
+    overflow: auto;
 }
 
 .gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-metadataPanel {
@@ -209,6 +206,6 @@
 }
 
 /* Preview Content view */
-.gpii-metadata-previewContent  {
-    
+.gpii-metadata-previewContent-active .gpii-metadata-previewContent {
+    background-color: #fff;
 }
