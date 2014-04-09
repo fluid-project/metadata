@@ -7,9 +7,14 @@
 
         <!-- Custom build of Foundation -->
         <link rel="stylesheet" href="../lib/foundation/css/foundation.min.css">
-
         <link rel="stylesheet" href="../css/metadataDemo.css">
         
+        <script type="text/javascript" src="../../src/lib/infusion/MyInfusion.js"></script>
+        <script type="text/javascript" src="../../src/lib/pouchDB/pouchdb-nightly.min.js"></script>
+        <script type="text/javascript" src="../../src/js/pouchDBDataSource.js"></script>
+        <script type="text/javascript" src="../js/predefinedOER.js"></script>
+        <script type="text/javascript" src="../js/launcher.js"></script>
+
     </head>
     <body class="gpii-metadata-demo">
         <header class="gpii-metadata-header">
@@ -56,12 +61,42 @@
                             <h3 class="gpii-metadata-resource-title">Create new resource</h3>
                         </div>
                         <div class="small-2 columns text-center gpii-metadata-editColumn">
-                            <a class="gpiic-metadata-create" href="resource.html">create</a>
+                            <a class="gpiic-metadata-create" href="resource.html?name=new">create</a>
                         </div>
                     </div>
                 </div>
                 
             </div>
         </section>
+        <script type="text/javascript">
+        var launchDemo = function (extraOptions) {
+            var defaultOptions = {
+                url: "resource.html?name=%dbName"
+            };
+            var options = $.extend(true, {}, defaultOptions, extraOptions);
+
+            var that = demo.metadata.launcher(options);
+            that.launch();
+        };
+
+        $(".gpiic-metadata-create").click(function(e) {
+            launchDemo({
+                dbName: "new",
+            });
+            e.preventDefault();
+        });
+        $(".gpiic-metadata-edit-climateChange").click(function(e) {
+            launchDemo({
+                dbName: "climateChange",
+                content: {
+                    markup: demo.metadata.predefinedOER.content,
+                    metadata: {
+                        url: demo.metadata.predefinedOER.url
+                    }
+                }
+            });
+            e.preventDefault();
+        });
+        </script>
     </body>
 </html>
