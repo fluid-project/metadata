@@ -84,8 +84,9 @@
 
 /* Tabs */
 .gpii-metadata-tab-list {
-    margin-right: 2rem;
-    margin-bottom: 0; 
+    margin-bottom: 0;
+    width: 34rem;
+    padding-right: 2rem;
 }
 
 .gpii-metadata-tab-list a {
@@ -127,33 +128,76 @@
 
 /* Resource Editor Toolbar */
 
-.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-headRow {
-    background-color: #68B8CE;
+.gpii-metadata-previewContent-active .gpii-metadata-previewContent,
+.gpii-metadata-outputHTML-active .gpii-metadata-outputHTML,
+.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-textEditor {
+    background-color: #fff;
 }
 
-.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-headRow .columns{
-    padding: 0;    
+.gpii-metadata-resourceEditor-textEditor,
+.gpii-metadata-outputHTML,
+.gpii-metadata-previewContent,
+.gpii-metadata-resourceEditor-metadataPanel  {
+    padding: 1.5rem;
+    overflow-y: auto;
+    height:25em;
+}
+
+.gpii-metadata-previewContent,
+.gpii-metadata-outputHTML {
+    border-top: 0.2rem solid #81D0EC;
+}
+
+.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-toolbar,
+.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-metadataPanel-header {
+    height: 6em;
 }
 
 .gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-toolbar {
-    padding: 0.7rem;
-    border-right: 0.1rem solid #fff;
     background-color: #81D0EC;
+    padding: 0.8rem 0.8rem 0 0.8rem;
 }
 
-.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-toolbar-url {
+.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-toolbar ul {
+    margin: 0.7rem 1rem 0 0;
+}
+
+.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-toolbar-button a {
+    font-size: 1rem;
+    width: 3.2rem;
+    padding: 0.8rem;
+}
+
+.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-toolbar-button-bold a {
+    font-weight: bold;
+}
+
+.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-toolbar-button-italics a{
+    font-style:italic;
+}
+
+.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-toolbar-button-underline a {
+    text-decoration:underline;
+}
+
+.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-toolbar .gpii-metadata-resourceEditor-toolbar-url {
     display: inline-block;
+    width: 57%;
 }
 
-.gpii-metadata-resourceEditor .show-for-small-only .gpii-metadata-resourceEditor-metadataPanel-header {
-    background-color: #68B8CE; /* This background color is specified twice because of the different position
-    for small-only and medium-and-up styles. */
+/* Metadata panel sidebar */
+.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-toolbar-url input {
+    min-width: 10em;
+}
+
+.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-metadataPanel-header {
+    background-color: #68B8CE;
 }
     
 .gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-metadataPanel-header h3{
     font-family: RobotoSlab;
     color: #fff;
-    padding-top: 1rem;
+    padding-top: 1.6rem;
 }
 
 .gpii-metadata-resourceEditor .show-for-small-only .gpii-metadata-resourceEditor-metadataPanel-header h3 {
@@ -161,33 +205,8 @@
     margin: 0;
 }
 
-/* Resource Editor text editor area */
-
-.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-editor-container .columns{
-    padding: 0;
-}
-
-.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-editor-container .show-for-small-only.columns {
-    /* for small screens, remove the height from the column header */
-    height: inherit;
-}
-
-.gpii-metadata-previewContent-active .gpii-metadata-previewContent,
-.gpii-metadata-outputHTML-active .gpii-metadata-outputHTML,
-.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-textEditor {
-    background-color: #fff;
-}
-
 .gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-metadataPanel {
     background-color: #e7e7e7;
 }
 
-.gpii-metadata-resourceEditor-textEditor,
-.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-metadataPanel,
-.gpii-metadata-outputHTML-active .gpii-metadata-outputHTML,
-.gpii-metadata-previewContent-active .gpii-metadata-previewContent {
-    padding: 1.5rem;
-    overflow-y: auto;
-    height:25em;
-    border-top: 0.2rem solid #81D0EC;
-}
+
