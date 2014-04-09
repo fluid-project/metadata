@@ -17,7 +17,7 @@
 .gpii-metadata-demo {
     font-family: "OpenSans";
     background-color: #F4F4F4;
-
+    min-width:31rem;
 }
 
 
@@ -85,7 +85,7 @@
 /* Tabs */
 .gpii-metadata-tab-list {
     margin-right: 2rem;
-    margin-bottom: 0;
+    margin-bottom: 0; 
 }
 
 .gpii-metadata-tab-list a {
@@ -94,58 +94,121 @@
     padding: 0.7rem;
     color: #000;
     background-color: #B4C7CC;
-    min-width: 8rem;
+    min-width: 10rem;
 }
 
 .gpii-metadata-tab-list li {
     margin-left: 0.5rem;
 }
 
-.gpii-metadata-tab-list li.gpii-metadata-tab-active { /* Active Tab Styling */
-    margin-left: 0.5rem;
+/* Tab content visibility */
+
+.gpii-metadata-resourceEditor {
+    display:none;
 }
 
-.gpii-metadata-tab-list .gpii-metadata-tab-active a { /* Active Tab Styling */
+.gpii-metadata-resourceEditor-active .gpii-metadata-resourceEditor{
+    display:block;
+}
+
+.gpii-metadata-preview {
+    display:none;
+}
+
+.gpii-metadata-preview-active .gpii-metadata-preview{
+    display:block;
+}
+
+
+/* Active Tab - Edit */
+
+.gpii-metadata-resourceEditor-active .gpii-metadata-tab-list .gpii-metadata-tab-edit a { /* Active Tab Styling */
     background-color: #81D0EC;
     height: 3rem;
+    font-weight: bold;
 }
 
-/* Toolbar */
-.gpii-metadata-toolbar {
+/* Active Tab - Preview */
+
+.gpii-metadata-preview .gpii-metadata-tab-list .gpii-metadata-tab-preview a { /* Active Tab Styling */
+    background-color: #81D0EC;
+    height: 3rem;
+    font-weight: bold;
+}
+
+
+
+/* Active Tab - Output HTML */
+
+.gpii-metadata-outputHTML .gpii-metadata-tab-list .gpii-metadata-tab-outputHTML a { /* Active Tab Styling */
+    background-color: #81D0EC;
+    height: 3rem;
+    font-weight: bold;
+}
+
+
+/* Resource Editor Toolbar */
+
+.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-headRow {
+    background-color: #68B8CE;
+}
+
+.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-headRow .columns{
+    padding: 0;    
+}
+
+.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-toolbar {
     padding: 0.7rem;
     border-right: 0.1rem solid #fff;
     background-color: #81D0EC;
-    height: 5.5rem;
 }
 
-.gpii-metadata-toolbar-url {
+.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-toolbar-url {
     display: inline-block;
 }
 
-.gpii-metadata-sidebar-title {
-    background-color: #68B8CE;
-    height: 5.5rem;
+.gpii-metadata-resourceEditor .show-for-small-only .gpii-metadata-resourceEditor-metadataPanel-header {
+    background-color: #68B8CE; /* This background color is specified twice because of the different position
+    for small-only and medium-and-up styles. */
 }
-
-.gpii-metadata-sidebar-title h3{
+    
+.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-metadataPanel-header h3{
     font-family: RobotoSlab;
     color: #fff;
     padding-top: 1rem;
 }
 
-/* Editor area */
+.gpii-metadata-resourceEditor .show-for-small-only .gpii-metadata-resourceEditor-metadataPanel-header h3 {
+    padding-bottom: 1rem;
+    margin: 0;
+}
 
-.gpii-metadata-simpleEditor-container,
-.gpii-metadata-panel-container {
+/* Resource Editor text editor area */
+
+.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-editor-container .columns{
     height: 20rem;
-    padding-top: 0.4rem;
+    padding: 0;
 }
 
-.gpii-metadata-simpleEditor-container {
+.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-editor-container .show-for-small-only.columns {
+    /* for small screens, remove the height from the column header */
+    height: inherit;
+}
+
+.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-metadataPanel,
+.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-textEditor {
+    height: 100%;
+}
+
+.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-textEditor {
     background-color: #fff;
-
 }
 
-.gpii-metadata-panel-container {
+.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-metadataPanel {
     background-color: #e7e7e7;
+}
+
+/* Preview Content view */
+.gpii-metadata-previewContent  {
+    
 }

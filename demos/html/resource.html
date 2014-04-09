@@ -31,30 +31,30 @@
             </div>
         </header>
         
-        <section class="gpii-metadata-body">
+        <section class="gpii-metadata-body gpii-metadata-resourceEditor-active">
             <div class="row">
                 <div class="small-12 columns clearfix">
                     <h2>Create new resource</h2>
                     
                     <ul class="inline-list right gpii-metadata-tab-list">
-                        <li class="text-center gpii-metadata-tab-active"><a href="#">Edit</a></li>
-                        <li class="text-center"><a href="#">Preview content</a></li>
-                        <li class="text-center"><a href="#">View output HTML</a></li>
+                        <li class="text-center gpii-metadata-tab-edit"><a href="#">Edit</a></li>
+                        <li class="text-center gpii-metadata-tab-preview"><a href="#">Preview content</a></li>
+                        <li class="text-center gpii-metadata-tab-outputHTML"><a href="#">View output HTML</a></li>
                     </ul>
                 </div>
             </div>
             
-            <div class="row">
-                <div class="small-12 medium-8 columns">
-                    <div class="row">
-                        <div class="button-bar gpii-metadata-toolbar gpii-metadata-toolbar-buttons">
+            <section class="gpii-metadata-resourceEditor">
+                <div class="row gpii-metadata-resourceEditor-headRow">
+                    <div class="small-12 medium-8 columns gpii-metadata-resourceEditor-toolbar-column">
+                        <div class="button-bar gpii-metadata-resourceEditor-toolbar">
                             <ul class="button-group">
                                 <li><a href="#" class="button">B</a></li>
                                 <li><a href="#" class="button">U</a></li>
                                 <li><a href="#" class="button">i</a></li>
                             </ul>
                             
-                            <div class="gpii-metadata-toolbar-url">
+                            <div class="gpii-metadata-resourceEditor-toolbar-url">
                                 <div class="row collapse ">
                                     <label>Web address for video:</label>
                                     <div class="small-10 columns">
@@ -66,31 +66,32 @@
                                 </div>
                             </div>
                         </div>
+                    
                     </div>
                     
-                    <div class="row">
-                        <div class="gpii-metadata-editor-container">
-                            <div class="gpii-metadata-simpleEditor-container">foo</div>
-                            
+                   
+                    <div class="show-for-medium-up medium-4 columns">
+                        <div class="gpii-metadata-resourceEditor-metadataPanel-header">
+                            <h3 class="text-center">Video Details</h3>
                         </div>
                     </div>
                 </div>
                 
-                <div class="small-12 medium-4 columns">
-                    <div class="row">
-                        <div class="gpii-metadata-sidebar-title">
+                <div class="row gpii-metadata-resourceEditor-editor-container">
+                    <div class="small-12 medium-8 columns">
+                        <div class="gpii-metadata-resourceEditor-textEditor">foo</div>
+                    </div>
+                    <div class="show-for-small-only small-12 columns">
+                        <div class="gpii-metadata-resourceEditor-metadataPanel-header">
                             <h3 class="text-center">Video Details</h3>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="gpii-metadata-editor-container">
-                            <div class="gpii-metadata-panel-container">bar</div>
-                        </div>
+                    <div class="small-12 medium-4 columns">    
+                        <div class="gpii-metadata-resourceEditor-metadataPanel">bar</div>
                     </div>
+                   
                 </div>
-            </div>
-            
-                                    
+            </section>             
         </section>
     </body>
 </html>
