@@ -101,44 +101,29 @@
     margin-left: 0.5rem;
 }
 
-/* Tab content visibility */
+/* Tab content visibility - this is being used for internal development only. Remove once tabs.js is integrated*/
 
+.gpii-metadata-outputHTML,
+.gpii-metadata-previewContent,
 .gpii-metadata-resourceEditor {
     display:none;
 }
 
-.gpii-metadata-resourceEditor-active .gpii-metadata-resourceEditor{
-    display:block;
-}
-
-.gpii-metadata-previewContent {
-    display:none;
-}
-
-.gpii-metadata-previewContent-active .gpii-metadata-previewContent{
+.gpii-metadata-outputHTML-active .gpii-metadata-outputHTML,
+.gpii-metadata-previewContent-active .gpii-metadata-previewContent,
+.gpii-metadata-resourceEditor-active .gpii-metadata-resourceEditor {
     display:block;
 }
 
 
 /* Active Tab  */
-.gpii-metadata-preview-active .gpii-metadata-tab-list .gpii-metadata-tab-preview a,
+.gpii-metadata-outputHTML-active .gpii-metadata-tab-list .gpii-metadata-tab-outputHTML a,
+.gpii-metadata-previewContent-active .gpii-metadata-tab-list .gpii-metadata-tab-previewContent a,
 .gpii-metadata-resourceEditor-active .gpii-metadata-tab-list .gpii-metadata-tab-edit a { /* Active Tab Styling */
     background-color: #81D0EC;
     height: 3rem;
     font-weight: bold;
 }
-
-
-
-
-/* Active Tab - Output HTML */
-
-.gpii-metadata-outputHTML .gpii-metadata-tab-list .gpii-metadata-tab-outputHTML a { /* Active Tab Styling */
-    background-color: #81D0EC;
-    height: 3rem;
-    font-weight: bold;
-}
-
 
 /* Resource Editor Toolbar */
 
@@ -179,7 +164,6 @@
 /* Resource Editor text editor area */
 
 .gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-editor-container .columns{
-    height: 25rem;
     padding: 0;
 }
 
@@ -189,23 +173,21 @@
 }
 
 .gpii-metadata-previewContent-active .gpii-metadata-previewContent,
-.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-metadataPanel,
-.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-textEditor {
-    height: 100%;
-    padding: 1.5rem;
-    overflow-y: auto;
-}
-
+.gpii-metadata-outputHTML-active .gpii-metadata-outputHTML,
 .gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-textEditor {
     background-color: #fff;
-    overflow: auto;
 }
 
 .gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-metadataPanel {
     background-color: #e7e7e7;
 }
 
-/* Preview Content view */
+.gpii-metadata-resourceEditor-textEditor,
+.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-metadataPanel,
+.gpii-metadata-outputHTML-active .gpii-metadata-outputHTML,
 .gpii-metadata-previewContent-active .gpii-metadata-previewContent {
-    background-color: #fff;
+    padding: 1.5rem;
+    overflow-y: auto;
+    height:25em;
+    border-top: 0.2rem solid #81D0EC;
 }
