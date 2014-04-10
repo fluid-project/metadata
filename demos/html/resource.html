@@ -10,6 +10,18 @@
 
         <link rel="stylesheet" href="../css/metadataDemo.css">
         
+        <script type="text/javascript" src="../../src/lib/infusion/MyInfusion.js"></script>
+        <script type="text/javascript" src="../../src/lib/pouchDB/pouchdb-nightly.min.js"></script>
+        <script type="text/javascript" src="../../src/js/pouchDBDataSource.js"></script>
+        <script type="text/javascript" src="../../src/js/indicator.js"></script>
+        <script type="text/javascript" src="../../src/js/videoPanel.js"></script>
+        <script type="text/javascript" src="../../src/js/audioPanel.js"></script>
+        <script type="text/javascript" src="../../src/js/captionsPanel.js"></script>
+        <script type="text/javascript" src="../../src/js/videoMetadataPanel.js"></script>
+        <script type="text/javascript" src="../../src/js/metadataPanel.js"></script>
+        <script type="text/javascript" src="../js/utility.js"></script>
+        <script type="text/javascript" src="../js/simpleEditor.js"></script>
+        <script type="text/javascript" src="../js/metadata.js"></script>
     </head>
     <body class="gpii-metadata-demo">
         <header class="gpii-metadata-header">
@@ -25,7 +37,7 @@
                     </div>
                     
                     <div class="right gpii-metadata-header-restart">
-                        <a href="#">restart demo</a>
+                        <a class="restart" href="#">restart demo</a>
                     </div>
                 </div>
             </div>
@@ -42,28 +54,28 @@
                 </ul>
             </div>
         
-            <div class="row gpii-metadata-resourceEditor" id="gpii-metadata-resourceEditor">
-                <div class="small-12 medium-8 columns">
+            <div class="gpiic-metadata row gpii-metadata-resourceEditor" id="gpii-metadata-resourceEditor">
+                <div class="gpiic-metadata-resourceEditor small-12 medium-8 columns">
                     <div class="row gpii-metadata-resourceEditor-toolbar">
                         <ul class="button-group left">
-                            <li class="gpii-metadata-resourceEditor-toolbar-button gpii-metadata-resourceEditor-toolbar-button-bold"><a href="#" class="button">B</a></li>
-                            <li class="gpii-metadata-resourceEditor-toolbar-button gpii-metadata-resourceEditor-toolbar-button-underline"><a href="#" class="button">U</a></li>
-                            <li class="gpii-metadata-resourceEditor-toolbar-button gpii-metadata-resourceEditor-toolbar-button-italics"><a href="#" class="button">i</a></li>
+                            <li class="gpii-metadata-resourceEditor-toolbar-button gpii-metadata-resourceEditor-toolbar-button-bold"><a href="#" class="gpiic-metadata-resourceEditor-toolbar-button button" role="button" data-control="bold" data-keycode="b">B</a></li>
+                            <li class="gpii-metadata-resourceEditor-toolbar-button gpii-metadata-resourceEditor-toolbar-button-underline"><a href="#" class="gpiic-metadata-resourceEditor-toolbar-button button" role="button" data-control="underline" data-keycode="u">U</a></li>
+                            <li class="gpii-metadata-resourceEditor-toolbar-button gpii-metadata-resourceEditor-toolbar-button-italics"><a href="#" class="gpiic-metadata-resourceEditor-toolbar-button button" role="button" data-control="italic" data-keycode="i">i</a></li>
                         </ul>
                         
                         <div class="row collapse gpii-metadata-resourceEditor-toolbar-url">
-                            <label>Web address for video:</label>
+                            <label class="gpiic-metadata-resourceEditor-toolbar-url-label">Web address for video:</label>
                             <div class="small-10 columns">
-                                <input type="text" placeholder="">
+                                <input class="gpiic-metadata-resourceEditor-toolbar-url" type="text" placeholder="">
                             </div>
                             <div class="small-2 columns">
-                                <a href="#" class="button postfix">OK</a>
+                                <a href="#" class="gpiic-metadata-resourceEditor-toolbar-url-submit button postfix">OK</a>
                             </div>
                         </div>
                     </div>
                     
                     <div class="row">
-                        <div class="gpii-metadata-resourceEditor-textEditor">
+                        <div class="gpiic-metadata-resourceEditor-textEditor gpii-metadata-resourceEditor-textEditor">
                             Resource content goes here.
                         </div>
                     </div>
@@ -73,7 +85,7 @@
                     <div class="row gpii-metadata-resourceEditor-metadataPanel-header">
                         <h3 class="text-center">Video Details</h3>
                     </div>
-                    <div class="row gpii-metadata-resourceEditor-metadataPanel">    
+                    <div class="gpiic-metadata-resourceEditor-metadataPanel row gpii-metadata-resourceEditor-metadataPanel">    
                         Metadata Panels go here
                     </div>
                 </div>
@@ -87,5 +99,23 @@
                 HTML output goes here.
             </div>      
         </section>
+        <script type="text/javascript">
+            var editor = demo.metadata(".gpiic-metadata", {
+                videoPanelTemplate: "../../src/html/video-template.html",
+                audioPanelTemplate: "../../src/html/audio-template.html",
+                audioAttributesTemplate: "../../src/html/audio-attributes-template.html",
+                captionsPanelTemplate: "../../src/html/captions-template.html",
+                captionsInputTemplate: "../../src/html/captions-input-template.html"
+            });
+
+            $(".restart").click(function(e) {
+                editor.events.onReset.fire();
+
+                var redirectTo = "index.html";
+                demo.metadata.redirectURL(redirectTo);
+
+                e.preventDefault();
+            })
+        </script>
     </body>
 </html>

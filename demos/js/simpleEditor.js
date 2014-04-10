@@ -26,8 +26,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     fluid.defaults("fluid.simpleEditor", {
         gradeNames: ["fluid.viewComponent", "autoInit"],
         selectors: {
-            controls: ".flc-simpleEditor-control",
-            content: ".flc-simpleEditor-content"
+            controls: ".gpiic-metadata-resourceEditor-toolbar-button",
+            content: ".gpiic-metadata-resourceEditor-textEditor"
         },
         events: {
             onReset: null
@@ -276,10 +276,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     fluid.defaults("fluid.simpleEditor.insertVideo", {
         gradeNames: ["fluid.viewComponent", "autoInit"],
         selectors: {
-            url: ".flc-simpleEditor-insertVideo-url",
-            urlLabel: ".flc-simpleEditor-insertVideo-urlLabel",
-            submit: ".flc-simpleEditor-insertVideo-submit",
-            content: ".flc-simpleEditor-insertVideo-content"
+            url: ".gpiic-metadata-resourceEditor-toolbar-url",
+            urlLabel: ".gpiic-metadata-resourceEditor-toolbar-url-label",
+            submit: ".gpiic-metadata-resourceEditor-toolbar-url-submit",
+            content: ".gpiic-metadata-resourceEditor-toolbar-url-content"
         },
         strings: {
             urlLabel: "Web address for video: ",

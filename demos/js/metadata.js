@@ -24,8 +24,8 @@ var demo = demo || {};
         gradeNames: ["fluid.viewComponent", "autoInit"],
         oerMaterial: null, // If not null, populate the given OER material
         selectors: {
-            simpleEditor: ".flc-simpleEditor",
-            metadataPanel: ".flc-metadataPanelContainer"
+            simpleEditor: ".gpiic-metadata-resourceEditor",
+            metadataPanel: ".gpiic-metadata-resourceEditor-metadataPanel"
         },
         events: {
             onReset: null,

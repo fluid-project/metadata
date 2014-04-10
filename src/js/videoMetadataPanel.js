@@ -27,9 +27,9 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     fluid.defaults("fluid.metadata.videoMetadataPanel", {
         gradeNames: ["fluid.rendererComponent", "fluid.metadata.defaultVideoModel", "autoInit"],
         selectors: {
-            videoPanel: ".flc-videoPanel",
-            audioPanel: ".flc-audioPanel",
-            captionsPanel: ".flc-captionsPanel"
+            videoPanel: ".gpiic-videoPanel",
+            audioPanel: ".gpiic-audioPanel",
+            captionsPanel: ".gpiic-captionsPanel"
         },
         // These sub components are managed through the renderer
         // to work around issues of creation/destruction.

@@ -106,11 +106,11 @@ var fluid_1_5 = fluid_1_5 || {};
             captionsUnavailable: "Captions are not available in this video."
         },
         selectors: {
-            title: ".flc-captions-title",
-            icon: ".flc-captions-icon",
-            instruction: ".flc-captions-instruction",
-            primaryCaption: ".flc-captions-input-1",
-            secondaryCaption: ".flc-captions-input-2"
+            title: ".gpiic-captions-title",
+            icon: ".gpiic-captions-icon",
+            instruction: ".gpiic-captions-instruction",
+            primaryCaption: ".gpiic-captions-input-1",
+            secondaryCaption: ".gpiic-captions-input-2"
         },
         selectorsToIgnore: ["icon", "primaryCaption", "secondaryCaption"],
         protoTree: {
@@ -197,10 +197,10 @@ var fluid_1_5 = fluid_1_5 || {};
     fluid.defaults("fluid.metadata.captionsPanel.captionInput", {
         gradeNames: ["fluid.rendererComponent", "autoInit"],
         selectors: {
-            srcLabel: ".flc-captions-srcLabel",
-            src: ".flc-captions-src",
-            languagesLabel: ".flc-captions-languagesLabel",
-            languages: ".flc-captions-languages"
+            srcLabel: ".gpiic-captions-srcLabel",
+            src: ".gpiic-captions-src",
+            languagesLabel: ".gpiic-captions-languagesLabel",
+            languages: ".gpiic-captions-languages"
         },
         strings: {
             srcLabel: "Enter web link to caption:",

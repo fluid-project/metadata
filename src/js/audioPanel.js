@@ -62,13 +62,13 @@ var fluid_1_5 = fluid_1_5 || {};
         },
         controlValues: ["available", "unavailable", "unknown"],
         selectors: {
-            title: ".flc-audio-title",
-            instruction: ".flc-audio-instruction",
-            icon: ".flc-audio-icon",
-            audioRow: ".flc-audio-row",
-            audioLabel: ".flc-audio-label",
-            audioInput: ".flc-audio-input",
-            attributes: ".flc-audio-attributes"
+            title: ".gpiic-audio-title",
+            instruction: ".gpiic-audio-instruction",
+            icon: ".gpiic-audio-icon",
+            audioRow: ".gpiic-audio-row",
+            audioLabel: ".gpiic-audio-label",
+            audioInput: ".gpiic-audio-input",
+            attributes: ".gpiic-audio-attributes"
         },
         selectorsToIgnore: ["attributes"],
         repeatingSelectors: ["audioRow"],
@@ -159,9 +159,9 @@ var fluid_1_5 = fluid_1_5 || {};
             keywords: ["Dialogue or narrative.", "Soundtrack.", "Sound effects."]
         },
         selectors: {
-            keywordRow: ".flc-audio-keyword",
-            keywordValue: ".flc-audio-keyword-value",
-            keywordLabel: ".flc-audio-keyword-label"
+            keywordRow: ".gpiic-audio-keyword",
+            keywordValue: ".gpiic-audio-keyword-value",
+            keywordLabel: ".gpiic-audio-keyword-label"
         },
         controlValues: ["dialogue", "soundtrack", "sound effect"],
         repeatingSelectors: ["keywordRow"],
