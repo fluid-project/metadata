@@ -32,8 +32,8 @@ var demo = demo || {};
         },
         defaultDbName: "new",
         selectors: {
-            simpleEditor: ".gpiic-metadata-resourceEditor",
-            metadataPanel: ".gpiic-metadata-resourceEditor-metadataPanel"
+            simpleEditor: ".gpiic-metadataDemo-resourceEditor",
+            metadataPanel: ".gpiic-metadataDemo-resourceEditor-metadataPanel"
         },
         events: {
             onReset: null
