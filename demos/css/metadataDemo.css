@@ -234,3 +234,25 @@
     border-color: transparent transparent transparent #000000;
 }
 
+/* Metadata panel styling tweaks */
+
+.gpii-metadataDemo-demo .gpii-videoPanel .gpii-flashing-row{
+     margin-top: 0.5em;
+}
+   
+.gpii-metadataDemo-demo .gpii-captionsPanel .gpii-captions-list li {
+    margin-top: 1em;
+    background-color: #CBD5D8;
+}
+
+.gpii-metadataDemo-demo .gpii-captionsPanel .gpii-captions-list li input {
+    margin-bottom: 0.5em;
+    display: block;
+    height: 2.5em;
+    width: 100%;
+    font-size: 1em;
+}
+
+.gpii-metadataDemo-demo .gpii-metadata-panel p {
+    margin-bottom: 0;
+}
