@@ -9,7 +9,6 @@
         <link rel="stylesheet" href="../lib/foundation/css/foundation.min.css">
 
         <link rel="stylesheet" href="../css/metadataDemo.css">
-        <link rel="stylesheet" href="../../src/css/style.css">
         
         <script type="text/javascript" src="../../src/lib/infusion/MyInfusion.js"></script>
         <script type="text/javascript" src="../../src/lib/pouchDB/pouchdb-nightly.min.js"></script>
@@ -24,69 +23,69 @@
         <script type="text/javascript" src="../js/simpleEditor.js"></script>
         <script type="text/javascript" src="../js/metadata.js"></script>
     </head>
-    <body class="gpii-metadata-demo">
-        <header class="gpii-metadata-header">
+    <body class="gpii-metadataDemo-demo">
+        <header class="gpii-metadataDemo-header">
             <div class="row">
                 <div class="small-12 columns clearfix">
                     
-                    <div class="left gpii-metadata-header-logo">
+                    <div class="left gpii-metadataDemo-header-logo">
                         <img src="../images/noaa_logo.gif"  alt="The National Oceanic and Atmospheric Administration (or NOAA) logo."/> 
                     </div>
-                    <div class="gpii-metadata-header-title ">
+                    <div class="gpii-metadataDemo-header-title ">
                         <h1>Education Resources</h1>
-                        <span class="gpii-metadata-header-tagline">National Oceanic and Atmospheric Administration</span>
+                        <span class="gpii-metadataDemo-header-tagline">National Oceanic and Atmospheric Administration</span>
                     </div>
                     
-                    <div class="right gpii-metadata-header-restart">
+                    <div class="right gpii-metadataDemo-header-restart">
                         <a class="restart" href="#">restart demo</a>
                     </div>
                 </div>
             </div>
         </header>
         
-        <section class="gpii-metadata-body gpii-metadata-resourceEditor-active">
+        <section class="gpii-metadataDemo-body gpii-metadataDemo-resourceEditor-active">
             <div class="row">
                 <h2>Create new resource</h2>
                 
-                <ul class="inline-list right gpii-metadata-tab-list">
-                    <li class="text-center gpii-metadata-tab-edit"><a href="#gpii-metadata-resourceEditor">Edit</a></li>
-                    <li class="text-center gpii-metadata-tab-previewContent"><a href="#gpii-metadata-previewContent">Preview content</a></li>
-                    <li class="text-center gpii-metadata-tab-outputHTML"><a href="#gpii-metadata-outputHTML">View output HTML</a></li>
+                <ul class="inline-list right gpii-metadataDemo-tab-list">
+                    <li class="text-center gpii-metadataDemo-tab-edit"><a href="#gpii-metadataDemo-resourceEditor">Edit</a></li>
+                    <li class="text-center gpii-metadataDemo-tab-previewContent"><a href="#gpii-metadataDemo-previewContent">Preview content</a></li>
+                    <li class="text-center gpii-metadataDemo-tab-outputHTML"><a href="#gpii-metadataDemo-outputHTML">View output HTML</a></li>
                 </ul>
             </div>
         
-            <div class="gpiic-metadata row gpii-metadata-resourceEditor" id="gpii-metadata-resourceEditor">
-                <div class="gpiic-metadata-resourceEditor small-12 medium-8 columns">
-                    <div class="row gpii-metadata-resourceEditor-toolbar">
+            <div class="gpiic-metadata row gpii-metadataDemo-resourceEditor" id="gpii-metadataDemo-resourceEditor">
+                <div class="gpiic-metadataDemo-resourceEditor small-12 medium-8 columns">
+                    <div class="row gpii-metadataDemo-resourceEditor-toolbar">
                         <ul class="button-group left">
-                            <li class="gpii-metadata-resourceEditor-toolbar-button gpii-metadata-resourceEditor-toolbar-button-bold"><a href="#" class="gpiic-metadata-resourceEditor-toolbar-button button" role="button" data-control="bold" data-keycode="b">B</a></li>
-                            <li class="gpii-metadata-resourceEditor-toolbar-button gpii-metadata-resourceEditor-toolbar-button-underline"><a href="#" class="gpiic-metadata-resourceEditor-toolbar-button button" role="button" data-control="underline" data-keycode="u">U</a></li>
-                            <li class="gpii-metadata-resourceEditor-toolbar-button gpii-metadata-resourceEditor-toolbar-button-italics"><a href="#" class="gpiic-metadata-resourceEditor-toolbar-button button" role="button" data-control="italic" data-keycode="i">i</a></li>
+                            <li class="gpii-metadataDemo-resourceEditor-toolbar-button gpii-metadataDemo-resourceEditor-toolbar-button-bold"><a href="#" class="gpiic-metadataDemo-resourceEditor-toolbar-button button" role="button" data-control="bold" data-keycode="b">B</a></li>
+                            <li class="gpii-metadataDemo-resourceEditor-toolbar-button gpii-metadataDemo-resourceEditor-toolbar-button-underline"><a href="#" class="gpiic-metadataDemo-resourceEditor-toolbar-button button" role="button" data-control="underline" data-keycode="u">U</a></li>
+                            <li class="gpii-metadataDemo-resourceEditor-toolbar-button gpii-metadataDemo-resourceEditor-toolbar-button-italics"><a href="#" class="gpiic-metadataDemo-resourceEditor-toolbar-button button" role="button" data-control="italic" data-keycode="i">i</a></li>
                         </ul>
                         
-                        <div class="row collapse gpii-metadata-resourceEditor-toolbar-url">
-                            <label class="gpiic-metadata-resourceEditor-toolbar-url-label">Web address for video:</label>
+                        <div class="row collapse gpii-metadataDemo-resourceEditor-toolbar-url">
+                            <label class="gpiic-metadataDemo-resourceEditor-toolbar-url-label">Web address for video:</label>
                             <div class="small-10 columns">
-                                <input class="gpiic-metadata-resourceEditor-toolbar-url" type="text" placeholder="">
+                                <input class="gpiic-metadataDemo-resourceEditor-toolbar-url" type="text" placeholder="">
                             </div>
                             <div class="small-2 columns">
-                                <a href="#" class="gpiic-metadata-resourceEditor-toolbar-url-submit button postfix">OK</a>
+                                <a href="#" class="gpiic-metadataDemo-resourceEditor-toolbar-url-submit button postfix">OK</a>
                             </div>
                         </div>
                     </div>
                     
                     <div class="row">
-                        <div class="gpiic-metadata-resourceEditor-textEditor gpii-metadata-resourceEditor-textEditor">
+                        <div class="gpiic-metadataDemo-resourceEditor-textEditor gpii-metadataDemo-resourceEditor-textEditor">
                             Resource content goes here.
                         </div>
                     </div>
                 </div>
                 
                 <div class="small-12 medium-4 columns">
-                    <div class="row gpii-metadata-resourceEditor-metadataPanel-header">
+                    <div class="row gpii-metadataDemo-resourceEditor-metadataPanel-header">
                         <h3 class="text-center">Video Details</h3>
                     </div>
-                    <div class="gpiic-metadata-resourceEditor-metadataPanel row gpii-metadata-resourceEditor-metadataPanel">    
+                    <div class="gpiic-metadataDemo-resourceEditor-metadataPanel row gpii-metadataDemo-resourceEditor-metadataPanel">    
                         <div class="gpiic-videoPanel gpii-videoPanel"></div>
                         <div class="gpiic-audioPanel gpii-audioPanel"></div>
                         <div class="gpiic-captionsPanel gpii-captionsPanel"></div>
@@ -94,11 +93,11 @@
                 </div>
             </div>
             
-            <div class="row gpii-metadata-previewContent" id="gpii-metadata-previewContent">
+            <div class="row gpii-metadataDemo-previewContent" id="gpii-metadataDemo-previewContent">
                 Preview goes here.
             </div>
             
-            <div class="row gpii-metadata-outputHTML" id="gpii-metadata-outputHTML">
+            <div class="row gpii-metadataDemo-outputHTML" id="gpii-metadataDemo-outputHTML">
                 HTML output goes here.
             </div>      
         </section>

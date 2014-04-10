@@ -14,7 +14,7 @@
     font-weight: bold;
 }
 
-.gpii-metadata-demo {
+.gpii-metadataDemo-demo {
     font-family: "OpenSans";
     background-color: #F4F4F4;
     min-width:31rem;
@@ -23,73 +23,73 @@
 
 /* Header area */
 
-.gpii-metadata-header {
+.gpii-metadataDemo-header {
     background-color: #fff;
 }
 
-.gpii-metadata-header-logo {
+.gpii-metadataDemo-header-logo {
     margin: 0.5rem 0.5rem 0 0;
 }
 
-.gpii-metadata-header-logo img {
+.gpii-metadataDemo-header-logo img {
     width: 7rem;
 }
 
-.gpii-metadata-header-title {
+.gpii-metadataDemo-header-title {
     padding-top: 1rem;
     margin-left: 1rem;
 }
 
-.gpii-metadata-header-title h1 {
+.gpii-metadataDemo-header-title h1 {
     text-transform: uppercase;
     font-size: 2.3rem;
 }
 
-.gpii-metadata-header-title .gpii-metadata-header-tagline {
+.gpii-metadataDemo-header-title .gpii-metadataDemo-header-tagline {
     text-transform: uppercase;
 }
 
-.gpii-metadata-header-restart {
+.gpii-metadataDemo-header-restart {
     margin: 1rem 0;
 }
 
 /* Landing Page */
 
-.gpii-metadata-resource {
+.gpii-metadataDemo-resource {
     background-color: #fff;
     border-top: 0.1rem solid #81D0EC;
     height: 10rem;
 }
 
 
-.gpii-metadata-resource-first {
+.gpii-metadataDemo-resource-first {
     border-top: 0.3rem solid #81D0EC;
 }
 
-.gpii-metadata-editColumn {
+.gpii-metadataDemo-editColumn {
     background-color: #EAF2F4;
     height: 100%;
     padding-top: 4rem;
 }
 
-.gpii-metadata-resources-title {
+.gpii-metadataDemo-resources-title {
     font-weight: bold;
     font-size: 2rem;
 }
 
-.gpii-metadata-resource-title {
+.gpii-metadataDemo-resource-title {
     font-weight: bold;
     font-size: 1rem;
 }
 
 /* Tabs */
-.gpii-metadata-tab-list {
+.gpii-metadataDemo-tab-list {
     margin-bottom: 0;
     width: 34rem;
     padding-right: 2rem;
 }
 
-.gpii-metadata-tab-list a {
+.gpii-metadataDemo-tab-list a {
     text-transform: lowercase;
     height: 2.9rem;
     padding: 0.7rem;
@@ -98,29 +98,29 @@
     min-width: 10rem;
 }
 
-.gpii-metadata-tab-list li {
+.gpii-metadataDemo-tab-list li {
     margin-left: 0.5rem;
 }
 
 /* Tab content visibility - this is being used for internal development only. Remove once tabs.js is integrated*/
 
-.gpii-metadata-outputHTML,
-.gpii-metadata-previewContent,
-.gpii-metadata-resourceEditor {
+.gpii-metadataDemo-outputHTML,
+.gpii-metadataDemo-previewContent,
+.gpii-metadataDemo-resourceEditor {
     display:none;
 }
 
-.gpii-metadata-outputHTML-active .gpii-metadata-outputHTML,
-.gpii-metadata-previewContent-active .gpii-metadata-previewContent,
-.gpii-metadata-resourceEditor-active .gpii-metadata-resourceEditor {
+.gpii-metadataDemo-outputHTML-active .gpii-metadataDemo-outputHTML,
+.gpii-metadataDemo-previewContent-active .gpii-metadataDemo-previewContent,
+.gpii-metadataDemo-resourceEditor-active .gpii-metadataDemo-resourceEditor {
     display:block;
 }
 
 
 /* Active Tab  */
-.gpii-metadata-outputHTML-active .gpii-metadata-tab-list .gpii-metadata-tab-outputHTML a,
-.gpii-metadata-previewContent-active .gpii-metadata-tab-list .gpii-metadata-tab-previewContent a,
-.gpii-metadata-resourceEditor-active .gpii-metadata-tab-list .gpii-metadata-tab-edit a { /* Active Tab Styling */
+.gpii-metadataDemo-outputHTML-active .gpii-metadataDemo-tab-list .gpii-metadataDemo-tab-outputHTML a,
+.gpii-metadataDemo-previewContent-active .gpii-metadataDemo-tab-list .gpii-metadataDemo-tab-previewContent a,
+.gpii-metadataDemo-resourceEditor-active .gpii-metadataDemo-tab-list .gpii-metadataDemo-tab-edit a { /* Active Tab Styling */
     background-color: #81D0EC;
     height: 3rem;
     font-weight: bold;
@@ -128,95 +128,95 @@
 
 /* Resource Editor Toolbar */
 
-.gpii-metadata-previewContent-active .gpii-metadata-previewContent,
-.gpii-metadata-outputHTML-active .gpii-metadata-outputHTML,
-.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-textEditor {
+.gpii-metadataDemo-previewContent-active .gpii-metadataDemo-previewContent,
+.gpii-metadataDemo-outputHTML-active .gpii-metadataDemo-outputHTML,
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-textEditor {
     background-color: #fff;
 }
 
-.gpii-metadata-resourceEditor-textEditor,
-.gpii-metadata-outputHTML,
-.gpii-metadata-previewContent,
-.gpii-metadata-resourceEditor-metadataPanel  {
+.gpii-metadataDemo-resourceEditor-textEditor,
+.gpii-metadataDemo-outputHTML,
+.gpii-metadataDemo-previewContent,
+.gpii-metadataDemo-resourceEditor-metadataPanel  {
     padding: 1.5rem;
     overflow-y: auto;
     height:25em;
 }
 
-.gpii-metadata-previewContent,
-.gpii-metadata-outputHTML {
+.gpii-metadataDemo-previewContent,
+.gpii-metadataDemo-outputHTML {
     border-top: 0.2rem solid #81D0EC;
 }
 
-.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-toolbar,
-.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-metadataPanel-header {
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar,
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-metadataPanel-header {
     height: 6em;
 }
 
-.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-toolbar {
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar {
     background-color: #81D0EC;
     padding: 0.8rem 0.8rem 0 0.8rem;
 }
 
-.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-toolbar ul {
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar ul {
     margin: 0.7rem 1rem 0 0;
 }
 
-.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-toolbar-button a {
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar-button a {
     font-size: 1rem;
     width: 3.2rem;
     padding: 0.8rem;
 }
 
-.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-toolbar-button-bold a {
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar-button-bold a {
     font-weight: bold;
 }
 
-.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-toolbar-button-italics a{
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar-button-italics a{
     font-style:italic;
 }
 
-.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-toolbar-button-underline a {
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar-button-underline a {
     text-decoration:underline;
 }
 
-.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-toolbar .gpii-metadata-resourceEditor-toolbar-url {
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar .gpii-metadataDemo-resourceEditor-toolbar-url {
     display: inline-block;
     width: 57%;
 }
 
 /* Metadata panel sidebar */
-.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-toolbar-url input {
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar-url input {
     min-width: 10em;
 }
 
-.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-metadataPanel-header {
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-metadataPanel-header {
     background-color: #68B8CE;
 }
     
-.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-metadataPanel-header h3{
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-metadataPanel-header h3{
     font-family: RobotoSlab;
     color: #fff;
     padding-top: 1.6rem;
 }
 
-.gpii-metadata-resourceEditor .show-for-small-only .gpii-metadata-resourceEditor-metadataPanel-header h3 {
+.gpii-metadataDemo-resourceEditor .show-for-small-only .gpii-metadataDemo-resourceEditor-metadataPanel-header h3 {
     padding-bottom: 1rem;
     margin: 0;
 }
 
-.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-metadataPanel {
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-metadataPanel {
     background-color: #e7e7e7;
 }
 
 /* Placeholder for Video */
-.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-insertVideo-placeHolder {
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-insertVideo-placeHolder {
     background: #C0C0C0;
     width: 50%;
     padding: 10% 0 10% 0;
 }
 
-.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-insertVideo-placeHolder-playCircle {
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-insertVideo-placeHolder-playCircle {
     border: solid 5px #000000;
     height: 5em;
     width: 5em;
@@ -225,7 +225,7 @@
     margin: 0 auto;
 }
 
-.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-insertVideo-placeHolder-playTriangle {
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-insertVideo-placeHolder-playTriangle {
     width: 0;
     height: 0;
 
