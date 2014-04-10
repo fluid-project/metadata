@@ -60,8 +60,7 @@ var demo = demo || {};
                         url: "url"
                     },
                     listeners: {
-                        "{metadata}.events.onReset": "{that}.events.onReset.fire",
-                        "onCreate": "console.log"
+                        "{metadata}.events.onReset": "{that}.events.onReset.fire"
                     }
                 }
             },

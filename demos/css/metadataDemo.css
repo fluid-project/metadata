@@ -209,4 +209,28 @@
     background-color: #e7e7e7;
 }
 
+/* Placeholder for Video */
+.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-insertVideo-placeHolder {
+    background: #C0C0C0;
+    width: 50%;
+    padding: 10% 0 10% 0;
+}
+
+.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-insertVideo-placeHolder-playCircle {
+    border: solid 5px #000000;
+    height: 5em;
+    width: 5em;
+    border-radius: 50%;
+    padding: 0.8em 0 0 1.3em;
+    margin: 0 auto;
+}
+
+.gpii-metadata-resourceEditor .gpii-metadata-resourceEditor-insertVideo-placeHolder-playTriangle {
+    width: 0;
+    height: 0;
+
+    border-style: solid;
+    border-width: 1.5em 0 1.5em 2.3em;
+    border-color: transparent transparent transparent #000000;
+}
 

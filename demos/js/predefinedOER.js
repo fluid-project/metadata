@@ -43,7 +43,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             <h2>What kind of mammals do you find in the Arctic?</h2>\
             <p><strong>MacPhee</strong>: There aren’t that many completely distinctive Arctic animals when it comes to land mammals. They live in larger ranges beyond the Arctic. Some of the mammals that live in Arctic regions include large herbivores like musk ox and caribou; carnivores such as polar bears and arctic foxes; and smaller animals like arctic hares and other animals within rodent groups.</p>\
             <p>Sea mammals are very diverse. They consist of the whale family, which includes animals like porpoises and orcas; the seal group, consisting of walruses, sea lions, and ribbon seals.</p>\
-            <section contentEditable="false"><div class="fl-simpleEditor-insertVideo-placeHolder"><div class="fl-simpleEditor-insertVideo-placeHolder-playCircle"><div class="fl-simpleEditor-insertVideo-placeHolder-playTriangle"></div></div></div></section>\
+            <section contentEditable="false"><div class="gpii-metadata-resourceEditor-insertVideo-placeHolder"><div class="gpii-metadata-resourceEditor-insertVideo-placeHolder-playCircle"><div class="gpii-metadata-resourceEditor-insertVideo-placeHolder-playTriangle"></div></div></div></section>\
         </section>\
 \
         <section>\

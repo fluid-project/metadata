@@ -362,7 +362,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             }
         },
         markup: {
-            placeHolder: "<section contentEditable='false'><div class='fl-simpleEditor-insertVideo-placeHolder'><div class='fl-simpleEditor-insertVideo-placeHolder-playCircle'><div class='fl-simpleEditor-insertVideo-placeHolder-playTriangle'></div></div></div></section>"
+            placeHolder: "<section contentEditable='false'><div class='gpii-metadata-resourceEditor-insertVideo-placeHolder'><div class='gpii-metadata-resourceEditor-insertVideo-placeHolder-playCircle'><div class='gpii-metadata-resourceEditor-insertVideo-placeHolder-playTriangle'></div></div></div></section>"
         }
 
     });
