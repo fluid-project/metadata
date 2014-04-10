@@ -118,9 +118,7 @@
 
 
 /* Active Tab  */
-.gpii-metadataDemo-outputHTML-active .gpii-metadataDemo-tab-list .gpii-metadataDemo-tab-outputHTML a,
-.gpii-metadataDemo-previewContent-active .gpii-metadataDemo-tab-list .gpii-metadataDemo-tab-previewContent a,
-.gpii-metadataDemo-resourceEditor-active .gpii-metadataDemo-tab-list .gpii-metadataDemo-tab-edit a { /* Active Tab Styling */
+.gpii-metadataDemo-demo .ui-state-active a { /* Active Tab Styling */
     background-color: #81D0EC;
     height: 3rem;
     font-weight: bold;
@@ -128,9 +126,9 @@
 
 /* Resource Editor Toolbar */
 
-.gpii-metadataDemo-previewContent-active .gpii-metadataDemo-previewContent,
-.gpii-metadataDemo-outputHTML-active .gpii-metadataDemo-outputHTML,
-.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-textEditor {
+.gpii-metadataDemo-previewContent,
+.gpii-metadataDemo-outputHTML,
+.gpii-metadataDemo-resourceEditor-textEditor {
     background-color: #fff;
 }
 
