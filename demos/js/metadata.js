@@ -22,25 +22,21 @@ var demo = demo || {};
 
     fluid.defaults("demo.metadata", {
         gradeNames: ["fluid.viewComponent", "autoInit"],
-        oerMaterial: null, // If not null, populate the given OER material
+        members: {
+            databaseName: {
+                expander: {
+                    funcName: "demo.metadata.getDbName",
+                    args: "{that}.options.defaultDbName"
+                }
+            }
+        },
+        defaultDbName: "new",
         selectors: {
             simpleEditor: ".gpiic-metadata-resourceEditor",
             metadataPanel: ".gpiic-metadata-resourceEditor-metadataPanel"
         },
         events: {
-            onReset: null,
-            onMarkupFetched: null,
-            onModelFetched: null
-        },
-        listeners: {
-            "onMarkupFetched.setMarkup": {
-                listener: "demo.metadata.setMarkup",
-                args: ["{arguments}.0", "{that}.options.oerMaterial", "{simpleEditor}.setContent"]
-            },
-            "onModelFetched.setModel": {
-                listener: "demo.metadata.setModel",
-                args: ["{arguments}.0", "{that}.options.oerMaterial", "{metadataPanel}.setModel"]
-            }
+            onReset: null
         },
         components: {
             simpleEditor: {
@@ -64,22 +60,23 @@ var demo = demo || {};
                         url: "url"
                     },
                     listeners: {
-                        "{metadata}.events.onReset": "{that}.events.onReset.fire"
+                        "{metadata}.events.onReset": "{that}.events.onReset.fire",
+                        "onCreate": "console.log"
                     }
                 }
             },
             dataSource: {
                 type: "fluid.pouchdb.dataSource",
                 options: {
-                    databaseName: "simpleEditor",
+                    databaseName: "{metadata}.databaseName",
                     listeners: {
                         "onCreate.fetchMarkup": {
                             listener: "{that}.get",
-                            args: [{id: "markup"}, "{metadata}.events.onMarkupFetched.fire"]
+                            args: [{id: "markup"}, "{simpleEditor}.setContent"]
                         },
                         "onCreate.fetchMetadata": {
                             listener: "{that}.get",
-                            args: [{id: "videoMetadata"}, "{metadata}.events.onModelFetched.fire"]
+                            args: [{id: "videoMetadata"}, "{metadataPanel}.setModel"]
                         }
                     }
                 }
@@ -108,21 +105,10 @@ var demo = demo || {};
         }]
     });
 
-    demo.metadata.setMarkup = function (fetchedMarkup, oerMaterial, setMarkupFunc) {
-        if (oerMaterial && !fetchedMarkup) {
-            setMarkupFunc(oerMaterial.content);
-        } else {
-            setMarkupFunc(fetchedMarkup);
-        }
-    };
-
-    demo.metadata.setModel = function (fetchedModel, oerMaterial, setModelFunc) {
-        if (oerMaterial && !fetchedModel.url) {
-            var mergedModel = $.extend(true, {}, fetchedModel, {url: oerMaterial.url});
-            setModelFunc(mergedModel);
-        } else {
-            setModelFunc(fetchedModel);
-        }
+    demo.metadata.getDbName = function (defaultDbName) {
+        var lookfor = "name";
+        var decodedName = decodeURI(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURI(lookfor).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
+        return decodedName ? decodedName : defaultDbName;
     };
 
     fluid.defaults("fluid.metadata.saveVideoMetadata", {

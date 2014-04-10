@@ -53,10 +53,6 @@ var demo = demo || {};
         }
     });
 
-    demo.metadata.redirectURL = function (url) {
-        window.location = url;
-    };
-
     fluid.defaults("demo.metadata.launcher", {
         gradeNames: ["fluid.eventedComponent", "autoInit"],
         members: {
