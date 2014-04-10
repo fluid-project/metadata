@@ -10,7 +10,7 @@
 
         <link rel="stylesheet" href="../css/metadataDemo.css">
         
-        <script type="text/javascript" src="../../src/lib/infusion/MyInfusion.js"></script>
+        <script type="text/javascript" src="../../src/lib/infusion/infusion-custom.js"></script>
         <script type="text/javascript" src="../../src/lib/pouchDB/pouchdb-nightly.min.js"></script>
         <script type="text/javascript" src="../../src/js/pouchDBDataSource.js"></script>
         <script type="text/javascript" src="../../src/js/indicator.js"></script>
@@ -43,7 +43,7 @@
             </div>
         </header>
         
-        <section class="gpii-metadataDemo-body gpii-metadataDemo-resourceEditor-active">
+        <section class="gpiic-metadataDemo-body gpii-metadataDemo-body gpii-metadataDemo-resourceEditor-active">
             <div class="row">
                 <h2>Create new resource</h2>
                 
@@ -102,6 +102,8 @@
             </div>      
         </section>
         <script type="text/javascript">
+            var tabs = fluid.tabs(".gpiic-metadataDemo-body");
+            
             var editor = demo.metadata(".gpiic-metadataDemo", {
                 videoPanelTemplate: "../../src/html/video-template.html",
                 audioPanelTemplate: "../../src/html/audio-template.html",
