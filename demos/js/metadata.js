@@ -32,10 +32,19 @@ var demo = demo || {};
         },
         defaultDbName: "new",
         selectors: {
+            title: ".gpiic-metadataDemo-title",
             simpleEditor: ".gpiic-metadataDemo-resourceEditor",
             metadataPanel: ".gpiic-metadataDemo-resourceEditor-metadataPanel",
             markupViewer: ".gpiic-metadataDemo-outputHTML",
             preview: ".gpiic-metadataDemo-previewContent"
+        },
+        strings: {
+            title: {
+                expander: {
+                    funcName: "demo.metadata.getTitle",
+                    args: "{that}.databaseName"
+                }
+            }
         },
         events: {
             onReset: null,
@@ -44,7 +53,12 @@ var demo = demo || {};
         },
         listeners: {
             onMarkupFetched: ["{simpleEditor}.setContent", "{markupViewer}.updateModelMarkup", "{preview}.updateModelMarkup"],
-            onMetadataModelFetched: ["{metadataPanel}.setModel", "{markupViewer}.updateModelMetadata", "{preview}.updateModelMetadata"]
+            onMetadataModelFetched: ["{metadataPanel}.setModel", "{markupViewer}.updateModelMetadata", "{preview}.updateModelMetadata"],
+            "onCreate.setTitle": {
+                "this": "{that}.dom.title",
+                "method": "text",
+                "args": "{that}.options.strings.title"
+            }
         },
         components: {
             simpleEditor: {
@@ -148,6 +162,10 @@ var demo = demo || {};
         var lookfor = "name";
         var decodedName = decodeURI(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURI(lookfor).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
         return decodedName ? decodedName : defaultDbName;
+    };
+
+    demo.metadata.getTitle = function (databaseName) {
+        return databaseName.replace(/_/g, " ");
     };
 
     fluid.defaults("fluid.metadata.saveVideoMetadata", {
