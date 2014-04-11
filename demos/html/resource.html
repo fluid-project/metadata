@@ -11,6 +11,14 @@
         <link rel="stylesheet" href="../css/metadataDemo.css">
         <link rel="stylesheet" href="../../src/css/style.css">
         
+        <!-- Pretty-Diff -->
+        <script src="../lib/pretty-diff/cleanCSS.js"></script>
+        <script src="../lib/pretty-diff/jspretty.js"></script>
+        <script src="../lib/pretty-diff/fulljsmin.js"></script>
+        <script src="../lib/pretty-diff/markupmin.js"></script>
+        <script src="../lib/pretty-diff/markup_beauty.js"></script>
+        <script src="../lib/highlight/highlight.pack.js"></script>
+
         <script type="text/javascript" src="../../src/lib/infusion/infusion-custom.js"></script>
         <script type="text/javascript" src="../../src/lib/pouchDB/pouchdb-nightly.min.js"></script>
         <script type="text/javascript" src="../../src/js/pouchDBDataSource.js"></script>
@@ -20,9 +28,13 @@
         <script type="text/javascript" src="../../src/js/captionsPanel.js"></script>
         <script type="text/javascript" src="../../src/js/videoMetadataPanel.js"></script>
         <script type="text/javascript" src="../../src/js/metadataPanel.js"></script>
+        <script type="text/javascript" src="../../src/js/metadataUtils.js"></script>
         <script type="text/javascript" src="../js/utility.js"></script>
         <script type="text/javascript" src="../js/simpleEditor.js"></script>
         <script type="text/javascript" src="../js/metadata.js"></script>
+        <script type="text/javascript" src="../js/markup.js"></script>
+        <script type="text/javascript" src="../js/viewer.js"></script>
+        <script type="text/javascript" src="../js/markupViewer.js"></script>
     </head>
     <body class="gpii-metadataDemo-demo">
         <header class="gpii-metadataDemo-header">
@@ -58,7 +70,7 @@
                 </ul>
             </div>
         
-            <div class="gpiic-metadataDemo row gpii-metadataDemo-resourceEditor" id="gpii-metadataDemo-resourceEditor">
+            <div class="row gpii-metadataDemo-resourceEditor" id="gpii-metadataDemo-resourceEditor">
                 <div class="gpiic-metadataDemo-resourceEditor small-12 medium-8 columns">
                     <div class="row gpii-metadataDemo-resourceEditor-toolbar">
                         <ul class="button-group left">
@@ -97,18 +109,18 @@
                 </div>
             </div>
             
-            <div class="row gpii-metadataDemo-previewContent" id="gpii-metadataDemo-previewContent">
+            <div class="gpiic-metadataDemo-previewContent row gpii-metadataDemo-previewContent" id="gpii-metadataDemo-previewContent">
                 Preview goes here.
             </div>
             
             <div class="row gpii-metadataDemo-outputHTML" id="gpii-metadataDemo-outputHTML">
-                HTML output goes here.
+                <pre class="gpiic-metadataDemo-outputHTML">
+                    <code class="gpiic-metadataDemo-outputHTML-code"></code>
+                </pre>
             </div>      
         </section>
         <script type="text/javascript">
-            var tabs = fluid.tabs(".gpiic-metadataDemo-body");
-            
-            var editor = demo.metadata(".gpiic-metadataDemo", {
+            var editor = demo.metadata(".gpiic-metadataDemo-body", {
                 videoPanelTemplate: "../../src/html/video-template.html",
                 audioPanelTemplate: "../../src/html/audio-template.html",
                 audioAttributesTemplate: "../../src/html/audio-attributes-template.html",

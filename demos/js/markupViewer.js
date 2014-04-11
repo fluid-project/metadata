@@ -20,7 +20,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     fluid.defaults("fluid.markupViewer", {
         gradeNames: ["fluid.viewComponent", "fluid.markup", "autoInit"],
         selectors: {
-            code: ".flc-markupViewer-code"
+            code: ".gpiic-metadataDemo-outputHTML-code"
         },
         invokers: {
             render: {
