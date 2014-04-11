@@ -19,6 +19,9 @@ The following directories were stripped out of the build since they contain code
     src/lib/infusion/lib/fastXmlPull/
     src/lib/infusion/lib/fonts/
     src/lib/infusion/lib/jquery/core/
+    src/lib/infusion/lib/jquery/jQuery-LICENSE.txt
     src/lib/infusion/lib/jquery/plugins/
     src/lib/infusion/lib/jquery/ui/js/
+    src/lib/infusion/lib/jquery/ui/jQueryUICoreDependencies.json
+    src/lib/infusion/lib/jquery/ui/jQueryUIWidgetsDependencies.json
     src/lib/infusion/lib/json/
