@@ -50,7 +50,7 @@
                     </div>
                     
                     <div class="right gpii-metadataDemo-header-restart">
-                        <a href="#">
+                        <a class="gpiic-metadataDemo-restart" href="#">
                             <span class="gpii-metadataDemo-icon gpii-metadataDemo-icon-restart"></span>
                             restart demo
                         </a>
@@ -61,7 +61,7 @@
         
         <section class="gpiic-metadataDemo-body gpii-metadataDemo-body gpii-metadataDemo-resourceEditor-active">
             <div class="row">
-                <h2>Create new resource</h2>
+                <h2 class="gpiic-metadataDemo-title">Create new resource</h2>
                 
                 <ul class="inline-list right gpii-metadataDemo-tab-list">
                     <li class="text-center gpii-metadataDemo-tab-edit"><a href="#gpii-metadataDemo-resourceEditor">Edit</a></li>
@@ -128,7 +128,7 @@
                 captionsInputTemplate: "../../src/html/captions-input-template.html"
             });
 
-            $(".restart").click(function(e) {
+            $(".gpiic-metadataDemo-restart").click(function(e) {
                 editor.events.onReset.fire();
 
                 var redirectTo = "index.html";
