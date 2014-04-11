@@ -38,24 +38,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             videoContainer: "<div></div>",
             captionsContainer: "<span></span>",
             contentContainer: "<article>%content</article>"
-        },
-        components: {
-            dataSource: {
-                type: "fluid.pouchdb.dataSource",
-                options: {
-                    databaseName: "simpleEditor",
-                    listeners: {
-                        "afterChange.fetchMarkup": {
-                            listener: "{that}.get",
-                            args: [{id: "markup"}, "{markup}.updateModelMarkup"]
-                        },
-                        "afterChange.fetchMetadata": {
-                            listener: "{that}.get",
-                            args: [{id: "videoMetadata"}, "{markup}.updateModelMetadata"]
-                        }
-                    }
-                }
-            }
         }
     });
 

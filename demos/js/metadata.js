@@ -33,10 +33,18 @@ var demo = demo || {};
         defaultDbName: "new",
         selectors: {
             simpleEditor: ".gpiic-metadataDemo-resourceEditor",
-            metadataPanel: ".gpiic-metadataDemo-resourceEditor-metadataPanel"
+            metadataPanel: ".gpiic-metadataDemo-resourceEditor-metadataPanel",
+            markupViewer: ".gpiic-metadataDemo-outputHTML",
+            preview: ".gpiic-metadataDemo-previewContent"
         },
         events: {
-            onReset: null
+            onReset: null,
+            onMarkupFetched: null,
+            onMetadataModelFetched: null
+        },
+        listeners: {
+            onMarkupFetched: ["{simpleEditor}.setContent", "{markupViewer}.updateModelMarkup", "{preview}.updateModelMarkup"],
+            onMetadataModelFetched: ["{metadataPanel}.setModel", "{markupViewer}.updateModelMetadata", "{preview}.updateModelMetadata"]
         },
         components: {
             simpleEditor: {
@@ -49,6 +57,15 @@ var demo = demo || {};
                     model: "{metadata}.model",
                     listeners: {
                         "{metadata}.events.onReset": "{that}.reset"
+                    },
+                    modelListeners: {
+                        "markup": [{
+                            listener: "{markupViewer}.updateModelMarkup",
+                            args: "{change}.value"
+                        }, {
+                            listener: "{preview}.updateModelMarkup",
+                            args: "{change}.value"
+                        }]
                     }
                 }
             },
@@ -63,8 +80,29 @@ var demo = demo || {};
                     },
                     listeners: {
                         "{metadata}.events.onReset": "{that}.events.onReset.fire"
+                    },
+                    modelListeners: {
+                        "*": [{
+                            listener: "{markupViewer}.updateModelMetadata",
+                            args: "{that}.model"
+                        }, {
+                            listener: "{preview}.updateModelMetadata",
+                            args: "{that}.model"
+                        }]
                     }
                 }
+            },
+            tabs: {
+                type: "fluid.tabs",
+                container: "{that}.container"
+            },
+            markupViewer: {
+                type: "fluid.markupViewer",
+                container: "{that}.dom.markupViewer"
+            },
+            preview: {
+                type: "fluid.viewer",
+                container: "{that}.dom.preview"
             },
             dataSource: {
                 type: "fluid.pouchdb.dataSource",
@@ -73,11 +111,11 @@ var demo = demo || {};
                     listeners: {
                         "onCreate.fetchMarkup": {
                             listener: "{that}.get",
-                            args: [{id: "markup"}, "{simpleEditor}.setContent"]
+                            args: [{id: "markup"}, "{metadata}.events.onMarkupFetched.fire"]
                         },
                         "onCreate.fetchMetadata": {
                             listener: "{that}.get",
-                            args: [{id: "videoMetadata"}, "{metadataPanel}.setModel"]
+                            args: [{id: "videoMetadata"}, "{metadata}.events.onMetadataModelFetched.fire"]
                         }
                     }
                 }
