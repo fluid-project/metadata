@@ -29,9 +29,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             controls: ".gpiic-metadataDemo-resourceEditor-toolbar-button",
             content: ".gpiic-metadataDemo-resourceEditor-textEditor"
         },
-        events: {
-            onReset: null
-        },
         listeners: {
             "onCreate.makeEditable": {
                 "this": "{that}.dom.content",
@@ -72,8 +69,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                         content: "{simpleEditor}.options.selectors.content"
                     },
                     listeners: {
-                        "afterInsert.updateEditor": "{simpleEditor}.updateModel",
-                        "{simpleEditor}.events.onReset": "{that}.reset"
+                        "afterInsert.updateEditor": "{simpleEditor}.updateModel"
                     }
                 }
             }
@@ -85,7 +81,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 container: "{source}",
                 options: {
                     listeners: {
-                        "{simpleEditor}.events.onReset": "{that}.updateActiveState",
                         "onCreate.attachKeyboardShortcut": {
                             listener: "{that}.attachKeyboardShortcut",
                             args: ["{simpleEditor}.dom.content", "{that}.events.click.fire"]
@@ -137,7 +132,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     fluid.simpleEditor.reset = function (that) {
         that.setContent("");
         that.updateModel();
-        that.events.onReset.fire();
     };
 
     fluid.registerNamespace("fluid.simpleEditor.button");

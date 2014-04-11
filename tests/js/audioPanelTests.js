@@ -50,7 +50,7 @@ https://github.com/gpii/universal/LICENSE.txt
                 }
             });
 
-            jqUnit.assertTrue("Appropriate Indicator css class has been applied", that.locate("icon").hasClass("fl-" + state));
+            jqUnit.assertTrue("Appropriate Indicator css class has been applied", that.locate("icon").hasClass("gpii-" + state));
 
             if (state === "available") {
                 var count = 0;

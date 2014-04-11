@@ -63,7 +63,7 @@ var demo = demo || {};
                 }
             }
         },
-        dbName: "new",
+        dbName: "Create_new_resource",
         components: {
             setDB: {
                 type: "demo.metadata.setDb",
@@ -81,6 +81,9 @@ var demo = demo || {};
             afterSet: null,
             onRedirect: null,
             onDbError: null
+        },
+        listeners: {
+            "onCreate.launch": "{that}.launch"
         },
         invokers: {
             launch: {
