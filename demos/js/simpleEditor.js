@@ -64,15 +64,17 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 type: "fluid.simpleEditor.insertVideo",
                 container: "{that}.container",
                 options: {
+                    members: {
+                        applier: "{simpleEditor}.applier"
+                    },
+                    model: "{simpleEditor}.model",
                     selectors: {
                         content: "{simpleEditor}.options.selectors.content"
                     },
                     listeners: {
                         "afterInsert.updateEditor": "{simpleEditor}.updateModel",
                         "{simpleEditor}.events.onReset": "{that}.reset"
-                    },
-                    model: "{simpleEditor}.model",
-                    applier: "{simpleEditor}.applier"
+                    }
                 }
             }
         },
