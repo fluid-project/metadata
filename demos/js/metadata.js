@@ -28,9 +28,16 @@ var demo = demo || {};
                     funcName: "demo.metadata.getDbName",
                     args: "{that}.options.defaultDbName"
                 }
+            },
+            disableVideoInput: {
+                expander: {
+                    funcName: "demo.metadata.disallowVideoInput",
+                    args: ["{that}.databaseName", "{that}.options.defaultDbName"]
+                }
             }
         },
         defaultDbName: "Create_new_resource",
+        disableVideoInput: "{that}.disableVideoInput",
         selectors: {
             title: ".gpiic-metadataDemo-title",
             simpleEditor: ".gpiic-metadataDemo-resourceEditor",
@@ -163,6 +170,9 @@ var demo = demo || {};
             source: "{that}.options.captionsInputTemplate",
             removeSource: true,
             target: "{that > metadataPanel}.options.captionsInputTemplate"
+        }, {
+            source: "{that}.options.disableVideoInput",
+            target: "{that insertVideo}.options.disableVideoInput"
         }]
     });
 
@@ -170,6 +180,10 @@ var demo = demo || {};
         var lookfor = "name";
         var decodedName = decodeURI(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURI(lookfor).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
         return decodedName ? decodedName : defaultDbName;
+    };
+
+    demo.metadata.disallowVideoInput = function (databaseName, defaultDbName) {
+        return (databaseName !== defaultDbName);
     };
 
     demo.metadata.getTitle = function (databaseName) {

@@ -50,10 +50,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             updateModel: {
                 funcName: "fluid.simpleEditor.updateModel",
                 args: ["{that}"]
-            },
-            reset: {
-                funcName: "fluid.simpleEditor.reset",
-                args: ["{that}"]
             }
         },
         components: {
@@ -127,11 +123,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
     fluid.simpleEditor.updateModel = function (that) {
         that.applier.requestChange("markup", that.locate("content").html());
-    };
-
-    fluid.simpleEditor.reset = function (that) {
-        that.setContent("");
-        that.updateModel();
     };
 
     fluid.registerNamespace("fluid.simpleEditor.button");
@@ -271,6 +262,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
     fluid.defaults("fluid.simpleEditor.insertVideo", {
         gradeNames: ["fluid.viewComponent", "autoInit"],
+        disableVideoInput: false,    // boolean. Default value: false. At true, disable the input field and button for video url input.
         selectors: {
             url: ".gpiic-metadataDemo-resourceEditor-toolbar-url",
             urlLabel: ".gpiic-metadataDemo-resourceEditor-toolbar-url-label",
@@ -308,6 +300,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 "args": ["placeholder", "{that}.options.strings.urlPlaceHolder"]
             },
             "onCreate.setInitialSubmitActiveState": "{that}.updateActiveState",
+            "onCreate.applyVideoInputState": {
+                listener: "fluid.simpleEditor.insertVideo.applyVideoInputState",
+                args: ["{that}.options.disableVideoInput", "{that}.disableVideoInputField", "{that}.disableSubmitButton"]
+            },
             "onCreate.submit": {
                 "this": "{that}.dom.submit",
                 "method": "click",
@@ -336,16 +332,24 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             },
             updateActiveState: {
                 funcName: "fluid.simpleEditor.insertVideo.updateActiveState",
-                args: ["{that}.dom.submit", "{that}.dom.url"]
+                args: ["{that}.dom.url", "{that}.enableSubmitButton", "{that}.disableSubmitButton"]
             },
             setURLText: {
                 funcName: "fluid.simpleEditor.insertVideo.setURLText",
                 args: ["{that}.dom.url", "{that}.model.url"],
                 dynamic: true
             },
-            reset: {
-                funcName: "fluid.simpleEditor.insertVideo.reset",
-                args: ["{that}"]
+            disableVideoInputField: {
+                funcName: "fluid.simpleEditor.insertVideo.disableVideoInputField",
+                args: "{that}.dom.url"
+            },
+            disableSubmitButton: {
+                funcName: "fluid.simpleEditor.insertVideo.disableSubmitButton",
+                args: "{that}.dom.submit"
+            },
+            enableSubmitButton: {
+                funcName: "fluid.simpleEditor.insertVideo.enableSubmitButton",
+                args: "{that}.dom.submit"
             }
         },
         markup: {
@@ -375,17 +379,31 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         urlElm.val(url);
     };
 
-    fluid.simpleEditor.insertVideo.updateActiveState = function (buttonElm, urlField) {
+    fluid.simpleEditor.insertVideo.updateActiveState = function (urlField, enableButtonFunc, disableButtonFunc) {
         if (!urlField.val()) {
-            buttonElm.addClass("disabled");
+            disableButtonFunc();
         } else {
-            buttonElm.removeClass("disabled");
+            enableButtonFunc();
         }
     };
 
-    fluid.simpleEditor.insertVideo.reset = function (that) {
-        that.applier.requestChange("url", "");
-        that.updateActiveState();
+    fluid.simpleEditor.insertVideo.disableVideoInputField = function (urlElm) {
+        urlElm.attr("disabled", "disabled");
+    };
+
+    fluid.simpleEditor.insertVideo.disableSubmitButton = function (buttonElm) {
+        buttonElm.addClass("disabled");
+    };
+
+    fluid.simpleEditor.insertVideo.enableSubmitButton = function (buttonElm) {
+        buttonElm.removeClass("disabled");
+    };
+
+    fluid.simpleEditor.insertVideo.applyVideoInputState = function (disableVideoInput, disableInputFieldFunc, disableButtonFunc) {
+        if (disableVideoInput) {
+            disableInputFieldFunc();
+            disableButtonFunc();
+        }
     };
 
 })(jQuery, fluid);
