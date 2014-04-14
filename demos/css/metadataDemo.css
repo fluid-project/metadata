@@ -78,6 +78,7 @@
     margin-bottom: 0.5rem 0;
     display:block;
     transition: all 0.2s ease;
+    text-decoration:underline;
 }
 
 .gpii-metadataDemo-header-restart a:hover {
@@ -86,6 +87,11 @@
     color: #fff;
 }
 
+.gpii-metadataDemo-page-title {
+    font-weight: bold;
+    font-size: 2rem;
+    margin: 4rem 0 1rem 0;
+}
 
 /* icons */
 
@@ -111,7 +117,7 @@
 
 /* Landing Page */
 
-.gpii-metadataDemo-resource {
+.gpii-metadataDemo-landingPage-resource {
     background-color: #fff;
     border-top: 0.1rem solid #81D0EC;
     height: 12rem;
@@ -119,15 +125,15 @@
 
 }
 
-.gpii-metadataDemo-resource:hover {
+.gpii-metadataDemo-landingPage-resource:hover {
     background: #EAF2F4;
 }
 
-.gpii-metadataDemo-resource-thumbnail-column {
+.gpii-metadataDemo-landingPage-resource-thumbnail-column {
     height: 100%;
 }
 
-.gpii-metadata-demo-contentThumb {
+.gpii-metadataDemo-landingPage-contentThumb {
     border: 0.1rem solid #afafaf;
     margin: 1rem 0;
     transition: margin 0.1s linear;
@@ -135,23 +141,37 @@
     height: 80%;
 }
 
-.gpii-metadata-demo-contentThumb.gpii-metadata-demo-contentThumb-createNew {
+.gpii-metadataDemo-landingPage-contentThumb.gpii-metadataDemo-landingPage-contentThumb-createNew {
     display:block;
     border: 0.3rem dashed #afafaf;
 }
 
-.gpii-metadataDemo-resource:hover .gpii-metadata-demo-contentThumb {
+.gpii-metadataDemo-landingPage-resource:hover .gpii-metadataDemo-landingPage-contentThumb {
     margin-left: 0.5rem;
 }
 
 
-.gpii-metadataDemo-resource-first {
+.gpii-metadataDemo-landingPage-resource-first {
     border-top: 0.3rem solid #81D0EC;
 }
 
-.gpii-metadataDemo-resource-last {
+.gpii-metadataDemo-landingPage-resource-last {
     border-bottom: 0.3rem solid #81D0EC;
 }
+
+.gpii-metadataDemo-landingPage-resource-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding-top: 3rem;
+    color: #2C6FB7;
+}
+
+
+.gpii-metadataDemo-landingPage-edit-climateChange {
+    width:100%;
+    height: 100%;
+}
+
 
 /*
 .gpii-metadataDemo-editColumn {
@@ -196,24 +216,6 @@
 }
 */
 
-.gpii-metadataDemo-page-title {
-    font-weight: bold;
-    font-size: 2rem;
-    margin: 4rem 0 1rem 0;
-}
-
-.gpii-metadataDemo-resource-title {
-    font-weight: bold;
-    font-size: 1.2rem;
-    padding-top: 3rem;
-    color: #2C6FB7;
-}
-
-
-.gpii-metadata-edit-climateChange {
-    width:100%;
-    height: 100%;
-}
 
 /* Tabs */
 .gpii-metadataDemo-tab-list {
