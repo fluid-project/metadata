@@ -24,8 +24,12 @@
 
 .gpii-metadataDemo-demo {
     font-family: "OpenSans";
-    background-color: #F4F4F4;
+    background-color: #F4F4E9;
     min-width:31rem;
+}
+
+.gpii-metadataDemo-body {
+    margin-bottom: 4rem;
 }
 
 .gpii-metadataDemo-demo a {
@@ -66,7 +70,43 @@
 }
 
 .gpii-metadataDemo-header-restart {
-    margin: 1rem 0;
+    margin: 0.5rem 0;
+}
+
+.gpii-metadataDemo-header-restart a {
+    padding: 1rem;
+    margin-bottom: 0.5rem 0;
+    display:block;
+    transition: all 0.2s ease;
+}
+
+.gpii-metadataDemo-header-restart a:hover {
+    background: #2C6FB7;
+    border-radius: 0.3rem;
+    color: #fff;
+}
+
+
+/* icons */
+
+.gpii-metadataDemo-icon {
+    font-family: 'MetadataDemoIcons';
+    -webkit-font-smoothing: antialiased;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+    color: #2C6FB7;
+}
+
+.gpii-metadataDemo-icon-restart {
+    display: inline-block;
+}
+
+.gpii-metadataDemo-icon-restart:before {
+    content:"\e600";
+}
+
+
+.gpii-metadataDemo-header-restart:hover .gpii-metadataDemo-icon {
+    color: #fff;
 }
 
 /* Landing Page */
@@ -74,7 +114,34 @@
 .gpii-metadataDemo-resource {
     background-color: #fff;
     border-top: 0.1rem solid #81D0EC;
-    height: 10rem;
+    height: 12rem;
+    transition:background 0.2s ease;
+
+}
+
+.gpii-metadataDemo-resource:hover {
+    background: #EAF2F4;
+}
+
+.gpii-metadataDemo-resource-thumbnail-column {
+    height: 100%;
+}
+
+.gpii-metadata-demo-contentThumb {
+    border: 0.1rem solid #afafaf;
+    margin: 1rem 0;
+    transition: margin 0.1s linear;
+    width: 100%;
+    height: 80%;
+}
+
+.gpii-metadata-demo-contentThumb.gpii-metadata-demo-contentThumb-createNew {
+    display:block;
+    border: 0.3rem dashed #afafaf;
+}
+
+.gpii-metadataDemo-resource:hover .gpii-metadata-demo-contentThumb {
+    margin-left: 0.5rem;
 }
 
 
@@ -82,29 +149,38 @@
     border-top: 0.3rem solid #81D0EC;
 }
 
+.gpii-metadataDemo-resource-last {
+    border-bottom: 0.3rem solid #81D0EC;
+}
+
+/*
 .gpii-metadataDemo-editColumn {
     background-color: #EAF2F4;
     height: 100%;
-    padding-top: 3rem;
+    padding: 0;
+    transition: all 0.5s ease;
 }
 
-.gpii-metadataDemo-resources-title {
-    font-weight: bold;
-    font-size: 2rem;
+.gpii-metadataDemo-editColumn a {
+    padding: 3.5rem 2rem 2rem;
+    display: block;
+    transition: all 0.2s ease;
 }
 
-.gpii-metadataDemo-resource-title {
-    font-weight: bold;
-    font-size: 1rem;
+.gpii-metadataDemo-editColumn:hover {
+    background: #2C6FB7;
 }
 
-.gpii-metadataDemo-icon {
-    font-family: 'MetadataDemoIcons';
-    -webkit-font-smoothing: antialiased;
-    text-shadow: 1px 1px 1px rgba(0,0,0,0.004); /* for font smoothing */
-    color: #2C6FB7;
+.gpii-metadataDemo-editColumn:hover a {
+    color: #fff;
 }
 
+.gpii-metadataDemo-editColumn:hover a .gpii-metadataDemo-icon {
+    color: #fff;
+}
+*/
+
+/*
 .gpii-metadataDemo-icon-edit,
 .gpii-metadataDemo-icon-create {
     display: block;
@@ -118,15 +194,26 @@
 .gpii-metadataDemo-icon-create:before {
     content:"\e601";
 }
+*/
 
-.gpii-metadataDemo-icon-restart {
-    display: inline-block;
+.gpii-metadataDemo-page-title {
+    font-weight: bold;
+    font-size: 2rem;
+    margin: 4rem 0 1rem 0;
 }
 
-.gpii-metadataDemo-icon-restart:before {
-    content:"\e600";
+.gpii-metadataDemo-resource-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding-top: 3rem;
+    color: #2C6FB7;
 }
 
+
+.gpii-metadata-edit-climateChange {
+    width:100%;
+    height: 100%;
+}
 
 /* Tabs */
 .gpii-metadataDemo-tab-list {
@@ -148,21 +235,6 @@
     margin-left: 0.5rem;
 }
 
-/* Tab content visibility - this is being used for internal development only. Remove once tabs.js is integrated*/
-
-.gpii-metadataDemo-outputHTML,
-.gpii-metadataDemo-previewContent,
-.gpii-metadataDemo-resourceEditor {
-    display:none;
-}
-
-.gpii-metadataDemo-outputHTML-active .gpii-metadataDemo-outputHTML,
-.gpii-metadataDemo-previewContent-active .gpii-metadataDemo-previewContent,
-.gpii-metadataDemo-resourceEditor-active .gpii-metadataDemo-resourceEditor {
-    display:block;
-}
-
-
 /* Active Tab  */
 .gpii-metadataDemo-demo .ui-state-active a { /* Active Tab Styling */
     background-color: #81D0EC;
@@ -178,13 +250,20 @@
     background-color: #fff;
 }
 
+.gpii-metadataDemo-previewContent,
+.gpii-metadataDemo-outputHTML,
+.gpii-metadataDemo-resourceEditor {
+    box-shadow: 0.08rem 0.08rem 0 #cfcfcf;
+}
+
+
 .gpii-metadataDemo-resourceEditor-textEditor,
 .gpii-metadataDemo-outputHTML,
 .gpii-metadataDemo-previewContent,
 .gpii-metadataDemo-resourceEditor-metadataPanel  {
     padding: 1.5rem;
     overflow-y: auto;
-    height:25em;
+    height:25rem;
 }
 
 .gpii-metadataDemo-previewContent,
@@ -194,7 +273,7 @@
 
 .gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar,
 .gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-metadataPanel-header {
-    height: 6em;
+    height: 6rem;
 }
 
 .gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar {

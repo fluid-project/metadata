@@ -20,7 +20,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     fluid.registerNamespace("demo.metadata");
 
     demo.metadata.predefinedOER = {
-        url: "https://archive.org/embed/2009FullYrColorizedGOESEastWeatherSatellite",
+        url: "https://archive.org/details/gov.ntis.ava11754vnb1",
         content: '<p> Climate changes are underway in the United States and are projected to grow. </p> \
 <p> Global temperature has increased over the past 50 years, primarily due to human behaviors that release \
 heat-trapping gases, like carbon dioxide. </p>\
@@ -32,8 +32,8 @@ These changes are affecting sectors of our society that cross regional boundarie
 that we depend upon; water, energy, transportation, agriculture, ecosystems, and human health. </p>\
 \
 <video width="480" controls>\
-    <source src="https://archive.org/download/2009FullYrColorizedGOESEastWeatherSatellite/2009%20full%20yr%20colorized%20GOES%20East%20weather%20satellite.mp4" type="video/mp4">\
-    <source src="https://archive.org/download/2009FullYrColorizedGOESEastWeatherSatellite/2009%20full%20yr%20colorized%20GOES%20East%20weather%20satellite.ogv" type="video/ogg">\
+    <source src="https://archive.org/download/gov.ntis.ava11754vnb1/ava11754vnb1_512kb.mp4" type="video/mp4">\
+    <source src="https://archive.org/download/gov.ntis.ava11754vnb1/ava11754vnb1.ogv" type="video/ogg">\
     Your browser does not support this video format or the video can not be found.\
 </video>\
 \
