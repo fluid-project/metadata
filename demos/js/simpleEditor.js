@@ -307,11 +307,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 "method": "attr",
                 "args": ["placeholder", "{that}.options.strings.urlPlaceHolder"]
             },
-            "onCreate.urlValue": {
-                "this": "{that}.dom.url",
-                "method": "val",
-                "args": "{that}.model.url"
-            },
+            "onCreate.setInitialSubmitActiveState": "{that}.updateActiveState",
             "onCreate.submit": {
                 "this": "{that}.dom.submit",
                 "method": "click",
@@ -322,16 +318,11 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 "method": "click",
                 "args": [fluid.simpleEditor.preventDefault]
             },
-            "onCreate.submitActiveState": [
-                {
-                    func: "{that}.updateActiveState"
-                },
-                {
-                    "this": "{that}.dom.url",
-                    "method": "on",
-                    "args": ["input", "{that}.updateActiveState"]
-                }
-            ],
+            "onCreate.updateSubmitActiveState": {
+                "this": "{that}.dom.url",
+                "method": "on",
+                "args": ["input", "{that}.updateActiveState"]
+            },
             "afterInsert.updateModel": "{that}.updateModel"
         },
         invokers: {
@@ -385,7 +376,11 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     };
 
     fluid.simpleEditor.insertVideo.updateActiveState = function (buttonElm, urlField) {
-        buttonElm.attr({disabled: !urlField.val()});
+        if (!urlField.val()) {
+            buttonElm.addClass("disabled");
+        } else {
+            buttonElm.removeClass("disabled");
+        }
     };
 
     fluid.simpleEditor.insertVideo.reset = function (that) {

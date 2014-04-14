@@ -30,7 +30,7 @@ var demo = demo || {};
                 }
             }
         },
-        defaultDbName: "new",
+        defaultDbName: "Create_new_resource",
         selectors: {
             title: ".gpiic-metadataDemo-title",
             simpleEditor: ".gpiic-metadataDemo-resourceEditor",

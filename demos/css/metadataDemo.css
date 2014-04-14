@@ -36,6 +36,11 @@
     color: #2C6FB7;
 }
 
+.gpii-metadataDemo-demo a.disabled {
+    pointer-events: none;
+    cursor: default;
+}
+
 .gpii-metadataDemo-demo .button {
     color: #fff;
     background-color: #2C6FB7;
