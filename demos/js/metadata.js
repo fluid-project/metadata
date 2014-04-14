@@ -36,7 +36,8 @@ var demo = demo || {};
             simpleEditor: ".gpiic-metadataDemo-resourceEditor",
             metadataPanel: ".gpiic-metadataDemo-resourceEditor-metadataPanel",
             markupViewer: ".gpiic-metadataDemo-outputHTML",
-            preview: ".gpiic-metadataDemo-previewContent"
+            preview: ".gpiic-metadataDemo-previewContent",
+            restart: ".gpiic-metadataDemo-restart"
         },
         strings: {
             title: {
@@ -58,6 +59,11 @@ var demo = demo || {};
                 "this": "{that}.dom.title",
                 "method": "text",
                 "args": "{that}.options.strings.title"
+            },
+            "onCreate.bindRestart": {
+                "this": "{that}.dom.restart",
+                "method": "click",
+                "args": "{that}.events.onReset.fire"
             }
         },
         components: {
@@ -69,9 +75,6 @@ var demo = demo || {};
                         applier: "{metadata}.applier"
                     },
                     model: "{metadata}.model",
-                    listeners: {
-                        "{metadata}.events.onReset": "{that}.reset"
-                    },
                     modelListeners: {
                         "markup": [{
                             listener: "{markupViewer}.updateModelMarkup",
@@ -91,9 +94,6 @@ var demo = demo || {};
                     sourceApplier: "{metadata}.applier",
                     rules: {
                         url: "url"
-                    },
-                    listeners: {
-                        "{metadata}.events.onReset": "{that}.events.onReset.fire"
                     },
                     modelListeners: {
                         "*": [{
@@ -117,6 +117,14 @@ var demo = demo || {};
             preview: {
                 type: "fluid.viewer",
                 container: "{that}.dom.preview"
+            },
+            launcher: {
+                type: "demo.metadata.launcher",
+                createOnEvent: "onReset",
+                options: {
+                    dbName: "{metadata}.databaseName",
+                    url: "index.html"
+                }
             },
             dataSource: {
                 type: "fluid.pouchdb.dataSource",

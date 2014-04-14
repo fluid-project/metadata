@@ -30,13 +30,14 @@
         <script type="text/javascript" src="../../src/js/metadataPanel.js"></script>
         <script type="text/javascript" src="../../src/js/metadataUtils.js"></script>
         <script type="text/javascript" src="../js/utility.js"></script>
+        <script type="text/javascript" src="../js/launcher.js"></script>
         <script type="text/javascript" src="../js/simpleEditor.js"></script>
         <script type="text/javascript" src="../js/metadata.js"></script>
         <script type="text/javascript" src="../js/markup.js"></script>
         <script type="text/javascript" src="../js/viewer.js"></script>
         <script type="text/javascript" src="../js/markupViewer.js"></script>
     </head>
-    <body class="gpii-metadataDemo-demo">
+    <body class="gpiic-metadataDemo-demo gpii-metadataDemo-demo">
         <header class="gpii-metadataDemo-header">
             <div class="row">
                 <div class="small-12 columns clearfix">
@@ -59,7 +60,7 @@
             </div>
         </header>
         
-        <section class="gpiic-metadataDemo-body gpii-metadataDemo-body gpii-metadataDemo-resourceEditor-active">
+        <section class="gpii-metadataDemo-body gpii-metadataDemo-resourceEditor-active">
             <div class="row">
                 <h2 class="gpiic-metadataDemo-title gpii-metadataDemo-page-title">Create new resource</h2>
                 
@@ -120,22 +121,13 @@
             </div>      
         </section>
         <script type="text/javascript">
-            var editor = demo.metadata(".gpiic-metadataDemo-body", {
+            var editor = demo.metadata(".gpiic-metadataDemo-demo", {
                 videoPanelTemplate: "../../src/html/video-template.html",
                 audioPanelTemplate: "../../src/html/audio-template.html",
                 audioAttributesTemplate: "../../src/html/audio-attributes-template.html",
                 captionsPanelTemplate: "../../src/html/captions-template.html",
                 captionsInputTemplate: "../../src/html/captions-input-template.html"
             });
-
-            $(".gpiic-metadataDemo-restart").click(function(e) {
-                editor.events.onReset.fire();
-
-                var redirectTo = "index.html";
-                demo.metadata.redirectURL(redirectTo);
-
-                e.preventDefault();
-            })
         </script>
     </body>
 </html>
