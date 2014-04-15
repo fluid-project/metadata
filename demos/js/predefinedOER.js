@@ -31,7 +31,7 @@ heat-trapping gases, like carbon dioxide. </p>\
 These changes are affecting sectors of our society that cross regional boundaries. Already impacted are things \
 that we depend upon; water, energy, transportation, agriculture, ecosystems, and human health. </p>\
 \
-<video width="480" controls>\
+<video controls>\
     <source src="https://archive.org/download/gov.ntis.ava11754vnb1/ava11754vnb1_512kb.mp4" type="video/mp4">\
     <source src="https://archive.org/download/gov.ntis.ava11754vnb1/ava11754vnb1.ogv" type="video/ogg">\
     Your browser does not support this video format or the video can not be found.\

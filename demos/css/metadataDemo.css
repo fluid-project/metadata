@@ -25,11 +25,12 @@
 .gpii-metadataDemo-demo {
     font-family: "OpenSans";
     background-color: #F4F4E9;
-    min-width:31rem;
+    min-width:38rem;
 }
 
 .gpii-metadataDemo-body {
     margin-bottom: 4rem;
+    padding: 0 2rem;
 }
 
 .gpii-metadataDemo-demo a {
@@ -39,6 +40,10 @@
 .gpii-metadataDemo-demo .button {
     color: #fff;
     background-color: #2C6FB7;
+}
+
+.gpii-metadataDemo-demo .button:hover {
+    background-color: #3F8FD8;
 }
 
 /* Header area */
@@ -104,16 +109,17 @@
 
 .gpii-metadataDemo-icon-restart {
     display: inline-block;
+    transition: all 0.2s linear;
 }
 
 .gpii-metadataDemo-icon-restart:before {
     content:"\e600";
 }
 
-
-.gpii-metadataDemo-header-restart:hover .gpii-metadataDemo-icon {
+.gpii-metadataDemo-header-restart a:hover .gpii-metadataDemo-icon-restart  {
     color: #fff;
 }
+
 
 /* Landing Page */
 
@@ -122,7 +128,6 @@
     border-top: 0.1rem solid #81D0EC;
     height: 12rem;
     transition:background 0.2s ease;
-
 }
 
 .gpii-metadataDemo-landingPage-resource:hover {
@@ -144,6 +149,10 @@
 .gpii-metadataDemo-landingPage-contentThumb.gpii-metadataDemo-landingPage-contentThumb-createNew {
     display:block;
     border: 0.3rem dashed #afafaf;
+}
+
+.gpii-metadataDemo-landingPage-resource:hover .gpii-metadataDemo-landingPage-contentThumb.gpii-metadataDemo-landingPage-contentThumb-createNew {
+    background-color: #fff;
 }
 
 .gpii-metadataDemo-landingPage-resource:hover .gpii-metadataDemo-landingPage-contentThumb {
@@ -172,56 +181,16 @@
     height: 100%;
 }
 
-
-/*
-.gpii-metadataDemo-editColumn {
-    background-color: #EAF2F4;
-    height: 100%;
-    padding: 0;
-    transition: all 0.5s ease;
-}
-
-.gpii-metadataDemo-editColumn a {
-    padding: 3.5rem 2rem 2rem;
-    display: block;
-    transition: all 0.2s ease;
-}
-
-.gpii-metadataDemo-editColumn:hover {
-    background: #2C6FB7;
-}
-
-.gpii-metadataDemo-editColumn:hover a {
-    color: #fff;
-}
-
-.gpii-metadataDemo-editColumn:hover a .gpii-metadataDemo-icon {
-    color: #fff;
-}
-*/
-
-/*
-.gpii-metadataDemo-icon-edit,
-.gpii-metadataDemo-icon-create {
-    display: block;
-    font-size: 2rem;
-}
-
-.gpii-metadataDemo-icon-edit:before {
-    content:"\e602";
-}
-
-.gpii-metadataDemo-icon-create:before {
-    content:"\e601";
-}
-*/
-
-
 /* Tabs */
 .gpii-metadataDemo-tab-list {
     margin-bottom: 0;
     width: 34rem;
     padding-right: 2rem;
+    overflow: none;
+}
+
+.gpii-metadataDemo-tab-list li {
+    margin-left: 0.5rem;
 }
 
 .gpii-metadataDemo-tab-list a {
@@ -231,42 +200,67 @@
     color: #000;
     background-color: #B4C7CC;
     min-width: 10rem;
+    transition: background-color 0.2s ease;
 }
 
-.gpii-metadataDemo-tab-list li {
-    margin-left: 0.5rem;
+.gpii-metadataDemo-tab-list a:hover {
+    background-color: #C1DEE5;
 }
+
 
 /* Active Tab  */
 .gpii-metadataDemo-demo .ui-state-active a { /* Active Tab Styling */
     background-color: #81D0EC;
     height: 3rem;
     font-weight: bold;
+    cursor: default;
 }
 
-/* Resource Editor Toolbar */
+/* Main Containers */
+
 
 .gpii-metadataDemo-previewContent,
 .gpii-metadataDemo-outputHTML,
 .gpii-metadataDemo-resourceEditor-textEditor {
     background-color: #fff;
+    box-shadow: 0.08rem 0.08rem 0 #dfdfdf;
+}
+
+.gpii-metadataDemo-resourceEditor-metadataPanel,
+.gpii-metadataDemo-resourceEditor-textEditor {
+    height: 80rem;
+    overflow-y: auto;
+}
+
+.gpii-metadataDemo-resourceEditor-textEditor {
+    box-shadow: inset 0 0 0.2rem #acacac;
 }
 
 .gpii-metadataDemo-previewContent,
-.gpii-metadataDemo-outputHTML,
-.gpii-metadataDemo-resourceEditor {
-    box-shadow: 0.08rem 0.08rem 0 #cfcfcf;
+.gpii-metadataDemo-outputHTML {
+    min-height: 35rem;
 }
-
 
 .gpii-metadataDemo-resourceEditor-textEditor,
 .gpii-metadataDemo-outputHTML,
 .gpii-metadataDemo-previewContent,
 .gpii-metadataDemo-resourceEditor-metadataPanel  {
     padding: 1.5rem;
-    overflow-y: auto;
-    height:25rem;
+    /*overflow-y: auto;
+    height:25rem;*/
 }
+
+/*
+.small-12 .gpii-metadataDemo-resourceEditor-metadataPanel {
+    height: auto;
+}
+
+.medium-4  .gpii-metadataDemo-resourceEditor-metadataPanel  {
+    height: 25rem;
+}*/
+
+
+/* Resource Editor Toolbar */
 
 .gpii-metadataDemo-previewContent,
 .gpii-metadataDemo-outputHTML {
@@ -308,21 +302,25 @@
 
 .gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar .gpii-metadataDemo-resourceEditor-toolbar-url {
     display: inline-block;
-    width: 57%;
+    width: 50%;
 }
 
 /* Metadata panel sidebar */
+.gpii-metadataDemo-resourceEditor-metadataPanel-column {
+    box-shadow: 0.08rem 0.08rem 0 #dfdfdf;
+}
+
 .gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar-url input {
     min-width: 10em;
 }
 
 .gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-metadataPanel-header {
-    background-color: #68B8CE;
+    background-color: #92d7e1;
 }
     
 .gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-metadataPanel-header h3{
     font-family: RobotoSlab;
-    color: #fff;
+    color: ##161616;
     padding-top: 1.6rem;
 }
 
@@ -332,7 +330,7 @@
 }
 
 .gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-metadataPanel {
-    background-color: #e7e7e7;
+    background-color: #b8e6e6;
 }
 
 /* Placeholder for Video */
@@ -360,15 +358,33 @@
     border-color: transparent transparent transparent #000000;
 }
 
+.gpii-metadataDemo-resourceEditor video {
+    width: 100%;
+}
+
 /* Metadata panel styling tweaks */
+
+
+.gpii-metadataDemo-resourceEditor .gpii-metadata-panel {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #fff;
+}
+
 
 .gpii-metadataDemo-demo .gpii-videoPanel .gpii-flashing-row{
      margin-top: 0.5em;
 }
    
+.gpii-metadataDemo-demo .gpii-captionsPanel .gpii-captions-list {
+    margin:0;
+    padding: 0;
+}
+   
 .gpii-metadataDemo-demo .gpii-captionsPanel .gpii-captions-list li {
-    margin-top: 1em;
-    background-color: #CBD5D8;
+    background-color: #D3E8EA;
+    padding: 0.5rem;
+    margin-top: 1rem;
+    
 }
 
 .gpii-metadataDemo-demo .gpii-captionsPanel .gpii-captions-list li input {
@@ -377,8 +393,4 @@
     height: 2.5em;
     width: 100%;
     font-size: 1em;
-}
-
-.gpii-metadataDemo-demo .gpii-metadata-panel p {
-    margin-bottom: 0;
 }
