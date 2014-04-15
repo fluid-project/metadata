@@ -232,7 +232,7 @@
 
 .gpii-metadataDemo-resourceEditor-metadataPanel,
 .gpii-metadataDemo-resourceEditor-textEditor {
-    height: 35rem;
+    height: 29rem;
     overflow-y: auto;
     transition: height 0.3s ease;
 }
@@ -257,6 +257,10 @@
 .gpii-metadataDemo-previewContent,
 .gpii-metadataDemo-resourceEditor-metadataPanel  {
     padding: 1.5rem;
+}
+
+.gpii-metadataDemo-outputHTML pre {
+    overflow: auto;
 }
 
 /* Resource Editor Toolbar */
