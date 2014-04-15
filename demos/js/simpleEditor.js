@@ -29,11 +29,18 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             controls: ".gpiic-metadataDemo-resourceEditor-toolbar-button",
             content: ".gpiic-metadataDemo-resourceEditor-textEditor"
         },
+        events: {
+            afterVideoInserted: null
+        },
         listeners: {
             "onCreate.makeEditable": {
                 "this": "{that}.dom.content",
                 "method": "attr",
                 "args": [{contentEditable: true}]
+            },
+            "onCreate.setFocus": {
+                listener: "fluid.simpleEditor.setFocus",
+                args: "{that}.dom.content"
             }
         },
         modelListeners: {
@@ -65,7 +72,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                         content: "{simpleEditor}.options.selectors.content"
                     },
                     listeners: {
-                        "afterInsert.updateEditor": "{simpleEditor}.updateModel"
+                        "afterInsert.updateEditor": "{simpleEditor}.updateModel",
+                        "afterInsert.escalateEvent": "{simpleEditor}.events.afterVideoInserted"
                     }
                 }
             }
@@ -114,6 +122,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             }
         }
     });
+
+    fluid.simpleEditor.setFocus = function (contentEditor) {
+        contentEditor.get(0).focus();
+    };
 
     fluid.simpleEditor.setContent = function (elm, content) {
         if (content || content === "") {

@@ -85,6 +85,9 @@
         $(".gpiic-metadata-create").click(function(e) {
             launchDemo({
                 dbName: "Create_new_resource",
+                content: {
+                    markup: "Resource content goes into here."
+                }
             });
             e.preventDefault();
         });
