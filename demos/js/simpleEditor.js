@@ -331,6 +331,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 "method": "on",
                 "args": ["input", "{that}.updateActiveState"]
             },
+            "onCreate.bindEnter": {
+                listener: "fluid.simpleEditor.insertVideo.bindEnter",
+                args: ["{that}.dom.url", "{that}.dom.submit"]
+            },
             "afterInsert.updateModel": "{that}.updateModel"
         },
         invokers: {
@@ -416,6 +420,17 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             disableInputFieldFunc();
             disableButtonFunc();
         }
+    };
+
+    fluid.simpleEditor.insertVideo.bindEnter = function (urlElm, submitElm) {
+        fluid.activatable(urlElm, null, {
+            additionalBindings: {
+                key: $.ui.keyCode.ENTER,
+                activateHandler:  function () {
+                    submitElm.click();
+                }
+            }
+        });
     };
 
 })(jQuery, fluid);
