@@ -223,7 +223,6 @@
 
 /* Main Containers */
 
-
 .gpii-metadataDemo-previewContent,
 .gpii-metadataDemo-outputHTML,
 .gpii-metadataDemo-resourceEditor-textEditor {
@@ -303,6 +302,10 @@
 .gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar .gpii-metadataDemo-resourceEditor-toolbar-url {
     display: inline-block;
     width: 50%;
+}
+
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar .gpii-metadataDemo-resourceEditor-toolbar-url-submit {
+    opacity: 0.4;
 }
 
 /* Metadata panel sidebar */
