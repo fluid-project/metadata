@@ -38,7 +38,9 @@ var demo = demo || {};
         },
         defaultDbName: "Create_new_resource",
         disableVideoInput: "{that}.disableVideoInput",
+        expandCss: "gpii-metadataDemo-expand",
         selectors: {
+            demoBody: ".gpiic-metadataDemo-body",
             title: ".gpiic-metadataDemo-title",
             simpleEditor: ".gpiic-metadataDemo-resourceEditor",
             metadataPanel: ".gpiic-metadataDemo-resourceEditor-metadataPanel",
@@ -57,7 +59,8 @@ var demo = demo || {};
         events: {
             onReset: null,
             onMarkupFetched: null,
-            onMetadataModelFetched: null
+            onMetadataModelFetched: null,
+            afterVideoInserted: null
         },
         listeners: {
             onMarkupFetched: ["{simpleEditor}.setContent", "{markupViewer}.updateModelMarkup", "{preview}.updateModelMarkup"],
@@ -71,6 +74,15 @@ var demo = demo || {};
                 "this": "{that}.dom.restart",
                 "method": "click",
                 "args": "{that}.events.onReset.fire"
+            },
+            "onCreate.collapseDemoBody": {
+                listener: "demo.metadata.collapseDemoBody",
+                args: ["{that}.dom.demoBody", "{that}.options.expandCss", "{that}.databaseName", "{that}.options.defaultDbName"]
+            },
+            "afterVideoInserted.expandDemoBody": {
+                "this": "{that}.dom.demoBody",
+                "method": "addClass",
+                "args": "{that}.options.expandCss"
             }
         },
         components: {
@@ -90,6 +102,9 @@ var demo = demo || {};
                             listener: "{preview}.updateModelMarkup",
                             args: "{change}.value"
                         }]
+                    },
+                    listeners: {
+                        "afterVideoInserted.escalateEvent": "{metadata}.events.afterVideoInserted"
                     }
                 }
             },
@@ -184,6 +199,12 @@ var demo = demo || {};
 
     demo.metadata.disallowVideoInput = function (databaseName, defaultDbName) {
         return (databaseName !== defaultDbName);
+    };
+
+    demo.metadata.collapseDemoBody = function (bodyElm, expandCss, databaseName, defaultDbName) {
+        if (databaseName === defaultDbName) {
+            bodyElm.removeClass(expandCss);
+        }
     };
 
     demo.metadata.getTitle = function (databaseName) {
