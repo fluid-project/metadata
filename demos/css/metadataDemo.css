@@ -233,6 +233,13 @@
 
 .gpii-metadataDemo-resourceEditor-metadataPanel,
 .gpii-metadataDemo-resourceEditor-textEditor {
+    height: 35rem;
+    overflow-y: auto;
+    transition: height 0.3s ease;
+}
+
+.gpii-metadataDemo-expand .gpii-metadataDemo-resourceEditor-metadataPanel,
+.gpii-metadataDemo-expand .gpii-metadataDemo-resourceEditor-textEditor {
     height: 80rem;
     overflow-y: auto;
 }
@@ -251,19 +258,7 @@
 .gpii-metadataDemo-previewContent,
 .gpii-metadataDemo-resourceEditor-metadataPanel  {
     padding: 1.5rem;
-    /*overflow-y: auto;
-    height:25rem;*/
 }
-
-/*
-.small-12 .gpii-metadataDemo-resourceEditor-metadataPanel {
-    height: auto;
-}
-
-.medium-4  .gpii-metadataDemo-resourceEditor-metadataPanel  {
-    height: 25rem;
-}*/
-
 
 /* Resource Editor Toolbar */
 
