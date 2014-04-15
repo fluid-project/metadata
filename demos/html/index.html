@@ -81,19 +81,25 @@
             var that = demo.metadata.launcher(options);
         };
 
+        // Create a new resource
         $(".gpiic-metadata-create").click(function(e) {
             launchDemo({
                 dbName: "Create_new_resource",
             });
             e.preventDefault();
         });
+
+        // Edit an existing resource
         $(".gpiic-metadata-edit-climateChange").click(function(e) {
             launchDemo({
                 dbName: "Climate_Change_Impacts",
                 content: {
                     markup: demo.metadata.predefinedOER.content,
                     metadata: {
-                        url: demo.metadata.predefinedOER.url
+                        url: demo.metadata.predefinedOER.url,
+                        audio: "available",
+                        flashing: "noFlashing",
+                        keywords: ["dialogue"]
                     }
                 }
             });

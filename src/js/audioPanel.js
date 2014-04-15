@@ -57,7 +57,6 @@ var fluid_1_5 = fluid_1_5 || {};
         },
         strings: {
             title: "Audio",
-            instruction: "Choose all that apply",
             audio: ["Yes, this video has an audio track.", "No, this video has no audio track.", "I am not sure if this video has an audio track."],
             audioAvailable: "Audio Attribute is available.",
             audioUnavailable: "Audio Attribute is unavailable."
@@ -65,7 +64,6 @@ var fluid_1_5 = fluid_1_5 || {};
         controlValues: ["available", "unavailable", "unknown"],
         selectors: {
             title: ".gpiic-audio-title",
-            instruction: ".gpiic-audio-instruction",
             icon: ".gpiic-audio-icon",
             audioRow: ".gpiic-audio-row",
             audioLabel: ".gpiic-audio-label",
@@ -76,7 +74,6 @@ var fluid_1_5 = fluid_1_5 || {};
         repeatingSelectors: ["audioRow"],
         protoTree: {
             title: {messagekey: "title"},
-            instruction: {messagekey: "instruction"},
             icon: {
                 decorators: {
                     func: "fluid.metadata.indicator",
@@ -158,9 +155,11 @@ var fluid_1_5 = fluid_1_5 || {};
     fluid.defaults("fluid.metadata.audioPanel.attributes", {
         gradeNames: ["fluid.rendererComponent", "autoInit"],
         strings: {
+            instruction: "Choose all that apply",
             keywords: ["Dialogue or narrative.", "Soundtrack.", "Sound effects."]
         },
         selectors: {
+            instruction: ".gpiic-audio-instruction",
             keywordRow: ".gpiic-audio-keyword",
             keywordValue: ".gpiic-audio-keyword-value",
             keywordLabel: ".gpiic-audio-keyword-label"
@@ -175,6 +174,7 @@ var fluid_1_5 = fluid_1_5 || {};
                     "args": "${audio}"
                 },
                 "trueTree": {
+                    instruction: {messagekey: "instruction"},
                     expander: {
                         type: "fluid.renderer.selection.inputs",
                         rowID: "keywordRow",

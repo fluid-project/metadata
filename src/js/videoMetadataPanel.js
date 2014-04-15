@@ -73,11 +73,11 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                                 sourceApplier: "{videoMetadataPanel}.applier",
                                 model: {
                                     audio: "{videoMetadataPanel}.model.audio",
-                                    keywords: "{videoMetadataPanel}.model.audioKeywords"
+                                    keywords: "{videoMetadataPanel}.model.keywords"
                                 },
                                 rules: {
                                     audio: "audio",
-                                    audioKeywords: "keywords"
+                                    keywords: "keywords"
                                 },
                                 listeners: {
                                     afterRender: "{videoMetadataPanel}.events.audioPanelRendered.fire"
