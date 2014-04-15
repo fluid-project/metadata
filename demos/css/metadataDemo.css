@@ -304,7 +304,7 @@
     width: 50%;
 }
 
-.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar .gpii-metadataDemo-resourceEditor-toolbar-url-submit {
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar .gpii-metadataDemo-resourceEditor-toolbar-url-submit.disabled {
     opacity: 0.4;
 }
 
