@@ -143,21 +143,24 @@
     height: 100%;
 }
 
+.gpii-metadataDemo-verticalHelper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
 .gpii-metadataDemo-landingPage-contentThumb {
     border: 0.1rem solid #afafaf;
     margin: 1rem 0;
     transition: margin 0.1s linear;
-    width: 100%;
-    height: 80%;
+    width: 90%;
+    height: auto;
+    vertical-align: middle;
 }
 
 .gpii-metadataDemo-landingPage-contentThumb.gpii-metadataDemo-landingPage-contentThumb-createNew {
-    display:block;
+    /*display:block;*/
     border: 0.3rem dashed #afafaf;
-}
-
-.gpii-metadataDemo-landingPage-resource:hover .gpii-metadataDemo-landingPage-contentThumb.gpii-metadataDemo-landingPage-contentThumb-createNew {
-    background-color: #fff;
 }
 
 .gpii-metadataDemo-landingPage-resource:hover .gpii-metadataDemo-landingPage-contentThumb {
