@@ -33,7 +33,17 @@ var demo = demo || {};
             },
             markup: {
                 "description": "This component allows content authors to create or edit metadata that accompanies the content of their OER.",
-                "instructions": "First choose whether to edit the existing resource or start a new one. The screen will change and there will be a text editor.<ul><li>Insert a video by typing some text in the web address field.</li><li>Select \"Preview\" to see an example of how the end user would see the content.</li><li>Select \"View Output HTML\" to see the HTML mark-up with included metadata.</li></ul>"
+                "instructions": "First choose whether to <em>edit</em> \"Climate Change Impacts\" or start a new resource. The screen will change and there will \
+                                 be a text editor.\
+                                 \
+                                 <ul>\
+                                    <li>If starting a new resource, <em>insert a video</em> by typing text in the web address field.</li>\
+                                    <li>A panel named <em>\"Video Details\"</em> will appear - add as much detail as needed.</li>\
+                                    <li>Select <em>\"Preview Content\"</em> to see an example of how the end user would see the content.</li>\
+                                    <li>Select <em>\"View Output HTML\"</em> to see the HTML mark-up with included metadata.</li>\
+                                </ul>\
+                                Note\: If editing \"Climate Change Impacts\", there will already be a video and its address can not be changed."
+                                
             },
             links: {
                 "codeLink": "http://github.com/fluid-project/metadata/",

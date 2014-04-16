@@ -450,8 +450,14 @@
     margin: 1rem 1rem 1rem 0;
 }
 
-
-
 .gpii-metadataDemo-demo .fl-overviewPanel-footer a {
     color: #333;
+}
+
+.gpii-metadataDemo-demo .fl-overviewPanel em {
+    color: #fff;
+    font-style: italic;
+    background-color:#4D4D4D;
+    padding: 0 0.2em;
+    letter-spacing: 0.1em;
 }
