@@ -83,6 +83,9 @@ var demo = demo || {};
                 "this": "{that}.dom.demoBody",
                 "method": "addClass",
                 "args": "{that}.options.expandCss"
+            },
+            "onReset.resetCookie": {
+                listener: "{cookieStore}.resetCookie"
             }
         },
         components: {
@@ -139,6 +142,9 @@ var demo = demo || {};
             preview: {
                 type: "fluid.viewer",
                 container: "{that}.dom.preview"
+            },
+            cookieStore: {
+                type: "demo.metadata.cookieStore"
             },
             launcher: {
                 type: "demo.metadata.launcher",
