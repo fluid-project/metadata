@@ -15,6 +15,7 @@
         <script type="text/javascript" src="../../src/js/pouchDBDataSource.js"></script>
         <script type="text/javascript" src="../js/predefinedOER.js"></script>
         <script type="text/javascript" src="../js/utility.js"></script>
+        <script type="text/javascript" src="../js/cookieStore.js"></script>
         <script type="text/javascript" src="../js/overview.js"></script>
         <script type="text/javascript" src="../js/launcher.js"></script>
 
@@ -35,7 +36,7 @@
                     </div>
                     
                     <div class="right gpii-metadataDemo-header-restart">
-                        <a href="#">
+                        <a class="gpiic-metadataDemo-restart" href="#">
                             <span class="gpii-metadataDemo-icon gpii-metadataDemo-icon-restart"></span>
                             restart demo
                         </a>
@@ -87,7 +88,7 @@
         };
 
         // Create a new resource
-        $(".gpiic-metadata-create").click(function(e) {
+        $(".gpiic-metadata-create").click(function (e) {
             launchDemo({
                 dbName: "Create_new_resource",
                 content: {
@@ -98,7 +99,7 @@
         });
 
         // Edit an existing resource
-        $(".gpiic-metadata-edit-climateChange").click(function(e) {
+        $(".gpiic-metadata-edit-climateChange").click(function (e) {
             launchDemo({
                 dbName: "Climate_Change_Impacts",
                 content: {
@@ -111,6 +112,13 @@
                     }
                 }
             });
+            e.preventDefault();
+        });
+
+        $(".gpiic-metadataDemo-restart").click(function (e) {
+            var cookieStore = demo.metadata.cookieStore();
+            cookieStore.resetCookie();
+            window.location = "index.html";
             e.preventDefault();
         });
         </script>

@@ -19,13 +19,61 @@ var demo = demo || {};
 
 (function ($, fluid) {
 
-    $(document).ready(function () {
-        fluid.overviewPanel(".gpiic-overviewPanel", {
-            resources: {
-                template: {
-                    href: "../../src/lib/infusion/components/overviewPanel/html/overviewPanelTemplate.html"
+    fluid.registerNamespace("demo.metadata");
+
+    fluid.defaults("demo.metadata.overview", {
+        gradeNames: ["fluid.viewComponent", "autoInit"],
+        components: {
+            overviewPanel: {
+                type: "fluid.overviewPanel",
+                container: "{overview}.container",
+                options: {
+                    modelListeners: {
+                        "": {
+                            listener: "{cookieStore}.set",
+                            args: ["{change}.value"]
+                        }
+                    },
+                    model: {
+                        showPanel: {
+                            expander: {
+                                funcName: "fluid.get",
+                                args: [{
+                                    expander: {
+                                        funcName: "{cookieStore}.get"
+                                    }
+                                }, "showPanel"]
+                            }
+                        }
+                    }
                 }
             },
+            cookieStore: {
+                type: "demo.metadata.cookieStore"
+            }
+        },
+        distributeOptions: [{
+            source: "{that}.options.overviewPanelTemplate",
+            removeSource: true,
+            target: "{that > overviewPanel}.options.resources.template.href"
+        }, {
+            source: "{that}.options.strings",
+            removeSource: true,
+            target: "{that > overviewPanel}.options.strings"
+        }, {
+            source: "{that}.options.markup",
+            removeSource: true,
+            target: "{that > overviewPanel}.options.markup"
+        }, {
+            source: "{that}.options.links",
+            removeSource: true,
+            target: "{that > overviewPanel}.options.links"
+        }]
+    });
+
+    $(document).ready(function () {
+        var overviewPanel = demo.metadata.overview(".gpiic-overviewPanel", {
+            overviewPanelTemplate: "../../src/lib/infusion/components/overviewPanel/html/overviewPanelTemplate.html",
             strings: {
                 "componentName": "FLOE Metadata Authoring",
                 "feedbackText": "Found a bug? Have a question?",
