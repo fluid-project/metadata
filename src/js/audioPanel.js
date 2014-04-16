@@ -155,7 +155,7 @@ var fluid_1_5 = fluid_1_5 || {};
     fluid.defaults("fluid.metadata.audioPanel.attributes", {
         gradeNames: ["fluid.rendererComponent", "autoInit"],
         strings: {
-            instruction: "Choose all that apply",
+            instruction: "Select all that apply",
             keywords: ["Dialogue or narrative.", "Soundtrack.", "Sound effects."]
         },
         selectors: {

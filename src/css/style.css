@@ -92,4 +92,9 @@
 
 .gpii-videoPanel .gpii-flashing-row{
     display: inline-block;
+    margin-left: 1em;
+}
+
+.gpii-audio-attributes {
+    margin-left: 2.8em;
 }

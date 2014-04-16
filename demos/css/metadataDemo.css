@@ -323,25 +323,6 @@
     min-width: 10em;
 }
 
-.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-metadataPanel-header {
-    background-color: #92d7e1;
-}
-    
-.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-metadataPanel-header h3{
-    font-family: RobotoSlab;
-    color: ##161616;
-    padding-top: 1.6rem;
-}
-
-.gpii-metadataDemo-resourceEditor .show-for-small-only .gpii-metadataDemo-resourceEditor-metadataPanel-header h3 {
-    padding-bottom: 1rem;
-    margin: 0;
-}
-
-.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-metadataPanel {
-    background-color: #b8e6e6;
-}
-
 /* Placeholder for Video */
 .gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-insertVideo-placeHolder {
     background: #C0C0C0;
@@ -373,12 +354,38 @@
 
 /* Metadata panel styling tweaks */
 
+.gpii-metadataDemo-resourceEditor-metadataPanel {
+    color: #4D4D4D;
+    font-family: "OpenSans";
+}
+
+.gpii-metadataDemo-resourceEditor-metadataPanel p {
+    margin-bottom: 0.5rem;
+}
+
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-metadataPanel-header {
+    background-color: #92d7e1;
+}
+    
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-metadataPanel-header h3{
+    font-family: "RobotoSlab";
+    color: ##161616;
+    padding-top: 1.6rem;
+}
+
+.gpii-metadataDemo-resourceEditor .show-for-small-only .gpii-metadataDemo-resourceEditor-metadataPanel-header h3 {
+    padding-bottom: 1rem;
+    margin: 0;
+}
+
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-metadataPanel {
+    background-color: #b8e6e6;
+}
 
 .gpii-metadataDemo-resourceEditor .gpii-metadata-panel {
     margin-bottom: 2rem;
     border-bottom: 1px solid #fff;
 }
-
 
 .gpii-metadataDemo-demo .gpii-videoPanel .gpii-flashing-row{
      margin-top: 0.5em;
@@ -418,7 +425,7 @@
 
 .gpii-metadataDemo-demo .fl-overviewPanel h1{
     color: #ccc;
-    font-family: 'Roboto Slab';
+    font-family: 'RobotoSlab';
 }   
 
 .gpii-metadataDemo-demo .fl-overviewPanel h2,
