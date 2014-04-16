@@ -21,7 +21,6 @@
          url('fonts/gpii-metadataDemo.ttf');
 }
 
-
 .gpii-metadataDemo-demo {
     font-family: "OpenSans";
     background-color: #F4F4E9;
@@ -403,4 +402,56 @@
     height: 2.5em;
     width: 100%;
     font-size: 1em;
+}
+
+
+/* Overview Panel tweaks */
+
+.gpii-metadataDemo-demo .fl-overviewPanel a {
+    color: #FFCC00;
+}
+
+.gpii-metadataDemo-demo .fl-overviewPanel-container {
+    z-index: 1;
+    line-height: 1.2rem;
+}
+
+.gpii-metadataDemo-demo .fl-overviewPanel h1{
+    color: #ccc;
+    font-family: 'Roboto Slab';
+}   
+
+.gpii-metadataDemo-demo .fl-overviewPanel h2,
+.gpii-metadataDemo-demo .fl-overviewPanel h1 a {
+    color: #fff;
+}
+
+.gpii-metadataDemo-demo .fl-overviewPanel ul{
+    line-height: 1rem;
+}
+
+.gpii-metadataDemo-demo .fl-overviewPanel-instructions h2,
+.gpii-metadataDemo-demo .fl-overviewPanel-componentName {
+    margin-bottom: 0.6rem;
+    display: block;
+}
+
+.gpii-metadataDemo-demo .fl-overviewPanel-instructions ul {
+    font-size: 1em;
+    margin-top: 1rem;
+    line-height: 1rem;
+}
+
+.gpii-metadataDemo-demo .fl-overviewPanel-instructions ul li {
+    margin-bottom: 1rem;
+}
+
+.gpii-metadataDemo-demo .fl-overviewPanel-links ul li {
+    margin: 1rem 1rem 1rem 0;
+}
+
+
+
+.gpii-metadataDemo-demo .fl-overviewPanel-footer a {
+    color: #333;
 }
