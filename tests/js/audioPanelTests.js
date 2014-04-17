@@ -50,9 +50,14 @@ https://github.com/gpii/universal/LICENSE.txt
                 }
             });
 
-            jqUnit.assertTrue("Appropriate Indicator css class has been applied", that.locate("icon").hasClass("fl-" + state));
+            jqUnit.assertTrue("Appropriate Indicator css class has been applied", that.locate("icon").hasClass("gpii-" + state));
 
             if (state === "available") {
+                var attributesContainer = that.getContainerForAttributes();
+                jqUnit.assertEquals("The aria attribute 'role' has been set", "region", attributesContainer.attr("role"));
+                jqUnit.assertEquals("The aria attribute 'aria-live' has been set", "polite", attributesContainer.attr("aria-live"));
+                jqUnit.assertEquals("The aria attribute 'aria-relevant' has been set", "additions removals", attributesContainer.attr("aria-relevant"));
+
                 var count = 0;
                 checkboxes.each(function () {
                     jqUnit.assertFalse("Checkbox #" + (++count) + " is not checked", $(this).is(":checked"));
@@ -81,7 +86,7 @@ https://github.com/gpii/universal/LICENSE.txt
         modules: [{
             name: "Test audio panel",
             tests: [{
-                expect: 7,
+                expect: 10,
                 name: "Init",
                 sequence: [{
                     listenerMaker: "fluid.tests.checkAudioState",

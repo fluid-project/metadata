@@ -43,17 +43,17 @@ var fluid_1_5 = fluid_1_5 || {};
         },
         controlValues: ["flashing", "noFlashing", "unknown"],
         selectors: {
-            title: ".flc-video-title",
-            icon: ".flc-video-icon",
-            instruction: ".flc-instruction",
-            highContrast: ".flc-highContrast",
-            highContrastLabel: ".flc-highContrast-label",
-            signLang: ".flc-signLang",
-            signLangLabel: ".flc-signLang-label",
-            flashingLabel: ".flc-flashing-label",
-            flashingRow: ".flc-flashing-row",
-            flashingInput: ".flc-flashing-input",
-            flashingRowLabel: ".flc-flashingRow-label"
+            title: ".gpiic-video-title",
+            icon: ".gpiic-video-icon",
+            instruction: ".gpiic-instruction",
+            highContrast: ".gpiic-highContrast",
+            highContrastLabel: ".gpiic-highContrast-label",
+            signLang: ".gpiic-signLang",
+            signLangLabel: ".gpiic-signLang-label",
+            flashingLabel: ".gpiic-flashing-label",
+            flashingRow: ".gpiic-flashing-row",
+            flashingInput: ".gpiic-flashing-input",
+            flashingRowLabel: ".gpiic-flashingRow-label"
         },
         repeatingSelectors: ["flashingRow"],
         protoTree: {

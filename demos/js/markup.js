@@ -38,24 +38,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             videoContainer: "<div></div>",
             captionsContainer: "<span></span>",
             contentContainer: "<article>%content</article>"
-        },
-        components: {
-            dataSource: {
-                type: "fluid.pouchdb.dataSource",
-                options: {
-                    databaseName: "simpleEditor",
-                    listeners: {
-                        "afterChange.fetchMarkup": {
-                            listener: "{that}.get",
-                            args: [{id: "markup"}, "{markup}.updateModelMarkup"]
-                        },
-                        "afterChange.fetchMetadata": {
-                            listener: "{that}.get",
-                            args: [{id: "videoMetadata"}, "{markup}.updateModelMetadata"]
-                        }
-                    }
-                }
-            }
         }
     });
 
@@ -88,17 +70,20 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         return videoMetatdata;
     };
 
-    fluid.markup.generateVideoElm = function (metadata, videoContainerMarkup, captionsContainerMarkup) {
+    fluid.markup.generateVideoElm = function (metadata, videoContainerMarkup, captionsContainerMarkup, videoElm) {
+        if (!videoElm) {
+            var videoElm = $("<video controls></video>");
+            $('<source>').attr({
+                src: metadata.url,
+                type: "video/" + metadata.url.split(".").pop()
+            }).appendTo(videoElm);
+        }
+
         var videoContainer = $(videoContainerMarkup);
-        var videoElm = $("<video controls></video>");
         fluid.metadata.writer(videoContainer, fluid.markup.transformToVideoMetadata(metadata), {
             itemprop: "video",
             itemtype: fluid.metadata.itemtype.VIDEO_OBJECT
         });
-        $('<source>').attr({
-            src: metadata.url,
-            type: "video/" + metadata.url.split(".").pop()
-        }).appendTo(videoElm);
         fluid.each(metadata.captions, function (caption) {
             var captionContainer = $(captionsContainerMarkup);
             fluid.metadata.writer(captionContainer, {inLanguage: caption.language});
@@ -113,11 +98,14 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         return videoContainer;
     };
 
-    fluid.markup.replaceVideoPlaceholder = function (content, placeholderID, metadata, replacementMarkup) {
+    fluid.markup.addVideoMetadata = function (content, placeholderID, metadata, replacementMarkup) {
         metadata = metadata || {url: ""};
         var placeholder = content.find(placeholderID);
+        var existingVideo = content.find("video");
         if (placeholder.length) {
             placeholder = placeholder.replaceWith(fluid.markup.generateVideoElm(metadata, replacementMarkup.videoContainer, replacementMarkup.captionsContainer));
+        } else if (existingVideo.length) {
+            existingVideo.replaceWith(fluid.markup.generateVideoElm(metadata, replacementMarkup.videoContainer, replacementMarkup.captionsContainer, existingVideo.clone()));
         }
     };
 
@@ -125,10 +113,9 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         // Creating a jQuery element with the markup. The wrapping is to allow retrieving all of the relavent markup
         // later with a call to html()
         var content = $("<section>" + model.markup + "</section>");
-        fluid.markup.replaceVideoPlaceholder(content, "#videoPlaceHolder", model.metadata, replacementMarkup);
+        fluid.markup.addVideoMetadata(content, "#videoPlaceHolder", model.metadata, replacementMarkup);
         // the call to markup_beauty requires that textnodes be wrapped in a tag, or they will be stripped out.
         var markup = replacementMarkup.contentContainer ? fluid.stringTemplate(replacementMarkup.contentContainer, {content: content.html()}) : content.html();
-        // var markup = "<body>" + content.html() + "</body>";
         var formatted = markup_beauty({
             source: markup,
             force_indent: true,
