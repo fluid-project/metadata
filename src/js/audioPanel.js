@@ -193,11 +193,23 @@ var fluid_1_5 = fluid_1_5 || {};
         model: {
             audio: "available"
         },
+        listeners: {
+            "onCreate.addAria": {
+                listener: "fluid.metadata.audioPanel.attributes.addAria",
+                args: "{that}.container"
+            }
+        },
         renderOnInit: true
     });
 
     fluid.metadata.audioPanel.attributes.enableAttributes = function (audioValue) {
         return audioValue === "available";
+    };
+
+    fluid.metadata.audioPanel.attributes.addAria = function (container) {
+        container.attr("role", "region");
+        container.attr("aria-live", "polite");
+        container.attr("aria-relevant", "additions removals");
     };
 
 })(jQuery, fluid_1_5);
