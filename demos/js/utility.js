@@ -19,7 +19,7 @@ var demo = demo || {};
 
 (function ($, fluid) {
 
-	fluid.registerNamespace("demo.metadata");
+    fluid.registerNamespace("demo.metadata");
 	
     demo.metadata.redirectURL = function (url) {
         window.location = url;
