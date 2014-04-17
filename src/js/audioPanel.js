@@ -34,8 +34,7 @@ var fluid_1_5 = fluid_1_5 || {};
                 createOnEvent: "afterRender",
                 container: {
                     expander: {
-                        funcName: "fluid.metadata.audioPanel.getContainerForAttributes",
-                        args: ["{audioPanel}.container", "{audioPanel}.options.selectors.attributes"]
+                        funcName: "{that}.getContainerForAttributes"
                     }
                 },
                 options: {
@@ -128,6 +127,12 @@ var fluid_1_5 = fluid_1_5 || {};
         },
         modelListeners: {
             "audio": "{that}.refreshView"
+        },
+        invokers: {
+            getContainerForAttributes: {
+                funcName: "fluid.metadata.audioPanel.getContainerForAttributes",
+                args: ["{that}.container", "{that}.options.selectors.attributes"]
+            }
         },
         distributeOptions: [{
             source: "{that}.options.audioTemplate",
