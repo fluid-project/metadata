@@ -75,9 +75,9 @@ var demo = demo || {};
                 "method": "click",
                 "args": "{that}.events.onReset.fire"
             },
-            "onCreate.collapseDemoBody": {
-                listener: "demo.metadata.collapseDemoBody",
-                args: ["{that}.dom.demoBody", "{that}.options.expandCss", "{that}.databaseName", "{that}.options.defaultDbName"]
+            "onMarkupFetched.setDemoBodyCss": {
+                listener: "demo.metadata.setDemoBodyCss",
+                args: ["{that}.dom.demoBody", "{that}.options.expandCss", "{that}.databaseName", "{that}.options.defaultDbName", "{arguments}.0"]
             },
             "afterVideoInserted.expandDemoBody": {
                 "this": "{that}.dom.demoBody",
@@ -207,8 +207,10 @@ var demo = demo || {};
         return (databaseName !== defaultDbName);
     };
 
-    demo.metadata.collapseDemoBody = function (bodyElm, expandCss, databaseName, defaultDbName) {
-        if (databaseName === defaultDbName) {
+    demo.metadata.setDemoBodyCss = function (bodyElm, expandCss, databaseName, defaultDbName, markup) {
+        markup = $(markup);
+        var videoPlaceHolders = markup.siblings("#videoPlaceHolder");
+        if (databaseName === defaultDbName && videoPlaceHolders.length === 0) {
             bodyElm.removeClass(expandCss);
         }
     };
