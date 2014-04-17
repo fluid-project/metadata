@@ -27,7 +27,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         gradeNames: ["fluid.viewComponent", "autoInit"],
         selectors: {
             controls: ".gpiic-metadataDemo-resourceEditor-toolbar-button",
-            content: ".gpiic-metadataDemo-resourceEditor-textEditor"
+            content: "#gpiic-metadataDemo-resourceEditor-textEditor"
         },
         events: {
             afterVideoInserted: null
@@ -84,6 +84,9 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 type: "fluid.simpleEditor.button",
                 container: "{source}",
                 options: {
+                    ariaOptions: {
+                        editorToControl: "{simpleEditor}.options.selectors.content"
+                    },
                     listeners: {
                         "onCreate.attachKeyboardShortcut": {
                             listener: "{that}.attachKeyboardShortcut",
@@ -193,6 +196,9 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 }
             }
         },
+        ariaOptions: {
+            labelIdPrefix: "gpiic-metadataDemo-resourceEditor-toolbar-button-"
+        },
         styles: {
             active: "active"
         },
@@ -200,6 +206,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             click: null
         },
         listeners: {
+            "onCreate.addAria": "{that}.addAria",
             "onCreate.tabIndex": {
                 "this": "{that}.container",
                 "method": "attr",
@@ -237,6 +244,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             updateActiveStateForKeys: {
                 funcName: "fluid.simpleEditor.button.filterKeys",
                 args: ["{arguments}.0", [37, 38, 39, 40], "{that}.updateActiveState"]
+            },
+            addAria: {
+                funcName: "fluid.simpleEditor.button.addAria",
+                args: ["{that}.container", "{that}.controlType", "{that}.options.ariaOptions.labelIdPrefix", "{that}.options.ariaOptions.editorToControl"]
             }
         }
     });
@@ -249,6 +260,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     fluid.simpleEditor.button.updateActiveState = function (command, elm, activeStyle) {
         var isActive = document.queryCommandState(command);
         elm.toggleClass(activeStyle, isActive);
+        elm.attr("aria-pressed", isActive);
     };
 
     fluid.simpleEditor.button.filterKeys = function (event, keys, handler) {
@@ -270,6 +282,16 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             }
         });
 
+    };
+
+    fluid.simpleEditor.button.addAria = function (container, controlType, labelIdPrefix, editorToControl) {
+        container.attr("role", "button");
+        container.attr("aria-pressed", false);
+        container.attr("aria-controls", editorToControl.replace("#", ""));
+
+        var labelId = labelIdPrefix + controlType;
+        container.after("<p class=\"hide\" id=\"" + labelId + "\">" + controlType + "</p>");
+        container.attr("aria-labelledby", labelId);
     };
 
     fluid.defaults("fluid.simpleEditor.insertVideo", {
