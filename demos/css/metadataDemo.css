@@ -5,12 +5,12 @@
 
 @font-face {
     font-family: 'OpenSans';
-    src: url('./fonts/OpenSans-Regular.ttf');
+    src: url('fonts/OpenSans-Regular.ttf');
 }
 
 @font-face {
     font-family: "OpenSans";
-    src: url("fonts/OpenSans-Bold.ttf");
+    src: url('fonts/OpenSans-Bold.ttf');
     font-weight: bold;
 }
 
@@ -22,7 +22,7 @@
 }
 
 .gpii-metadataDemo-demo {
-    font-family: "OpenSans";
+    font-family: "OpenSans","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
     background-color: #F4F4E9;
     min-width:38rem;
 }
@@ -361,6 +361,7 @@
 
 .gpii-metadataDemo-resourceEditor-metadataPanel p {
     margin-bottom: 0.5rem;
+    font-size: 0.9rem;
 }
 
 .gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-metadataPanel-header {
