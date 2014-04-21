@@ -438,6 +438,10 @@
     line-height: 1rem;
 }
 
+.gpii-metadataDemo-demo .fl-overviewPanel p {
+    font-size: 1em;
+}
+
 .gpii-metadataDemo-demo .fl-overviewPanel-instructions h2,
 .gpii-metadataDemo-demo .fl-overviewPanel-componentName {
     margin-bottom: 0.6rem;
@@ -468,4 +472,9 @@
     background-color:#4D4D4D;
     padding: 0 0.2em;
     letter-spacing: 0.1em;
+}
+
+.gpii-metadataDemo-demo .fl-overviewPanel-contents {
+    height: 37em; /* FLUID-5299: Force a vertical scrollbar so that contents of the panel do not disappear off screen. */
+    overflow: auto;
 }
