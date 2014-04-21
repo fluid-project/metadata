@@ -80,17 +80,18 @@ var demo = demo || {};
                 "feedbackLinkText": "Let us know!"
             },
             markup: {
-                "description": "This component allows content authors to create or edit metadata that accompanies the content of their OER.",
-                "instructions": "First choose whether to <em>edit</em> \"Climate Change Impacts\" or start a new resource. The screen will change and there will \
-                                 be a text editor.\
+                "description": "This component allows content authors to create or edit metadata that accompanies the content of their Open \
+                                Education Resource (OER).",
+                "instructions": "<p>First choose whether to edit \"Climate Change Impacts\" or \"Create New Resource\". This will open a text editor.</p>\
+                                 <p>If creating a new resource, <em>insert a video</em> by typing text in the web address field.</p>\
+                                 <p><em>Note:</em> If editing \"Climate Change Impacts\", there will already be a video in the editor window \
+                                 and its address cannot be changed.</p>\
                                  \
                                  <ul>\
-                                    <li>If starting a new resource, <em>insert a video</em> by typing text in the web address field.</li>\
-                                    <li>A panel named <em>\"Video Details\"</em> will appear - add as much detail as needed.</li>\
+                                    <li>A panel named <em>\"Video Details\"</em> will appear - add as much detail as possible.</li>\
                                     <li>Select <em>\"Preview Content\"</em> to see an example of how the end user would see the content.</li>\
-                                    <li>Select <em>\"View Output HTML\"</em> to see the HTML mark-up with included metadata.</li>\
-                                </ul>\
-                                Note\: If editing \"Climate Change Impacts\", there will already be a video and its address can not be changed."
+                                    <li>Select <em>\"View Output HTML\"</em> to see the HTML mark-up with metadata included.</li>\
+                                </ul>"
                                 
             },
             links: {

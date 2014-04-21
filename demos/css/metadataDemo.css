@@ -438,6 +438,10 @@
     line-height: 1rem;
 }
 
+.gpii-metadataDemo-demo .fl-overviewPanel p {
+    font-size: 1em;
+}
+
 .gpii-metadataDemo-demo .fl-overviewPanel-instructions h2,
 .gpii-metadataDemo-demo .fl-overviewPanel-componentName {
     margin-bottom: 0.6rem;
