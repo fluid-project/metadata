@@ -80,8 +80,9 @@ var demo = demo || {};
                 "feedbackLinkText": "Let us know!"
             },
             markup: {
-                "description": "This component allows content authors to create or edit metadata that accompanies the content of their Open \
-                                Education Resource (OER).",
+                "description": "The FLOE metadata authoring components can be integrated into existing content editors to allow authors to create or edit \
+                                metadata that accompanies the content of their Open Education Resource (OER).  For the purposes of this demo, the metadata \
+                                components are shown within a simple content editor.",
                 "instructions": "<p>First choose whether to edit \"Climate Change Impacts\" or \"Create New Resource\". This will open a text editor.</p>\
                                  <p>If creating a new resource, <em>insert a video</em> by typing text in the web address field.</p>\
                                  <p><em>Note:</em> If editing \"Climate Change Impacts\", there will already be a video in the editor window \

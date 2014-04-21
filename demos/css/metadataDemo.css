@@ -473,3 +473,8 @@
     padding: 0 0.2em;
     letter-spacing: 0.1em;
 }
+
+.gpii-metadataDemo-demo .fl-overviewPanel-contents {
+    height: 37em; /* FLUID-5299: Force a vertical scrollbar so that contents of the panel do not disappear off screen. */
+    overflow: auto;
+}
