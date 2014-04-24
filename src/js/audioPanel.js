@@ -46,12 +46,13 @@ var fluid_1_5 = fluid_1_5 || {};
                 createOnEvent: "afterRender",
                 container: {
                     expander: {
-                        funcName: "fluid.metadata.audioPanel.getContainerForAttributes",
-                        args: ["{audioPanel}.container", "{audioPanel}.options.selectors.attributes"]
+                        funcName: "{that}.getContainerForAttributes"
                     }
                 },
                 options: {
-                    applier: "{audioPanel}.applier",
+                    members: {
+                        applier: "{audioPanel}.applier"
+                    },
                     model: "{audioPanel}.model",
                     resources: {
                         template: "{audioPanel}.options.resources.attributesTemplate"
@@ -73,20 +74,19 @@ var fluid_1_5 = fluid_1_5 || {};
         },
         strings: {
             title: "Audio",
-            instruction: "Choose all that apply",
             audio: ["Yes, this video has an audio track.", "No, this video has no audio track.", "I am not sure if this video has an audio track."],
             audioAvailable: "Audio Attribute is available.",
             audioUnavailable: "Audio Attribute is unavailable."
         },
         controlValues: ["available", "unavailable", "unknown"],
         selectors: {
-            title: ".flc-audio-title",
-            instruction: ".flc-audio-instruction",
-            indicator: ".flc-audio-icon",
-            audioRow: ".flc-audio-row",
-            audioLabel: ".flc-audio-label",
-            audioInput: ".flc-audio-input",
-            attributes: ".flc-audio-attributes"
+            title: ".gpiic-audio-title",
+            instruction: ".gpiic-audio-instruction",
+            indicator: ".gpiic-audio-icon",
+            audioRow: ".gpiic-audio-row",
+            audioLabel: ".gpiic-audio-label",
+            audioInput: ".gpiic-audio-input",
+            attributes: ".gpiic-audio-attributes"
         },
         selectorsToIgnore: ["indicator", "attributes"],
         repeatingSelectors: ["audioRow"],
@@ -129,6 +129,12 @@ var fluid_1_5 = fluid_1_5 || {};
         listeners: {
             "onCreate.init": "fluid.metadata.audioPanel.init"
         },
+        invokers: {
+            getContainerForAttributes: {
+                funcName: "fluid.metadata.audioPanel.getContainerForAttributes",
+                args: ["{that}.container", "{that}.options.selectors.attributes"]
+            }
+        },
         distributeOptions: [{
             source: "{that}.options.audioTemplate",
             target: "{that}.options.resources.template.url"
@@ -155,12 +161,14 @@ var fluid_1_5 = fluid_1_5 || {};
     fluid.defaults("fluid.metadata.audioPanel.attributes", {
         gradeNames: ["fluid.rendererComponent", "autoInit"],
         strings: {
+            instruction: "Select all that apply",
             keywords: ["Dialogue or narrative.", "Soundtrack.", "Sound effects."]
         },
         selectors: {
-            keywordRow: ".flc-audio-keyword",
-            keywordValue: ".flc-audio-keyword-value",
-            keywordLabel: ".flc-audio-keyword-label"
+            instruction: ".gpiic-audio-instruction",
+            keywordRow: ".gpiic-audio-keyword",
+            keywordValue: ".gpiic-audio-keyword-value",
+            keywordLabel: ".gpiic-audio-keyword-label"
         },
         controlValues: ["dialogue", "soundtrack", "sound effect"],
         repeatingSelectors: ["keywordRow"],
@@ -172,6 +180,7 @@ var fluid_1_5 = fluid_1_5 || {};
                     "args": "${audio}"
                 },
                 "trueTree": {
+                    instruction: {messagekey: "instruction"},
                     expander: {
                         type: "fluid.renderer.selection.inputs",
                         rowID: "keywordRow",
@@ -190,11 +199,23 @@ var fluid_1_5 = fluid_1_5 || {};
         model: {
             audio: "available"
         },
+        listeners: {
+            "onCreate.addAria": {
+                listener: "fluid.metadata.audioPanel.attributes.addAria",
+                args: "{that}.container"
+            }
+        },
         renderOnInit: true
     });
 
     fluid.metadata.audioPanel.attributes.enableAttributes = function (audioValue) {
         return audioValue === "available";
+    };
+
+    fluid.metadata.audioPanel.attributes.addAria = function (container) {
+        container.attr("role", "region");
+        container.attr("aria-live", "polite");
+        container.attr("aria-relevant", "additions removals");
     };
 
 })(jQuery, fluid_1_5);

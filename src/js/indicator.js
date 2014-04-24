@@ -51,15 +51,15 @@ var fluid_1_5 = fluid_1_5 || {};
         tooltipOptions: {
             delay: 0,
             styles: {
-                tooltip: "fl-tooltip"
+                tooltip: "gpii-tooltip"
             }
         },
         styles: {
-            circle: "fl-circle",
+            circle: "gpii-circle",
             indicatorState: {
-                available: "fl-available",
-                unavailable: "fl-unavailable",
-                unknown: "fl-unknown"
+                available: "gpii-available",
+                unavailable: "gpii-unavailable",
+                unknown: "gpii-unknown"
             }
         },
         invokers: {

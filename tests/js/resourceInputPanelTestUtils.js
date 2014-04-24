@@ -22,7 +22,7 @@ https://github.com/gpii/universal/LICENSE.txt
         components: {
             resourceInputPanel: {
                 type: "fluid.metadata.resourceInputPanel",
-                container: ".flc-resourceInputPanel",
+                container: ".gpiic-resourceInputPanel",
                 createOnEvent: "{resourceInputPanelTester}.events.onTestCaseStart",
                 options: {
                     resources: {

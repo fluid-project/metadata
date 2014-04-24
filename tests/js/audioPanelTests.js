@@ -31,13 +31,19 @@ https://github.com/gpii/universal/LICENSE.txt
             }
         });
 
-        jqUnit.assertTrue("Appropriate Indicator css class has been applied", audioPanel.locate("indicator").hasClass("fl-" + state));
+        jqUnit.assertTrue("Appropriate Indicator css class has been applied", audioPanel.locate("indicator").hasClass("gpii-" + state));
 
         if (state === "available") {
             var count = 0;
             checkboxes.each(function () {
                 jqUnit.assertFalse("Checkbox #" + (++count) + " is not checked", $(this).is(":checked"));
             });
+
+            // test aria
+            var attributesContainer = audioPanel.getContainerForAttributes();
+            jqUnit.assertEquals("The aria attribute 'role' has been set", "region", attributesContainer.attr("role"));
+            jqUnit.assertEquals("The aria attribute 'aria-live' has been set", "polite", attributesContainer.attr("aria-live"));
+            jqUnit.assertEquals("The aria attribute 'aria-relevant' has been set", "additions removals", attributesContainer.attr("aria-relevant"));
         }
     };
 
@@ -74,7 +80,7 @@ https://github.com/gpii/universal/LICENSE.txt
     };
 
     jqUnit.asyncTest("Initial settings", function () {
-        jqUnit.expect(7);
+        jqUnit.expect(10);
 
         var options = {
             listeners: {
@@ -93,6 +99,11 @@ https://github.com/gpii/universal/LICENSE.txt
 
         var options = {
             listeners: {
+                onCreate: {
+                    listener: "fluid.tests.checkAttributeModel",
+                    args: ["{that}", "dialogue"],
+                    priority: "first"
+                },
                 onReady: function (that) {
                     fluid.tests.checkAttributeModel(that, "dialogue");
                     fluid.tests.clickAttribute(that, "dialogue");
@@ -112,18 +123,18 @@ https://github.com/gpii/universal/LICENSE.txt
     });
 
     jqUnit.asyncTest("Click and check the audio availability", function () {
-        jqUnit.expect(15);
+        jqUnit.expect(18);
 
         var options = {
             listeners: {
                 onReady: function (that) {
-                    fluid.tests.checkAudioStateChange(that, 3, 0, "unavailable")
+                    fluid.tests.checkAudioStateChange(that, 3, 0, "unavailable");
                     fluid.tests.clickAudioState(that, "unavailable");
 
-                    fluid.tests.checkAudioStateChange(that, 3, 0, "unknown")
+                    fluid.tests.checkAudioStateChange(that, 3, 0, "unknown");
                     fluid.tests.clickAudioState(that, "unknown");
 
-                    fluid.tests.checkAudioStateChange(that, 3, 3, "available")
+                    fluid.tests.checkAudioStateChange(that, 3, 3, "available");
                     fluid.tests.clickAudioState(that, "available");
 
                     jqUnit.start();

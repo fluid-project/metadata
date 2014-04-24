@@ -22,7 +22,7 @@ https://github.com/gpii/universal/LICENSE.txt
         components: {
             resourceInputPanel: {
                 type: "fluid.metadata.transcriptsPanel",
-                container: ".flc-transcriptsPanel"
+                container: ".gpiic-transcriptsPanel"
             }
         }
     });

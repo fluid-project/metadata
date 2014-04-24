@@ -18,7 +18,7 @@ https://github.com/gpii/universal/LICENSE.txt
     fluid.registerNamespace("fluid.tests");
 
     jqUnit.asyncTest("Test video metadata panel - with URL", function () {
-        fluid.metadata.videoMetadataPanel(".flc-videoMetadataPanel-withURL", {
+        fluid.metadata.videoMetadataPanel(".gpiic-videoMetadataPanel-withURL", {
             renderOnInit: true,
             model: {
                 url: "http://example.com/test.mp4"
@@ -49,7 +49,7 @@ https://github.com/gpii/universal/LICENSE.txt
     };
 
     jqUnit.asyncTest("Test video metadata panel - without URL", function () {
-        fluid.metadata.videoMetadataPanel(".flc-videoMetadataPanel-noURL", {
+        fluid.metadata.videoMetadataPanel(".gpiic-videoMetadataPanel-noURL", {
             renderOnInit: true,
             videoPanelTemplate: "../../src/html/video-template.html",
             audioPanelTemplate: "../../src/html/audio-template.html",

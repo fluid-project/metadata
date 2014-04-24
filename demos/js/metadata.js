@@ -22,22 +22,92 @@ var demo = demo || {};
 
     fluid.defaults("demo.metadata", {
         gradeNames: ["fluid.viewComponent", "autoInit"],
+        members: {
+            databaseName: {
+                expander: {
+                    funcName: "demo.metadata.getDbName",
+                    args: "{that}.options.defaultDbName"
+                }
+            },
+            disableVideoInput: {
+                expander: {
+                    funcName: "demo.metadata.disallowVideoInput",
+                    args: ["{that}.databaseName", "{that}.options.defaultDbName"]
+                }
+            }
+        },
+        defaultDbName: "Create_new_resource",
+        disableVideoInput: "{that}.disableVideoInput",
+        expandCss: "gpii-metadataDemo-expand",
         selectors: {
-            simpleEditor: ".flc-simpleEditor",
-            metadataPanel: ".flc-metadataPanelContainer"
+            demoBody: ".gpiic-metadataDemo-body",
+            title: ".gpiic-metadataDemo-title",
+            simpleEditor: ".gpiic-metadataDemo-resourceEditor",
+            metadataPanel: ".gpiic-metadataDemo-resourceEditor-metadataPanel",
+            markupViewer: ".gpiic-metadataDemo-outputHTML",
+            preview: ".gpiic-metadataDemo-previewContent",
+            restart: ".gpiic-metadataDemo-restart"
+        },
+        strings: {
+            title: {
+                expander: {
+                    funcName: "demo.metadata.getTitle",
+                    args: "{that}.databaseName"
+                }
+            }
         },
         events: {
-            onReset: null
+            onReset: null,
+            onMarkupFetched: null,
+            onMetadataModelFetched: null,
+            afterVideoInserted: null
+        },
+        listeners: {
+            onMarkupFetched: ["{simpleEditor}.setContent", "{markupViewer}.updateModelMarkup", "{preview}.updateModelMarkup"],
+            onMetadataModelFetched: ["{metadataPanel}.setModel", "{markupViewer}.updateModelMetadata", "{preview}.updateModelMetadata"],
+            "onCreate.setTitle": {
+                "this": "{that}.dom.title",
+                "method": "text",
+                "args": "{that}.options.strings.title"
+            },
+            "onCreate.bindRestart": {
+                "this": "{that}.dom.restart",
+                "method": "click",
+                "args": "{that}.events.onReset.fire"
+            },
+            "onMarkupFetched.setDemoBodyCss": {
+                listener: "demo.metadata.setDemoBodyCss",
+                args: ["{that}.dom.demoBody", "{that}.options.expandCss", "{that}.databaseName", "{that}.options.defaultDbName", "{arguments}.0"]
+            },
+            "afterVideoInserted.expandDemoBody": {
+                "this": "{that}.dom.demoBody",
+                "method": "addClass",
+                "args": "{that}.options.expandCss"
+            },
+            "onReset.resetCookie": {
+                listener: "{cookieStore}.resetCookie"
+            }
         },
         components: {
             simpleEditor: {
                 type: "fluid.simpleEditor",
                 container: "{that}.dom.simpleEditor",
                 options: {
+                    members: {
+                        applier: "{metadata}.applier"
+                    },
                     model: "{metadata}.model",
-                    applier: "{metadata}.applier",
+                    modelListeners: {
+                        "markup": [{
+                            listener: "{markupViewer}.updateModelMarkup",
+                            args: "{change}.value"
+                        }, {
+                            listener: "{preview}.updateModelMarkup",
+                            args: "{change}.value"
+                        }]
+                    },
                     listeners: {
-                        "{metadata}.events.onReset": "{that}.reset",
+                        "afterVideoInserted.escalateEvent": "{metadata}.events.afterVideoInserted"
                     }
                 }
             },
@@ -50,23 +120,52 @@ var demo = demo || {};
                     rules: {
                         url: "url"
                     },
-                    listeners: {
-                        "{metadata}.events.onReset": "{that}.events.onReset.fire"
+                    modelListeners: {
+                        "*": [{
+                            listener: "{markupViewer}.updateModelMetadata",
+                            args: "{that}.model"
+                        }, {
+                            listener: "{preview}.updateModelMetadata",
+                            args: "{that}.model"
+                        }]
                     }
+                }
+            },
+            tabs: {
+                type: "fluid.tabs",
+                container: "{that}.container"
+            },
+            markupViewer: {
+                type: "fluid.markupViewer",
+                container: "{that}.dom.markupViewer"
+            },
+            preview: {
+                type: "fluid.viewer",
+                container: "{that}.dom.preview"
+            },
+            cookieStore: {
+                type: "demo.metadata.cookieStore"
+            },
+            launcher: {
+                type: "demo.metadata.launcher",
+                createOnEvent: "onReset",
+                options: {
+                    dbName: "{metadata}.databaseName",
+                    url: "index.html"
                 }
             },
             dataSource: {
                 type: "fluid.pouchdb.dataSource",
                 options: {
-                    databaseName: "simpleEditor",
+                    databaseName: "{metadata}.databaseName",
                     listeners: {
                         "onCreate.fetchMarkup": {
                             listener: "{that}.get",
-                            args: [{id: "markup"}, "{simpleEditor}.setContent"]
+                            args: [{id: "markup"}, "{metadata}.events.onMarkupFetched.fire"]
                         },
                         "onCreate.fetchMetadata": {
                             listener: "{that}.get",
-                            args: [{id: "videoMetadata"}, "{metadataPanel}.setModel"]
+                            args: [{id: "videoMetadata"}, "{metadata}.events.onMetadataModelFetched.fire"]
                         }
                     }
                 }
@@ -92,17 +191,42 @@ var demo = demo || {};
             source: "{that}.options.captionsInputTemplate",
             removeSource: true,
             target: "{that > metadataPanel}.options.captionsInputTemplate"
+        }, {
+            source: "{that}.options.disableVideoInput",
+            target: "{that insertVideo}.options.disableVideoInput"
         }]
     });
+
+    demo.metadata.getDbName = function (defaultDbName) {
+        var lookfor = "name";
+        var decodedName = decodeURI(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURI(lookfor).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
+        return decodedName ? decodedName : defaultDbName;
+    };
+
+    demo.metadata.disallowVideoInput = function (databaseName, defaultDbName) {
+        return (databaseName !== defaultDbName);
+    };
+
+    demo.metadata.setDemoBodyCss = function (bodyElm, expandCss, databaseName, defaultDbName, markup) {
+        markup = $(markup);
+        var videoPlaceHolders = markup.siblings("#videoPlaceHolder");
+        if (databaseName === defaultDbName && videoPlaceHolders.length === 0) {
+            bodyElm.removeClass(expandCss);
+        }
+    };
+
+    demo.metadata.getTitle = function (databaseName) {
+        return databaseName.replace(/_/g, " ");
+    };
 
     fluid.defaults("fluid.metadata.saveVideoMetadata", {
         gradeNames: ["fluid.modelComponent", "autoInit"],
         modelListeners: {
-            "*": {
+            "": {
                 func: "{dataSource}.set",
                 args: [{id: "videoMetadata", model: "{that}.model"}]
             }
-        },
+        }
     });
 
 })(jQuery, fluid);

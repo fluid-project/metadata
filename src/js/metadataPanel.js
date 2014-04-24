@@ -27,12 +27,11 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
     fluid.defaults("fluid.metadata.metadataPanel", {
         gradeNames: ["fluid.rendererComponent", "autoInit"],
-        events: {
-            onReset: null
-        },
         listeners: {
-            "onCreate.setDefaultModel": "{that}.setDefaultModel",
-            "onReset.setDefaultModel": "{that}.setDefaultModel"
+            "onCreate.setDefaultModel": {
+                listener: "{that}.setDefaultModel",
+                priority: "first"
+            }
         },
         modelListeners: {
             "url": "{that}.refreshView"
@@ -50,6 +49,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     });
 
     fluid.metadata.metadataPanel.setModel = function (that, model) {
+        model = model || {};
+        model = $.extend(true, {}, that.defaultModel, model);
         that.applier.requestChange("", model);
     };
 

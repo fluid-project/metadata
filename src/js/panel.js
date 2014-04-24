@@ -38,8 +38,8 @@ var fluid_1_5 = fluid_1_5 || {};
             title: "A panel title"
         },
         selectors: {
-            title: ".flc-panel-title",
-            indicator: ".flc-panel-indicator"
+            title: ".gpiic-panel-title",
+            indicator: ".gpiic-panel-indicator"
         },
         listeners: {
             "onCreate.setTitle": {
@@ -68,7 +68,8 @@ var fluid_1_5 = fluid_1_5 || {};
                     invokers: {
                         transformPanelModel: {
                             funcName: "fluid.metadata.panel.transformPanelModel",
-                            args: ["{panel}.model", "{panel}.options.indicatorModelRules"]
+                            args: ["{panel}.model", "{panel}.options.indicatorModelRules"],
+                            dynamic: true
                         }
                     },
                     modelListeners: {

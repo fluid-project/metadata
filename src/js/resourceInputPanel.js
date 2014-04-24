@@ -29,10 +29,10 @@ var fluid_1_5 = fluid_1_5 || {};
     fluid.defaults("fluid.metadata.resourceInput", {
         gradeNames: ["fluid.rendererComponent", "autoInit"],
         selectors: {
-            srcLabel: ".flc-resourceInput-srcLabel",
-            src: ".flc-resourceInput-src",
-            languagesLabel: ".flc-resourceInput-languagesLabel",
-            languages: ".flc-resourceInput-languages"
+            srcLabel: ".gpiic-resourceInput-srcLabel",
+            src: ".gpiic-resourceInput-src",
+            languagesLabel: ".gpiic-resourceInput-languagesLabel",
+            languages: ".gpiic-resourceInput-languages"
         },
         strings: {
             srcLabel: "Enter web link to caption:",
@@ -153,8 +153,8 @@ var fluid_1_5 = fluid_1_5 || {};
     fluid.defaults("fluid.metadata.baseResourceInputPanel", {
         gradeNames: ["fluid.metadata.panel", "autoInit"],
         selectors: {
-            inputs: ".flc-resourceInputPanel-inputs",
-            input: ".flc-resourceInputPanel-input",
+            inputs: ".gpiic-resourceInputPanel-inputs",
+            input: ".gpiic-resourceInputPanel-input",
         },
         strings: {
             tooltip: {},
@@ -323,7 +323,7 @@ var fluid_1_5 = fluid_1_5 || {};
     fluid.defaults("fluid.metadata.resourceInputPanel", {
         gradeNames: ["fluid.metadata.baseResourceInputPanel", "autoInit"],
         selectors: {
-            description: ".flc-resourceInputPanel-description"
+            description: ".gpiic-resourceInputPanel-description"
         },
         strings: {
             description: ""

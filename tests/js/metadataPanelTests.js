@@ -59,31 +59,4 @@ https://github.com/gpii/universal/LICENSE.txt
         });
     });
 
-    jqUnit.asyncTest("Test metadata panel - Reset", function () {
-        var that = fluid.tests.createMetadataPanel(".flc-metadataPanel", {
-            model: {
-                url: "http://example.com/test.mp4"
-            },
-            listeners: {
-                afterRender: {
-                    listener: function (that) {
-                        jqUnit.expect(4);
-                        fluid.tests.checkRenderedVideoMetadataPanel(that);
-                        that.events.afterRender.removeListener("checkInit");
-                    },
-                    namespace: "checkInit"
-                }
-            }
-        });
-
-        that.events.afterRender.addListener(function () {
-            jqUnit.expect(4);
-            fluid.tests.checkNotRenderedVideoMetadataPanel(that);
-            that.events.afterRender.removeListener("checkNotRendered");
-            jqUnit.start();
-        }, "checkNotRendered", null, "last");
-
-        that.events.onReset.fire();
-    });
-
 })(jQuery);
