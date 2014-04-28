@@ -88,7 +88,7 @@ var fluid_1_5 = fluid_1_5 || {};
     // panel model to the indicator model.
     fluid.metadata.panel.updateModel = function (that) {
         var model = that.transformPanelModel();
-        that.applier.requestChange("value", model.value);
+        that.applier.change("value", model.value);
     };
 
     fluid.metadata.panel.transformPanelModel = function (panelModel, transformationRules) {

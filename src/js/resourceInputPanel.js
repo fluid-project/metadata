@@ -300,7 +300,7 @@ var fluid_1_5 = fluid_1_5 || {};
 
     fluid.metadata.baseResourceInputPanel.updateModel = function (that, value, path, index, root) {
         var changePath = [root, index, path].join(".");
-        that.applier.requestChange(changePath, value);
+        that.applier.change(changePath, value);
     };
 
     fluid.metadata.baseResourceInputPanel.fetchTemplate = function (that) {
