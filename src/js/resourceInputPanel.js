@@ -190,6 +190,7 @@ var fluid_1_5 = fluid_1_5 || {};
                         }
                     },
                     modelListeners: {
+                        // could be changed to "" when updated to the new model relay system
                         "*": {
                             func: "{baseResourceInputPanel}.updateModel",
                             args: ["{change}.value", "{change}.path", "{that}.options.source.2"]
