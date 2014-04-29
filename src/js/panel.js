@@ -73,7 +73,7 @@ var fluid_1_5 = fluid_1_5 || {};
                         }
                     },
                     modelListeners: {
-                        "{panel}.model.*": {
+                        "{panel}.model": {
                             func: "fluid.metadata.panel.updateModel",
                             args: ["{that}"]
                         }
