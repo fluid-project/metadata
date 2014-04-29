@@ -70,14 +70,37 @@ https://github.com/gpii/universal/LICENSE.txt
         };
     };
 
+    fluid.tests.testOptions = [
+        {src: "http://weblink.com/one.mp4", language: "hi"},
+        {src: "http://weblink.com/two.mp4", language: "zh"}
+    ];
+    fluid.tests.testSequenceConfig = [
+        {check: "fluid.tests.changeSrcByIndex", path: "src"},
+        {check: "fluid.tests.changeLanguageByIndex", path: "language"}
+    ];
+
+    fluid.tests.resourceInputPanelSequenceGenerator = function (testOpts, sequenceConfig) {
+        var generatedSequence = [];
+        fluid.each(testOpts, function (testOpt, index) {
+            fluid.each(sequenceConfig, function (config) {
+                var testVal = testOpts[index][config.path];
+                generatedSequence.push({
+                    func: config.check,
+                    args:["{resourceInputPanel}", testVal, index]
+                });
+                generatedSequence.push({
+                    listenerMaker: "fluid.tests.checkModelValueByIndex",
+                    makerArgs: ["{resourceInputPanel}", config.path, testVal, index],
+                    spec: {path: "resources", priority: "last"},
+                    changeEvent: "{resourceInputPanel}.applier.modelChanged"
+                });
+            });
+        });
+        return generatedSequence;
+    };
+
     fluid.defaults("fluid.tests.resourceInputPanelTester", {
         gradeNames: ["fluid.test.testCaseHolder", "autoInit"],
-        testOptions: {
-            newSrcValue1: "http://weblink.com/one.mp4",
-            newLanguage1: "hi",
-            newSrcValue2: "http://weblink.com/two.mp4",
-            newLanguage2: "zh"
-        },
         modules: [{
             name: "Test initial resourceInput panel",
             tests: [{
@@ -94,39 +117,7 @@ https://github.com/gpii/universal/LICENSE.txt
             tests: [{
                 expect: 8,
                 name: "Click on resource input fields",
-                sequence: [{
-                    func: "fluid.tests.changeSrcByIndex",
-                    args: ["{resourceInputPanel}", "{that}.options.testOptions.newSrcValue1", 0]
-                }, {
-                    listenerMaker: "fluid.tests.checkModelValueByIndex",
-                    makerArgs: ["{resourceInputPanel}", "src", "{that}.options.testOptions.newSrcValue1", 0],
-                    spec: {path: "resources", priority: "last"},
-                    changeEvent: "{resourceInputPanel}.applier.modelChanged"
-                }, {
-                    func: "fluid.tests.changeLanguageByIndex",
-                    args: ["{resourceInputPanel}", "{that}.options.testOptions.newLanguage1", 0]
-                }, {
-                    listenerMaker: "fluid.tests.checkModelValueByIndex",
-                    makerArgs: ["{resourceInputPanel}", "language", "{that}.options.testOptions.newLanguage1", 0],
-                    spec: {path: "resources", priority: "last"},
-                    changeEvent: "{resourceInputPanel}.applier.modelChanged"
-                }, {
-                    func: "fluid.tests.changeSrcByIndex",
-                    args: ["{resourceInputPanel}", "{that}.options.testOptions.newSrcValue2", 1]
-                }, {
-                    listenerMaker: "fluid.tests.checkModelValueByIndex",
-                    makerArgs: ["{resourceInputPanel}", "src", "{that}.options.testOptions.newSrcValue2", 1],
-                    spec: {path: "resources", priority: "last"},
-                    changeEvent: "{resourceInputPanel}.applier.modelChanged"
-                }, {
-                    func: "fluid.tests.changeLanguageByIndex",
-                    args: ["{resourceInputPanel}", "{that}.options.testOptions.newLanguage2", 1]
-                }, {
-                    listenerMaker: "fluid.tests.checkModelValueByIndex",
-                    makerArgs: ["{resourceInputPanel}", "language", "{that}.options.testOptions.newLanguage2", 1],
-                    spec: {path: "resources", priority: "last"},
-                    changeEvent: "{resourceInputPanel}.applier.modelChanged"
-                }]
+                sequence: fluid.tests.resourceInputPanelSequenceGenerator(fluid.tests.testOptions, fluid.tests.testSequenceConfig)
             }]
         }]
     });
