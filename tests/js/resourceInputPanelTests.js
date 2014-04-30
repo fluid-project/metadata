@@ -245,6 +245,7 @@ https://github.com/gpii/universal/LICENSE.txt
     // resourceInputPanelTestUtils.js. However at the time it wasn't possible to declare
     // listeners for multiple events (onReady, afterRender) in a sequence. This is because
     // all of these events are triggered by the creation of the parent compnoent.
+    // See: FLUID-5340
     jqUnit.asyncTest("resourceInputPanel initialization", function () {
         fluid.tests.resrouceInputPanelInitializationTest(".gpiic-resourceInputPanel-init");
     });
