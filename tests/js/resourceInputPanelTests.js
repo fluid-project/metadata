@@ -22,7 +22,7 @@ https://github.com/gpii/universal/LICENSE.txt
         components: {
             resourceInput: {
                 type: "fluid.metadata.resourceInput",
-                container: ".flc-resourceInput",
+                container: ".gpiic-resourceInput",
                 createOnEvent: "{resourceInputTester}.events.onTestCaseStart",
                 options: {
                     resources: {
@@ -137,7 +137,7 @@ https://github.com/gpii/universal/LICENSE.txt
 
         var styleClass = "fl-test-style";
 
-        var that = fluid.metadata.baseResourceInputPanel(".flc-baseResourceInputPanel", {
+        var that = fluid.metadata.baseResourceInputPanel(".gpiic-baseResourceInputPanel", {
             styles: {
                 container: styleClass
             },
@@ -221,7 +221,7 @@ https://github.com/gpii/universal/LICENSE.txt
     // all of these events are triggered by the creation of the parent compnoent.
     jqUnit.asyncTest("resourceInputPanel initialization", function () {
         var count = 0;
-        var that = fluid.metadata.resourceInputPanel(".flc-resourceInputPanel-init", {
+        var that = fluid.metadata.resourceInputPanel(".gpiic-resourceInputPanel-init", {
             dynamicComponents: {
                 input: {
                     options: {

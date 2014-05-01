@@ -51,9 +51,9 @@ https://github.com/gpii/universal/LICENSE.txt
 
             var count = 0;
             checkboxes.each(function () {
-                jqUnit.assertFalse("Checkbox #" + ++count + " is not checked", $(this).is(":checked"));
+                jqUnit.assertFalse("Checkbox #" + (++count) + " is not checked", $(this).is(":checked"));
             });
-        }
+        };
     };
 
     fluid.tests.clickCheckbox = function (videoPanel, attribute) {

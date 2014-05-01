@@ -5,102 +5,96 @@
          url('fonts/floe-metadata.ttf');
 }
 
-.fl-indent-05 {
-    margin-left: 0.5em;
+.gpii-metadata-panel h2 {
+    font-size: 1.2em;
+    font-weight: bold;
+    
 }
 
-.fl-indent-10 {
-    margin-left: 1em;
+.gpii-metadata-panel .gpii-metadata-list-unstyled {
+    list-style: none;
 }
+
+.gpii-metadata-panel .gpii-metadata-list-unstyled label {
+    display: inline;
+}
+
+.gpii-metadata-panel .gpii-metadata-list-unstyled input {
+    margin: 0;
+}
+
+.gpii-metadata-panel fieldset {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+.gpii-metadata-panel legend {
+    background: none;
+    font-weight: normal;
+}
+
 
 /*
     Metadata indicators
 */
 
-.fl-circle {
+.gpii-circle {
     -webkit-border-radius: 999px;
     -moz-border-radius: 999px;
     border-radius: 999px;
     behavior: url(PIE.htc);
-    width: 1.8em;
-    height: 1.8em;
+    width: 2.4em;
+    height: 2.4em;
     display: inline-block;
     background: #249681;
     box-shadow: 0.03em 0.03em 0 #fff;
+    font-weight: normal;
 }
 
-.fl-circle:before {
+.gpii-circle:before {
     font-family: 'FloeMetadataIcons';
     color: #fff;
-    font-size: 1.4em;
-    padding-left: 0.2em;
-    line-height:1.3em;
+    font-size: 1.7em;
+    padding-left: 0.24em;
+    line-height:1.5em;
 }
 
-.fl-panel-title {
+.gpii-metadata-panel-title {
     text-shadow: 0.03em 0.03em 0 #fff;
 }
 
-.fl-audioPanel .fl-circle:before  {
+.gpii-audioPanel .gpii-circle:before  {
     content: "\e607";
 }
 
-.fl-videoPanel .fl-circle:before  {
+.gpii-videoPanel .gpii-circle:before  {
     content: "\e606";
 }
 
-.fl-captionsPanel .fl-circle:before  {
+.gpii-captionsPanel .gpii-circle:before  {
     content: "\e602";
 }
 
-.fl-transcriptsPanel .fl-circle:before  {
-    content: "\e603";
-}
-
-.fl-tooltip {
+.gpii-tooltip {
     position: absolute;
     background: #FFFABB;
     border: 1px solid #C9B857;
     padding: 3px 5px;
     font-family: 'OpenSans-Light';
 }
-.fl-available {
+.gpii-available {
     background: #249681;
 }
-.fl-unavailable, .fl-unknown {
+.gpii-unavailable, .gpii-unknown {
     background: #959595;
 }
 
-.fl-videoPanel .fl-flashing-row{
+.gpii-videoPanel .gpii-flashing-row{
     display: inline-block;
-    margin-top: 0.5em;
+    margin-left: 1em;
 }
 
-.fl-captionsPanel .fl-resourceInputPanel-list li {
-    margin-top: 1em;
-}
-
-.fl-captionsPanel .fl-resourceInputPanel-list li input {
-    width: 100%;
-    margin-bottom: 0.5em;
-}
-
-.fl-captionsPanel .fl-resourceInputPanel-list li:nth-of-type(odd){
-    background-color: #d3e3e6;
-
-}
-
-/* Bootstrap override */
-ul li label {
-    display: inline;
-}
-
-ul li {
-    margin-bottom: 1em;
-}
-
-legend {
-    font-size: inherit;
-    margin-bottom: 0;
-    border: none;
+.gpii-audio-attributes {
+    margin-left: 2.8em;
 }

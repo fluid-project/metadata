@@ -29,10 +29,10 @@ var fluid_1_5 = fluid_1_5 || {};
     fluid.defaults("fluid.metadata.resourceInput", {
         gradeNames: ["fluid.rendererRelayComponent", "autoInit"],
         selectors: {
-            srcLabel: ".flc-resourceInput-srcLabel",
-            src: ".flc-resourceInput-src",
-            languagesLabel: ".flc-resourceInput-languagesLabel",
-            languages: ".flc-resourceInput-languages"
+            srcLabel: ".gpiic-resourceInput-srcLabel",
+            src: ".gpiic-resourceInput-src",
+            languagesLabel: ".gpiic-resourceInput-languagesLabel",
+            languages: ".gpiic-resourceInput-languages"
         },
         strings: {
             srcLabel: "Enter web link to caption:",
@@ -153,8 +153,8 @@ var fluid_1_5 = fluid_1_5 || {};
     fluid.defaults("fluid.metadata.baseResourceInputPanel", {
         gradeNames: ["fluid.metadata.panel", "autoInit"],
         selectors: {
-            inputs: ".flc-resourceInputPanel-inputs",
-            input: ".flc-resourceInputPanel-input",
+            inputs: ".gpiic-resourceInputPanel-inputs",
+            input: ".gpiic-resourceInputPanel-input",
         },
         strings: {
             tooltip: {},
@@ -190,6 +190,7 @@ var fluid_1_5 = fluid_1_5 || {};
                         }
                     },
                     modelListeners: {
+                        // could be changed to "" when updated to the new model relay system
                         "*": {
                             func: "{baseResourceInputPanel}.updateModel",
                             args: ["{change}.value", "{change}.path", "{that}.options.source.2"]
@@ -300,7 +301,7 @@ var fluid_1_5 = fluid_1_5 || {};
 
     fluid.metadata.baseResourceInputPanel.updateModel = function (that, value, path, index, root) {
         var changePath = [root, index, path].join(".");
-        that.applier.requestChange(changePath, value);
+        that.applier.change(changePath, value);
     };
 
     fluid.metadata.baseResourceInputPanel.fetchTemplate = function (that) {
@@ -323,7 +324,7 @@ var fluid_1_5 = fluid_1_5 || {};
     fluid.defaults("fluid.metadata.resourceInputPanel", {
         gradeNames: ["fluid.metadata.baseResourceInputPanel", "autoInit"],
         selectors: {
-            description: ".flc-resourceInputPanel-description"
+            description: ".gpiic-resourceInputPanel-description"
         },
         strings: {
             description: ""

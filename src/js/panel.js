@@ -38,8 +38,8 @@ var fluid_1_5 = fluid_1_5 || {};
             title: "A panel title"
         },
         selectors: {
-            title: ".flc-panel-title",
-            indicator: ".flc-panel-indicator"
+            title: ".gpiic-panel-title",
+            indicator: ".gpiic-panel-indicator"
         },
         listeners: {
             "onCreate.setTitle": {
@@ -68,11 +68,12 @@ var fluid_1_5 = fluid_1_5 || {};
                     invokers: {
                         transformPanelModel: {
                             funcName: "fluid.metadata.panel.transformPanelModel",
-                            args: ["{panel}.model", "{panel}.options.indicatorModelRules"]
+                            args: ["{panel}.model", "{panel}.options.indicatorModelRules"],
+                            dynamic: true
                         }
                     },
                     modelListeners: {
-                        "{panel}.model.*": {
+                        "{panel}.model": {
                             func: "fluid.metadata.panel.updateModel",
                             args: ["{that}"]
                         }
@@ -85,9 +86,11 @@ var fluid_1_5 = fluid_1_5 || {};
     // At every panel model change, transform it to the model value required by the indicator sub-component,
     // as well as requesting the indicator to refresh its state. This model relay is only one way from the
     // panel model to the indicator model.
+    // When FLUID-5337 is fixed, this manual inverse relay will be performed autoamtically by the framework
+    // http://issues.fluidproject.org/browse/FLUID-5337
     fluid.metadata.panel.updateModel = function (that) {
         var model = that.transformPanelModel();
-        that.applier.requestChange("value", model.value);
+        that.applier.change("value", model.value);
     };
 
     fluid.metadata.panel.transformPanelModel = function (panelModel, transformationRules) {

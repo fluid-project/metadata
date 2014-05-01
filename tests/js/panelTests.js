@@ -18,7 +18,7 @@ https://github.com/gpii/universal/LICENSE.txt
     fluid.registerNamespace("fluid.tests");
 
     jqUnit.test("Test panel with a defined model and defined rules", function () {
-        var that = fluid.metadata.panel(".flc-panel", {
+        var that = fluid.metadata.panel(".gpiic-panel", {
             model: {
                 audio: "available"
             },
@@ -38,7 +38,7 @@ https://github.com/gpii/universal/LICENSE.txt
     });
 
     jqUnit.test("Test panel without defined rules", function () {
-        var that = fluid.metadata.panel(".flc-panel", {
+        var that = fluid.metadata.panel(".gpiic-panel", {
             model: {
                 value: "available"
             }

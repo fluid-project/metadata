@@ -27,10 +27,10 @@ https://github.com/gpii/universal/LICENSE.txt
     };
 
     fluid.tests.checkInitial = function (that) {
-        var tooltip = $("[id^=ui-tooltip]");
         jqUnit.assertTrue("The initial circle css has been applied", that.container.hasClass(that.options.styles.circle));
-        jqUnit.assertTrue("The tooltip css has been applied to the tooltip element", tooltip.hasClass(that.options.tooltipOptions.styles.tooltip));
         that.tooltip.open();
+        var tooltip = $("[id^=ui-tooltip]");
+        jqUnit.assertTrue("The tooltip css has been applied to the tooltip element", tooltip.hasClass(that.options.tooltipOptions.styles.tooltip));
     };
 
     fluid.tests.checkState = function (that, previousState, currentState) {
@@ -44,7 +44,7 @@ https://github.com/gpii/universal/LICENSE.txt
     };
 
     jqUnit.test("Test metadata indicator", function () {
-        var that = fluid.metadata.indicator(".flc-indicator");
+        var that = fluid.metadata.indicator(".gpiic-indicator");
 
         jqUnit.expect(3);
         fluid.tests.addIndicatorListener(that, "unknown");

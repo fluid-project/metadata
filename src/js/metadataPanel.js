@@ -27,24 +27,26 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
     fluid.defaults("fluid.metadata.metadataPanel", {
         gradeNames: ["fluid.viewRelayComponent", "autoInit"],
-        events: {
-            onReset: null
-        },
-        savedModel: null,  // The model saved previously. Must be provided by integrators
-        model: {
-            expander: {
-                func: "fluid.metadata.metadataPanel.getModel",
-                args: ["{that}.options.savedModel", "{that}.defaultModel"]
+        invokers: {
+            generateModel: {
+                funcName: "fluid.metadata.metadataPanel.generateModel",
+                args: ["{that}", "{arguments}.0"]
+            },
+            setURL: {
+                funcName: "fluid.metadata.metadataPanel.setURL",
+                args: ["{that}", "{arguments}.0"]
             }
         }
     });
 
-    fluid.metadata.metadataPanel.getModel = function (savedModel, defaultModel) {
-        if (savedModel) {
-            return $.extend(true, {}, defaultModel, savedModel);
-        } else {
-            return defaultModel;
-        }
+    fluid.metadata.metadataPanel.generateModel = function (that, model) {
+        model = model || {};
+        model = $.extend(true, {}, that.defaultModel, model);
+        return model;
+    };
+
+    fluid.metadata.metadataPanel.setURL = function (that, url) {
+        that.applier.change("url", url);
     };
 
 })(jQuery, fluid);
