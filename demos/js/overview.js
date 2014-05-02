@@ -93,7 +93,7 @@ var demo = demo || {};
                                     <li>Select <em>\"Preview Content\"</em> to see an example of how the end user would see the content.</li>\
                                     <li>Select <em>\"View Output HTML\"</em> to see the HTML mark-up with metadata included.</li>\
                                 </ul>"
-                                
+
             },
             links: {
                 "codeLink": "http://github.com/fluid-project/metadata/",

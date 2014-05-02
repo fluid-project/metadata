@@ -367,7 +367,7 @@
 .gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-metadataPanel-header {
     background-color: #92d7e1;
 }
-    
+
 .gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-metadataPanel-header h3{
     font-family: "RobotoSlab";
     color: ##161616;
@@ -391,20 +391,20 @@
 .gpii-metadataDemo-demo .gpii-videoPanel .gpii-flashing-row{
      margin-top: 0.5em;
 }
-   
-.gpii-metadataDemo-demo .gpii-captionsPanel .gpii-captions-list {
+
+.gpii-metadataDemo-demo .gpii-captionsPanel .gpii-resourceInputPanel-list {
     margin:0;
     padding: 0;
 }
-   
-.gpii-metadataDemo-demo .gpii-captionsPanel .gpii-captions-list li {
+
+.gpii-metadataDemo-demo .gpii-captionsPanel .gpii-resourceInputPanel-list li {
     background-color: #D3E8EA;
     padding: 0.5rem;
     margin-top: 1rem;
-    
+
 }
 
-.gpii-metadataDemo-demo .gpii-captionsPanel .gpii-captions-list li input {
+.gpii-metadataDemo-demo .gpii-captionsPanel .gpii-resourceInputPanel-list li input {
     margin-bottom: 0.5em;
     display: block;
     height: 2.5em;
@@ -427,7 +427,7 @@
 .gpii-metadataDemo-demo .fl-overviewPanel h1{
     color: #ccc;
     font-family: 'RobotoSlab';
-}   
+}
 
 .gpii-metadataDemo-demo .fl-overviewPanel h2,
 .gpii-metadataDemo-demo .fl-overviewPanel h1 a {

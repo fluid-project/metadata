@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="../css/metadataDemo.css" />
         <link rel="stylesheet" href="../../src/css/style.css" />
         <link rel="stylesheet" href="../lib/highlight/styles/github.css" />
-        
+
         <!-- Pretty-Diff -->
         <script src="../lib/pretty-diff/cleanCSS.js"></script>
         <script src="../lib/pretty-diff/jspretty.js"></script>
@@ -24,6 +24,8 @@
         <script type="text/javascript" src="../../src/lib/pouchDB/pouchdb-nightly.min.js"></script>
         <script type="text/javascript" src="../../src/js/pouchDBDataSource.js"></script>
         <script type="text/javascript" src="../../src/js/indicator.js"></script>
+        <script type="text/javascript" src="../../src/js/panel.js"></script>
+        <script type="text/javascript" src="../../src/js/resourceInputPanel.js"></script>
         <script type="text/javascript" src="../../src/js/videoPanel.js"></script>
         <script type="text/javascript" src="../../src/js/audioPanel.js"></script>
         <script type="text/javascript" src="../../src/js/captionsPanel.js"></script>
@@ -42,19 +44,19 @@
     </head>
     <body class="gpiic-metadataDemo-demo gpii-metadataDemo-demo">
         <div class="gpiic-overviewPanel fl-overviewPanel-container"></div>
-        
+
         <header class="gpii-metadataDemo-header">
             <div class="row">
                 <div class="small-12 columns clearfix">
-                    
+
                     <div class="left gpii-metadataDemo-header-logo">
-                        <img src="../images/noaa_logo.gif"  alt="The National Oceanic and Atmospheric Administration (or NOAA) logo."/> 
+                        <img src="../images/noaa_logo.gif"  alt="The National Oceanic and Atmospheric Administration (or NOAA) logo."/>
                     </div>
                     <div class="gpii-metadataDemo-header-title ">
                         <h1>Education Resources</h1>
                         <span class="gpii-metadataDemo-header-tagline">National Oceanic and Atmospheric Administration</span>
                     </div>
-                    
+
                     <div class="right gpii-metadataDemo-header-restart">
                         <a class="gpiic-metadataDemo-restart" href="#">
                             <span class="gpii-metadataDemo-icon gpii-metadataDemo-icon-restart"></span>
@@ -64,18 +66,18 @@
                 </div>
             </div>
         </header>
-        
+
         <section class="gpiic-metadataDemo-body gpii-metadataDemo-body gpii-metadataDemo-resourceEditor-active gpii-metadataDemo-expand" role="application">
             <div class="row">
                 <h2 class="gpiic-metadataDemo-title gpii-metadataDemo-page-title">Create new resource</h2>
-                
+
                 <ul class="inline-list right gpii-metadataDemo-tab-list">
                     <li class="text-center gpii-metadataDemo-tab-edit"><a href="#gpii-metadataDemo-resourceEditor">Edit</a></li>
                     <li class="text-center gpii-metadataDemo-tab-previewContent"><a href="#gpii-metadataDemo-previewContent">Preview content</a></li>
                     <li class="text-center gpii-metadataDemo-tab-outputHTML"><a href="#gpii-metadataDemo-outputHTML">View output HTML</a></li>
                 </ul>
             </div>
-        
+
             <div class="row gpii-metadataDemo-resourceEditor" id="gpii-metadataDemo-resourceEditor">
                 <div class="gpiic-metadataDemo-resourceEditor small-12 large-8 columns">
                     <div class="row gpii-metadataDemo-resourceEditor-toolbar">
@@ -95,26 +97,26 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <div id="gpiic-metadataDemo-resourceEditor-textEditor" class="gpii-metadataDemo-resourceEditor-textEditor">
                             Resource content goes here.
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="small-12 large-4 columns gpii-metadataDemo-resourceEditor-metadataPanel-column">
                     <div class="row gpii-metadataDemo-resourceEditor-metadataPanel-header">
                         <h3 id="gpiic-metadataDemo-resourceEditor-metadataPanel-label" class="text-center">Video Details</h3>
                     </div>
-                    <div class="gpiic-metadataDemo-resourceEditor-metadataPanel row gpii-metadataDemo-resourceEditor-metadataPanel" role="region" aria-relevant="additions" aria-atomic="true" aria-live="polite" aria-labelledby="gpiic-metadataDemo-resourceEditor-metadataPanel-label">    
+                    <div class="gpiic-metadataDemo-resourceEditor-metadataPanel row gpii-metadataDemo-resourceEditor-metadataPanel" role="region" aria-relevant="additions" aria-atomic="true" aria-live="polite" aria-labelledby="gpiic-metadataDemo-resourceEditor-metadataPanel-label">
                         <div class="gpiic-videoPanel gpii-videoPanel"></div>
                         <div class="gpiic-audioPanel gpii-audioPanel"></div>
                         <div class="gpiic-captionsPanel gpii-captionsPanel"></div>
                     </div>
                 </div>
             </div>
-            
+
             <div class="row gpii-metadataDemo-previewContent" id="gpii-metadataDemo-previewContent">
                 <section>
                     <div class="panel callout">
@@ -131,21 +133,21 @@
                     <div class="gpiic-metadataDemo-previewContent"></div>
                 </section>
             </div>
-            
+
             <div class="row gpii-metadataDemo-outputHTML" id="gpii-metadataDemo-outputHTML">
                 <pre class="gpiic-metadataDemo-outputHTML">
                     <code class="gpiic-metadataDemo-outputHTML-code"></code>
                 </pre>
-            </div>      
+            </div>
         </section>
-        
+
         <script type="text/javascript">
             var editor = demo.metadata(".gpiic-metadataDemo-demo", {
                 videoPanelTemplate: "../../src/html/video-template.html",
                 audioPanelTemplate: "../../src/html/audio-template.html",
                 audioAttributesTemplate: "../../src/html/audio-attributes-template.html",
-                captionsPanelTemplate: "../../src/html/captions-template.html",
-                captionsInputTemplate: "../../src/html/captions-input-template.html"
+                captionsPanelTemplate: "../../src/html/resourceInputPanel-template.html",
+                captionsInputTemplate: "../../src/html/resourceInput-template.html"
             });
         </script>
     </body>

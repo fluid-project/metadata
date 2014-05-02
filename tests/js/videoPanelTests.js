@@ -47,13 +47,13 @@ https://github.com/gpii/universal/LICENSE.txt
             jqUnit.assertEquals("Expected number of checkboxes are rendered", expectedCheckboxes, checkboxes.length);
             jqUnit.assertTrue("The radio button with the value 'unknown' is checked", radiobuttons.find("[value='unknown']").is(":checked"));
 
-            jqUnit.assertTrue("Appropriate Indicator css class has been applied", that.locate("icon").hasClass("gpii-available"));
+            jqUnit.assertTrue("Appropriate Indicator css class has been applied", that.locate("indicator").hasClass(that.indicator.options.styles.indicatorState.available));
 
             var count = 0;
             checkboxes.each(function () {
-                jqUnit.assertFalse("Checkbox #" + ++count + " is not checked", $(this).is(":checked"));
+                jqUnit.assertFalse("Checkbox #" + (++count) + " is not checked", $(this).is(":checked"));
             });
-        }
+        };
     };
 
     fluid.tests.clickCheckbox = function (videoPanel, attribute) {

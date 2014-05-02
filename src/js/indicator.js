@@ -35,16 +35,18 @@ var fluid_1_5 = fluid_1_5 || {};
                     args: ["{that}.container", {
                         expander: {
                             func: "fluid.metadata.indicator.getTooltipOptions",
-                            args: ["{that}.options.tooltipOptions", "{that}.options.tooltipContent", "unknown"]
+                            args: ["{that}.options.tooltipOptions", "{that}.options.strings.tooltipContent", "unknown"]
                         }
                     }]
                 }
             }
         },
-        tooltipContent: {
-            available: "Available",
-            unavailable: "Unavailable",
-            unknown: "Unknown"
+        strings: {
+            tooltipContent: {
+                available: "Available",
+                unavailable: "Unavailable",
+                unknown: "Unknown"
+            }
         },
         tooltipOptions: {
             delay: 0,
@@ -97,7 +99,7 @@ var fluid_1_5 = fluid_1_5 || {};
             that.container.removeClass(state);
         });
         that.container.addClass(stateClasses[state]);
-        that.tooltip.updateContent(that.options.tooltipContent[state]);
+        that.tooltip.updateContent(that.options.strings.tooltipContent[state]);
     };
 
     fluid.metadata.indicator.getTooltipOptions = function (tooltipOptions, tooltipContent, state) {

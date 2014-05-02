@@ -72,7 +72,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
     fluid.markup.generateVideoElm = function (metadata, videoContainerMarkup, captionsContainerMarkup, videoElm) {
         if (!videoElm) {
-            var videoElm = $("<video controls></video>");
+            videoElm = $("<video controls></video>");
             $('<source>').attr({
                 src: metadata.url,
                 type: "video/" + metadata.url.split(".").pop()

@@ -1,5 +1,5 @@
 /*!
-Copyright 2013-2014 OCAD University
+Copyright 2014 OCAD University
 
 Licensed under the New BSD license. You may not use this file except in
 compliance with this License.
@@ -17,19 +17,19 @@ https://github.com/gpii/universal/LICENSE.txt
 (function ($) {
     fluid.registerNamespace("fluid.tests");
 
-    fluid.defaults("fluid.tests.captionsPanelTests", {
+    fluid.defaults("fluid.tests.transcriptsPanelTests", {
         gradeNames: ["fluid.tests.resourceInputPanelTests", "autoInit"],
         components: {
             resourceInputPanel: {
-                type: "fluid.metadata.captionsPanel",
-                container: ".flc-captionsPanel"
+                type: "fluid.metadata.transcriptsPanel",
+                container: ".gpiic-transcriptsPanel"
             }
         }
     });
 
     $(document).ready(function () {
         fluid.test.runTests([
-            "fluid.tests.captionsPanelTests"
+            "fluid.tests.transcriptsPanelTests"
         ]);
     });
 

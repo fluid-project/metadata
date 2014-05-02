@@ -1,5 +1,5 @@
 /*
-Copyright 2013-2014 OCAD University
+Copyright 2014 OCAD University
 
 Licensed under the Educational Community License (ECL), Version 2.0 or the New
 BSD license. You may not use this file except in compliance with one these
@@ -20,28 +20,28 @@ var fluid_1_5 = fluid_1_5 || {};
 
 (function ($, fluid) {
 
-    /*************************************************
-     * The panel to define captions related metadata *
-     *************************************************/
+    /****************************************************
+     * The panel to define transcripts related metadata *
+     ****************************************************/
 
-    fluid.defaults("fluid.metadata.captionsPanel", {
+    fluid.defaults("fluid.metadata.transcriptsPanel", {
         gradeNames: ["fluid.metadata.resourceInputPanel", "autoInit"],
         strings: {
-            title: "Captions",
-            description: "Captions provide a synchronized, equivalent text version of spoken word in a video.",
+            title: "Transcripts",
+            description: "Transcripts provide a written version of all spoken words in a video, as well as additional descriptions, explanations or comments.",
             tooltip: {
-                available: "Captions are available in this video.",
-                unavailable: "Captions are not available in this video."
+                available: "Transcripts are available in this video.",
+                unavailable: "Transcripts are not available in this video."
             },
             resourceInput: {
-                srcLabel: "Enter web link to caption:",
-                languagesLabel: "Select language:",
+                srcLabel: "Enter web link to transcript:",
+                languagesLabel: "Enter language:",
                 srcPlaceholder: "www.example.com/movie.srt",
                 languages: ["Arabic", "Chinese", "English", "French", "Hindi", "Spanish"]
             }
         },
         styles: {
-            container: "fl-captionsPanel"
+            container: "fl-transcriptsPanel"
         }
     });
 

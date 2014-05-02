@@ -18,7 +18,7 @@ https://github.com/gpii/universal/LICENSE.txt
     fluid.registerNamespace("fluid.tests");
 
     fluid.tests.addIndicatorListener = function (that, state) {
-        var expected = fluid.get(that.options.tooltipContent, state);
+        var expected = fluid.get(that.options.strings.tooltipContent, state);
 
         that.tooltip.events.afterOpen.addListener(function () {
             jqUnit.assertEquals("The tooltip content has been applied to the tooltip element", expected, $("[id^=ui-tooltip]").text());
@@ -39,7 +39,7 @@ https://github.com/gpii/universal/LICENSE.txt
         jqUnit.assertFalse("The previous state css has been removed", that.container.hasClass(previousStateCss));
         jqUnit.assertTrue("The new state css has been applied", that.container.hasClass(currentStateCss));
 
-        var expected = fluid.get(that.options.tooltipContent, currentState);
+        var expected = fluid.get(that.options.strings.tooltipContent, currentState);
         jqUnit.assertEquals("The tooltip content has been applied to the tooltip element", expected, $("[id^=ui-tooltip]").text());
     };
 

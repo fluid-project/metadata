@@ -51,7 +51,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     fluid.metadata.metadataPanel.setModel = function (that, model) {
         model = model || {};
         model = $.extend(true, {}, that.defaultModel, model);
-        that.applier.requestChange("", model);
+        that.applier.change("", model);
     };
 
     fluid.metadata.metadataPanel.setDefaultModel = function (that, defaultModel) {
