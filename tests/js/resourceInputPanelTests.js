@@ -206,41 +206,48 @@ https://github.com/gpii/universal/LICENSE.txt
 
     });
 
-    var rsourceInputPanelResources = {
-        template: {
-            url: "../../src/html/resourceInputPanel-template.html"
-        },
-        resourceInput: {
-            url: "../../src/html/resourceInput-template.html"
+    fluid.tests.inputCount = 0;
+    fluid.tests.verifyInput = function (input, resources) {
+        fluid.tests.checkInitInput(input);
+        fluid.tests.inputCount++;
+        if (fluid.tests.inputCount >= resources.length) {
+            fluid.tests.inputCount = 0;
+            jqUnit.start();
         }
     };
+
+    fluid.defaults("fluid.tests.resrouceInputPanelInitializationTest", {
+        gradeNames: ["fluid.metadata.resourceInputPanel", "autoInit"],
+        inputListeners: {
+            afterRender: {
+                listener: "fluid.tests.verifyInput",
+                args: ["{resourceInput}", "{resourceInputPanel}.model.resources"]
+            }
+        },
+        resources: {
+            template: {
+                url: "../../src/html/resourceInputPanel-template.html"
+            },
+            resourceInput: {
+                url: "../../src/html/resourceInput-template.html"
+            }
+        },
+        distributeOptions: [{
+            source: "{that}.options.resources.resourceInput.url",
+            target: "{that > resourceInput}.options.resources.template.url"
+        }, {
+            source: "{that}.options.inputListeners",
+            target: "{that > resourceInput}.options.listeners"
+        }]
+    });
 
     // This test should have been included in fluid.tests.resourceInputPanelTester from
     // resourceInputPanelTestUtils.js. However at the time it wasn't possible to declare
     // listeners for multiple events (onReady, afterRender) in a sequence. This is because
     // all of these events are triggered by the creation of the parent compnoent.
+    // See: FLUID-5340
     jqUnit.asyncTest("resourceInputPanel initialization", function () {
-        var count = 0;
-        var that = fluid.metadata.resourceInputPanel(".gpiic-resourceInputPanel-init", {
-            dynamicComponents: {
-                input: {
-                    options: {
-                        listeners: {
-                            afterRender: {
-                                listener: function (input) {
-                                    fluid.tests.checkInitInput(input);
-                                    count++;
-                                    if (count >= that.model.resources.length) {
-                                        jqUnit.start();
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            resources: rsourceInputPanelResources
-        });
+        fluid.tests.resrouceInputPanelInitializationTest(".gpiic-resourceInputPanel-init");
     });
 
     $(document).ready(function () {
