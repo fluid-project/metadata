@@ -66,7 +66,7 @@ var demo = demo || {};
         },
         listeners: {
             onMarkupFetched: ["{simpleEditor}.setContent", "{markupViewer}.updateModelMarkup", "{preview}.updateModelMarkup"],
-            onMetadataModelFetched: ["{markupViewer}.updateModelMetadata", "{preview}.updateModelMetadata", "{that}.processMetadataPanel",
+            onMetadataModelFetched: ["{markupViewer}.updateModelMetadata", "{preview}.updateModelMetadata", "{that}.updateMetadataPanel",
             {
                 listener: "{simpleEditor}.setURL",
                 args: "{arguments}.0.url"
@@ -100,8 +100,8 @@ var demo = demo || {};
                 funcName: "demo.metadata.doDestroy",
                 args: "{that}"
             },
-            "processMetadataPanel": {
-                funcName: "demo.metadata.processMetadataPanel",
+            "updateMetadataPanel": {
+                funcName: "demo.metadata.updateMetadataPanel",
                 args: ["{that}", "{arguments}.0"]
             }
         },
@@ -119,7 +119,7 @@ var demo = demo || {};
                             args: "{change}.value"
                         }],
                         "url": {
-                            listener: "{metadata}.processMetadataPanel",
+                            listener: "{metadata}.updateMetadataPanel",
                             args: "{change}.value"
                         }
                     },
@@ -213,7 +213,7 @@ var demo = demo || {};
     });
 
     // Create the metadataPanel if it hasn't been. Otherwise, update the metadataPanel model
-    demo.metadata.processMetadataPanel = function (that, metadataModel) {
+    demo.metadata.updateMetadataPanel = function (that, metadataModel) {
         // The argument "metadataModel" could be in two forms:
         // 1. an object containing the entire metadata model including URL. This is triggered by the initial fetch from the database;
         // 2. a url string. This is triggered by the url change from the simple editor.
