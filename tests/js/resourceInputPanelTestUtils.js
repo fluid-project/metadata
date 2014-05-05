@@ -65,7 +65,7 @@ https://github.com/gpii/universal/LICENSE.txt
 
     fluid.tests.checkModelValueByIndex = function (that, path, newSrcValue, index) {
         return function (newModel, oldModel, changeRequest) {
-            jqUnit.assertEquals("The model path '" + path + "' has been updated to the new value", newSrcValue, fluid.get(newModel, ["resources", index, path]));
+            jqUnit.assertEquals("The model path '" + path + "' has been updated to the new value", newSrcValue, fluid.get(newModel[0], path));
             jqUnit.assertTrue("The indicator state has been set to 'available'", that.locate("indicator").hasClass(that.indicator.options.styles.indicatorState.available));
         };
     };
@@ -91,7 +91,7 @@ https://github.com/gpii/universal/LICENSE.txt
                 generatedSequence.push({
                     listenerMaker: "fluid.tests.checkModelValueByIndex",
                     makerArgs: ["{resourceInputPanel}", config.path, testVal, index],
-                    spec: {path: "resources", priority: "last"},
+                    spec: {transactional: true, path: "resources", priority: "last"},
                     changeEvent: "{resourceInputPanel}.applier.modelChanged"
                 });
             });

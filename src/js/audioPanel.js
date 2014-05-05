@@ -38,6 +38,13 @@ var fluid_1_5 = fluid_1_5 || {};
                             "unavailable": "${{that}.options.strings.audioUnavailable}",
                             "unknown": "${{that}.options.strings.audioUnavailable}"
                         }
+                    },
+                    modelRelay: {
+                        source: "{audioPanel}.model.audio",
+                        target: "{that}.model.value",
+                        singleTransform: {
+                            type: "fluid.transforms.identity"
+                        }
                     }
                 }
             },
@@ -79,9 +86,6 @@ var fluid_1_5 = fluid_1_5 || {};
         //         args: ["audioPanel", "{arguments}.0"]
         //     }
         // },
-        indicatorModelRules: {
-            value: "audio"
-        },
         strings: {
             title: "Audio",
             audio: ["Yes, this video has an audio track.", "No, this video has no audio track.", "I am not sure if this video has an audio track."],

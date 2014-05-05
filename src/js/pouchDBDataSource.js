@@ -65,6 +65,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     fluid.pouchdb.dataSource.get = function (database, directModel, callback) {
         database.get(directModel.id, function (err, result) {
             if (callback) {
+                console.log("dataSource get: ", fluid.get(result, "model"));
                 callback(fluid.get(result, "model"));
             }
         });

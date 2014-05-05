@@ -22,8 +22,18 @@ https://github.com/gpii/universal/LICENSE.txt
             model: {
                 audio: "available"
             },
-            indicatorModelRules: {
-                "value": "audio"
+            components: {
+                indicator: {
+                    options: {
+                        modelRelay: {
+                            source: "{panel}.model.audio",
+                            target: "{that}.model.value",
+                            singleTransform: {
+                                type: "fluid.transforms.identity"
+                            }
+                        }
+                    }
+                }
             }
         });
 

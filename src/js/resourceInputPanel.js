@@ -135,7 +135,6 @@ var fluid_1_5 = fluid_1_5 || {};
     });
 
     fluid.transforms.find = function (inputs, transformSpec, transform) {
-
         var conditions = transformSpec.conditionPath ? fluid.get(transform.source, transformSpec.conditionPath) : transformSpec.condition;
         var innerPath = transformSpec.innerPath || "";
         var result = fluid.find(conditions, function (condition) {
@@ -217,6 +216,17 @@ var fluid_1_5 = fluid_1_5 || {};
                             listener: "{baseResourceInputPanel}.events.afterIndicatorReady",
                             priority: "last"
                         }
+                    },
+                    modelRelay: {
+                        source: "{baseResourceInputPanel}.model",
+                        target: "{that}.model.value",
+                        singleTransform: {
+                            type: "fluid.transforms.find",
+                            conditionPath: "resources",
+                            innerPath: "src",
+                            "true": "available",
+                            "false": "unavailable"
+                        }
                     }
                 }
             }
@@ -235,7 +245,9 @@ var fluid_1_5 = fluid_1_5 || {};
                     afterIndicatorReady: "afterIndicatorReady"
                 },
                 args: "{that}"
-            }
+            },
+
+            onIndicatorUpdated: null
         },
         listeners: {
             "onCreate.fetchTemplate": "fluid.metadata.baseResourceInputPanel.fetchTemplate",
@@ -270,17 +282,6 @@ var fluid_1_5 = fluid_1_5 || {};
             renderInputContainer: {
                 funcName: "fluid.metadata.baseResourceInputPanel.renderInputContainer",
                 args: ["{that}.dom.inputs", "{that}.inputTemplate", "{arguments}.0", "{arguments}.1", "{that}.events.onCreateInput.fire"]
-            }
-        },
-        indicatorModelRules: {
-            value: {
-                transform: {
-                    type: "fluid.transforms.find",
-                    conditionPath: "resources",
-                    innerPath: "src",
-                    "true": "available",
-                    "false": "unavailable"
-                }
             }
         },
         resources: {
