@@ -57,10 +57,10 @@ var fluid_1_5 = fluid_1_5 || {};
                     }
                 },
                 options: {
-                    members: {
-                        applier: "{audioPanel}.applier"
+                    model: {
+                        audio: "{audioPanel}.model.audio",
+                        keywords: "{audioPanel}.model.keywords"
                     },
-                    model: "{audioPanel}.model",
                     resources: {
                         template: "{audioPanel}.options.resources.attributesTemplate"
                     },
@@ -95,7 +95,6 @@ var fluid_1_5 = fluid_1_5 || {};
         controlValues: ["available", "unavailable", "unknown"],
         selectors: {
             title: ".gpiic-audio-title",
-            instruction: ".gpiic-audio-instruction",
             indicator: ".gpiic-audio-icon",
             audioRow: ".gpiic-audio-row",
             audioLabel: ".gpiic-audio-label",
@@ -186,7 +185,6 @@ var fluid_1_5 = fluid_1_5 || {};
         controlValues: ["dialogue", "soundtrack", "sound effect"],
         repeatingSelectors: ["keywordRow"],
         protoTree: {
-            instruction: {messagekey: "instruction"},
             expander: {
                 "type": "fluid.renderer.condition",
                 "condition": {
