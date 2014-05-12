@@ -129,17 +129,12 @@ var demo = demo || {};
                 }
             },
             metadataPanel: {
-                type: "fluid.metadata.metadataPanel",
+                type: "fluid.metadata.videoMetadataPanel",
                 container: "{that}.dom.metadataPanel",
                 createOnEvent: "onCreateMetadataPanel",
                 options: {
-                    gradeNames: ["fluid.metadata.videoMetadataPanel", "fluid.metadata.saveVideoMetadata"],
-                    model: {
-                        expander: {
-                            funcName: "{that}.generateModel",
-                            args: "{metadata}.metadataPanelModel"
-                        }
-                    },
+                    gradeNames: ["fluid.metadata.saveVideoMetadata"],
+                    inputModel: "{metadata}.metadataPanelModel",
                     modelListeners: {
                         "*": [{
                             listener: "{markupViewer}.updateModelMetadata",

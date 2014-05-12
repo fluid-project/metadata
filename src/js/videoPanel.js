@@ -42,7 +42,7 @@ var fluid_1_5 = fluid_1_5 || {};
         model: {
             highContrast: false,
             signLanguage: false,
-            flashing: "unknown" // flashing, noFlashing are alternatives
+            flashing: "unknown" // flashing, noFlashing are other possible values
         },
         strings: {
             title: "Video",

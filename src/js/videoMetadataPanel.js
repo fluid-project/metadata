@@ -25,12 +25,44 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
      ****************************************************************/
 
     fluid.defaults("fluid.metadata.videoMetadataPanel", {
-        gradeNames: ["fluid.viewRelayComponent", "fluid.metadata.defaultVideoModel", "fluid.metadata.defaultVideoModelRelay", "autoInit"],
+        gradeNames: ["fluid.metadata.metadataPanel", "fluid.metadata.defaultVideoModel", "autoInit"],
         selectors: {
             videoPanel: ".gpiic-videoPanel",
             audioPanel: ".gpiic-audioPanel",
             captionsPanel: ".gpiic-captionsPanel"
         },
+        modelRelay: [{
+            source: "{videoMetadataPanel}.model.metadata.accessibilityFeature",
+            target: "{videoMetadataPanel}.model.modelInTransit",
+            singleTransform: {
+                type: "fluid.transforms.arrayToSetMembership",
+                options: {
+                    "highContrast": "highContrast",
+                    "signLanguage": "signLanguage"
+                }
+            }
+        }, {
+            source: "{videoMetadataPanel}.model.metadata.accessibilityHazard",
+            target: "{videoMetadataPanel}.model.modelInTransit",
+            singleTransform: {
+                type: "fluid.transforms.arrayToSetMembership",
+                options: {
+                    "flashing": "flashing",
+                    "noFlashing": "noFlashing",
+                    "sound": "sound",
+                    "nosoundHazard": "nosoundHazard"
+                }
+            }
+        }, {
+            source: "{videoMetadataPanel}.model.metadata.accessMode",
+            target: "{videoMetadataPanel}.model.modelInTransit",
+            singleTransform: {
+                type: "fluid.transforms.arrayToSetMembership",
+                options: {
+                    "audio": "audio"
+                }
+            }
+        }],
         components: {
             videoPanel: {
                 type: "fluid.metadata.videoPanel",
@@ -48,19 +80,25 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                             conditionPath: "flashing",
                             "true": {
                                 transform: {
-                                    type: "fluid.transforms.literalValue",
-                                    value: "flashing",
-                                    outputPath: "flashing"
+                                    type: "fluid.metadata.transforms.condition",
+                                    conditionPath: "noFlashing",
+                                    "false": {
+                                        transform: {
+                                            type: "fluid.transforms.literalValue",
+                                            value: "flashing",
+                                            outputPath: "flashing"
+                                        }
+                                    }
                                 }
                             },
                             "false": {
                                 transform: {
                                     type: "fluid.metadata.transforms.condition",
-                                    conditionPath: "noflashing",
+                                    conditionPath: "noFlashing",
                                     "true": {
                                         transform: {
                                             type: "fluid.transforms.literalValue",
-                                            value: "noflashing",
+                                            value: "noFlashing",
                                             outputPath: "flashing"
                                         }
                                     },
@@ -85,9 +123,30 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 container: "{videoMetadataPanel}.dom.audioPanel",
                 options: {
                     model: {
-                        audio: "{videoMetadataPanel}.model.metadata.audio",
                         keywords: "{videoMetadataPanel}.model.metadata.keywords"
                     },
+                    modelRelay: [{
+                        source: "{videoMetadataPanel}.model.modelInTransit",
+                        target: "{that}.model",
+                        singleTransform: {
+                            type: "fluid.metadata.transforms.condition",
+                            conditionPath: "audio",
+                            "true": {
+                                transform: {
+                                    type: "fluid.transforms.literalValue",
+                                    value: "available",
+                                    outputPath: "audio"
+                                }
+                            },
+                            "false": {
+                                transform: {
+                                    type: "fluid.transforms.literalValue",
+                                    value: "unavailable",
+                                    outputPath: "audio"
+                                }
+                            }
+                        }
+                    }],
                     listeners: {
                         afterRender: "{videoMetadataPanel}.events.audioPanelRendered.fire"
                     }
@@ -138,55 +197,19 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     });
 
     fluid.defaults("fluid.metadata.defaultVideoModel", {
-        gradeNames: ["fluid.littleComponent", "autoInit"],
+        gradeNames: ["fluid.standardRelayComponent", "autoInit"],
         members: {
             defaultModel: {
                 url: "",
                 metadata: {
                     accessibilityFeature: [],
                     accessibilityHazard: [],
-                    keywords: [],
-                    audio: "available"
+                    accessMode: [],
+                    keywords: []
                 },
                 captions: []
             }
         }
-    });
-
-    fluid.defaults("fluid.metadata.defaultVideoModelRelay", {
-        gradeNames: ["fluid.standardRelayComponent", "autoInit"],
-        modelRelay: [{
-            source: "{defaultVideoModelRelay}.model.metadata.accessibilityFeature",
-            target: "{defaultVideoModelRelay}.model.modelInTransit",
-            singleTransform: {
-                type: "fluid.transforms.arrayToSetMembership",
-                options: {
-                    "highContrast": "highContrast",
-                    "signLanguage": "signLanguage"
-                }
-            }
-        }, {
-            source: "{defaultVideoModelRelay}.model.metadata.accessibilityHazard",
-            target: "{defaultVideoModelRelay}.model.modelInTransit",
-            singleTransform: {
-                type: "fluid.transforms.arrayToSetMembership",
-                options: {
-                    "flashing": "flashing",
-                    "noflashing": "noflashing",
-                    "sound": "sound",
-                    "nosoundHazard": "nosoundHazard"
-                }
-            }
-        }, {
-            source: "{defaultVideoModelRelay}.model.metadata.accessibilityHazard",
-            target: "{defaultVideoModelRelay}.model.modelInTransit",
-            singleTransform: {
-                type: "fluid.transforms.arrayToSetMembership",
-                options: {
-                    "audio": "audio"
-                }
-            }
-        }]
     });
 
 })(jQuery, fluid);

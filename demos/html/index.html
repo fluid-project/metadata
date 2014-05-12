@@ -106,9 +106,11 @@
                     markup: demo.metadata.predefinedOER.content,
                     metadata: {
                         url: demo.metadata.predefinedOER.url,
-                        audio: "available",
-                        flashing: "noFlashing",
-                        keywords: ["dialogue"]
+                        metadata: {
+                            accessMode: ["audio"],
+                            accessibilityHazard: ["noFlashing"],
+                            keywords: ["dialogue"]
+                        }
                     }
                 }
             });

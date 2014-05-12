@@ -35,7 +35,7 @@ https://github.com/gpii/universal/LICENSE.txt
                 "false": {
                     transform: {
                         type: "fluid.transforms.literalValue",
-                        value: "noflashing",
+                        value: "noFlashing",
                         outputPath: "hazard"
                     }
                 }
@@ -55,7 +55,7 @@ https://github.com/gpii/universal/LICENSE.txt
                             }]
                         }
                     },
-                    "noflashing": {
+                    "noFlashing": {
                         outputValue: {
                             transform: [{
                                 type: "fluid.transforms.literalValue",
@@ -192,17 +192,18 @@ https://github.com/gpii/universal/LICENSE.txt
         });
     });
 
-    fluid.defaults("fluid.tests.inversionInRelay", {
+    fluid.defaults("fluid.tests.simpleRelay", {
         gradeNames: ["fluid.standardRelayComponent", "autoInit"],
         model: {
-            noflashing: false
+            flashing: false,
+            noFlashing: false
         },
         components: {
             sub: {
                 type: "fluid.standardRelayComponent",
                 options: {
                     modelRelay: [{
-                        source: "{inversionInRelay}.model",
+                        source: "{simpleRelay}.model",
                         target: "{that}.model",
                         singleTransform: {
                             type: "fluid.metadata.transforms.condition",
@@ -217,11 +218,11 @@ https://github.com/gpii/universal/LICENSE.txt
                             "false": {
                                 transform: {
                                     type: "fluid.metadata.transforms.condition",
-                                    conditionPath: "noflashing",
+                                    conditionPath: "noFlashing",
                                     "true": {
                                         transform: {
                                             type: "fluid.transforms.literalValue",
-                                            value: "noflashing",
+                                            value: "noFlashing",
                                             outputPath: "flashing"
                                         }
                                     },
@@ -242,25 +243,51 @@ https://github.com/gpii/universal/LICENSE.txt
     });
 
     jqUnit.test("Model relay with the customized invertible conditional transform", function () {
-        var that = fluid.tests.inversionInRelay();
-        var expectedSubModel = {
+        var that = fluid.tests.simpleRelay();
+
+        // Transformation from the parent component to the sub component
+        var unknownSubModel = {
             flashing: "unknown"
         };
-
-        jqUnit.assertDeepEq("The initial forward transformation is performed correctly", expectedSubModel, that.sub.model);
-
-        var expectedTransformedSubModel = {
-            "flashing": "noflashing"
+        var flashingSubModel = {
+            flashing: "flashing"
         };
-        that.applier.requestChange("noflashing", true);
-        jqUnit.assertDeepEq("The relay is performed correctly when a change request is issued at the top model", expectedTransformedSubModel, that.sub.model);
+        var noFlashingSubModel = {
+            flashing: "noFlashing"
+        };
 
-        var expectedTransformedTopModel = {
+        jqUnit.assertDeepEq("The initial forward transformation is performed correctly - unknown", unknownSubModel, that.sub.model);
+
+        that.applier.change("flashing", true);
+        jqUnit.assertDeepEq("The forward transformation is performed correctly - flashing", flashingSubModel, that.sub.model);
+
+        that.applier.change("flashing", false);
+        that.applier.change("noFlashing", true);
+        jqUnit.assertDeepEq("The forward transformation is performed correctly - noFlashing", noFlashingSubModel, that.sub.model);
+
+        // Transformation from the sub component to the parent component
+
+        var unknownParentModel = {
+            "flashing": false,
+            "noFlashing": false
+        };
+        var flashingParentModel = {
             "flashing": true,
-            "noflashing": true
+            "noFlashing": false
         };
-        that.sub.applier.requestChange("flashing", "flashing");
-        jqUnit.assertDeepEq("The backward transformation is performed correctly", expectedTransformedTopModel, that.model);
+        var noFlashingParentModel = {
+            "flashing": false,
+            "noFlashing": true
+        };
+
+        that.sub.applier.change("flashing", "unknown");
+        jqUnit.assertDeepEq("The inverted relay from the sub to the parent component is performed correctly - unknown", unknownParentModel, that.model);
+
+        that.sub.applier.change("flashing", "flashing");
+        jqUnit.assertDeepEq("The inverted relay from the sub to the parent component is performed correctly - flashing", flashingParentModel, that.model);
+
+        that.sub.applier.change("flashing", "noFlashing");
+        jqUnit.assertDeepEq("The inverted relay from the sub to the parent component is performed correctly - noFlashing", noFlashingParentModel, that.model);
     });
 
 })(jQuery);

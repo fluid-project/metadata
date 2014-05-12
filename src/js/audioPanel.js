@@ -35,8 +35,7 @@ var fluid_1_5 = fluid_1_5 || {};
                     strings: {
                         tooltipContent: {
                             "available": "${{that}.options.strings.audioAvailable}",
-                            "unavailable": "${{that}.options.strings.audioUnavailable}",
-                            "unknown": "${{that}.options.strings.audioUnavailable}"
+                            "unavailable": "${{that}.options.strings.audioUnavailable}"
                         }
                     },
                     modelRelay: {
@@ -69,10 +68,6 @@ var fluid_1_5 = fluid_1_5 || {};
                     },
                     modelListeners: {
                         "audio": "{that}.refreshView"
-                        // "*": {
-                        //     listener: "console.log",
-                        //     args: ["attributes", "{arguments}.0"]
-                        // }
                     }
                 }
             }
@@ -80,19 +75,13 @@ var fluid_1_5 = fluid_1_5 || {};
         model: {
             audio: "available"
         },
-        // modelListeners: {
-        //     "*": {
-        //         listener: "console.log",
-        //         args: ["audioPanel", "{arguments}.0"]
-        //     }
-        // },
         strings: {
             title: "Audio",
-            audio: ["Yes, this video has an audio track.", "No, this video has no audio track.", "I am not sure if this video has an audio track."],
+            audio: ["Yes, this video has an audio track.", "No, this video has no audio track or I am not sure."],
             audioAvailable: "Audio Attribute is available.",
             audioUnavailable: "Audio Attribute is unavailable."
         },
-        controlValues: ["available", "unavailable", "unknown"],
+        controlValues: ["available", "unavailable"],
         selectors: {
             title: ".gpiic-audio-title",
             indicator: ".gpiic-audio-icon",

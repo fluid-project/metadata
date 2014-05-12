@@ -37,7 +37,7 @@ var fluid_1_5 = fluid_1_5 || {};
         };
     };
 
-    fluid.metadata.transforms.condition.processOneCondition = function (togo, transformSpec, mapOptionTransform) {
+    fluid.metadata.transforms.condition.processNestedCondition = function (togo, transformSpec, mapOptionTransform) {
         var type = fluid.get(transformSpec, "type");
         if (type === "fluid.transforms.literalValue") {
             fluid.set(togo, "inputPath", fluid.get(transformSpec, "outputPath"));
@@ -52,7 +52,7 @@ var fluid_1_5 = fluid_1_5 || {};
                     if (keyTree) {
                         var nextMapOptionTransform = fluid.copy(mapOptionTransform);
                         nextMapOptionTransform.push(fluid.metadata.transforms.condition.createLiteralTransform(conditionPath, key === "true" ? true : false));
-                        togo = fluid.metadata.transforms.condition.processOneCondition(togo, fluid.get(keyTree, "transform"), nextMapOptionTransform);
+                        togo = fluid.metadata.transforms.condition.processNestedCondition(togo, fluid.get(keyTree, "transform"), nextMapOptionTransform);
                     }
                 }
             });
@@ -74,7 +74,7 @@ var fluid_1_5 = fluid_1_5 || {};
                 if (keyTree) {
                     var mapOptionTransform = [];
                     mapOptionTransform.push(fluid.metadata.transforms.condition.createLiteralTransform(conditionPath, key === "true" ? true : false));
-                    togo = fluid.metadata.transforms.condition.processOneCondition(togo, fluid.get(keyTree, "transform"), mapOptionTransform);
+                    togo = fluid.metadata.transforms.condition.processNestedCondition(togo, fluid.get(keyTree, "transform"), mapOptionTransform);
                 }
             }
         });

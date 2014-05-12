@@ -26,11 +26,18 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
      ****************************************************************/
 
     fluid.defaults("fluid.metadata.metadataPanel", {
-        gradeNames: ["fluid.viewRelayComponent", "autoInit"],
+        gradeNames: ["fluid.viewRelayComponent", "fluid.metadata.videoMetadataPanel", "autoInit"],
+        inputModel: null,   // Provided by integrators
+        model: {
+            expander: {
+                funcName: "{that}.generateModel",
+                args: ["{that}.options.inputModel"]
+            }
+        },
         invokers: {
             generateModel: {
                 funcName: "fluid.metadata.metadataPanel.generateModel",
-                args: ["{that}", "{arguments}.0"]
+                args: ["{that}", "{that}.defaultModel", "{arguments}.0"]
             },
             setURL: {
                 funcName: "fluid.metadata.metadataPanel.setURL",
@@ -39,9 +46,9 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }
     });
 
-    fluid.metadata.metadataPanel.generateModel = function (that, model) {
+    fluid.metadata.metadataPanel.generateModel = function (that, defaultModel, model) {
         model = model || {};
-        model = $.extend(true, {}, that.defaultModel, model);
+        model = $.extend(true, {}, defaultModel, model);
         return model;
     };
 
