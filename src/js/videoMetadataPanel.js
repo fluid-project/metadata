@@ -157,7 +157,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 container: "{videoMetadataPanel}.dom.captionsPanel",
                 options: {
                     model: {
-                        resources: "{videoMetadataPanel}.model.metadata.captions"
+                        resources: "{videoMetadataPanel}.model.captions"
                     },
                     listeners: {
                         afterMarkupReady: "{videoMetadataPanel}.events.captionsPanelRendered.fire"
