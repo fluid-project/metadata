@@ -19,14 +19,14 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
     fluid.registerNamespace("fluid.metadata");
 
-    /****************************************************************
-     * The component used in conjunction with media element grades
-     * such as "fluid.metadata.videoMetadataPanel". It contains
-     * common functionalities to be shared by all these grades.
+    /*******************************************************************
+     * The component used in conjunction with as a base grade for media
+     * panels such as "fluid.metadata.videoMetadataPanel". It contains
+     * common functionalities to be shared by all media panels.
      ****************************************************************/
 
     fluid.defaults("fluid.metadata.metadataPanel", {
-        gradeNames: ["fluid.viewRelayComponent", "fluid.metadata.videoMetadataPanel", "autoInit"],
+        gradeNames: ["fluid.viewRelayComponent", "autoInit"],
         inputModel: null,   // Provided by integrators
         model: {
             expander: {
@@ -46,10 +46,9 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }
     });
 
-    fluid.metadata.metadataPanel.generateModel = function (that, defaultModel, model) {
-        model = model || {};
-        model = $.extend(true, {}, defaultModel, model);
-        return model;
+    fluid.metadata.metadataPanel.generateModel = function (that, defaultModel, inputModel) {
+        inputModel = inputModel || {};
+        return $.extend(true, {}, defaultModel, inputModel);
     };
 
     fluid.metadata.metadataPanel.setURL = function (that, url) {

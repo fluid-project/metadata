@@ -22,7 +22,7 @@ https://github.com/gpii/universal/LICENSE.txt
         components: {
             videoPanel: {
                 type: "fluid.metadata.videoPanel",
-                container: ".flc-video",
+                container: ".gpiic-video",
                 createOnEvent: "{videoPanelTester}.events.onTestCaseStart",
                 options: {
                     resources: {

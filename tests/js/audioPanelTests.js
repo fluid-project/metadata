@@ -85,13 +85,13 @@ https://github.com/gpii/universal/LICENSE.txt
         var options = {
             listeners: {
                 onReady: function (that) {
-                    fluid.tests.checkAudioState(that, 3, 3, "available");
+                    fluid.tests.checkAudioState(that, 2, 3, "available");
                     jqUnit.start();
                 }
             }
         };
 
-        fluid.tests.createAudioPanel(".flc-audio-test-init", options);
+        fluid.tests.createAudioPanel(".gpiic-audio-test-init", options);
     });
 
     jqUnit.asyncTest("Click on attribute checkboxes", function () {
@@ -99,11 +99,6 @@ https://github.com/gpii/universal/LICENSE.txt
 
         var options = {
             listeners: {
-                onCreate: {
-                    listener: "fluid.tests.checkAttributeModel",
-                    args: ["{that}", "dialogue"],
-                    priority: "first"
-                },
                 onReady: function (that) {
                     fluid.tests.checkAttributeModel(that, "dialogue");
                     fluid.tests.clickAttribute(that, "dialogue");
@@ -119,22 +114,19 @@ https://github.com/gpii/universal/LICENSE.txt
             }
         };
 
-        fluid.tests.createAudioPanel(".flc-audio-test-attributes", options);
+        fluid.tests.createAudioPanel(".gpiic-audio-test-attributes", options);
     });
 
     jqUnit.asyncTest("Click and check the audio availability", function () {
-        jqUnit.expect(18);
+        jqUnit.expect(14);
 
         var options = {
             listeners: {
                 onReady: function (that) {
-                    fluid.tests.checkAudioStateChange(that, 3, 0, "unavailable");
+                    fluid.tests.checkAudioStateChange(that, 2, 0, "unavailable");
                     fluid.tests.clickAudioState(that, "unavailable");
 
-                    fluid.tests.checkAudioStateChange(that, 3, 0, "unknown");
-                    fluid.tests.clickAudioState(that, "unknown");
-
-                    fluid.tests.checkAudioStateChange(that, 3, 3, "available");
+                    fluid.tests.checkAudioStateChange(that, 2, 3, "available");
                     fluid.tests.clickAudioState(that, "available");
 
                     jqUnit.start();
@@ -142,7 +134,7 @@ https://github.com/gpii/universal/LICENSE.txt
             }
         };
 
-        fluid.tests.createAudioPanel(".flc-audio-test-audio-availability", options);
+        fluid.tests.createAudioPanel(".gpiic-audio-test-audio-availability", options);
     });
 
 })(jQuery);

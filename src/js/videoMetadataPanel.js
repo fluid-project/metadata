@@ -160,7 +160,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                         resources: "{videoMetadataPanel}.model.captions"
                     },
                     listeners: {
-                        afterMarkupReady: "{videoMetadataPanel}.events.captionsPanelRendered.fire"
+                        onReady: "{videoMetadataPanel}.events.captionsPanelRendered.fire"
                     }
                 }
             }
