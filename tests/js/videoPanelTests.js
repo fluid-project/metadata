@@ -60,13 +60,9 @@ https://github.com/gpii/universal/LICENSE.txt
         videoPanel.locate(attribute).click();
     };
 
-    fluid.tests.clickFlashing = function (videoPanel, flashingValue) {
-        videoPanel.container.find("[value='" + flashingValue + "']").click();
-    };
-
     fluid.tests.checkModel = function (attribute, value) {
-        return function (newModel) {
-            jqUnit.assertTrue("The model for " + attribute + " has been updated correctly", value, fluid.get(newModel, attribute));
+        return function (newModelValue) {
+            jqUnit.assertEquals("The model for " + attribute + " has been updated correctly", value, newModelValue);
         };
     };
 
@@ -107,37 +103,6 @@ https://github.com/gpii/universal/LICENSE.txt
                     changeEvent: "{videoPanel}.applier.modelChanged"
                 }]
             }]
-        }, {
-            name: "Click on flashing attribute",
-            tests: [{
-                expect: 3,
-                name: "Click on a flashing attribute",
-                sequence: [{
-                    func: "fluid.tests.clickFlashing",
-                    args: ["{videoPanel}", "noFlashing"]
-                }, {
-                    listenerMaker: "fluid.tests.checkModel",
-                    makerArgs: ["flashing", "noFlashing"],
-                    spec: {path: "flashing", priority: "last"},
-                    changeEvent: "{videoPanel}.applier.modelChanged"
-                }, {
-                    func: "fluid.tests.clickFlashing",
-                    args: ["{videoPanel}", "unknown"]
-                }, {
-                    listenerMaker: "fluid.tests.checkModel",
-                    makerArgs: ["flashing", "unknown"],
-                    spec: {path: "flashing", priority: "last"},
-                    changeEvent: "{videoPanel}.applier.modelChanged"
-                }, {
-                    func: "fluid.tests.clickFlashing",
-                    args: ["{videoPanel}", "flashing"]
-                }, {
-                    listenerMaker: "fluid.tests.checkModel",
-                    makerArgs: ["flashing", "flashing"],
-                    spec: {path: "flashing", priority: "last"},
-                    changeEvent: "{videoPanel}.applier.modelChanged"
-                }]
-            }]
         }]
     });
 
@@ -146,5 +111,41 @@ https://github.com/gpii/universal/LICENSE.txt
             "fluid.tests.videoPanelTests"
         ]);
     });
+
+    fluid.tests.clickFlashing = function (videoPanel, flashingValue) {
+        videoPanel.container.find("[value='" + flashingValue + "']").click();
+    };
+
+    fluid.tests.addModelListenerForFlashing = function (that, expectedValue) {
+        that.applier.modelChanged.addListener("flashing", function (newModelValue) {
+            jqUnit.assertEquals("The model for flashing attribute has been updated correctly - " + expectedValue, expectedValue, newModelValue);
+            that.applier.modelChanged.removeListener("checkModel");
+        }, "checkModel", null, "last");
+
+    };
+
+    jqUnit.asyncTest("Click on flashing attribute", function () {
+        var that = fluid.metadata.videoPanel(".gpiic-video-flashing", {
+            resources: {
+                template: {
+                    url: "../../src/html/video-template.html"
+                }
+            },
+            listeners: {
+                onReady: function (that) {
+                    fluid.tests.addModelListenerForFlashing(that, "flashing");
+                    fluid.tests.clickFlashing(that, "flashing");
+
+                    fluid.tests.addModelListenerForFlashing(that, "noFlashing");
+                    fluid.tests.clickFlashing(that, "noFlashing");
+
+                    fluid.tests.addModelListenerForFlashing(that, "unknown");
+                    fluid.tests.clickFlashing(that, "unknown");
+
+                    jqUnit.start();
+                }
+            }
+        });
+    })
 
 })(jQuery);
