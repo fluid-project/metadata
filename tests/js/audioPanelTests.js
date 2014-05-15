@@ -52,11 +52,14 @@ https://github.com/gpii/universal/LICENSE.txt
     };
 
     fluid.tests.checkAttributeModel = function (audioPanel, modelPath) {
-        audioPanel.applier.modelChanged.addListener("", function (newModel, oldModel, changeReqeust) {
+        audioPanel.applier.modelChanged.addListener({
+            path: "",
+            priority: fluid.event.mapPriority("last", 0)
+        }, function (newModel, oldModel, changeReqeust) {
             var keywords = fluid.get(newModel, "keywords");
             jqUnit.assertNotEquals("The proper model path has been updated", -1, $.inArray(modelPath, keywords));
             audioPanel.applier.modelChanged.removeListener("checkAttributeModel");
-        }, "checkAttributeModel", null, "last");
+        }, "checkAttributeModel");
     };
 
     fluid.tests.clickAudioState = function (audioPanel, state) {

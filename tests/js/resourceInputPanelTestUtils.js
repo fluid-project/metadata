@@ -17,30 +17,6 @@ https://github.com/gpii/universal/LICENSE.txt
 (function ($) {
     fluid.registerNamespace("fluid.tests");
 
-    fluid.defaults("fluid.tests.resourceInputPanelTests", {
-        gradeNames: ["fluid.test.testEnvironment", "autoInit"],
-        components: {
-            resourceInputPanel: {
-                type: "fluid.metadata.resourceInputPanel",
-                container: ".gpiic-resourceInputPanel",
-                createOnEvent: "{resourceInputPanelTester}.events.onTestCaseStart",
-                options: {
-                    resources: {
-                        template: {
-                            url: "../../src/html/resourceInputPanel-template.html"
-                        },
-                        resourceInput: {
-                            url: "../../src/html/resourceInput-template.html"
-                        }
-                    }
-                }
-            },
-            resourceInputPanelTester: {
-                type: "fluid.tests.resourceInputPanelTester"
-            }
-        }
-    });
-
     fluid.tests.checkInitPanel = function (that) {
         jqUnit.assertEquals("The title should have been rendered", that.options.strings.title, that.locate("title").text());
         jqUnit.assertEquals("The description should have been rendered", that.options.strings.description, that.locate("description").text());
@@ -50,8 +26,10 @@ https://github.com/gpii/universal/LICENSE.txt
     fluid.tests.checkInitInput = function (that) {
         jqUnit.assertEquals("The placeholder for the input field has been set", that.options.strings.srcPlaceholder, that.locate("src").attr("placeholder"));
 
-        $("option", that.locate("languages")).each(function (idx, optElm) {
-            jqUnit.assertEquals("All language option should have been rendered in a combo box", that.options.controlValues[idx], $(optElm).val());
+        $("select", that.locate("languages")).each(function (ignored, selectElm) {
+            $(selectElm).find("option").each(function(idx, optElm){
+                jqUnit.assertEquals("All language option should have been rendered in a combo box", that.input.options.controlValues[idx], $(optElm).val());
+            });
         });
     };
 
@@ -62,65 +40,6 @@ https://github.com/gpii/universal/LICENSE.txt
     fluid.tests.changeLanguageByIndex = function (that, newLanguageValue, index) {
         that.container.find("select").eq(index).find("[value='" + newLanguageValue + "']").attr("selected", "selected").change();
     };
-
-    // fluid.tests.checkModelValueByIndex = function (that, path, newSrcValue, index) {
-    //     return function (newModel, oldModel, changeRequest) {
-    //         jqUnit.assertEquals("The model path '" + path + "' has been updated to the new value", newSrcValue, fluid.get(newModel[0], path));
-    //         jqUnit.assertTrue("The indicator state has been set to 'available'", that.locate("indicator").hasClass(that.indicator.options.styles.indicatorState.available));
-    //     };
-    // };
-
-    // fluid.tests.testOptions = [
-    //     {src: "http://weblink.com/one.mp4", language: "hi"},
-    //     {src: "http://weblink.com/two.mp4", language: "zh"}
-    // ];
-    // fluid.tests.testSequenceConfig = [
-    //     {check: "fluid.tests.changeSrcByIndex", path: "src"},
-    //     {check: "fluid.tests.changeLanguageByIndex", path: "language"}
-    // ];
-
-    // fluid.tests.resourceInputPanelSequenceGenerator = function (testOpts, sequenceConfig) {
-    //     var generatedSequence = [];
-    //     fluid.each(testOpts, function (testOpt, index) {
-    //         fluid.each(sequenceConfig, function (config) {
-    //             var testVal = testOpts[index][config.path];
-    //             generatedSequence.push({
-    //                 func: config.check,
-    //                 args:["{resourceInputPanel}", testVal, index]
-    //             });
-    //             generatedSequence.push({
-    //                 listenerMaker: "fluid.tests.checkModelValueByIndex",
-    //                 makerArgs: ["{resourceInputPanel}", config.path, testVal, index],
-    //                 spec: {transactional: true, path: "resources", priority: "last"},
-    //                 changeEvent: "{resourceInputPanel}.applier.modelChanged"
-    //             });
-    //         });
-    //     });
-    //     return generatedSequence;
-    // };
-
-    // fluid.defaults("fluid.tests.resourceInputPanelTester", {
-    //     gradeNames: ["fluid.test.testCaseHolder", "autoInit"],
-    //     modules: [{
-    //         name: "Test initial resourceInput panel",
-    //         tests: [{
-    //             expect: 3,
-    //             name: "Init",
-    //             sequence: [{
-    //                 listener: "fluid.tests.checkInitPanel",
-    //                 spec: {priority: "last"},
-    //                 event: "{resourceInputPanelTests resourceInputPanel}.events.onReady"
-    //             }]
-    //         }]
-    //     }/*, {
-    //         name: "Test resourceInput panel",
-    //         tests: [{
-    //             expect: 8,
-    //             name: "Click on resource input fields",
-    //             sequence: fluid.tests.resourceInputPanelSequenceGenerator(fluid.tests.testOptions, fluid.tests.testSequenceConfig)
-    //         }]
-    //     }*/]
-    // });
 
     fluid.tests.testOptions = [
         {src: "http://weblink.com/one.mp4", language: "hi"},
@@ -138,31 +57,23 @@ https://github.com/gpii/universal/LICENSE.txt
 
                 that.applier.modelChanged.addListener({
                     path: "resources",
-                    transactional: true
+                    transactional: true,
+                    priority: fluid.event.mapPriority("last", 0)
                 }, function (newModel, oldModel, changeReqeust) {
-                    jqUnit.assertEquals("The model path '" + config.path + "' has been updated to the new value", testVal, fluid.get(newModel[0], config.path));
+                    jqUnit.assertEquals("The model path '" + config.path + "' has been updated to the new value", testVal, fluid.get(newModel[index], config.path));
                     jqUnit.assertTrue("The indicator state has been set to 'available'", that.locate("indicator").hasClass(that.indicator.options.styles.indicatorState.available));
                     that.applier.modelChanged.removeListener("checkModel");
-                }, "checkModel", null, "last");
+                }, "checkModel");
 
                 fluid.invokeGlobalFunction(config.check, [that, testVal, index]);
-                // generatedSequence.push({
-                //     func: config.check,
-                //     args:["{resourceInputPanel}", testVal, index]
-                // });
-                // generatedSequence.push({
-                //     listenerMaker: "fluid.tests.checkModelValueByIndex",
-                //     makerArgs: ["{resourceInputPanel}", config.path, testVal, index],
-                //     spec: {transactional: true, path: "resources", priority: "last"},
-                //     changeEvent: "{resourceInputPanel}.applier.modelChanged"
-                // });
             });
         });
     };
 
     fluid.tests.testResourceInputPanel = function (resourceInputPanelComponent, container, message) {
-
         jqUnit.asyncTest("Test " + message, function () {
+            jqUnit.expect(24);
+
             var that = resourceInputPanelComponent(container, {
                 resources: {
                     template: {
@@ -175,10 +86,8 @@ https://github.com/gpii/universal/LICENSE.txt
                 listeners: {
                     onReady: {
                         listener: function (that) {
-                            jqUnit.assertEquals("The title should have been rendered", that.options.strings.title, that.locate("title").text());
-                            jqUnit.assertEquals("The description should have been rendered", that.options.strings.description, that.locate("description").text());
-                            jqUnit.assertTrue("The indicator state has been set to 'unavailable'", that.locate("indicator").hasClass(that.indicator.options.styles.indicatorState.unavailable));
-
+                            fluid.tests.checkInitPanel(that);
+                            fluid.tests.checkInitInput(that);
                             fluid.tests.resourceInputPanelChangesTests(that, fluid.tests.testOptions, fluid.tests.testSequenceConfig);
 
                             jqUnit.start();
