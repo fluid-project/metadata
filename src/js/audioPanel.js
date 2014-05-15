@@ -41,6 +41,7 @@ var fluid_1_5 = fluid_1_5 || {};
                     modelRelay: {
                         source: "{audioPanel}.model.audio",
                         target: "{that}.model.value",
+                        backward: "never",
                         singleTransform: {
                             type: "fluid.transforms.identity"
                         }

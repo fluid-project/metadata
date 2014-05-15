@@ -34,6 +34,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         modelRelay: [{
             source: "{videoMetadataPanel}.model.metadata.accessibilityFeature",
             target: "{videoMetadataPanel}.model.modelInTransit",
+            backward: "liveOnly",
             singleTransform: {
                 type: "fluid.transforms.arrayToSetMembership",
                 options: {
@@ -44,6 +45,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }, {
             source: "{videoMetadataPanel}.model.metadata.accessibilityHazard",
             target: "{videoMetadataPanel}.model.modelInTransit",
+            backward: "liveOnly",
             singleTransform: {
                 type: "fluid.transforms.arrayToSetMembership",
                 options: {
@@ -56,6 +58,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }, {
             source: "{videoMetadataPanel}.model.metadata.accessMode",
             target: "{videoMetadataPanel}.model.modelInTransit",
+            backward: "liveOnly",
             singleTransform: {
                 type: "fluid.transforms.arrayToSetMembership",
                 options: {
@@ -75,6 +78,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     modelRelay: [{
                         source: "{videoMetadataPanel}.model.modelInTransit",
                         target: "{that}.model",
+                        backward: "liveOnly",
                         singleTransform: {
                             type: "fluid.metadata.transforms.condition",
                             conditionPath: "flashing",
@@ -128,6 +132,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     modelRelay: [{
                         source: "{videoMetadataPanel}.model.modelInTransit",
                         target: "{that}.model",
+                        backward: "liveOnly",
                         singleTransform: {
                             type: "fluid.metadata.transforms.condition",
                             conditionPath: "audio",
