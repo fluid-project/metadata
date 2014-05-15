@@ -193,10 +193,17 @@ var fluid_1_5 = fluid_1_5 || {};
                             args: ["{change}.value", "{change}.path", "{that}.options.source.2"]
                         }
                     },
+                    events: {
+                        onLastResourceInputRendered: "{baseResourceInputPanel}.events.onResourceInputsReady"
+                    },
                     listeners: {
-                        onCreate: {
+                        onCreate: [{
                             "this": "{baseResourceInputPanel}.inputs",
                             "method": "push"
+                        }],
+                        afterRender: {
+                            listener: "fluid.metadata.baseResourceInputPanel.checkLastResourceInput",
+                            args: ["{that}.options.source.3", "{that}.events.onLastResourceInputRendered.fire"]
                         }
                     }
                 }
@@ -236,11 +243,12 @@ var fluid_1_5 = fluid_1_5 || {};
             onCreateInput: null,
             onRenderInputContainer: null,
             afterIndicatorReady: null,
+            onResourceInputsReady: null,
             onReady: {
                 events: {
                     onCreate: "onCreate",
-                    afterMarkupReady: "afterMarkupReady",
-                    afterIndicatorReady: "afterIndicatorReady"
+                    afterIndicatorReady: "afterIndicatorReady",
+                    onResourceInputsReady: "onResourceInputsReady"
                 },
                 args: "{that}"
             },
@@ -265,7 +273,10 @@ var fluid_1_5 = fluid_1_5 || {};
                 args: ["{that}", "{that}.dom.input"],
                 priority: "first"
             },
-            "afterMarkupReady.initInputs": "{that}.initInputs",
+            "afterMarkupReady.initInputs": {
+                listener: "{that}.initInputs",
+                priority: "first"
+            },
             "onRenderInputContainer.renderInputContainer": "{that}.renderInputContainer"
         },
         invokers: {
@@ -284,7 +295,7 @@ var fluid_1_5 = fluid_1_5 || {};
             },
             renderInputContainer: {
                 funcName: "fluid.metadata.baseResourceInputPanel.renderInputContainer",
-                args: ["{that}.dom.inputs", "{that}.inputTemplate", "{arguments}.0", "{arguments}.1", "{that}.events.onCreateInput.fire"]
+                args: ["{that}.dom.inputs", "{that}.inputTemplate", "{arguments}.0", "{arguments}.1", "{that}.model.resources", "{that}.events.onCreateInput.fire"]
             }
         },
         resources: {
@@ -328,10 +339,17 @@ var fluid_1_5 = fluid_1_5 || {};
         that.inputTemplate = elm.remove();
     };
 
-    fluid.metadata.baseResourceInputPanel.renderInputContainer = function (container, elm, model, idx, callback) {
+    fluid.metadata.baseResourceInputPanel.renderInputContainer = function (container, elm, model, idx, resources, callback) {
         var input = elm.clone();
+        var isLastInstance = idx === resources.length - 1 ? true : false;
         container.append(input);
-        callback(input, model, idx);
+        callback(input, model, idx, isLastInstance);
+    };
+
+    fluid.metadata.baseResourceInputPanel.checkLastResourceInput = function (isLastInstance, callback) {
+        if (isLastInstance) {
+            callback();
+        }
     };
 
     fluid.defaults("fluid.metadata.resourceInputPanel", {
