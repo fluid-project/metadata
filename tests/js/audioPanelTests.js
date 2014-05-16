@@ -55,7 +55,7 @@ https://github.com/gpii/universal/LICENSE.txt
         audioPanel.applier.modelChanged.addListener({
             path: "",
             priority: fluid.event.mapPriority("last", 0)
-        }, function (newModel, oldModel, changeReqeust) {
+        }, function (newModel) {
             var keywords = fluid.get(newModel, "keywords");
             jqUnit.assertNotEquals("The proper model path has been updated", -1, $.inArray(modelPath, keywords));
             audioPanel.applier.modelChanged.removeListener("checkAttributeModel");

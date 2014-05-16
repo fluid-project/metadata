@@ -48,7 +48,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         };
 
         if (metadata.metadata) {
-            var videoMetatdata = $.extend(true, null, fluid.copy(metadata.metadata), videoMetatdata);
+            videoMetatdata = $.extend(true, null, fluid.copy(metadata.metadata), videoMetatdata);
 
             if ($.inArray("visual", videoMetatdata.accessMode) === -1) {
                 videoMetatdata.accessMode.push("visual");

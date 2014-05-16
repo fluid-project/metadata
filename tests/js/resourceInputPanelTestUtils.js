@@ -59,7 +59,7 @@ https://github.com/gpii/universal/LICENSE.txt
                     path: "resources",
                     transactional: true,
                     priority: fluid.event.mapPriority("last", 0)
-                }, function (newModel, oldModel, changeReqeust) {
+                }, function (newModel) {
                     jqUnit.assertEquals("The model path '" + config.path + "' has been updated to the new value", testVal, fluid.get(newModel[index], config.path));
                     jqUnit.assertTrue("The indicator state has been set to 'available'", that.locate("indicator").hasClass(that.indicator.options.styles.indicatorState.available));
                     that.applier.modelChanged.removeListener("checkModel");

@@ -38,7 +38,7 @@ https://github.com/gpii/universal/LICENSE.txt
         }
     });
 
-    fluid.tests.checkInit = function (videoPanel, expectedRadiobuttons, expectedCheckboxes) {
+    fluid.tests.checkInit = function ( expectedRadiobuttons, expectedCheckboxes) {
         return function (that) {
             var radiobuttons = that.locate("flashingRow");
             var checkboxes = that.container.find("[type='checkbox']");
@@ -75,7 +75,7 @@ https://github.com/gpii/universal/LICENSE.txt
                 name: "Init",
                 sequence: [{
                     listenerMaker: "fluid.tests.checkInit",
-                    makerArgs: ["{videoPanelTests videoPanel}", 3, 2],
+                    makerArgs: [3, 2],
                     spec: {priority: "last"},
                     event: "{videoPanelTests videoPanel}.events.onReady"
                 }]

@@ -37,7 +37,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         invokers: {
             generateModel: {
                 funcName: "fluid.metadata.metadataPanel.generateModel",
-                args: ["{that}", "{that}.defaultModel", "{arguments}.0"]
+                args: ["{that}.defaultModel", "{arguments}.0"]
             },
             setURL: {
                 funcName: "fluid.metadata.metadataPanel.setURL",
@@ -46,7 +46,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }
     });
 
-    fluid.metadata.metadataPanel.generateModel = function (that, defaultModel, inputModel) {
+    fluid.metadata.metadataPanel.generateModel = function (defaultModel, inputModel) {
         inputModel = inputModel || {};
         return $.extend(true, {}, defaultModel, inputModel);
     };
