@@ -24,7 +24,7 @@
 .gpii-metadataDemo-demo {
     font-family: "OpenSans","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
     background-color: #F4F4E9;
-    min-width:38rem;
+    min-width: 38rem;
 }
 
 .gpii-metadataDemo-body {
@@ -297,7 +297,7 @@
     font-weight: bold;
 }
 
-.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar-button-italics a{
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar-button-italics a {
     font-style:italic;
 }
 
@@ -368,7 +368,7 @@
     background-color: #92d7e1;
 }
 
-.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-metadataPanel-header h3{
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-metadataPanel-header h3 {
     font-family: "RobotoSlab";
     color: ##161616;
     padding-top: 1.6rem;
@@ -424,7 +424,7 @@
     line-height: 1.2rem;
 }
 
-.gpii-metadataDemo-demo .fl-overviewPanel h1{
+.gpii-metadataDemo-demo .fl-overviewPanel h1 {
     color: #ccc;
     font-family: 'RobotoSlab';
 }
@@ -434,7 +434,7 @@
     color: #fff;
 }
 
-.gpii-metadataDemo-demo .fl-overviewPanel ul{
+.gpii-metadataDemo-demo .fl-overviewPanel ul {
     line-height: 1rem;
 }
 
@@ -458,10 +458,6 @@
     margin-bottom: 1rem;
 }
 
-.gpii-metadataDemo-demo .fl-overviewPanel-links ul li {
-    margin: 1rem 1rem 1rem 0;
-}
-
 .gpii-metadataDemo-demo .fl-overviewPanel-footer a {
     color: #333;
 }
@@ -474,7 +470,8 @@
     letter-spacing: 0.1em;
 }
 
-.gpii-metadataDemo-demo .fl-overviewPanel-contents {
-    height: 37em; /* FLUID-5299: Force a vertical scrollbar so that contents of the panel do not disappear off screen. */
-    overflow: auto;
+
+.gpii-metadataDemo-demo .fl-overviewPanel .fl-overviewPanel-contents {
+    /* Work-around for FLUID-5374 until fixed. */
+    top: 5.5em;
 }
