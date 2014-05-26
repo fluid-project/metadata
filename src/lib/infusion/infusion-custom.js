@@ -1,4 +1,4 @@
-/*! infusion - v1.5.0-SNAPSHOT Thursday, May 15th, 2014, 10:24:19 AM*/
+/*! infusion - v1.5.0-SNAPSHOT Monday, May 26th, 2014, 3:06:44 PM*/
 /*!
  * jQuery JavaScript Library v1.11.0
  * http://jquery.com/
@@ -18002,7 +18002,7 @@ var fluid = fluid || fluid_1_5;
         var that;
         function fireToListeners(listeners, args, wrapper) {
             if (!listeners || that.destroyed) { return; }
-            fluid.log("Firing event " + name + " to list of " + listeners.length + " listeners");
+            fluid.log(fluid.logLevel.TRACE, "Firing event " + name + " to list of " + listeners.length + " listeners");
             for (var i = 0; i < listeners.length; ++i) {
                 var lisrec = listeners[i];
                 lisrec.listener = fluid.event.resolveListener(lisrec.listener);
@@ -22947,11 +22947,11 @@ var fluid_1_5 = fluid_1_5 || {};
     };
     
     fluid.model.relayConditions = {
-        initOnly: {init: true, live: false},
+        initOnly: {init: true,  live: false},
         liveOnly: {init: false, live: true},
         never:    {init: false, live: false},
-        always:   {init: true, live: true}
-    }
+        always:   {init: true,  live: true}
+    };
     
     fluid.model.parseRelayCondition = function (condition) {
         return fluid.model.relayConditions[condition || "always"];
@@ -22963,6 +22963,9 @@ var fluid_1_5 = fluid_1_5 || {};
         var parsedTarget = fluid.parseValidModelReference(that, "modelRelay record member \"target\"", mrrec.target);
 
         var transform = mrrec.singleTransform ? fluid.singleTransformToFull(mrrec.singleTransform) : mrrec.transform;
+        if (!transform) {
+            fluid.fail("Cannot parse modelRelay record without element \"singleTransform\" or \"transform\":", mrrec);
+        }
         var forwardCond = fluid.model.parseRelayCondition(mrrec.forward), backwardCond = fluid.model.parseRelayCondition(mrrec.backward);
         var transformPackage = fluid.makeTransformPackage(that, transform, parsedSource.path, parsedTarget.path, forwardCond, backwardCond);
         if (transformPackage.refCount === 0) {
@@ -23538,6 +23541,7 @@ var fluid_1_5 = fluid_1_5 || {};
             fluid.remove_if(that.changeListeners.listeners, removePred);
             fluid.remove_if(that.changeListeners.transListeners, removePred);
         };
+        that.modelChanged.isRelayEvent = true; // TODO: cheap helper for IoC testing framework - remove when old ChangeApplier goes
         that.fireChangeRequest = function (changeRequest) {
             var ation = that.initiate();
             ation.fireChangeRequest(changeRequest);
@@ -27252,13 +27256,13 @@ var fluid_1_5 = fluid_1_5 || {};
             }
             if ((fluid.XMLP._ELM_E == iEvent) || (fluid.XMLP._ELM_EMP == iEvent)) {
                 if (stack.length === 0) {
-                    //return this._setErr(XMLP.ERR_DOC_STRUCTURE);
+                    //return fluid.XMLP._setErr(XMLP.ERR_DOC_STRUCTURE);
                     return fluid.XMLP._NONE;
                 }
                 var strTop = stack[stack.length - 1];
                 that.m_stack.length--;
                 if (strTop === null || strTop !== that.getName()) {
-                    return that._setErr(that, fluid.XMLP.ERR_ELM_NESTING);
+                    return fluid.XMLP._setErr(that, fluid.XMLP.ERR_ELM_NESTING);
                 }
             }
 
@@ -27367,7 +27371,7 @@ var fluid_1_5 = fluid_1_5 || {};
         var iType, strN, iLast;
         iDE = iE = that.m_xml.indexOf(">", iB);
         if (iE == -1) {
-            return that._setErr(that, fluid.XMLP.ERR_CLOSE_ELM);
+            return fluid.XMLP._setErr(that, fluid.XMLP.ERR_CLOSE_ELM);
         }
         if (that.m_xml.charAt(iB) == "/") {
             iType = fluid.XMLP._ELM_E;
@@ -30334,9 +30338,6 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-// Declare dependencies
-/* global swfobject */
-
 var fluid_1_5 = fluid_1_5 || {};
 
 (function ($, fluid) {
@@ -30353,12 +30354,6 @@ var fluid_1_5 = fluid_1_5 || {};
     };
     fluid.enhance.supportsFormData = function () {
         return !!window.FormData;
-    };
-    fluid.enhance.supportsFlash = function () {
-        return (typeof(swfobject) !== "undefined") && (swfobject.getFlashPlayerVersion().major > 8);
-    };
-    fluid.enhance.majorFlashVersion = function () {
-        return typeof(swfobject) === "undefined" ? 0 : swfobject.getFlashPlayerVersion().major;
     };
 
     /*

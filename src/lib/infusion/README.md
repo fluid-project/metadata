@@ -1,12 +1,11 @@
 
 The version of Infusion included in this folder was created using a custom build from commit
 
-    02650da7192f550edf6397fb02f10a25255c17d7
+    7d9ff68fb44c913ee4d4009846d1476eaa6023d7
 
 of the Infusion branch
 
-    https://github.com/cindyli/infusion/tree/FLUID-5371-antranig
-    (A merged branch of https://github.com/amb26/infusion/tree/FLUID-5371 and the infusion master branch)
+    https://github.com/amb26/infusion/tree/FLUID-5371
 
 using the command line
 
