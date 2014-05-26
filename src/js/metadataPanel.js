@@ -48,7 +48,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
     fluid.metadata.metadataPanel.generateModel = function (defaultModel, inputModel) {
         inputModel = inputModel || {};
-        return $.extend(true, {}, defaultModel, inputModel);
+        return fluid.merge({"metadata": "replace"}, defaultModel, inputModel);
     };
 
     fluid.metadata.metadataPanel.setURL = function (that, url) {
