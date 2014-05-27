@@ -20,6 +20,7 @@ var fluid_1_5 = fluid_1_5 || {};
 
 (function ($, fluid) {
 
+    // Note: The accompanying documentation for this script is in transforms.md
     fluid.registerNamespace("fluid.metadata.transforms");
 
     fluid.defaults("fluid.metadata.transforms.condition", {
