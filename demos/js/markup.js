@@ -53,6 +53,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             if ($.inArray("visual", videoMetatdata.accessMode) === -1) {
                 videoMetatdata.accessMode.push("visual");
             }
+
+            if ($.inArray("audio", videoMetatdata.accessMode) === -1) {
+                delete videoMetatdata.keywords;
+            }
         }
 
         if (metadata.captions && metadata.captions.length) {
