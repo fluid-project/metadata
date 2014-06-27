@@ -1,0 +1,94 @@
+@font-face {
+    font-family: 'RobotoSlab';
+    src: url('fonts/RobotoSlab-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'OpenSans';
+    src: url('fonts/OpenSans-Regular.ttf');
+}
+
+@font-face {
+    font-family: "OpenSans";
+    src: url('fonts/OpenSans-Bold.ttf');
+    font-weight: bold;
+}
+
+.gpii-feedbackDemo-demo {
+    font-family: "OpenSans","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
+    background-color: #F4F4E9;
+    min-width:38rem;
+}
+
+.gpii-feedbackDemo-body {
+    margin-bottom: 4rem;
+    padding: 0 2rem;
+}
+
+.gpii-feedbackDemo-demo a {
+    color: #2C6FB7;
+}
+
+.gpii-feedbackDemo-demo a.disabled {
+    pointer-events: none;
+    cursor: default;
+}
+
+.gpii-feedbackDemo-demo .button {
+    color: #fff;
+    background-color: #2C6FB7;
+}
+
+.gpii-feedbackDemo-demo .button:hover {
+    background-color: #3F8FD8;
+}
+
+/* Header area */
+
+.gpii-feedbackDemo-header {
+    background-color: #fff;
+    margin-top: 3em;
+}
+
+.gpii-feedbackDemo-header-logo {
+    margin: 0.5rem 0.5rem 0 0;
+}
+
+.gpii-feedbackDemo-header-logo img {
+    width: 7rem;
+}
+
+.gpii-feedbackDemo-header-title {
+    padding-top: 1rem;
+    margin-left: 1rem;
+}
+
+.gpii-feedbackDemo-header-title h1 {
+    text-transform: uppercase;
+    font-size: 2.3rem;
+}
+
+.gpii-feedbackDemo-header-title .gpii-feedbackDemo-header-tagline {
+    text-transform: uppercase;
+}
+
+.gpii-feedbackDemo-page-title {
+    font-family: 'RobotoSlab';
+    font-size: 2rem;
+    margin: 4rem 0 1rem 0;
+}
+
+/** sticky bar area */
+
+.gpii-feedbackDemo-demo .top-bar {
+    background: #888;
+}
+
+.gpii-feedbackDemo-demo .top-bar-section li:not(.has-form) a:not(.button) {
+    background: #888;
+}
+
+.gpii-feedbackDemo-demo .top-bar-section li:not(.has-form) a:hover:not(.button) {
+    background: #333;
+}
+
