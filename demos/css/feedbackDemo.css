@@ -80,15 +80,22 @@
 
 /** sticky bar area */
 
-.gpii-feedbackDemo-demo .top-bar {
-    background: #888;
+.gpii-feedbackDemo-top-bar-Container {
+    border-bottom: 1px solid #888;
+    box-shadow: 0px 1px 5px 0px rgba(50, 50, 50, 0.75);
 }
 
+.gpii-feedbackDemo-demo .top-bar,
 .gpii-feedbackDemo-demo .top-bar-section li:not(.has-form) a:not(.button) {
-    background: #888;
+    background-color: #fff;
 }
 
-.gpii-feedbackDemo-demo .top-bar-section li:not(.has-form) a:hover:not(.button) {
-    background: #333;
+.gpii-feedbackDemo-demo .top-bar-section ul li a {
+    color: #000;
 }
 
+.gpii-feedbackDemo-demo .top-bar-section li:not(.has-form) a:not(.button):hover,
+.gpii-feedbackDemo-demo .top-bar-section li:not(.has-form) a:not(.button):focus {
+    background-color: #E7E7E7;
+    color: #000;
+}
