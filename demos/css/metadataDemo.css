@@ -413,7 +413,7 @@
 }
 
 
-/* Overview Panel tweaks */
+/* Overview Panel tweaks - Needed due to FLUID-5464 */
 
 .gpii-metadataDemo-demo .fl-overviewPanel-container {
     z-index: 1;
