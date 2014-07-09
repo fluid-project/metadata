@@ -415,13 +415,9 @@
 
 /* Overview Panel tweaks */
 
-.gpii-metadataDemo-demo .fl-overviewPanel a {
-    color: #FFCC00;
-}
-
 .gpii-metadataDemo-demo .fl-overviewPanel-container {
     z-index: 1;
-    line-height: 1.2rem;
+    line-height: 1.6rem;
 }
 
 .gpii-metadataDemo-demo .fl-overviewPanel h1{
@@ -429,52 +425,6 @@
     font-family: 'RobotoSlab';
 }
 
-.gpii-metadataDemo-demo .fl-overviewPanel h2,
-.gpii-metadataDemo-demo .fl-overviewPanel h1 a {
+.gpii-metadataDemo-demo .fl-overviewPanel-instructions h2 {
     color: #fff;
-}
-
-.gpii-metadataDemo-demo .fl-overviewPanel ul{
-    line-height: 1rem;
-}
-
-.gpii-metadataDemo-demo .fl-overviewPanel p {
-    font-size: 1em;
-}
-
-.gpii-metadataDemo-demo .fl-overviewPanel-instructions h2,
-.gpii-metadataDemo-demo .fl-overviewPanel-componentName {
-    margin-bottom: 0.6rem;
-    display: block;
-}
-
-.gpii-metadataDemo-demo .fl-overviewPanel-instructions ul {
-    font-size: 1em;
-    margin-top: 1rem;
-    line-height: 1rem;
-}
-
-.gpii-metadataDemo-demo .fl-overviewPanel-instructions ul li {
-    margin-bottom: 1rem;
-}
-
-.gpii-metadataDemo-demo .fl-overviewPanel-links ul li {
-    margin: 1rem 1rem 1rem 0;
-}
-
-.gpii-metadataDemo-demo .fl-overviewPanel-footer a {
-    color: #333;
-}
-
-.gpii-metadataDemo-demo .fl-overviewPanel em {
-    color: #fff;
-    font-style: italic;
-    background-color:#4D4D4D;
-    padding: 0 0.2em;
-    letter-spacing: 0.1em;
-}
-
-.gpii-metadataDemo-demo .fl-overviewPanel-contents {
-    height: 37em; /* FLUID-5299: Force a vertical scrollbar so that contents of the panel do not disappear off screen. */
-    overflow: auto;
 }
