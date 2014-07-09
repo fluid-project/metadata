@@ -17,7 +17,6 @@ The following directories were stripped out of the build since they contain code
 * src/lib/infusion/components/uiOptions/
 * src/lib/infusion/framework/core/
 * src/lib/infusion/framework/enhancement/
-* src/lib/infusion/framework/fss/
 * src/lib/infusion/framework/preferences/js/
 * src/lib/infusion/framework/preferences/preferencesDependencies.json
 * src/lib/infusion/framework/renderer/
