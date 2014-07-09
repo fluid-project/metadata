@@ -99,3 +99,20 @@
     background-color: #E7E7E7;
     color: #000;
 }
+
+/* UI Options overrides */
+
+.gpii-feedbackDemo-demo .fl-prefsEditor-separatedPanel {
+    padding-top: 45px;
+}
+
+.gpii-feedbackDemo-demo .fl-prefsEditor-separatedPanel .fl-prefsEditor-showHide,
+.gpii-feedbackDemo-demo .fl-prefsEditor-separatedPanel .fl-prefsEditor-reset {
+    height: 2.2em;
+}
+
+/* remove shadow from prefsEditor button when a contrast theme is enabled. */
+body[class*="fl-theme-"]:not([class*="-default"]) .fl-prefsEditor-separatedPanel .fl-panelBar .fl-prefsEditor-buttons {
+    box-shadow: none;
+    border: 1px solid;
+}
