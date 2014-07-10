@@ -80,28 +80,6 @@
             </div>
         </div>
 
-        <script type="text/javascript">
-            $(document).ready(function () {
-                fluid.uiOptions.prefsEditor(".flc-prefsEditor-separatedPanel", {
-                    tocTemplate: "../../src/lib/infusion/components/tableOfContents/html/TableOfContents.html",
-                    templatePrefix: "../../src/lib/infusion/framework/preferences/html/",
-                    messagePrefix: "../../src/lib/infusion/framework/preferences/messages/",
-                    components: {
-                        prefsEditorLoader: {
-                            options: {
-                                iframeRenderer: {
-                                    markupProps: {
-                                        "class": "flc-iframe",
-                                        src: "SeparatedPanelPrefsEditorFrame.html"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            })
-        </script>
-
         <header class="gpii-feedbackDemo-header">
             <div class="row">
                 <div class="small-12 columns clearfix">
@@ -131,6 +109,24 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            fluid.uiOptions.prefsEditor(".flc-prefsEditor-separatedPanel", {
+                tocTemplate: "../../src/lib/infusion/components/tableOfContents/html/TableOfContents.html",
+                templatePrefix: "../../src/lib/infusion/framework/preferences/html/",
+                messagePrefix: "../../src/lib/infusion/framework/preferences/messages/",
+                components: {
+                    prefsEditorLoader: {
+                        options: {
+                            iframeRenderer: {
+                                markupProps: {
+                                    "class": "flc-iframe",
+                                    src: "SeparatedPanelPrefsEditorFrame.html"
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
             $("#gpiic-feedbackDemo-content").html(demo.metadata.predefinedOER.content);
         });
     </script>
