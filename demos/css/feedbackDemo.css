@@ -14,6 +14,13 @@
     font-weight: bold;
 }
 
+@font-face {
+    font-family: 'FloeMetadataIcons';
+    src:url('../../src/css/fonts/floe-metadata.eot?#iefix') format('embedded-opentype'),
+         url('../../src/css/fonts/floe-metadata.eot'),
+         url('../../src/css/fonts/floe-metadata.ttf');
+}
+
 .gpii-feedbackDemo-demo {
     font-family: "OpenSans","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
     background-color: #F4F4E9;
@@ -98,4 +105,52 @@
 .gpii-feedbackDemo-demo .top-bar-section li:not(.has-form) a:not(.button):focus {
     background-color: #E7E7E7;
     color: #000;
+}
+
+/** icons **/
+.gpii-icon:before {
+    font-family: 'FloeMetadataIcons';
+    color: #fff;
+    font-size: 1.5em;
+    padding-left: 0.5em;
+    padding-top: 0.3em;
+    line-height:1.5em;
+    -webkit-border-radius: 999px;
+    -moz-border-radius: 999px;
+    border-radius: 999px;
+    behavior: url(PIE.htc);
+    width: 2em;
+    height: 2em;
+    display: inline-block;
+    background: #249681;
+    font-weight: normal;
+    vertical-align: middle;
+}
+
+.gpii-icon-text:before {
+    content: "\e601";
+}
+
+.gpii-icon-captions:before {
+    content: "\e602";
+}
+
+.gpii-icon-transcript:before {
+    content: "\e603";
+}
+
+.gpii-icon-audio:before {
+    content: "\e604";
+}
+
+.gpii-happy:before {
+    content: "\e610";
+}
+
+.gpii-sad:before {
+    content: "\e611";
+}
+
+.gpii-request:before {
+    content: "\e612";
 }
