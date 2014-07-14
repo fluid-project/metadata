@@ -38,10 +38,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             generateModel: {
                 funcName: "fluid.metadata.metadataPanel.generateModel",
                 args: ["{that}.defaultModel", "{arguments}.0"]
-            },
-            setURL: {
-                funcName: "fluid.metadata.metadataPanel.setURL",
-                args: ["{that}", "{arguments}.0"]
             }
         }
     });
@@ -49,10 +45,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     fluid.metadata.metadataPanel.generateModel = function (defaultModel, inputModel) {
         inputModel = inputModel || {};
         return fluid.merge({"metadata": "replace"}, defaultModel, inputModel);
-    };
-
-    fluid.metadata.metadataPanel.setURL = function (that, url) {
-        that.applier.change("url", url);
     };
 
 })(jQuery, fluid);

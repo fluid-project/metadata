@@ -53,7 +53,7 @@ https://github.com/gpii/universal/LICENSE.txt
             jqUnit.start();
         }, "checkRendered", null, "last");
 
-        that.setURL("http://example.com/test.mp4");
+        that.applier.change("url", "http://example.com/test.mp4");
     });
 
 })(jQuery);

@@ -68,8 +68,8 @@ var demo = demo || {};
             onMarkupFetched: ["{simpleEditor}.setContent", "{markupViewer}.updateModelMarkup", "{preview}.updateModelMarkup"],
             onMetadataModelFetched: ["{markupViewer}.updateModelMetadata", "{preview}.updateModelMetadata", "{that}.updateMetadataPanel",
             {
-                listener: "{simpleEditor}.setURL",
-                args: "{arguments}.0.url"
+                listener: "{simpleEditor}.applier.change",
+                args: ["url", "{arguments}.0.url"]
             }],
             "onCreate.setTitle": {
                 "this": "{that}.dom.title",
@@ -216,7 +216,7 @@ var demo = demo || {};
         var metadataPanelModel = fluid.isPrimitive(metadataModel) ? {"url": url} : metadataModel;
 
         if (that.metadataPanel) {
-            that.metadataPanel.setURL(url);
+            that.metadataPanel.applier.change("url", url);
         } else if (url && url.trim() !== "") {
             that.doDestroy();
             that.metadataPanelModel = metadataPanelModel;

@@ -43,7 +43,7 @@ https://github.com/gpii/universal/LICENSE.txt
 
         jqUnit.expect(1);
         var newStatus = "unavailable";
-        that.applier.requestChange("audio", newStatus);
+        that.applier.change("audio", newStatus);
         jqUnit.assertTrue("The indicator status is set to " + newStatus, that.locate("indicator").hasClass(that.indicator.options.styles.indicatorState.unavailable));
     });
 

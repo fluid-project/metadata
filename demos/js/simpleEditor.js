@@ -57,10 +57,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             updateModelMarkup: {
                 funcName: "fluid.simpleEditor.updateModelMarkup",
                 args: ["{that}"]
-            },
-            setURL: {
-                funcName: "fluid.simpleEditor.setURL",
-                args: ["{that}", "{arguments}.0"]
             }
         },
         components: {
@@ -144,12 +140,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }
     };
 
-    fluid.simpleEditor.setURL = function (that, url) {
-        that.applier.requestChange("url", url);
-    };
-
     fluid.simpleEditor.updateModelMarkup = function (that) {
-        that.applier.requestChange("markup", that.locate("content").html());
+        that.applier.change("markup", that.locate("content").html());
     };
 
     fluid.registerNamespace("fluid.simpleEditor.button");
@@ -422,7 +414,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     };
 
     fluid.simpleEditor.insertVideo.updateModelUrl = function (that) {
-        that.applier.requestChange("url", that.locate("url").val());
+        that.applier.change("url", that.locate("url").val());
     };
 
     fluid.simpleEditor.insertVideo.setURLText = function (urlElm, url) {

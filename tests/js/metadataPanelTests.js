@@ -39,7 +39,7 @@ https://github.com/gpii/universal/LICENSE.txt
         var that = fluid.metadata.metadataPanel(".gpiic-metadataPanel-standalone");
 
         fluid.tests.checkMetadataPanel(that, {}, "Initializing a standalone");
-        that.setURL(url);
+        that.applier.change("url", url);
         fluid.tests.checkMetadataPanel(that, {url: url}, "Change URL in a standalone");
     });
 
@@ -50,7 +50,7 @@ https://github.com/gpii/universal/LICENSE.txt
         var expectedInitialModel = $.extend(true, null, defaultModel, inputModel);
 
         fluid.tests.checkMetadataPanel(that, expectedInitialModel, "Initializing a component that has the metadataPanel as a grade");
-        that.setURL(url);
+        that.applier.change("url", url);
         fluid.tests.checkMetadataPanel(that, $.extend(true, null, expectedInitialModel, {url: url}), "Change URL in a component that has the metadataPanel as a grade");
     });
 
