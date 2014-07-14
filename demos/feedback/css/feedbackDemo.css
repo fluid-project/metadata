@@ -1,11 +1,11 @@
 @font-face {
     font-family: 'RobotoSlab';
-    src: url('../css/fonts/RobotoSlab-Bold.ttf');
+    src: url('../../css/fonts/RobotoSlab-Bold.ttf');
 }
 
 @font-face {
     font-family: 'OpenSans';
-    src: url('../css/fonts/OpenSans-Regular.ttf');
+    src: url('../../css/fonts/OpenSans-Regular.ttf');
 }
 
 @font-face {
