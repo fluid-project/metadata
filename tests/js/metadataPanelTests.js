@@ -21,14 +21,6 @@ https://github.com/gpii/universal/LICENSE.txt
         defaultModel = {"default": "defaultValue"},
         inputModel = {"input": "inputValue"};
 
-    fluid.defaults("fluid.tests.wrapper", {
-        gradeNames: ["fluid.metadata.metadataPanel", "autoInit"],
-        members: {
-            defaultModel: defaultModel
-        },
-        inputModel: inputModel
-    });
-
     fluid.tests.checkMetadataPanel = function (that, expectedModel, message) {
         jqUnit.assertDeepEq("The model is expected - " + message, expectedModel, that.model);
     };
@@ -43,10 +35,18 @@ https://github.com/gpii/universal/LICENSE.txt
         fluid.tests.checkMetadataPanel(that, {url: url}, "Change URL in a standalone");
     });
 
+    fluid.defaults("fluid.tests.metadataPanelAsGrade", {
+        gradeNames: ["fluid.metadata.metadataPanel", "autoInit"],
+        members: {
+            defaultModel: defaultModel
+        },
+        inputModel: inputModel
+    });
+
     jqUnit.test("Test metadata panel - Use as a grade", function () {
         jqUnit.expect(2);
 
-        var that = fluid.tests.wrapper(".gpiic-metadataPanel-grade");
+        var that = fluid.tests.metadataPanelAsGrade(".gpiic-metadataPanel-grade");
         var expectedInitialModel = $.extend(true, null, defaultModel, inputModel);
 
         fluid.tests.checkMetadataPanel(that, expectedInitialModel, "Initializing a component that has the metadataPanel as a grade");

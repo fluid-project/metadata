@@ -318,7 +318,7 @@ var fluid_1_5 = fluid_1_5 || {};
         resources = fluid.makeArray(fluid.copy(resources));
 
         for (var i = resources.length; i < 2; i++) {
-            resources.push(defaultInputModelElement);
+            resources.push(fluid.copy(defaultInputModelElement));
         }
         that.model.resources = resources;
     };

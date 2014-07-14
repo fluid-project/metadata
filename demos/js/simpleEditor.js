@@ -132,7 +132,9 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     });
 
     fluid.simpleEditor.saveMarkup = function (setFunc, newValue) {
-        setFunc({id: "markup", model: newValue});
+        if (typeof(newValue) !== "undefined") {
+            setFunc({id: "markup", model: newValue});
+        }
     };
 
     fluid.simpleEditor.setContent = function (elm, content) {

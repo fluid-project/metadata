@@ -70,7 +70,7 @@ var fluid_1_5 = fluid_1_5 || {};
 
         fluid.each(transformSpec, function (value, key) {
             if (key === "true" || key === "false") {
-                var keyTree = fluid.get(transformSpec, key);
+                var keyTree = transformSpec[key];
 
                 if (keyTree) {
                     var mapOptionTransform = [];
