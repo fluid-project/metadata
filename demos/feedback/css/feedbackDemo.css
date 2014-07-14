@@ -87,7 +87,7 @@
 
 /** sticky bar area */
 
-.gpii-feedbackDemo-top-bar-Container {
+/*.gpii-feedbackDemo-top-bar-Container {
     border-bottom: 1px solid #888;
     box-shadow: 0px 1px 5px 0px rgba(50, 50, 50, 0.75);
 }
@@ -105,6 +105,38 @@
 .gpii-feedbackDemo-demo .top-bar-section li:not(.has-form) a:not(.button):focus {
     background-color: #E7E7E7;
     color: #000;
+}*/
+
+/* Feedback styles */
+
+.gppi-feedback {
+    width: 100%;
+    position: fixed;
+    top: 0px;
+    background-color: #fff;
+    border-bottom: 1px solid #888;
+    box-shadow: 0px 1px 5px 0px rgba(50, 50, 50, 0.75);
+}
+
+.gppi-feedback li {
+    display: inline-block;
+    list-style-type: none;
+    padding-right: 0.75em;
+}
+
+.gpii-feedback-preferencesStatus {
+    float: left;
+}
+
+.gpii-feedback-feedbackControls {
+    float: right;
+}
+
+.gpii-feedback-requestsControls {
+    float: right;
+    padding-right: 1em;
+    padding-left: 0.75em;
+    border-left: 1px solid #888;
 }
 
 /** icons **/
@@ -112,9 +144,7 @@
     font-family: 'FloeMetadataIcons';
     color: #fff;
     font-size: 1.5em;
-    padding-left: 0.5em;
-    padding-top: 0.3em;
-    line-height:1.5em;
+    line-height:2em;
     -webkit-border-radius: 999px;
     -moz-border-radius: 999px;
     border-radius: 999px;
@@ -124,7 +154,7 @@
     display: inline-block;
     background: #249681;
     font-weight: normal;
-    vertical-align: middle;
+    text-align: center;
 }
 
 .gpii-icon-text:before {
@@ -143,14 +173,14 @@
     content: "\e604";
 }
 
-.gpii-happy:before {
+.gpii-icon-happy:before {
     content: "\e610";
 }
 
-.gpii-sad:before {
+.gpii-icon-sad:before {
     content: "\e611";
 }
 
-.gpii-request:before {
+.gpii-icon-request:before {
     content: "\e612";
 }

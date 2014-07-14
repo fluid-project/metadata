@@ -6,7 +6,9 @@
         <title>NOAA Education Resources | Floe Metadata Authoring Demo</title>
 
         <!-- Custom build of Foundation -->
-        <link rel="stylesheet" href="../../lib/foundation/css/foundation.min.css" />
+        <!-- <link rel="stylesheet" href="../../lib/foundation/css/foundation.min.css" /> -->
+        <link rel="stylesheet" href="../../lib/foundation/css/normalize.css" />
+        <!-- <link rel="stylesheet" href="../../lib/foundation/css/foundation.css" /> -->
         <link rel="stylesheet" href="../../../src/lib/infusion/components/overviewPanel/css/OverviewPanel.css" />
         <link rel="stylesheet" href="../css/feedbackDemo.css" />
 
@@ -17,7 +19,7 @@
     </head>
     <body class="gpiic-feedbackDemo-demo gpii-feedbackDemo-demo">
         <!-- BEGIN markup for feedback bar -->
-        <div class="gpii-feedbackDemo-top-bar-Container fixed sticky">
+<!--         <div class="gpii-feedbackDemo-top-bar-Container fixed sticky">
             <div class="top-bar">
                 <section class="top-bar-section">
                     <ul class="left">
@@ -49,7 +51,27 @@
                     </ul>
                 </section>
             </div>
-        </div>
+        </div> -->
+
+        <section class="gppic-feedback gppi-feedback">
+            <!-- Preference Icons -->
+            <ul class="gpii-feedback-preferencesStatus">
+                <li class="gpii-icon gpii-icon-text"></li>
+                <li class="gpii-icon gpii-icon-captions"></li>
+                <li class="gpii-icon gpii-icon-transcript"></li>
+                <li class="gpii-icon gpii-icon-audio"></li>
+            </ul>
+            <!-- Requests -->
+            <ul class="gpii-feedback-requestsControls">
+                <li class="gpii-icon gpii-icon-request"></li>
+            </ul>
+            <!-- Feedback -->
+            <ul class="gpii-feedback-feedbackControls">
+                <li class="gpii-icon gpii-icon-happy"></li>
+                <li class="gpii-icon gpii-icon-sad"></li>
+            </ul>
+        </section>
+
         <!-- END markup for feedback bar -->
 
         <header class="gpii-feedbackDemo-header">
