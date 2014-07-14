@@ -30,6 +30,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             content: "#gpiic-metadataDemo-resourceEditor-textEditor"
         },
         events: {
+            onContentAreaReady: null,
             afterVideoInserted: null
         },
         listeners: {
@@ -39,8 +40,11 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 "args": [{contentEditable: true}]
             },
             "onCreate.setFocus": {
-                listener: "fluid.simpleEditor.setFocus",
+                listener: "fluid.focus",
                 args: "{that}.dom.content"
+            },
+            "onCreate.onContentAreaReady": {
+                listener: "{that}.events.onContentAreaReady.fire"
             }
         },
         modelListeners: {
@@ -83,6 +87,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 sources: "{that}.dom.controls",
                 type: "fluid.simpleEditor.button",
                 container: "{source}",
+                createOnEvent: "{simpleEditor}.events.onContentAreaReady",
                 options: {
                     ariaOptions: {
                         editorToControl: "{simpleEditor}.options.selectors.content"
@@ -128,10 +133,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
     fluid.simpleEditor.saveMarkup = function (setFunc, newValue) {
         setFunc({id: "markup", model: newValue});
-    };
-
-    fluid.simpleEditor.setFocus = function (contentEditor) {
-        contentEditor.get(0).focus();
     };
 
     fluid.simpleEditor.setContent = function (elm, content) {
