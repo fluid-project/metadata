@@ -14,6 +14,15 @@
     font-weight: bold;
 }
 
+body {
+    line-height: 1.6;
+}
+
+.gpii-feedbackDemo-demo p {
+    /* ensure that line-height is inherited from the body so that UIO's line spacing enactor works */
+    line-height: inherit;
+}
+
 .gpii-feedbackDemo-demo {
     font-family: "OpenSans","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
     background-color: #F4F4E9;
