@@ -14,13 +14,6 @@
     font-weight: bold;
 }
 
-@font-face {
-    font-family: 'FloeMetadataIcons';
-    src:url('../../../src/css/fonts/floe-metadata.eot?#iefix') format('embedded-opentype'),
-         url('../../../src/css/fonts/floe-metadata.eot'),
-         url('../../../src/css/fonts/floe-metadata.ttf');
-}
-
 .gpii-feedbackDemo-demo {
     font-family: "OpenSans","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
     background-color: #F4F4E9;
@@ -54,7 +47,7 @@
 
 .gpii-feedbackDemo-header {
     background-color: #fff;
-    margin-top: 3em;
+    margin-top: 5em;
 }
 
 .gpii-feedbackDemo-header-logo {
@@ -70,120 +63,17 @@
     margin-left: 1rem;
 }
 
-.gpii-feedbackDemo-header-title h1 {
+.gpii-feedbackDemo-header-title {
     text-transform: uppercase;
-    font-size: 2.3rem;
 }
-
-.gpii-feedbackDemo-header-title .gpii-feedbackDemo-header-tagline {
-    text-transform: uppercase;
+.gpii-feedbackDemo-header-title h1 {
+    font-size: 2.3rem;
 }
 
 .gpii-feedbackDemo-page-title {
     font-family: 'RobotoSlab';
     font-size: 2rem;
     margin: 4rem 0 1rem 0;
-}
-
-/** sticky bar area */
-
-/*.gpii-feedbackDemo-top-bar-Container {
-    border-bottom: 1px solid #888;
-    box-shadow: 0px 1px 5px 0px rgba(50, 50, 50, 0.75);
-}
-
-.gpii-feedbackDemo-demo .top-bar,
-.gpii-feedbackDemo-demo .top-bar-section li:not(.has-form) a:not(.button) {
-    background-color: #fff;
-}
-
-.gpii-feedbackDemo-demo .top-bar-section ul li a {
-    color: #000;
-}
-
-.gpii-feedbackDemo-demo .top-bar-section li:not(.has-form) a:not(.button):hover,
-.gpii-feedbackDemo-demo .top-bar-section li:not(.has-form) a:not(.button):focus {
-    background-color: #E7E7E7;
-    color: #000;
-}*/
-
-/* Feedback styles */
-
-.gpii-feedback {
-    width: 100%;
-    position: fixed;
-    top: 0px;
-    background-color: #fff;
-    border-bottom: 1px solid #888;
-    box-shadow: 0px 1px 5px 0px rgba(50, 50, 50, 0.75);
-    z-index: 1;
-}
-
-.gpii-feedback li {
-    display: inline-block;
-    list-style-type: none;
-    padding-right: 0.75em;
-}
-
-.gpii-feedback-preferencesStatus {
-    float: left;
-}
-
-.gpii-feedback-feedbackControls {
-    float: right;
-}
-
-.gpii-feedback-requestsControls {
-    float: right;
-    padding-right: 1em;
-    padding-left: 0.75em;
-    border-left: 1px solid #888;
-}
-
-/** icons **/
-.gpii-icon:before {
-    font-family: 'FloeMetadataIcons';
-    color: #fff;
-    font-size: 1.5em;
-    line-height:2em;
-    -webkit-border-radius: 999px;
-    -moz-border-radius: 999px;
-    border-radius: 999px;
-    behavior: url(PIE.htc);
-    width: 2em;
-    height: 2em;
-    display: inline-block;
-    background: #249681;
-    font-weight: normal;
-    text-align: center;
-}
-
-.gpii-icon-text:before {
-    content: "\e601";
-}
-
-.gpii-icon-captions:before {
-    content: "\e602";
-}
-
-.gpii-icon-transcript:before {
-    content: "\e603";
-}
-
-.gpii-icon-audio:before {
-    content: "\e604";
-}
-
-.gpii-icon-happy:before {
-    content: "\e610";
-}
-
-.gpii-icon-sad:before {
-    content: "\e611";
-}
-
-.gpii-icon-request:before {
-    content: "\e612";
 }
 
 /* Feedback overrides caused by Foundation */
