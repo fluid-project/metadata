@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>NOAA Education Resources | Floe Metadata Authoring Demo</title>
+
+        <!-- Custom build of Foundation -->
+        <link rel="stylesheet" href="../../../src/lib/normalize/normalize.css" />
+        <link rel="stylesheet" href="../../lib/foundation/css/foundation.min.css" />
+        <link rel="stylesheet" href="../../../src/lib/infusion/components/overviewPanel/css/OverviewPanel.css" />
+        <link rel="stylesheet" href="../../../src/components/feedback/css/feedback.css" />
+        <link rel="stylesheet" href="../css/feedbackDemo.css" />
+
+        <script type="text/javascript" src="../../../src/lib/infusion/infusion-custom.js"></script>
+        <script type="text/javascript" src="../../../src/lib/pouchDB/pouchdb-nightly.min.js"></script>
+        <script type="text/javascript" src="../../js/predefinedOER.js"></script>
+        <script type="text/javascript" src="../../../src/js/pouchDBDataSource.js"></script>
+
+        <script type="text/javascript" src="../../../src/components/feedback/js/feedback.js"></script>
+    </head>
+    <body class="gpiic-feedbackDemo-demo gpii-feedbackDemo-demo">
+        <!-- BEGIN markup for feedback tool -->
+
+        <section class="gpiic-feedback">
+            <!-- Feedback Tool -->
+        </section>
+
+        <!-- END markup for feedback tool -->
+
+        <header class="gpii-feedbackDemo-header">
+            <div class="row">
+                <div class="small-12 columns clearfix">
+
+                    <div class="left gpii-feedbackDemo-header-logo">
+                        <img src="../../images/noaa_logo.gif"  alt="The National Oceanic and Atmospheric Administration (or NOAA) logo."/>
+                    </div>
+                    <div class="gpii-feedbackDemo-header-title ">
+                        <h1>Education Resources</h1>
+                        <span class="gpii-feedbackDemo-header-tagline">National Oceanic and Atmospheric Administration</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section class="gpiic-feedbackDemo-body gpii-feedbackDemo-body gpii-feedbackDemo-resourceEditor-active gpii-feedbackDemo-expand" role="application">
+            <div class="row">
+                <h2 class="gpii-feedbackDemo-page-title">Climate Change Impacts</h2>
+            </div>
+
+            <div class="row gpii-feedbackDemo-content" id="gpiic-feedbackDemo-content">
+            </div>
+        </section>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#gpiic-feedbackDemo-content").html(demo.metadata.predefinedOER.content);
+            gpii.metadata.feedback(".gpiic-feedback", {
+                resources: {
+                    template: {
+                        url: "../../../src/components/feedback/html/feedbackTemplate.html"
+                    }
+                }
+            });
+        });
+    </script>
+    </body>
+</html>

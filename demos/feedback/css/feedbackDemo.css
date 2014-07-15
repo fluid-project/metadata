@@ -1,0 +1,95 @@
+@font-face {
+    font-family: 'RobotoSlab';
+    src: url('../../css/fonts/RobotoSlab-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'OpenSans';
+    src: url('../../css/fonts/OpenSans-Regular.ttf');
+}
+
+@font-face {
+    font-family: "OpenSans";
+    src: url('../css/fonts/OpenSans-Bold.ttf');
+    font-weight: bold;
+}
+
+.gpii-feedbackDemo-demo {
+    font-family: "OpenSans","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
+    background-color: #F4F4E9;
+    min-width:38rem;
+}
+
+.gpii-feedbackDemo-body {
+    margin-bottom: 4rem;
+    padding: 0 2rem;
+}
+
+.gpii-feedbackDemo-demo a {
+    color: #2C6FB7;
+}
+
+.gpii-feedbackDemo-demo a.disabled {
+    pointer-events: none;
+    cursor: default;
+}
+
+.gpii-feedbackDemo-demo .button {
+    color: #fff;
+    background-color: #2C6FB7;
+}
+
+.gpii-feedbackDemo-demo .button:hover {
+    background-color: #3F8FD8;
+}
+
+/* Header area */
+
+.gpii-feedbackDemo-header {
+    background-color: #fff;
+    margin-top: 5em;
+}
+
+.gpii-feedbackDemo-header-logo {
+    margin: 0.5rem 0.5rem 0 0;
+}
+
+.gpii-feedbackDemo-header-logo img {
+    width: 7rem;
+}
+
+.gpii-feedbackDemo-header-title {
+    padding-top: 1rem;
+    margin-left: 1rem;
+}
+
+.gpii-feedbackDemo-header-title {
+    text-transform: uppercase;
+}
+.gpii-feedbackDemo-header-title h1 {
+    font-size: 2.3rem;
+}
+
+.gpii-feedbackDemo-page-title {
+    font-family: 'RobotoSlab';
+    font-size: 2rem;
+    margin: 4rem 0 1rem 0;
+}
+
+/* Feedback overrides caused by Foundation */
+
+.gpii-feedback ul {
+    margin: 1em 0;
+    padding: 0 0 0 2.5em;
+}
+
+.gpii-feedback ul li {
+    margin: 0;
+    padding: 0 0.75em 0 0;
+}
+
+.gpii-feedback ul.gpii-feedback-requestsControls {
+    padding-right: 1em;
+    padding-left: 0.75em;
+}
+
