@@ -1,0 +1,103 @@
+@font-face {
+    font-family: 'FloeMetadataIcons';
+    src:url('../../../css/fonts/floe-metadata.eot?#iefix') format('embedded-opentype'),
+         url('../../../css/fonts/floe-metadata.eot'),
+         url('../../../css/fonts/floe-metadata.ttf');
+}
+
+.gpii-feedback {
+    width: 100%;
+    position: fixed;
+    top: 0px;
+    background-color: #fff;
+    border-bottom: 1px solid #888;
+    box-shadow: 0px 1px 5px 0px rgba(50, 50, 50, 0.75);
+    z-index: 1;
+}
+
+.gpii-feedback li {
+    display: inline-block;
+    list-style-type: none;
+    padding-right: 0.75em;
+}
+
+.gpii-feedback-preferencesStatus {
+    float: left;
+}
+
+.gpii-feedback-feedbackControls {
+    float: right;
+}
+
+.gpii-feedback-requestsControls {
+    float: right;
+    padding-right: 1em;
+    padding-left: 0.75em;
+    border-left: 2px solid #E5E5E5;
+}
+
+.gpii-feedback-button {
+    cursor: pointer;
+}
+
+.gpii-icon.gpii-feedback-button:before {
+    color: #6699cc;
+    background-color: #fff;
+    margin-top: -1px;
+    border: 2px solid #6699cc;
+}
+
+.gpii-icon.gpii-feedback-button:hover:before {
+    color: #fff;
+    background-color: #6699cc;
+}
+
+/* icons */
+
+.gpii-icon:before {
+    font-family: 'FloeMetadataIcons';
+    color: #fff;
+    font-size: 1.5em;
+    line-height:2em;
+    -webkit-border-radius: 999px;
+    -moz-border-radius: 999px;
+    border-radius: 999px;
+    behavior: url(PIE.htc);
+    width: 2em;
+    height: 2em;
+    display: inline-block;
+    background: #66cc99;
+    font-weight: normal;
+    text-align: center;
+    opacity: 1;
+}
+
+.gpii-icon-text:before {
+    content: "\e601";
+}
+
+.gpii-icon-captions:before {
+    content: "\e602";
+}
+
+.gpii-icon-transcript:before {
+    content: "\e603";
+}
+
+.gpii-icon-audio:before {
+    content: "\e604";
+}
+
+.gpii-icon-happy:before {
+    content: "\e610";
+}
+
+.gpii-icon-sad:before {
+    content: "\e611";
+}
+
+.gpii-icon-request:before {
+    content: "\e612";
+    /* minor adjustment to centre request icon */
+    line-height: 1.9em;
+}
