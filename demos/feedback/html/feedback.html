@@ -16,27 +16,14 @@
         <script type="text/javascript" src="../../../src/lib/pouchDB/pouchdb-nightly.min.js"></script>
         <script type="text/javascript" src="../../js/predefinedOER.js"></script>
         <script type="text/javascript" src="../../../src/js/pouchDBDataSource.js"></script>
+
+        <script type="text/javascript" src="../../../src/components/feedback/js/feedback.js"></script>
     </head>
     <body class="gpiic-feedbackDemo-demo gpii-feedbackDemo-demo">
         <!-- BEGIN markup for feedback tool -->
 
-        <section class="gpiic-feedback gpii-feedback">
-            <!-- Preference Icons -->
-            <ul class="gpii-feedback-preferencesStatus">
-                <li class="gpii-icon gpii-icon-text"></li>
-                <li class="gpii-icon gpii-icon-captions"></li>
-                <li class="gpii-icon gpii-icon-transcript"></li>
-                <li class="gpii-icon gpii-icon-audio"></li>
-            </ul>
-            <!-- Requests -->
-            <ul class="gpii-feedback-requestsControls">
-                <li class="gpii-icon gpii-icon-request gpii-feedback-button"></li>
-            </ul>
-            <!-- Feedback -->
-            <ul class="gpii-feedback-feedbackControls">
-                <li class="gpii-icon gpii-icon-happy gpii-feedback-button"></li>
-                <li class="gpii-icon gpii-icon-sad gpii-feedback-button"></li>
-            </ul>
+        <section class="gpiic-feedback">
+            <!-- Feedback Tool -->
         </section>
 
         <!-- END markup for feedback tool -->
@@ -69,6 +56,13 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#gpiic-feedbackDemo-content").html(demo.metadata.predefinedOER.content);
+            gpii.metadata.feedback(".gpiic-feedback", {
+                resources: {
+                    template: {
+                        url: "../../../src/components/feedback/html/feedbackTemplate.html"
+                    }
+                }
+            });
         });
     </script>
     </body>
