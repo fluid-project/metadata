@@ -165,6 +165,18 @@ var fluid_1_5 = fluid_1_5 || {};
         model: {
             resources: null,
         },
+        modelRelay: {
+            target: "resources",
+            forward: "initOnly",
+            singleTransform: {
+                type: "fluid.transforms.free",
+                func: "fluid.metadata.baseResourceInputPanel.setInitialResources",
+                args: {
+                    "defaultInputModelElement": "{that}.defaultInputModelElement",
+                    "resources": "{that}.model.resources"
+                }
+            }
+        },
         members: {
             inputs: [],
             defaultInputModelElement: {
@@ -256,7 +268,6 @@ var fluid_1_5 = fluid_1_5 || {};
             onIndicatorUpdated: null
         },
         listeners: {
-            "onCreate.prepareModel": "{that}.prepareModel",
             "onCreate.fetchTemplate": "fluid.metadata.baseResourceInputPanel.fetchTemplate",
             "onCreate.applyContainerStyle": {
                 "this": "{that}.container",
@@ -280,10 +291,6 @@ var fluid_1_5 = fluid_1_5 || {};
             "onRenderInputContainer.renderInputContainer": "{that}.renderInputContainer"
         },
         invokers: {
-            prepareModel: {
-                funcName: "fluid.metadata.baseResourceInputPanel.prepareModel",
-                args: ["{that}", "{that}.model.resources", "{that}.defaultInputModelElement"]
-            },
             updateModel: {
                 funcName: "fluid.metadata.baseResourceInputPanel.updateModel",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "resources"],
@@ -314,13 +321,13 @@ var fluid_1_5 = fluid_1_5 || {};
         }]
     });
 
-    fluid.metadata.baseResourceInputPanel.prepareModel = function (that, resources, defaultInputModelElement) {
-        resources = fluid.makeArray(fluid.copy(resources));
+    fluid.metadata.baseResourceInputPanel.setInitialResources = function (model) {
+        var resources = fluid.makeArray(fluid.copy(model.resources));
 
         for (var i = resources.length; i < 2; i++) {
-            resources.push(fluid.copy(defaultInputModelElement));
+            resources.push(fluid.copy(model.defaultInputModelElement));
         }
-        that.model.resources = resources;
+        return resources;
     };
 
     fluid.metadata.baseResourceInputPanel.updateModel = function (that, value, path, index, root) {

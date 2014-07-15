@@ -36,7 +36,6 @@ https://github.com/gpii/universal/LICENSE.txt
                 afterSubpanelsRendered: function (that) {
                     jqUnit.expect(4);
                     fluid.tests.checkNotRenderedVideoMetadataPanel(that);
-                    that.events.afterSubpanelsRendered.removeListener("checkInit");
                     jqUnit.start();
                 }
             }
@@ -44,16 +43,21 @@ https://github.com/gpii/universal/LICENSE.txt
     });
 
     jqUnit.asyncTest("Test metadata panel - provide an video URL", function () {
-        var that = fluid.tests.createMetadataPanel(".gpiic-metadataPanel-with-url");
-
-        that.events.afterSubpanelsRendered.addListener(function () {
-            jqUnit.expect(4);
-            fluid.tests.checkRenderedVideoMetadataPanel(that);
-            that.events.afterSubpanelsRendered.removeListener("checkRendered");
-            jqUnit.start();
-        }, "checkRendered", null, "last");
-
-        that.applier.change("url", "http://example.com/test.mp4");
+        var that = fluid.tests.createMetadataPanel(".gpiic-metadataPanel-with-url", {
+            listeners: {
+                onCreate: {
+                    listener: function (that) {
+                        that.applier.change("url", "http://example.com/test.mp4");
+                    },
+                    priority: "last"
+                },
+                afterSubpanelsRendered: function (that) {
+                    jqUnit.expect(4);
+                    fluid.tests.checkRenderedVideoMetadataPanel(that);
+                    jqUnit.start();
+                }
+            }
+        });
     });
 
 })(jQuery);
