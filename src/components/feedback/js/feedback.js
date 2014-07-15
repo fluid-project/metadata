@@ -24,8 +24,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             container: "gpii-feedback"
         },
         events: {
-            templateFetched: null,
-            markupReady: null
+            afterTemplateFetched: null,
+            afterMarkupReady: null
         },
         listeners: {
             "onCreate.addContainerClass": {
@@ -35,12 +35,18 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             },
             "onCreate.fetchResources": {
                 "funcName": "fluid.fetchResources",
-                "args": ["{that}.options.resources", "{that}.events.templateFetched.fire"]
+                "args": ["{that}.options.resources", "{that}.events.afterTemplateFetched.fire"]
             },
-            "templateFetched.appendMarkup": {
+            "afterTemplateFetched.appendMarkup": {
                 "this": "{that}.container",
                 "method": "append",
-                "args": "{arguments}.0.template.resourceText"
+                "args": "{arguments}.0.template.resourceText",
+                "priority": "first"
+            },
+            "afterTemplateFetched.afterMarkupReady": {
+                "func": "{that}.events.afterMarkupReady",
+                "args": "{that}",
+                "priority": "last"
             }
         },
         resources: {
