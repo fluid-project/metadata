@@ -109,16 +109,17 @@
 
 /* Feedback styles */
 
-.gppi-feedback {
+.gpii-feedback {
     width: 100%;
     position: fixed;
     top: 0px;
     background-color: #fff;
     border-bottom: 1px solid #888;
     box-shadow: 0px 1px 5px 0px rgba(50, 50, 50, 0.75);
+    z-index: 1;
 }
 
-.gppi-feedback li {
+.gpii-feedback li {
     display: inline-block;
     list-style-type: none;
     padding-right: 0.75em;
@@ -184,3 +185,21 @@
 .gpii-icon-request:before {
     content: "\e612";
 }
+
+/* Feedback overrides caused by Foundation */
+
+.gpii-feedback ul {
+    margin: 1em 0;
+    padding: 0 0 0 2.5em;
+}
+
+.gpii-feedback ul li {
+    margin: 0;
+    padding: 0 0.75em 0 0;
+}
+
+.gpii-feedback ul.gpii-feedback-requestsControls {
+    padding-right: 1em;
+    padding-left: 0.75em;
+}
+
