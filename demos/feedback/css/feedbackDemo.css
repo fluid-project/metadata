@@ -10,7 +10,7 @@
 
 @font-face {
     font-family: "OpenSans";
-    src: url('../css/fonts/OpenSans-Bold.ttf');
+    src: url('../../css/fonts/OpenSans-Bold.ttf');
     font-weight: bold;
 }
 
@@ -74,6 +74,28 @@
     font-family: 'RobotoSlab';
     font-size: 2rem;
     margin: 4rem 0 1rem 0;
+}
+
+/* For UI Options */
+
+.fl-prefsEditor-separatedPanel {
+    /* place UIO tab below feedback tool */
+    position: relative;
+    top: 5.09em;
+    z-index: 1;
+}
+
+.fl-panelBar.row:after {
+    clear: none;
+}
+
+.fl-prefsEditor-separatedPanel .fl-panelBar.row .fl-prefsEditor-buttons {
+    margin-right: 0;
+}
+
+.gpii-feedbackDemo-demo .fl-prefsEditor-separatedPanel .fl-prefsEditor-showHide,
+.gpii-feedbackDemo-demo .fl-prefsEditor-separatedPanel .fl-prefsEditor-reset {
+    padding-bottom: 1.5em;
 }
 
 /* Feedback overrides caused by Foundation */

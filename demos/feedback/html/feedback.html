@@ -8,9 +8,29 @@
         <!-- Custom build of Foundation -->
         <link rel="stylesheet" href="../../../src/lib/normalize/normalize.css" />
         <link rel="stylesheet" href="../../lib/foundation/css/foundation.min.css" />
+
         <link rel="stylesheet" href="../../../src/lib/infusion/components/overviewPanel/css/OverviewPanel.css" />
         <link rel="stylesheet" href="../../../src/components/feedback/css/feedback.css" />
         <link rel="stylesheet" href="../css/feedbackDemo.css" />
+
+        <!-- Required CSS files for UI Options -->
+        <link rel="stylesheet" type="text/css" href="../../../src/lib/infusion/framework/fss/css/fss-layout.css" />
+        <link rel="stylesheet" type="text/css" href="../../../src/lib/infusion/framework/fss/css/fss-text.css" />
+        <link rel="stylesheet" type="text/css" href="../../../src/lib/infusion/framework/preferences/css/fss/fss-theme-bw-prefsEditor.css" />
+        <link rel="stylesheet" type="text/css" href="../../../src/lib/infusion/framework/preferences/css/fss/fss-theme-wb-prefsEditor.css" />
+        <link rel="stylesheet" type="text/css" href="../../../src/lib/infusion/framework/preferences/css/fss/fss-theme-by-prefsEditor.css" />
+        <link rel="stylesheet" type="text/css" href="../../../src/lib/infusion/framework/preferences/css/fss/fss-theme-yb-prefsEditor.css" />
+        <link rel="stylesheet" type="text/css" href="../../../src/lib/infusion/framework/preferences/css/fss/fss-theme-lgdg-prefsEditor.css" />
+        <link rel="stylesheet" type="text/css" href="../../../src/lib/infusion/framework/preferences/css/fss/fss-theme-dglg-prefsEditor.css" />
+        <link rel="stylesheet" type="text/css" href="../../../src/lib/infusion/framework/preferences/css/fss/fss-text-prefsEditor.css" />
+        <link rel="stylesheet" type="text/css" href="../../../src/lib/infusion/lib/jquery/ui/css/fl-theme-by/by.css" />
+        <link rel="stylesheet" type="text/css" href="../../../src/lib/infusion/lib/jquery/ui/css/fl-theme-yb/yb.css" />
+        <link rel="stylesheet" type="text/css" href="../../../src/lib/infusion/lib/jquery/ui/css/fl-theme-bw/bw.css" />
+        <link rel="stylesheet" type="text/css" href="../../../src/lib/infusion/lib/jquery/ui/css/fl-theme-wb/wb.css" />
+        <link rel="stylesheet" type="text/css" href="../../../src/lib/infusion/lib/jquery/ui/css/fl-theme-lgdg/lgdg.css" />
+        <link rel="stylesheet" type="text/css" href="../../../src/lib/infusion/lib/jquery/ui/css/fl-theme-dglg/dglg.css" />
+        <link rel="stylesheet" type="text/css" href="../../../src/lib/infusion/framework/preferences/css/PrefsEditor.css" />
+        <link rel="stylesheet" type="text/css" href="../../../src/lib/infusion/framework/preferences/css/SeparatedPanelPrefsEditor.css" />
 
         <script type="text/javascript" src="../../../src/lib/infusion/infusion-custom.js"></script>
         <script type="text/javascript" src="../../../src/lib/pouchDB/pouchdb-nightly.min.js"></script>
@@ -28,6 +48,21 @@
 
         <!-- END markup for feedback tool -->
 
+        <!-- Markup for UI Options  -->
+        <div class="flc-prefsEditor-separatedPanel fl-prefsEditor-separatedPanel">
+            <!-- This is the div that will contain the Preference Editor component -->
+            <div class="flc-slidingPanel-panel flc-prefsEditor-iframe"></div>
+            <!-- This div is for the sliding panel that shows and hides the Preference Editor controls -->
+            <div class="fl-panelBar row">
+                <span class="fl-prefsEditor-buttons">
+                    <button id="reset" class="flc-prefsEditor-reset fl-prefsEditor-reset"><span class="fl-icon-undo"></span> Reset</button>
+                    <button id="show-hide" class="flc-slidingPanel-toggleButton fl-prefsEditor-showHide"> Show/Hide</button>
+                </span>
+            </div>
+        </div>
+
+        <!-- End markup for UI Options  -->
+
         <header class="gpii-feedbackDemo-header">
             <div class="row">
                 <div class="small-12 columns clearfix">
@@ -43,7 +78,8 @@
             </div>
         </header>
 
-        <section class="gpiic-feedbackDemo-body gpii-feedbackDemo-body gpii-feedbackDemo-resourceEditor-active gpii-feedbackDemo-expand" role="application">
+        <section class="gpiic-feedbackDemo-body gpii-feedbackDemo-body gpii-feedbackDemo-resourceEditor-active gpii-feedbackDemo-expand">
+            <div class="flc-toc-tocContainer row"> </div>
             <div class="row">
                 <h2 class="gpii-feedbackDemo-page-title">Climate Change Impacts</h2>
             </div>
@@ -56,6 +92,25 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#gpiic-feedbackDemo-content").html(demo.metadata.predefinedOER.content);
+
+            fluid.uiOptions.prefsEditor(".flc-prefsEditor-separatedPanel", {
+                tocTemplate: "../../../src/lib/infusion/components/tableOfContents/html/TableOfContents.html",
+                templatePrefix: "../../../src/lib/infusion/framework/preferences/html/",
+                messagePrefix: "../../../src/lib/infusion/framework/preferences/messages/",
+                components: {
+                    prefsEditorLoader: {
+                        options: {
+                            iframeRenderer: {
+                                markupProps: {
+                                    "class": "flc-iframe",
+                                    src: "SeparatedPanelPrefsEditorFrame.html"
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
             gpii.metadata.feedback(".gpiic-feedback", {
                 resources: {
                     template: {
