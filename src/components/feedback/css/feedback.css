@@ -58,14 +58,8 @@
     font-family: 'FloeMetadataIcons';
     color: #fff;
     font-size: 1.5rem;
-    line-height:2.5rem;
-    -webkit-border-radius: 999px;
-    -moz-border-radius: 999px;
-    border-radius: 999px;
-    behavior: url(PIE.htc);
-    width: 2.5rem;
-    height: 2.5rem;
-    display: inline-block;
+    border-radius: 50%;
+    padding: 0.5rem;
     background: #66cc99;
     font-weight: normal;
     text-align: center;
@@ -98,6 +92,4 @@
 
 .gpii-icon-request:before {
     content: "\e612";
-    /* minor adjustment to centre request icon */
-    line-height: 2.3rem;
 }
