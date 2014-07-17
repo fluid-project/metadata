@@ -101,3 +101,27 @@
     /* minor adjustment to centre request icon */
     line-height: 1.9em;
 }
+
+.gpii-icon.gpii-icon-active:before {
+    color: #fff;
+    background-color: #6699cc;
+}
+/** dialogs **/
+.gpii-hide {
+    display: none;
+}
+
+.gpii-feedback-noClose .ui-dialog-titlebar-close {
+    display: none;
+}
+
+.gpii-feedback-dialog {
+    border-radius: 1em;
+    border: solid 1px;
+    padding: 5px 15px;
+    margin-top: 3em;
+}
+
+.gpii-feedback-dialog.ui-dialog {
+    z-index: 999;
+}

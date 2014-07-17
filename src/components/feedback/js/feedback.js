@@ -19,9 +19,23 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     fluid.registerNamespace("gpii.metadata");
 
     fluid.defaults("gpii.metadata.feedback", {
-        gradeNames: ["fluid.viewComponent", "autoInit"],
+        gradeNames: ["fluid.viewRelayComponent", "autoInit"],
+        components: {
+            happyPanel: {
+                type: "gpii.metadata.feedback.bindDialog",
+                container: "{feedback}.dom.happyButton",
+                createOnEvent: "afterMarkupReady",
+                options: {
+                    panelType: "gpii.metadata.feedback.happyPanel",
+                    containerIdentifier: "{feedback}.options.selectors.happyButton"
+                }
+            }
+        },
         styles: {
             container: "gpii-feedback"
+        },
+        selectors: {
+            happyButton: ".gpiic-happy"
         },
         events: {
             afterTemplateFetched: null,
