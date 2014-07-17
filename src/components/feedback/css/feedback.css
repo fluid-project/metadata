@@ -18,21 +18,21 @@
 .gpii-feedback li {
     display: inline-block;
     list-style-type: none;
-    padding-right: 0.75rem;
 }
 
-.gpii-feedback-preferencesStatus {
+.gpii-feedback-preferences {
     float: left;
 }
 
-.gpii-feedback-feedbackControls {
+.gpii-feedback-controls {
     float: right;
 }
 
+.gpii-feedback-controls ul {
+    display: inline-block;
+}
+
 .gpii-feedback-requestsControls {
-    float: right;
-    padding-right: 1rem;
-    padding-left: 0.75rem;
     border-left: 2px solid #E5E5E5;
 }
 
