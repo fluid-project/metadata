@@ -112,9 +112,17 @@ video {
     margin-right: 0;
 }
 
-.gpii-feedbackDemo-demo .fl-prefsEditor-separatedPanel .fl-prefsEditor-showHide,
-.gpii-feedbackDemo-demo .fl-prefsEditor-separatedPanel .fl-prefsEditor-reset {
-    padding-bottom: 1.5rem;
+.gpii-feedbackDemo-demo .fl-prefsEditor-buttons {
+    font-size: 0.8rem;
+    margin-left: 2rem;
+}
+
+.gpii-feedbackDemo-demo .fl-prefsEditor-separatedPanel .fl-prefsEditor-showHide {
+    min-width: inherit;
+}
+
+.gpii-feedbackDemo-demo .fl-prefsEditor-separatedPanel .fl-panelBar .fl-prefsEditor-buttons {
+    margin-right: 4%;
 }
 
 .fl-theme-bw .gpii-icon:before {
