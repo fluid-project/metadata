@@ -61,7 +61,7 @@ video {
 
 .gpii-feedbackDemo-header {
     background-color: #fff;
-    margin-top: 5rem;
+    margin-top: 4.6rem;
 }
 
 .gpii-feedbackDemo-header-logo {
@@ -92,18 +92,23 @@ video {
 
 /* For UI Options */
 
-.fl-prefsEditor-separatedPanel {
+.gpii-feedbackDemo-demo .fl-prefsEditor-separatedPanel {
     /* place UIO tab below feedback tool */
     position: relative;
-    top: 5.09rem;
+    top: 4.6rem;
     z-index: 1;
 }
 
-.fl-panelBar.row:after {
+.gpii-feedbackDemo-demo .fl-panelBar.row:after {
     clear: none;
 }
 
-.fl-prefsEditor-separatedPanel .fl-panelBar.row .fl-prefsEditor-buttons {
+.gpii-feedbackDemo-demo .fl-prefsEditor-separatedPanel .fl-panelBar {
+    background-color: none;
+    border-bottom: none;
+}
+
+.gpii-feedbackDemo-demo .fl-prefsEditor-separatedPanel .fl-panelBar.row .fl-prefsEditor-buttons {
     margin-right: 0;
 }
 
@@ -158,4 +163,3 @@ video {
     padding-right: 1rem;
     padding-left: 0.75rem;
 }
-

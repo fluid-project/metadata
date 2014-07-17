@@ -18,7 +18,7 @@
 .gpii-feedback li {
     display: inline-block;
     list-style-type: none;
-    padding-right: 0.75em;
+    padding-right: 0.75rem;
 }
 
 .gpii-feedback-preferencesStatus {
@@ -31,8 +31,8 @@
 
 .gpii-feedback-requestsControls {
     float: right;
-    padding-right: 1em;
-    padding-left: 0.75em;
+    padding-right: 1rem;
+    padding-left: 0.75rem;
     border-left: 2px solid #E5E5E5;
 }
 
@@ -57,14 +57,14 @@
 .gpii-icon:before {
     font-family: 'FloeMetadataIcons';
     color: #fff;
-    font-size: 1.5em;
-    line-height:2em;
+    font-size: 1.5rem;
+    line-height:2.5rem;
     -webkit-border-radius: 999px;
     -moz-border-radius: 999px;
     border-radius: 999px;
     behavior: url(PIE.htc);
-    width: 2em;
-    height: 2em;
+    width: 2.5rem;
+    height: 2.5rem;
     display: inline-block;
     background: #66cc99;
     font-weight: normal;
@@ -99,5 +99,5 @@
 .gpii-icon-request:before {
     content: "\e612";
     /* minor adjustment to centre request icon */
-    line-height: 1.9em;
+    line-height: 2.3rem;
 }
