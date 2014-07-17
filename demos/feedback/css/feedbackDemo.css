@@ -23,38 +23,20 @@ video {
     width: 25rem;
 }
 
-.gpii-feedbackDemo-demo p {
-    /* ensure that line-height is inherited from the body so that UIO's line spacing enactor works */
-    line-height: inherit;
-}
-
 .gpii-feedbackDemo-demo {
     font-family: "OpenSans","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
     background-color: #F4F4E9;
     min-width:38rem;
 }
 
+.gpii-feedbackDemo-demo p {
+    /* ensure that line-height is inherited from the body so that UIO's line spacing enactor works */
+    line-height: inherit;
+}
+
 .gpii-feedbackDemo-body {
     margin-bottom: 4rem;
     padding: 0 2rem;
-}
-
-.gpii-feedbackDemo-demo a {
-    color: #2C6FB7;
-}
-
-.gpii-feedbackDemo-demo a.disabled {
-    pointer-events: none;
-    cursor: default;
-}
-
-.gpii-feedbackDemo-demo .button {
-    color: #fff;
-    background-color: #2C6FB7;
-}
-
-.gpii-feedbackDemo-demo .button:hover {
-    background-color: #3F8FD8;
 }
 
 /* Header area */
@@ -95,7 +77,7 @@ video {
 .gpii-feedbackDemo-demo .fl-prefsEditor-separatedPanel {
     /* place UIO tab below feedback tool */
     position: relative;
-    top: 4.6rem;
+    top: 4.4rem;
     z-index: 1;
 }
 
@@ -108,21 +90,25 @@ video {
     border-bottom: none;
 }
 
+.gpii-feedbackDemo-prefsEditor-slidingPanel {
+    border-bottom: 1px solid;
+}
+
 .gpii-feedbackDemo-demo .fl-prefsEditor-separatedPanel .fl-panelBar.row .fl-prefsEditor-buttons {
-    margin-right: 0;
+    margin: 0;
+    min-height: 1em;
+    padding: 0 0.5em;
 }
 
-.gpii-feedbackDemo-demo .fl-prefsEditor-buttons {
-    font-size: 0.8rem;
-    margin-left: 2rem;
+.gpii-feedbackDemo-demo .fl-prefsEditor-separatedPanel .fl-panelBar.row .fl-prefsEditor-buttons button {
+    margin: 0;
+    padding: 0 0.5em;
+    font-size: 1em;
+    height: auto;
 }
 
-.gpii-feedbackDemo-demo .fl-prefsEditor-separatedPanel .fl-prefsEditor-showHide {
-    min-width: inherit;
-}
-
-.gpii-feedbackDemo-demo .fl-prefsEditor-separatedPanel .fl-panelBar .fl-prefsEditor-buttons {
-    margin-right: 4%;
+.gpii-feedbackDemo-demo .fl-prefsEditor-separatedPanel .fl-icon-undo {
+    margin-top: 0;
 }
 
 .fl-theme-bw .gpii-icon:before {
