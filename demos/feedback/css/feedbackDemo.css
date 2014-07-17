@@ -19,8 +19,8 @@ body {
 }
 
 video {
-    height: 18.75em;
-    width: 25em;
+    height: 18.75rem;
+    width: 25rem;
 }
 
 .gpii-feedbackDemo-demo p {
@@ -61,7 +61,7 @@ video {
 
 .gpii-feedbackDemo-header {
     background-color: #fff;
-    margin-top: 5em;
+    margin-top: 5rem;
 }
 
 .gpii-feedbackDemo-header-logo {
@@ -95,7 +95,7 @@ video {
 .fl-prefsEditor-separatedPanel {
     /* place UIO tab below feedback tool */
     position: relative;
-    top: 5.09em;
+    top: 5.09rem;
     z-index: 1;
 }
 
@@ -109,7 +109,7 @@ video {
 
 .gpii-feedbackDemo-demo .fl-prefsEditor-separatedPanel .fl-prefsEditor-showHide,
 .gpii-feedbackDemo-demo .fl-prefsEditor-separatedPanel .fl-prefsEditor-reset {
-    padding-bottom: 1.5em;
+    padding-bottom: 1.5rem;
 }
 
 .fl-theme-bw .gpii-icon:before {
@@ -145,17 +145,17 @@ video {
 /* Feedback overrides caused by Foundation */
 
 .gpii-feedback ul {
-    margin: 1em 0;
-    padding: 0 0 0 2.5em;
+    margin: 1rem 0;
+    padding: 0 0 0 2.5rem;
 }
 
 .gpii-feedback ul li {
     margin: 0;
-    padding: 0 0.75em 0 0;
+    padding: 0 0.75rem 0 0;
 }
 
 .gpii-feedback ul.gpii-feedback-requestsControls {
-    padding-right: 1em;
-    padding-left: 0.75em;
+    padding-right: 1rem;
+    padding-left: 0.75rem;
 }
 
