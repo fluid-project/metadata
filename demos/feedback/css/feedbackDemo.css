@@ -23,20 +23,15 @@ video {
     width: 25rem;
 }
 
-.gpii-feedbackDemo-demo {
+.gpii-feedbackDemo {
     font-family: "OpenSans","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
     background-color: #F4F4E9;
     min-width:38rem;
 }
 
-.gpii-feedbackDemo-demo p {
+.gpii-feedbackDemo p {
     /* ensure that line-height is inherited from the body so that UIO's line spacing enactor works */
     line-height: inherit;
-}
-
-.gpii-feedbackDemo-body {
-    margin-bottom: 4rem;
-    padding: 0 2rem;
 }
 
 /* Header area */
@@ -44,10 +39,6 @@ video {
 .gpii-feedbackDemo-header {
     background-color: #fff;
     margin-top: 4.6rem;
-}
-
-.gpii-feedbackDemo-header-logo {
-    margin: 0.5rem 0.5rem 0 0;
 }
 
 .gpii-feedbackDemo-header-logo img {
@@ -74,18 +65,18 @@ video {
 
 /* For UI Options */
 
-.gpii-feedbackDemo-demo .fl-prefsEditor-separatedPanel {
+.gpii-feedbackDemo .fl-prefsEditor-separatedPanel {
     /* place UIO tab below feedback tool */
     position: relative;
     top: 4.4rem;
     z-index: 1;
 }
 
-.gpii-feedbackDemo-demo .fl-panelBar.row:after {
+.gpii-feedbackDemo .fl-panelBar.row:after {
     clear: none;
 }
 
-.gpii-feedbackDemo-demo .fl-prefsEditor-separatedPanel .fl-panelBar {
+.gpii-feedbackDemo .fl-prefsEditor-separatedPanel .fl-panelBar {
     background-color: none;
     border-bottom: none;
 }
@@ -94,20 +85,20 @@ video {
     border-bottom: 1px solid;
 }
 
-.gpii-feedbackDemo-demo .fl-prefsEditor-separatedPanel .fl-panelBar.row .fl-prefsEditor-buttons {
+.gpii-feedbackDemo .fl-prefsEditor-separatedPanel .fl-panelBar.row .fl-prefsEditor-buttons {
     margin: 0;
     min-height: 1em;
     padding: 0 0.5em;
 }
 
-.gpii-feedbackDemo-demo .fl-prefsEditor-separatedPanel .fl-panelBar.row .fl-prefsEditor-buttons button {
+.gpii-feedbackDemo .fl-prefsEditor-separatedPanel .fl-panelBar.row .fl-prefsEditor-buttons button {
     margin: 0;
     padding: 0 0.5em;
     font-size: 1em;
     height: auto;
 }
 
-.gpii-feedbackDemo-demo .fl-prefsEditor-separatedPanel .fl-icon-undo {
+.gpii-feedbackDemo .fl-prefsEditor-separatedPanel .fl-icon-undo {
     margin-top: 0;
 }
 

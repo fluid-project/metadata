@@ -39,7 +39,7 @@
 
         <script type="text/javascript" src="../../../src/components/feedback/js/feedback.js"></script>
     </head>
-    <body class="gpiic-feedbackDemo-demo gpii-feedbackDemo-demo">
+    <body class="gpii-feedbackDemo">
         <!-- BEGIN markup for feedback tool -->
 
         <section class="gpiic-feedback">
@@ -62,7 +62,6 @@
         </div>
 
         <!-- End markup for UI Options  -->
-
         <header class="gpii-feedbackDemo-header">
             <div class="row">
                 <div class="small-12 columns clearfix">
@@ -72,52 +71,51 @@
                     </div>
                     <div class="gpii-feedbackDemo-header-title ">
                         <h1>Education Resources</h1>
-                        <span class="gpii-feedbackDemo-header-tagline">National Oceanic and Atmospheric Administration</span>
+                        <span>National Oceanic and Atmospheric Administration</span>
                     </div>
                 </div>
             </div>
         </header>
 
-        <section class="gpiic-feedbackDemo-body gpii-feedbackDemo-body gpii-feedbackDemo-resourceEditor-active gpii-feedbackDemo-expand">
+        <main>
             <div class="flc-toc-tocContainer row"> </div>
             <div class="row">
                 <h2 class="gpii-feedbackDemo-page-title">Climate Change Impacts</h2>
             </div>
 
-            <div class="row gpii-feedbackDemo-content" id="gpiic-feedbackDemo-content">
+            <div class="row" id="gpiic-feedbackDemo-content">
             </div>
-        </section>
+        </main>
 
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#gpiic-feedbackDemo-content").html(demo.metadata.predefinedOER.content);
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#gpiic-feedbackDemo-content").html(demo.metadata.predefinedOER.content);
-
-            fluid.uiOptions.prefsEditor(".flc-prefsEditor-separatedPanel", {
-                tocTemplate: "../../../src/lib/infusion/components/tableOfContents/html/TableOfContents.html",
-                templatePrefix: "../../../src/lib/infusion/framework/preferences/html/",
-                messagePrefix: "../../../src/lib/infusion/framework/preferences/messages/",
-                components: {
-                    prefsEditorLoader: {
-                        options: {
-                            iframeRenderer: {
-                                markupProps: {
-                                    src: "SeparatedPanelPrefsEditorFrame.html"
+                fluid.uiOptions.prefsEditor(".flc-prefsEditor-separatedPanel", {
+                    tocTemplate: "../../../src/lib/infusion/components/tableOfContents/html/TableOfContents.html",
+                    templatePrefix: "../../../src/lib/infusion/framework/preferences/html/",
+                    messagePrefix: "../../../src/lib/infusion/framework/preferences/messages/",
+                    components: {
+                        prefsEditorLoader: {
+                            options: {
+                                iframeRenderer: {
+                                    markupProps: {
+                                        src: "SeparatedPanelPrefsEditorFrame.html"
+                                    }
                                 }
                             }
                         }
                     }
-                }
-            });
+                });
 
-            gpii.metadata.feedback(".gpiic-feedback", {
-                resources: {
-                    template: {
-                        url: "../../../src/components/feedback/html/feedbackTemplate.html"
+                gpii.metadata.feedback(".gpiic-feedback", {
+                    resources: {
+                        template: {
+                            url: "../../../src/components/feedback/html/feedbackTemplate.html"
+                        }
                     }
-                }
+                });
             });
-        });
-    </script>
+        </script>
     </body>
 </html>
