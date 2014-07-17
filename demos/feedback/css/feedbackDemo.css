@@ -18,6 +18,11 @@ body {
     line-height: 1.6;
 }
 
+video {
+    height: 18.75em;
+    width: 25em;
+}
+
 .gpii-feedbackDemo-demo p {
     /* ensure that line-height is inherited from the body so that UIO's line spacing enactor works */
     line-height: inherit;
