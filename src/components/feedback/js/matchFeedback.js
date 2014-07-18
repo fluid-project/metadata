@@ -19,7 +19,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
     fluid.registerNamespace("gpii.metadata.feedback");
 
-    fluid.defaults("gpii.metadata.feedback.happyPanel", {
+    fluid.defaults("gpii.metadata.feedback.matchFeedback", {
         gradeNames: ["fluid.viewRelayComponent", "autoInit"],
         strings: {
             content: "Thanks! You will be matched with similar resources."
