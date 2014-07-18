@@ -17,6 +17,18 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
 (function ($, fluid) {
 
+    /**
+     * "gpii.metadata.feedback.bindDialog" is a view component that accepts a container. Clicking on the container triggers following steps in order:
+     *
+     * 1. Create a container for the future dialog;
+     * 2. Instantiate the subcomponent "renderDialogPanel" to render the dialog content into the container created in step 1;
+     *    "renderDialogPanel" is normally provided the integrators via "panelType" and "renderDialogPanel" options at the top level;
+     * 3. Once the content of the dialog is ready, turn the container into a jquery dialog;
+     * 4. When the dialog is ready, open it and hook up event handlers that would close the dialog when clicking anywhere outside of the dialog.
+     *
+     * Note: every click on the container triggers re-rendering and re-instantion of the dialog.
+     **/
+
     fluid.registerNamespace("gpii.metadata.feedback");
 
     fluid.defaults("gpii.metadata.feedback.bindDialog", {
@@ -42,14 +54,14 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 }
             }
         },
-        containerIdentifier: null,   // must be supplied by integrators
+        // MUST be supplied by integrators.
+        // The unique selector to identify {that}.container, for example, ".gpiic-button".
+        // It's used to position the dialog relative to {that}.container, which is the button that triggers the popup of the dialog.
+        containerIdentifier: null,
         members: {
             dialog: null,
             panelContainer: null
         },
-        // selectors: {
-        //     button: ".gpiic-button"
-        // },
         styles: {
             activeCss: "gpii-icon-active"
         },
@@ -123,8 +135,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
             // The dialog panel is re-rendered at every button click
             that.panelContainer = $(dialogMarkup);
-            that.panelContainer.insertAfter(buttonDom);
-
+console.log(that.panelContainer);
             fireRenderDialogPanelEvent();
         }
     };
