@@ -72,8 +72,11 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         commonDialogOptions: {
             closeOnEscape: true,
             autoOpen: false,
+            minHeight: 0,
+            resizable: false,
             position: {
-                my: "center top"
+                my: "center top",
+                at: "center-10% bottom+42%"
             },
             dialogClass: "gpii-feedback-noClose gpii-feedback-dialog"
         },
