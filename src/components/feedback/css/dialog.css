@@ -1,0 +1,92 @@
+/** dialogs **/
+.gpii-hide {
+    display: none;
+}
+
+.gpii-feedback-dialog {
+    background-color: #fff;
+    border: 0.1rem solid #B2B2B2;
+    box-shadow: 0px 5px 5px 0px rgba(50, 50, 50, 0.75);
+}
+
+
+/* jQuery UI Dialog Overrides */
+
+.gpii-feedback-dialog.ui-dialog {
+    /* prevent from scrolling */
+    position: fixed;
+    /* to place over feedback tool */
+    z-index: 999;
+}
+
+.gpii-feedback-dialog .ui-dialog-titlebar {
+    display: none;
+}
+
+.gpii-feedback-dialog.ui-dialog {
+    position: fixed;
+}
+
+.gpii-feedback-dialog.ui-dialog:after, .gpii-feedback-dialog.ui-dialog:before {
+    bottom: 100%;
+    left: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.gpii-feedback-dialog.ui-dialog:after {
+    border-bottom-color: #fff;
+    border-width: 0.9rem;
+    margin-left: -0.9rem;
+}
+.gpii-feedback-dialog.ui-dialog:before {
+    border-bottom-color: #B2B2B2;
+    border-width: 1rem;
+    margin-left: -1rem;
+}
+
+/* Contrast themes */
+
+.fl-theme-bw .gpii-feedback-dialog.ui-widget,
+.fl-theme-wb .gpii-feedback-dialog.ui-widget,
+.fl-theme-by .gpii-feedback-dialog.ui-widget,
+.fl-theme-yb .gpii-feedback-dialog.ui-widget,
+.fl-theme-lgdg .gpii-feedback-dialog.ui-widget {
+    /* Overriding theme files */
+    font-family: inherit;
+    font-size: inherit;
+    border-radius: 0px;
+}
+
+.fl-theme-bw .gpii-feedback-dialog.ui-dialog:before,
+.fl-theme-wb .gpii-feedback-dialog.ui-dialog:after {
+    border-bottom-color: #000;
+}
+
+
+.fl-theme-wb .gpii-feedback-dialog.ui-dialog:before,
+.fl-theme-bw .gpii-feedback-dialog.ui-dialog:after {
+    border-bottom-color: #fff;
+}
+
+.fl-theme-by .gpii-feedback-dialog.ui-dialog:before,
+.fl-theme-yb .gpii-feedback-dialog.ui-dialog:after {
+    border-bottom-color: #000;
+}
+
+.fl-theme-yb .gpii-feedback-dialog.ui-dialog:before,
+.fl-theme-by .gpii-feedback-dialog.ui-dialog:after {
+    border-bottom-color: #ffff00;
+}
+
+.fl-theme-lgdg .gpii-feedback-dialog.ui-dialog:before {
+    border-bottom-color: #bdbdbb;
+}
+
+.fl-theme-lgdg .gpii-feedback-dialog.ui-dialog:after {
+    border-bottom-color: #555555;
+}
