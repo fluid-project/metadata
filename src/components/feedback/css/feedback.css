@@ -18,21 +18,21 @@
 .gpii-feedback li {
     display: inline-block;
     list-style-type: none;
-    padding-right: 0.75em;
 }
 
-.gpii-feedback-preferencesStatus {
+.gpii-feedback-preferences {
     float: left;
 }
 
-.gpii-feedback-feedbackControls {
+.gpii-feedback-controls {
     float: right;
 }
 
+.gpii-feedback-controls ul {
+    display: inline-block;
+}
+
 .gpii-feedback-requestsControls {
-    float: right;
-    padding-right: 1em;
-    padding-left: 0.75em;
     border-left: 2px solid #E5E5E5;
 }
 
@@ -57,19 +57,53 @@
 .gpii-icon:before {
     font-family: 'FloeMetadataIcons';
     color: #fff;
-    font-size: 1.5em;
-    line-height:2em;
-    -webkit-border-radius: 999px;
-    -moz-border-radius: 999px;
-    border-radius: 999px;
-    behavior: url(PIE.htc);
-    width: 2em;
-    height: 2em;
-    display: inline-block;
+    font-size: 1.5rem;
+    border-radius: 50%;
+    padding: 0.5rem;
     background: #66cc99;
     font-weight: normal;
     text-align: center;
     opacity: 1;
+}
+
+.gpii-icon.gpii-icon-available:before {
+    background: #66cc99;
+}
+
+.gpii-icon.gpii-icon-partial:before {
+    color: #66cc99;
+    background-color: #fff;
+    margin-top: -1px;
+    border: 2px solid #66cc99;
+}
+
+.gpii-icon.gpii-icon-unavailable:before {
+    color: #B2B2B2;
+    background-color: #fff;
+    margin-top: -1px;
+    border: 2px solid #B2B2B2;
+}
+
+.gpii-icon.gpii-icon-unavailable:after {
+    content: "X";
+    color: #fff;
+    font-size: 0.5rem;
+    border-radius: 50%;
+    padding: 0 0.2rem;
+    background-color: #B2B2B2;
+    font-weight: bold;
+    text-align: center;
+    opacity: 1;
+    height: 0.5rem;
+    position: relative;
+    bottom: -0.5rem;
+    left: -0.86rem;
+}
+
+/* IE 11 hack to correct presentation of the unavailable badge */
+_:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
+    padding: 0.1rem 0.2rem;
+    bottom: -0.45rem;
 }
 
 .gpii-icon-text:before {
@@ -98,8 +132,6 @@
 
 .gpii-icon-request:before {
     content: "\e612";
-    /* minor adjustment to centre request icon */
-    line-height: 1.9em;
 }
 
 .gpii-icon.gpii-icon-active:before {
@@ -124,4 +156,50 @@
 
 .gpii-feedback-dialog.ui-dialog {
     z-index: 999;
+}
+
+/* Contrast themes */
+.fl-theme-bw .gpii-icon:before,
+.fl-theme-wb .gpii-icon:after,
+.fl-theme-wb .gpii-icon.gpii-icon-available:before {
+    color: #000 !important;
+    background-color: #fff !important;
+    border-color: #000 !important;
+}
+
+.fl-theme-wb .gpii-icon:before,
+.fl-theme-bw .gpii-icon:after,
+.fl-theme-bw .gpii-icon.gpii-icon-available:before {
+    color: #fff !important;
+    background-color: #000 !important;
+    border-color: #fff !important;
+}
+
+.fl-theme-yb .gpii-icon:before,
+.fl-theme-by .gpii-icon:after,
+.fl-theme-by .gpii-icon.gpii-icon-available:before {
+    color: #ffff00 !important;
+    background-color: #000 !important;
+    border-color: #ffff00 !important;
+}
+
+.fl-theme-by .gpii-icon:before,
+.fl-theme-yb .gpii-icon:after,
+.fl-theme-yb .gpii-icon.gpii-icon-available:before {
+    color: #000 !important;
+    background-color: #ffff00 !important;
+    border-color: #000 !important;
+}
+
+.fl-theme-lgdg .gpii-icon:before {
+    color: #bdbdbb !important;
+    background-color: #555555 !important;
+    border-color: #bdbdbb !important;
+}
+
+.fl-theme-lgdg .gpii-icon:after,
+.fl-theme-lgdg .gpii-icon.gpii-icon-available:before {
+    color: #555555 !important;
+    background-color: #bdbdbb !important;
+    border-color: #555555 !important;
 }
