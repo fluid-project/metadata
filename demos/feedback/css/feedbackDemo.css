@@ -10,48 +10,36 @@
 
 @font-face {
     font-family: "OpenSans";
-    src: url('../css/fonts/OpenSans-Bold.ttf');
+    src: url('../../css/fonts/OpenSans-Bold.ttf');
     font-weight: bold;
 }
 
-.gpii-feedbackDemo-demo {
+body {
+    line-height: 1.6;
+}
+
+video {
+    height: 18.75rem;
+    width: 25rem;
+    border: 1px solid #000;
+}
+
+.gpii-feedbackDemo {
     font-family: "OpenSans","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
     background-color: #F4F4E9;
     min-width:38rem;
 }
 
-.gpii-feedbackDemo-body {
-    margin-bottom: 4rem;
-    padding: 0 2rem;
-}
-
-.gpii-feedbackDemo-demo a {
-    color: #2C6FB7;
-}
-
-.gpii-feedbackDemo-demo a.disabled {
-    pointer-events: none;
-    cursor: default;
-}
-
-.gpii-feedbackDemo-demo .button {
-    color: #fff;
-    background-color: #2C6FB7;
-}
-
-.gpii-feedbackDemo-demo .button:hover {
-    background-color: #3F8FD8;
+.gpii-feedbackDemo p {
+    /* ensure that line-height is inherited from the body so that UIO's line spacing enactor works */
+    line-height: inherit;
 }
 
 /* Header area */
 
 .gpii-feedbackDemo-header {
     background-color: #fff;
-    margin-top: 5em;
-}
-
-.gpii-feedbackDemo-header-logo {
-    margin: 0.5rem 0.5rem 0 0;
+    margin-top: 4.6rem;
 }
 
 .gpii-feedbackDemo-header-logo img {
@@ -76,20 +64,63 @@
     margin: 4rem 0 1rem 0;
 }
 
+/* For UI Options */
+
+.gpii-feedbackDemo .fl-prefsEditor-separatedPanel {
+    /* place UIO tab below feedback tool */
+    position: relative;
+    top: 4.4rem;
+    z-index: 1;
+}
+
+.gpii-feedbackDemo .fl-panelBar.row:after {
+    clear: none;
+}
+
+.gpii-feedbackDemo .fl-prefsEditor-separatedPanel .fl-panelBar {
+    background-color: none;
+    border-bottom: none;
+}
+
+.gpii-feedbackDemo-prefsEditor-slidingPanel {
+    border-bottom: 1px solid;
+}
+
+.gpii-feedbackDemo .fl-prefsEditor-separatedPanel .fl-panelBar.row .fl-prefsEditor-buttons {
+    margin: 0;
+    min-height: 1em;
+    padding: 0 0.5em;
+}
+
+.gpii-feedbackDemo .fl-prefsEditor-separatedPanel .fl-panelBar.row .fl-prefsEditor-buttons {
+    /* Prevent the buttons from increasing in size with the line-height; which had been causing it to overlap the header. */
+    line-height: 1.6em;
+}
+
+.gpii-feedbackDemo .fl-prefsEditor-separatedPanel .fl-panelBar.row .fl-prefsEditor-buttons button {
+    margin: 0;
+    padding: 0 0.5em;
+    font-size: 1em;
+    height: auto;
+}
+
+.gpii-feedbackDemo .fl-prefsEditor-separatedPanel .fl-icon-undo {
+    margin-top: 0;
+}
+
 /* Feedback overrides caused by Foundation */
 
 .gpii-feedback ul {
-    margin: 1em 0;
-    padding: 0 0 0 2.5em;
+    margin: 1rem 0;
+    padding: 0 0 0 2.5rem;
 }
 
 .gpii-feedback ul li {
     margin: 0;
-    padding: 0 0.75em 0 0;
+    padding: 0 0.75rem 0 0;
 }
 
 .gpii-feedback ul.gpii-feedback-requestsControls {
-    padding-right: 1em;
-    padding-left: 0.75em;
+    padding-right: 1rem;
+    padding-left: 0.75rem;
 }
-
