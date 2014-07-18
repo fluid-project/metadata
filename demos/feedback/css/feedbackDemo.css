@@ -92,6 +92,11 @@ video {
     padding: 0 0.5em;
 }
 
+.gpii-feedbackDemo .fl-prefsEditor-separatedPanel .fl-panelBar.row .fl-prefsEditor-buttons {
+    /* Prevent the buttons from increasing in size with the line-height; which had been causing it to overlap the header. */
+    line-height: 1.6em;
+}
+
 .gpii-feedbackDemo .fl-prefsEditor-separatedPanel .fl-panelBar.row .fl-prefsEditor-buttons button {
     margin: 0;
     padding: 0 0.5em;
