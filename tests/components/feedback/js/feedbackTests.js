@@ -21,7 +21,7 @@ https://github.com/gpii/universal/LICENSE.txt
         gradeNames: ["gpii.metadata.feedback", "autoInit"],
         resources: {
             template: {
-                url: "../../../src/components/feedback/html/feedbackTemplate.html"
+                url: "../../../../src/components/feedback/html/feedbackTemplate.html"
             }
         }
     });
