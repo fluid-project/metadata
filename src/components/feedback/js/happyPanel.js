@@ -22,12 +22,12 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     fluid.defaults("gpii.metadata.feedback.happyPanel", {
         gradeNames: ["fluid.viewRelayComponent", "autoInit"],
         strings: {
-            content: "<p>Thanks! You will be matched with similar resources.</p>"
+            content: "Thanks! You will be matched with similar resources."
         },
         listeners: {
             "onCreate.addContent": {
                 "this": "{that}.container",
-                method: "html",
+                method: "text",
                 args: "{that}.options.strings.content"
             }
         }
