@@ -67,7 +67,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             activeCss: "gpii-icon-active"
         },
         markup: {
-            dialog: '<div class="gpii-hide">&nbsp;</div>'
+            dialog: '<div>&nbsp;</div>'
         },
         commonDialogOptions: {
             closeOnEscape: true,
