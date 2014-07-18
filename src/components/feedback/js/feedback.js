@@ -21,12 +21,12 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     fluid.defaults("gpii.metadata.feedback", {
         gradeNames: ["fluid.viewRelayComponent", "autoInit"],
         components: {
-            matchFeedback: {
+            matchConfirmation: {
                 type: "gpii.metadata.feedback.bindDialog",
                 container: "{feedback}.dom.happyButton",
                 createOnEvent: "afterMarkupReady",
                 options: {
-                    panelType: "gpii.metadata.feedback.matchFeedback",
+                    panelType: "gpii.metadata.feedback.matchConfirmation",
                     containerIdentifier: "{feedback}.options.selectors.happyButton"
                 }
             }

@@ -15,12 +15,12 @@ https://github.com/gpii/universal/LICENSE.txt
 /*jslint white: true, funcinvoke: true, undef: true, newcap: true, nomen: true, regexp: true, bitwise: true, browser: true, forin: true, maxerr: 100, indent: 4 */
 
 (function ($) {
-    fluid.registerNamespace("fluid.tests.matchFeedback");
+    fluid.registerNamespace("fluid.tests.matchConfirmation");
 
     $(document).ready(function () {
-        jqUnit.test("Test matchFeedback", function () {
+        jqUnit.test("Test matchConfirmation", function () {
             jqUnit.expect(1);
-            var that = gpii.metadata.feedback.matchFeedback(".gpiic-panel");
+            var that = gpii.metadata.feedback.matchConfirmation(".gpiic-panel");
             jqUnit.assertEquals("The correct content is rendered", that.options.strings.content, that.container.text());
         });
     });
