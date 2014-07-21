@@ -10,7 +10,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
 // Declare dependencies
-/*global fluid_1_5:true, jQuery*/
+/*global jQuery, fluid*/
 
 // JSLint options
 /*jslint white: true, funcinvoke: true, undef: true, newcap: true, nomen: true, regexp: true, bitwise: true, browser: true, forin: true, maxerr: 100, indent: 4 */
@@ -58,4 +58,4 @@ Lower releases of these gases will decrease the impact of climate change. Howeve
 emissions the impacts are expected to become increasingly worse.</p>'
     };
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid);

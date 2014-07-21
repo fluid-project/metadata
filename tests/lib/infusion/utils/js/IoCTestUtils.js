@@ -15,8 +15,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 // JSLint options
 /*jslint white: true, funcinvoke: true, undef: true, newcap: true, nomen: true, regexp: true, bitwise: true, browser: true, forin: true, maxerr: 100, indent: 4 */
 
-var fluid_1_5 = fluid_1_5 || {};
-
 (function ($, fluid) {
 
     fluid.registerNamespace("fluid.test");
@@ -84,7 +82,7 @@ var fluid_1_5 = fluid_1_5 || {};
     fluid.test.makeExpander = function (that) {
         return function (toExpand) {
             return fluid.expandOptions(toExpand, that);
-        };  
+        };
     };
 
     fluid.test.makeFuncExpander = function (expander) {
@@ -231,7 +229,7 @@ var fluid_1_5 = fluid_1_5 || {};
         };
         return that;
     };
-    
+
     // TODO: This will eventually go into the core framework for "Luke Skywalker Event Binding"
     fluid.analyseTarget = function (testCaseState, material, expectedPrefix) {
         if (typeof(material) === "string" && material.charAt(0) === "{") {
@@ -242,7 +240,7 @@ var fluid_1_5 = fluid_1_5 || {};
                 var holder = testCaseState.testCaseHolder;
                 var head = fluid.resolveContext(headContext, holder);
                 if (!head) {
-                    fluid.fail("Error in test case selector ", material, " cannot resolve to a root component from holder ", holder);   
+                    fluid.fail("Error in test case selector ", material, " cannot resolve to a root component from holder ", holder);
                 }
                 var segs = fluid.model.parseEL(parsed.path);
                 if (segs.length < 2 || segs[0] !== expectedPrefix) {
@@ -265,7 +263,7 @@ var fluid_1_5 = fluid_1_5 || {};
             };
             unbind = function (wrapped) {
                 event.removeListener(wrapped);
-            } 
+            }
         }
         else {
             var id;
@@ -276,12 +274,12 @@ var fluid_1_5 = fluid_1_5 || {};
                     namespace: fixture.namespace,
                     priority: fixture.priority
                 });
-                id = fluid.pushDistributions(analysed.head, analysed.selector, 
+                id = fluid.pushDistributions(analysed.head, analysed.selector,
                     [{options: options, recordType: "distribution", priority: fluid.mergeRecordTypes.distribution}]
                 );
             };
             unbind = function (wrapped) {
-                fluid.clearDistributions(analysed.head, id);  
+                fluid.clearDistributions(analysed.head, id);
             };
         }
         return fluid.test.makeBinder(listener, bind, unbind);
@@ -345,13 +343,13 @@ var fluid_1_5 = fluid_1_5 || {};
         var c = fluid.test.composeSimple;
         binder.bind(c(preWrap, preFunc), c(postFunc, postWrap));
     };
-    
+
     // This check executes immediately AFTER we apply the first bind of a sequence
     fluid.test.checkTestStart = function (testCaseState) {
         if (!testCaseState.started) { // Support for FLUID-4929
             testCaseState.testCaseHolder.events.onTestCaseStart.fire(testCaseState.testCaseHolder);
             testCaseState.started = true;
-        }      
+        }
     };
 
     fluid.test.sequenceExecutor = function (testCaseState, fixture) {
@@ -499,4 +497,4 @@ var fluid_1_5 = fluid_1_5 || {};
         });
     };
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid);
