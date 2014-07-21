@@ -1,4 +1,4 @@
-/*! infusion - v1.5.0-SNAPSHOT Wednesday, May 28th, 2014, 10:00:59 AM*/
+/*! infusion - v1.5.0 Wednesday, July 9th, 2014, 9:15:07 AM*/
 /*!
  * jQuery JavaScript Library v1.11.0
  * http://jquery.com/
@@ -22801,7 +22801,7 @@ var fluid_1_5 = fluid_1_5 || {};
         var sourceListener = function (newValue, oldValue, path, changeRequest, trans, applier) {
             var transId = trans.id;
             var transRec = fluid.getModelTransactionRec(instantiator, transId);
-            if (applier && trans) {
+            if (applier && trans && !transRec[applier.applierId]) { // don't trash existing record which may contain "options" (FLUID-5397)
                 transRec[applier.applierId] = {transaction: trans}; // enlist the outer user's original transaction
             }
             var existing = transRec[applierId];
@@ -23019,6 +23019,7 @@ var fluid_1_5 = fluid_1_5 || {};
             var change = allChanges[i];
             change.listener.apply(null, change.args);
         }
+        fluid.clearLinkCounts(transRec, true); // "options" structures for relayCount are aliased
     };
     
     fluid.model.commitRelays = function (instantiator, transactionId) {
@@ -23030,7 +23031,6 @@ var fluid_1_5 = fluid_1_5 || {};
                 transEl.transaction.reset();
             }
         });
-        fluid.clearLinkCounts(transRec, true); // "options" structures for relayCount are aliased
     };
 
     fluid.model.updateRelays = function (instantiator, transactionId) {
@@ -26950,11 +26950,16 @@ var fluid_1_5 = fluid_1_5 || {};
     fluid.tooltip.idSearchFunc = function (idToContentFunc) {
         return function (/* callback*/) {
             var target = this;
-            var idToContent = idToContentFunc();
-            var ancestor = fluid.findAncestor(target, function (element) {
-                return idToContent[element.id];
-            });
-            return ancestor ? idToContent[ancestor.id] : null;
+            if ($.contains( target.ownerDocument, target )) { // prevent widget from trying to open tooltip for element no longer in document (FLUID-5394)
+                var idToContent = idToContentFunc();
+                var ancestor = fluid.findAncestor(target, function (element) {
+                    return idToContent[element.id];
+                });
+                return ancestor ? idToContent[ancestor.id] : null;
+            } else {
+                return null;
+            }
+            
         };
     };
 
@@ -26981,7 +26986,8 @@ var fluid_1_5 = fluid_1_5 || {};
         return function (event, tooltip) {
             fluid.tooltip.closeAll(that);
             var originalTarget = fluid.resolveEventTarget(event);
-            that.openIdMap[fluid.allocateSimpleId(originalTarget)] = true;
+            var key = fluid.allocateSimpleId(originalTarget);
+            that.openIdMap[key] = true;
             if (that.initialised) {
                 that.events.afterOpen.fire(that, originalTarget, tooltip.tooltip, event);
             }
@@ -27001,9 +27007,8 @@ var fluid_1_5 = fluid_1_5 || {};
     fluid.tooltip.closeAll = function (that) {
         fluid.each(that.openIdMap, function (value, key) {
             var target = fluid.byId(key);
-            // "white-box" behaviour - fabricating this fake event shell is the only way we can get the plugin to
-            // close a tooltip which was not opened on the root element. This will be very fragile to changes in
-            // jQuery UI and the underlying widget code
+            // "white-box" behaviour - fabricating this fake event shell triggers the standard "close" sequence including notifying
+            // our own handler. This will be very fragile to changes in jQuery UI and the underlying widget code
             that.container.tooltip("close", {
                 type: "close",
                 currentTarget: target,
@@ -27121,6 +27126,161 @@ var fluid_1_5 = fluid_1_5 || {};
         items: "*",
         delay: 300
     });
+
+})(jQuery, fluid_1_5);
+;/*
+Copyright 2008-2009 University of Toronto
+Copyright 2010-2011 OCAD University
+Copyright 2011 Lucendo Development Ltd.
+
+Licensed under the Educational Community License (ECL), Version 2.0 or the New
+BSD license. You may not use this file except in compliance with one these
+Licenses.
+
+You may obtain a copy of the ECL 2.0 License and BSD License at
+https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
+*/
+
+var fluid_1_5 = fluid_1_5 || {};
+
+(function ($, fluid) {
+    "use strict";
+
+    fluid.registerNamespace("fluid.enhance");
+
+    // Feature Detection Functions
+    fluid.enhance.isBrowser = function () {
+        return typeof(window) !== "undefined" && window.document;
+    };
+    fluid.enhance.supportsBinaryXHR = function () {
+        return window.FormData || (window.XMLHttpRequest && window.XMLHttpRequest.prototype && window.XMLHttpRequest.prototype.sendAsBinary);
+    };
+    fluid.enhance.supportsFormData = function () {
+        return !!window.FormData;
+    };
+
+    /*
+     * An object to hold the results of the progressive enhancement checks.
+     * Keys represent the key into the static environment
+     * Values represent the result of the check
+     */
+    // unsupported, NON-API value
+    fluid.enhance.checked = {};
+
+    /*
+     * The segment separator used by fluid.enhance.typeToKey
+     */
+    // unsupported, NON-API value
+    fluid.enhance.sep = "--";
+
+    /*
+     * Converts a type tag name to one that is safe to use as a key in an object, by replacing all of the "."
+     * with the separator specified at fluid.enhance.sep
+     */
+    // unsupported, NON-API function
+    fluid.enhance.typeToKey = function (typeName) {
+        return typeName.replace(/[.]/gi, fluid.enhance.sep);
+    };
+
+    /*
+     * Takes an object of key/value pairs where the key will be the key in the static environment and the value is a function or function name to run.
+     * {staticEnvKey: "progressiveCheckFunc"}
+     * Note that the function will not be run if its result is already recorded.
+     */
+    fluid.enhance.check = function (stuffToCheck) {
+        fluid.each(stuffToCheck, function (val, key) {
+            var staticKey = fluid.enhance.typeToKey(key);
+
+            if (fluid.enhance.checked[staticKey] === undefined) {
+                var results = typeof(val) === "boolean" ? val :
+                    (typeof(val) === "string" ? fluid.invokeGlobalFunction(val) : val());
+
+                fluid.enhance.checked[staticKey] = !!results;
+
+                if (results) {
+                    fluid.staticEnvironment[staticKey] = fluid.typeTag(key);
+                }
+            }
+        });
+    };
+
+    /*
+     * forgets a single item based on the typeName
+     */
+    fluid.enhance.forget = function (typeName) {
+        var key = fluid.enhance.typeToKey(typeName);
+
+        if (fluid.enhance.checked[key] !== undefined) {
+            delete fluid.staticEnvironment[key];
+            delete fluid.enhance.checked[key];
+        }
+    };
+
+    /*
+     * forgets all of the keys added by fluid.enhance.check
+     */
+    fluid.enhance.forgetAll = function () {
+        fluid.each(fluid.enhance.checked, function (val, key) {
+            fluid.enhance.forget(key);
+        });
+    };
+
+    fluid.defaults("fluid.progressiveChecker", {
+        gradeNames: ["fluid.typeFount", "fluid.littleComponent", "autoInit", "{that}.check"],
+        checks: [], // [{"feature": "{IoC Expression}", "contextName": "context.name"}]
+        defaultContextName: undefined,
+        invokers: {
+            check: {
+                funcName: "fluid.progressiveChecker.check",
+                args: ["{that}.options.checks", "{that}.options.defaultContextName"]
+            }
+        }
+    });
+
+    fluid.progressiveChecker.check = function (checks, defaultContextName) {
+        return fluid.find(checks, function(check) {
+            if (check.feature) {
+                return check.contextName;
+            }
+        }, defaultContextName);
+    };
+
+    fluid.progressiveChecker.forComponent = function (that, componentName) {
+        var defaults = fluid.defaults(componentName);
+        var expanded = fluid.expandOptions(fluid.copy(defaults.progressiveCheckerOptions), that);
+        var checkTag = fluid.progressiveChecker.check(expanded.checks, expanded.defaultContextName);
+        var horizon = componentName + ".progressiveCheck";
+        return [horizon, checkTag];
+    };
+
+    fluid.defaults("fluid.progressiveCheckerForComponent", {
+        gradeNames: ["fluid.typeFount", "fluid.littleComponent", "autoInit", "{that}.check"],
+        invokers: {
+            check: {
+                funcName: "fluid.progressiveChecker.forComponent",
+                args: ["{that}", "{that}.options.componentName"]
+            }
+        }
+        // componentName
+    });
+
+
+
+    fluid.enhance.check({
+        "fluid.browser" : "fluid.enhance.isBrowser"
+    });
+
+    /**********************************************************
+     * This code runs immediately upon inclusion of this file *
+     **********************************************************/
+
+    // Use JavaScript to hide any markup that is specifically in place for cases when JavaScript is off.
+    // Note: the use of fl-ProgEnhance-basic is deprecated, and replaced by fl-progEnhance-basic.
+    // It is included here for backward compatibility only.
+    // Distinguish the standalone jQuery from the real one so that this can be included in IoC standalone tests
+    if (fluid.enhance.isBrowser() && $.fn) {
+        $("head").append("<style type='text/css'>.fl-progEnhance-basic, .fl-ProgEnhance-basic { display: none; } .fl-progEnhance-enhanced, .fl-ProgEnhance-enhanced { display: block; }</style>");
+    }
 
 })(jQuery, fluid_1_5);
 ;// =========================================================================
@@ -30323,161 +30483,6 @@ fluid_1_5 = fluid_1_5 || {};
             return expandEntry(entry);
         };
     };
-
-})(jQuery, fluid_1_5);
-;/*
-Copyright 2008-2009 University of Toronto
-Copyright 2010-2011 OCAD University
-Copyright 2011 Lucendo Development Ltd.
-
-Licensed under the Educational Community License (ECL), Version 2.0 or the New
-BSD license. You may not use this file except in compliance with one these
-Licenses.
-
-You may obtain a copy of the ECL 2.0 License and BSD License at
-https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
-*/
-
-var fluid_1_5 = fluid_1_5 || {};
-
-(function ($, fluid) {
-    "use strict";
-
-    fluid.registerNamespace("fluid.enhance");
-
-    // Feature Detection Functions
-    fluid.enhance.isBrowser = function () {
-        return typeof(window) !== "undefined" && window.document;
-    };
-    fluid.enhance.supportsBinaryXHR = function () {
-        return window.FormData || (window.XMLHttpRequest && window.XMLHttpRequest.prototype && window.XMLHttpRequest.prototype.sendAsBinary);
-    };
-    fluid.enhance.supportsFormData = function () {
-        return !!window.FormData;
-    };
-
-    /*
-     * An object to hold the results of the progressive enhancement checks.
-     * Keys represent the key into the static environment
-     * Values represent the result of the check
-     */
-    // unsupported, NON-API value
-    fluid.enhance.checked = {};
-
-    /*
-     * The segment separator used by fluid.enhance.typeToKey
-     */
-    // unsupported, NON-API value
-    fluid.enhance.sep = "--";
-
-    /*
-     * Converts a type tag name to one that is safe to use as a key in an object, by replacing all of the "."
-     * with the separator specified at fluid.enhance.sep
-     */
-    // unsupported, NON-API function
-    fluid.enhance.typeToKey = function (typeName) {
-        return typeName.replace(/[.]/gi, fluid.enhance.sep);
-    };
-
-    /*
-     * Takes an object of key/value pairs where the key will be the key in the static environment and the value is a function or function name to run.
-     * {staticEnvKey: "progressiveCheckFunc"}
-     * Note that the function will not be run if its result is already recorded.
-     */
-    fluid.enhance.check = function (stuffToCheck) {
-        fluid.each(stuffToCheck, function (val, key) {
-            var staticKey = fluid.enhance.typeToKey(key);
-
-            if (fluid.enhance.checked[staticKey] === undefined) {
-                var results = typeof(val) === "boolean" ? val :
-                    (typeof(val) === "string" ? fluid.invokeGlobalFunction(val) : val());
-
-                fluid.enhance.checked[staticKey] = !!results;
-
-                if (results) {
-                    fluid.staticEnvironment[staticKey] = fluid.typeTag(key);
-                }
-            }
-        });
-    };
-
-    /*
-     * forgets a single item based on the typeName
-     */
-    fluid.enhance.forget = function (typeName) {
-        var key = fluid.enhance.typeToKey(typeName);
-
-        if (fluid.enhance.checked[key] !== undefined) {
-            delete fluid.staticEnvironment[key];
-            delete fluid.enhance.checked[key];
-        }
-    };
-
-    /*
-     * forgets all of the keys added by fluid.enhance.check
-     */
-    fluid.enhance.forgetAll = function () {
-        fluid.each(fluid.enhance.checked, function (val, key) {
-            fluid.enhance.forget(key);
-        });
-    };
-
-    fluid.defaults("fluid.progressiveChecker", {
-        gradeNames: ["fluid.typeFount", "fluid.littleComponent", "autoInit", "{that}.check"],
-        checks: [], // [{"feature": "{IoC Expression}", "contextName": "context.name"}]
-        defaultContextName: undefined,
-        invokers: {
-            check: {
-                funcName: "fluid.progressiveChecker.check",
-                args: ["{that}.options.checks", "{that}.options.defaultContextName"]
-            }
-        }
-    });
-
-    fluid.progressiveChecker.check = function (checks, defaultContextName) {
-        return fluid.find(checks, function(check) {
-            if (check.feature) {
-                return check.contextName;
-            }
-        }, defaultContextName);
-    };
-
-    fluid.progressiveChecker.forComponent = function (that, componentName) {
-        var defaults = fluid.defaults(componentName);
-        var expanded = fluid.expandOptions(fluid.copy(defaults.progressiveCheckerOptions), that);
-        var checkTag = fluid.progressiveChecker.check(expanded.checks, expanded.defaultContextName);
-        var horizon = componentName + ".progressiveCheck";
-        return [horizon, checkTag];
-    };
-
-    fluid.defaults("fluid.progressiveCheckerForComponent", {
-        gradeNames: ["fluid.typeFount", "fluid.littleComponent", "autoInit", "{that}.check"],
-        invokers: {
-            check: {
-                funcName: "fluid.progressiveChecker.forComponent",
-                args: ["{that}", "{that}.options.componentName"]
-            }
-        }
-        // componentName
-    });
-
-
-
-    fluid.enhance.check({
-        "fluid.browser" : "fluid.enhance.isBrowser"
-    });
-
-    /**********************************************************
-     * This code runs immediately upon inclusion of this file *
-     **********************************************************/
-
-    // Use JavaScript to hide any markup that is specifically in place for cases when JavaScript is off.
-    // Note: the use of fl-ProgEnhance-basic is deprecated, and replaced by fl-progEnhance-basic.
-    // It is included here for backward compatibility only.
-    // Distinguish the standalone jQuery from the real one so that this can be included in IoC standalone tests
-    if (fluid.enhance.isBrowser() && $.fn) {
-        $("head").append("<style type='text/css'>.fl-progEnhance-basic, .fl-ProgEnhance-basic { display: none; } .fl-progEnhance-enhanced, .fl-ProgEnhance-enhanced { display: block; }</style>");
-    }
 
 })(jQuery, fluid_1_5);
 ;/*
@@ -35942,6 +35947,43 @@ var fluid_1_5 = fluid_1_5 || {};
         return fluid.invokeGlobalFunction(builder.options.assembledPrefsEditorGrade, [container, options.prefsEditor]);
     };
 
+})(jQuery, fluid_1_5);
+;/*
+Copyright 2013 OCAD University
+
+Licensed under the Educational Community License (ECL), Version 2.0 or the New
+BSD license. You may not use this file except in compliance with one these
+Licenses.
+
+You may obtain a copy of the ECL 2.0 License and BSD License at
+https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
+*/
+
+var fluid_1_5 = fluid_1_5 || {};
+(function ($, fluid) {
+    "use strict";
+
+    // Gradename to invoke "fluid.uiOptions.prefsEditor"
+    fluid.prefs.builder({
+        gradeNames: ["fluid.prefs.auxSchema.starter"]
+    });
+
+    fluid.defaults("fluid.uiOptions.prefsEditor", {
+        gradeNames: ["fluid.prefs.constructed.prefsEditor", "autoInit"],
+        distributeOptions: {
+            source: "{that}.options.tocTemplate",
+            removeSource: true,
+            target: "{that uiEnhancer}.options.tocTemplate"
+        },
+        enhancer: {
+            distributeOptions: {
+                source: "{that}.options.tocTemplate",
+                removeSource: true,
+                target: "{that > fluid.prefs.enactor.tableOfContents}.options.tocTemplate"
+            }
+        }
+    });
+    
 })(jQuery, fluid_1_5);
 ;/*
 Copyright 2011 OCAD University

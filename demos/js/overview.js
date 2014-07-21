@@ -96,8 +96,9 @@ var demo = demo || {};
 
             },
             links: {
-                "demoCodeLink": "http://github.com/fluid-project/metadata/",
-                "apiLink": "http://github.com/fluid-project/metadata/",
+                "demoCodeLink": "https://github.com/fluid-project/metadata/tree/master/demos",
+                "infusionCodeLink": "https://github.com/fluid-project/metadata",
+                "apiLink": "http://wiki.fluidproject.org/display/fluid/Metadata+API",
                 "designLink": "http://wiki.fluidproject.org/display/fluid/FLOE+Metadata+Authoring+Design",
                 "feedbackLink": "mailto:infusion-users@fluidproject.org?subject=FLOE Metadata Authoring feedback"
             }

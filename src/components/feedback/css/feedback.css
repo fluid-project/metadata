@@ -1,0 +1,181 @@
+@font-face {
+    font-family: 'FloeMetadataIcons';
+    src:url('../../../css/fonts/floe-metadata.eot?#iefix') format('embedded-opentype'),
+         url('../../../css/fonts/floe-metadata.eot'),
+         url('../../../css/fonts/floe-metadata.ttf');
+}
+
+.gpii-feedback {
+    width: 100%;
+    position: fixed;
+    top: 0px;
+    background-color: #fff;
+    border-bottom: 1px solid #888;
+    box-shadow: 0px 1px 5px 0px rgba(50, 50, 50, 0.75);
+    z-index: 999;
+}
+
+.gpii-feedback li {
+    display: inline-block;
+    list-style-type: none;
+}
+
+.gpii-feedback-preferences {
+    float: left;
+}
+
+.gpii-feedback-controls {
+    float: right;
+}
+
+.gpii-feedback-controls ul {
+    display: inline-block;
+}
+
+.gpii-feedback-requestsControls {
+    border-left: 2px solid #E5E5E5;
+}
+
+.gpii-feedback-button {
+    cursor: pointer;
+}
+
+.gpii-icon.gpii-feedback-button:before {
+    color: #6699cc;
+    background-color: #fff;
+    margin-top: -1px;
+    border: 2px solid #6699cc;
+}
+
+.gpii-icon.gpii-feedback-button:hover:before {
+    color: #fff;
+    background-color: #6699cc;
+}
+
+/* icons */
+
+.gpii-icon:before {
+    font-family: 'FloeMetadataIcons';
+    color: #fff;
+    font-size: 1.5rem;
+    border-radius: 50%;
+    padding: 0.5rem;
+    background: #66cc99;
+    font-weight: normal;
+    text-align: center;
+    opacity: 1;
+}
+
+.gpii-icon.gpii-icon-available:before {
+    background: #66cc99;
+}
+
+.gpii-icon.gpii-icon-partial:before {
+    color: #66cc99;
+    background-color: #fff;
+    margin-top: -1px;
+    border: 2px solid #66cc99;
+}
+
+.gpii-icon.gpii-icon-unavailable:before {
+    color: #B2B2B2;
+    background-color: #fff;
+    margin-top: -1px;
+    border: 2px solid #B2B2B2;
+}
+
+.gpii-icon.gpii-icon-unavailable:after {
+    content: "X";
+    color: #fff;
+    font-size: 0.5rem;
+    border-radius: 50%;
+    padding: 0 0.2rem;
+    background-color: #B2B2B2;
+    font-weight: bold;
+    text-align: center;
+    opacity: 1;
+    height: 0.5rem;
+    position: relative;
+    bottom: -0.5rem;
+    left: -0.86rem;
+}
+
+/* IE 11 hack to correct presentation of the unavailable badge */
+_:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
+    padding: 0.1rem 0.2rem;
+    bottom: -0.45rem;
+}
+
+.gpii-icon-text:before {
+    content: "\e601";
+}
+
+.gpii-icon-captions:before {
+    content: "\e602";
+}
+
+.gpii-icon-transcript:before {
+    content: "\e603";
+}
+
+.gpii-icon-audio:before {
+    content: "\e604";
+}
+
+.gpii-icon-happy:before {
+    content: "\e610";
+}
+
+.gpii-icon-sad:before {
+    content: "\e611";
+}
+
+.gpii-icon-request:before {
+    content: "\e612";
+}
+
+/* Contrast themes */
+.fl-theme-bw .gpii-icon:before,
+.fl-theme-wb .gpii-icon:after,
+.fl-theme-wb .gpii-icon.gpii-icon-available:before {
+    color: #000 !important;
+    background-color: #fff !important;
+    border-color: #000 !important;
+}
+
+.fl-theme-wb .gpii-icon:before,
+.fl-theme-bw .gpii-icon:after,
+.fl-theme-bw .gpii-icon.gpii-icon-available:before {
+    color: #fff !important;
+    background-color: #000 !important;
+    border-color: #fff !important;
+}
+
+.fl-theme-yb .gpii-icon:before,
+.fl-theme-by .gpii-icon:after,
+.fl-theme-by .gpii-icon.gpii-icon-available:before {
+    color: #ffff00 !important;
+    background-color: #000 !important;
+    border-color: #ffff00 !important;
+}
+
+.fl-theme-by .gpii-icon:before,
+.fl-theme-yb .gpii-icon:after,
+.fl-theme-yb .gpii-icon.gpii-icon-available:before {
+    color: #000 !important;
+    background-color: #ffff00 !important;
+    border-color: #000 !important;
+}
+
+.fl-theme-lgdg .gpii-icon:before {
+    color: #bdbdbb !important;
+    background-color: #555555 !important;
+    border-color: #bdbdbb !important;
+}
+
+.fl-theme-lgdg .gpii-icon:after,
+.fl-theme-lgdg .gpii-icon.gpii-icon-available:before {
+    color: #555555 !important;
+    background-color: #bdbdbb !important;
+    border-color: #555555 !important;
+}

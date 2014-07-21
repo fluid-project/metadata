@@ -1,0 +1,126 @@
+@font-face {
+    font-family: 'RobotoSlab';
+    src: url('../../css/fonts/RobotoSlab-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'OpenSans';
+    src: url('../../css/fonts/OpenSans-Regular.ttf');
+}
+
+@font-face {
+    font-family: "OpenSans";
+    src: url('../../css/fonts/OpenSans-Bold.ttf');
+    font-weight: bold;
+}
+
+body {
+    line-height: 1.6;
+}
+
+video {
+    height: 18.75rem;
+    width: 25rem;
+    border: 1px solid #000;
+}
+
+.gpii-feedbackDemo {
+    font-family: "OpenSans","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
+    background-color: #F4F4E9;
+    min-width:38rem;
+}
+
+.gpii-feedbackDemo p {
+    /* ensure that line-height is inherited from the body so that UIO's line spacing enactor works */
+    line-height: inherit;
+}
+
+/* Header area */
+
+.gpii-feedbackDemo-header {
+    background-color: #fff;
+    margin-top: 4.6rem;
+}
+
+.gpii-feedbackDemo-header-logo img {
+    width: 7rem;
+}
+
+.gpii-feedbackDemo-header-title {
+    padding-top: 1rem;
+    margin-left: 1rem;
+}
+
+.gpii-feedbackDemo-header-title {
+    text-transform: uppercase;
+}
+.gpii-feedbackDemo-header-title h1 {
+    font-size: 2.3rem;
+}
+
+.gpii-feedbackDemo-page-title {
+    font-family: 'RobotoSlab';
+    font-size: 2rem;
+    margin: 4rem 0 1rem 0;
+}
+
+/* For UI Options */
+
+.gpii-feedbackDemo .fl-prefsEditor-separatedPanel {
+    /* place UIO tab below feedback tool */
+    position: relative;
+    top: 4.4rem;
+    z-index: 1;
+}
+
+.gpii-feedbackDemo .fl-panelBar.row:after {
+    clear: none;
+}
+
+.gpii-feedbackDemo .fl-prefsEditor-separatedPanel .fl-panelBar {
+    background-color: none;
+    border-bottom: none;
+}
+
+.gpii-feedbackDemo-prefsEditor-slidingPanel {
+    border-bottom: 1px solid;
+}
+
+.gpii-feedbackDemo .fl-prefsEditor-separatedPanel .fl-panelBar.row .fl-prefsEditor-buttons {
+    margin: 0;
+    min-height: 1em;
+    padding: 0 0.5em;
+}
+
+.gpii-feedbackDemo .fl-prefsEditor-separatedPanel .fl-panelBar.row .fl-prefsEditor-buttons {
+    /* Prevent the buttons from increasing in size with the line-height; which had been causing it to overlap the header. */
+    line-height: 1.6em;
+}
+
+.gpii-feedbackDemo .fl-prefsEditor-separatedPanel .fl-panelBar.row .fl-prefsEditor-buttons button {
+    margin: 0;
+    padding: 0 0.5em;
+    font-size: 1em;
+    height: auto;
+}
+
+.gpii-feedbackDemo .fl-prefsEditor-separatedPanel .fl-icon-undo {
+    margin-top: 0;
+}
+
+/* Feedback overrides caused by Foundation */
+
+.gpii-feedback ul {
+    margin: 1rem 0;
+    padding: 0 0 0 2.5rem;
+}
+
+.gpii-feedback ul li {
+    margin: 0;
+    padding: 0 0.75rem 0 0;
+}
+
+.gpii-feedback ul.gpii-feedback-requestsControls {
+    padding-right: 1rem;
+    padding-left: 0.75rem;
+}
