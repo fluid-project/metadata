@@ -167,13 +167,17 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     };
 
     gpii.metadata.feedback.bindOutsideOfDialogClick = function (dialog, buttonDom) {
-        $("body").bind("click.clickOutsideOfDialog", function (e) {
+        $("body").bind("click", function (e) {
             if (dialog.dialog("isOpen")
                 && !$(e.target).is(buttonDom)
                 && !$(e.target).is('.ui-dialog, a')
                 && !$(e.target).closest('.ui-dialog').length) {
                 dialog.dialog("close");
             }
+        });
+
+        $("body").find("iframe").contents().find("body").on("click", function () {
+            dialog.dialog("close");
         });
     };
 
