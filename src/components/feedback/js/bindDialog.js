@@ -55,10 +55,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 }
             }
         },
-        // "containerIdentifier" MUST be supplied by integrators.
-        // The unique selector to identify {that}.container, for example, ".gpiic-button".
-        // It's used to position the dialog relative to {that}.container, which is the button that triggers the popup of the dialog.
-        containerIdentifier: null,
         members: {
             dialog: null,
             panelContainer: null
@@ -114,7 +110,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             },
             instantiateDialog: {
                 funcName: "gpii.metadata.feedback.instantiateDialog",
-                args: ["{that}.panelContainer", "{that}.container", "{that}.options.commonDialogOptions", "{that}.options.styles.activeCss", "{that}.options.containerIdentifier", "{that}"]
+                args: ["{that}.panelContainer", "{that}.container", "{that}.options.commonDialogOptions", "{that}.options.styles.activeCss", "{that}"]
             },
             bindOutsideOfDialogClick: {
                 funcName: "gpii.metadata.feedback.bindOutsideOfDialogClick",
@@ -144,11 +140,11 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }
     };
 
-    gpii.metadata.feedback.instantiateDialog = function (panelContainer, buttonDom, commonDialogOptions, activeCss, dialogRelativeTo, that) {
+    gpii.metadata.feedback.instantiateDialog = function (panelContainer, buttonDom, commonDialogOptions, activeCss, that) {
         if (!that.dialog) {
             var moreOptions = {
                 position: {
-                    of: dialogRelativeTo
+                    of: buttonDom
                 },
                 open: function () {
                     buttonDom.addClass(activeCss);

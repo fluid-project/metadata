@@ -37,7 +37,6 @@ https://github.com/gpii/universal/LICENSE.txt
             var nonDialogArea = $(".gpiic-nonDialog-area");
 
             gpii.metadata.feedback.bindDialog(containerSelector, {
-                containerIdentifier: containerSelector,
                 listeners: {
                     "onCreate.clickButton": {
                         listener: "fluid.tests.bindDialog.clickButton",

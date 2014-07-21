@@ -26,8 +26,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 container: "{feedback}.dom.happyButton",
                 createOnEvent: "afterMarkupReady",
                 options: {
-                    panelType: "gpii.metadata.feedback.matchConfirmation",
-                    containerIdentifier: "{feedback}.options.selectors.happyButton"
+                    panelType: "gpii.metadata.feedback.matchConfirmation"
                 }
             }
         },
