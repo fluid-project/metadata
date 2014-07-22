@@ -40,18 +40,6 @@
     cursor: pointer;
 }
 
-.gpii-icon.gpii-feedback-button:before {
-    color: #6699cc;
-    background-color: #fff;
-    margin-top: -1px;
-    border: 2px solid #6699cc;
-}
-
-.gpii-icon.gpii-feedback-button:hover:before {
-    color: #fff;
-    background-color: #6699cc;
-}
-
 /* icons */
 
 .gpii-icon:before {
@@ -100,6 +88,13 @@
     left: -0.86rem;
 }
 
+.gpii-icon.gpii-feedback-button:before {
+    color: #6699cc;
+    background-color: #fff;
+    margin-top: -1px;
+    border: 2px solid #6699cc;
+}
+
 /* IE 11 hack to correct presentation of the unavailable badge */
 _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
     padding: 0.1rem 0.2rem;
@@ -134,7 +129,8 @@ _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
     content: "\e612";
 }
 
-.gpii-icon-active .gpii-icon:before {
+.gpii-icon-active .gpii-icon:before,
+.gpii-icon.gpii-feedback-button:hover:before {
     color: #fff;
     background-color: #6699cc;
 }
@@ -199,6 +195,36 @@ _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
     color: #555555 !important;
     background-color: #bdbdbb !important;
     border-color: #555555 !important;
+}
+
+.fl-theme-bw .gpii-icon-active .gpii-icon:before {
+    color: #fff !important;
+    background-color: #000 !important;
+    border: none;
+}
+
+.fl-theme-wb .gpii-icon-active .gpii-icon:before {
+    color: #000 !important;
+    background-color: #fff !important;
+    border: none;
+}
+
+.fl-theme-by .gpii-icon-active .gpii-icon:before {
+    color: #ff0 !important;
+    background-color: #000 !important;
+    border: none;
+}
+
+.fl-theme-yb .gpii-icon-active .gpii-icon:before {
+    color: #000 !important;
+    background-color: #ff0 !important;
+    border: none;
+}
+
+.fl-theme-lgdg .gpii-icon-active .gpii-icon:before {
+    color: #555555 !important;
+    background-color: #bdbdbb !important;
+    border: none;
 }
 
 .fl-theme-bw .gpii-feedback .gpii-icon-active:after,
