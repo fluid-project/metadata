@@ -197,34 +197,34 @@ _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
     border-color: #555555 !important;
 }
 
-.fl-theme-bw .gpii-icon-active .gpii-icon:before {
+.fl-theme-bw .gpii-icon-active .gpii-icon:before,
+.fl-theme-bw .gpii-icon.gpii-feedback-button:hover:before {
     color: #fff !important;
     background-color: #000 !important;
-    border: none;
 }
 
-.fl-theme-wb .gpii-icon-active .gpii-icon:before {
+.fl-theme-wb .gpii-icon-active .gpii-icon:before,
+.fl-theme-wb .gpii-icon.gpii-feedback-button:hover:before {
     color: #000 !important;
     background-color: #fff !important;
-    border: none;
 }
 
-.fl-theme-by .gpii-icon-active .gpii-icon:before {
+.fl-theme-by .gpii-icon-active .gpii-icon:before,
+.fl-theme-by .gpii-icon.gpii-feedback-button:hover:before {
     color: #ff0 !important;
     background-color: #000 !important;
-    border: none;
 }
 
-.fl-theme-yb .gpii-icon-active .gpii-icon:before {
+.fl-theme-yb .gpii-icon-active .gpii-icon:before,
+.fl-theme-yb .gpii-icon.gpii-feedback-button:hover:before {
     color: #000 !important;
     background-color: #ff0 !important;
-    border: none;
 }
 
-.fl-theme-lgdg .gpii-icon-active .gpii-icon:before {
+.fl-theme-lgdg .gpii-icon-active .gpii-icon:before,
+.fl-theme-lgdg .gpii-icon.gpii-feedback-button:hover:before {
     color: #555555 !important;
     background-color: #bdbdbb !important;
-    border: none;
 }
 
 .fl-theme-bw .gpii-feedback .gpii-icon-active:after,
