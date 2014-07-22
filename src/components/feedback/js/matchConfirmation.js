@@ -29,8 +29,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             header: ".gpiic-feedback-dialog-header"
         },
         strings: {
-            content: "Thanks! You will be matched with similar resources.",
-            header: "Feedback"
+            header: "Thanks!",
+            content: "You will be matched with similar resources."
         },
         protoTree: {
             content: {messagekey: "content"},

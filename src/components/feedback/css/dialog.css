@@ -1,20 +1,8 @@
 /** dialogs **/
 .gpii-feedback-dialog {
     background-color: #fff;
-    border: 0.1rem solid #B2B2B2;
-    box-shadow: 0px 5px 5px 0px rgba(50, 50, 50, 0.75);
+    border: 5px solid #B2B2B2;
 }
-
-.gpii-feedback-dialog-header {
-    border: 0.2em solid #B2B2B2;
-    background-color: #B2B2B2;
-    margin-top: 0;
-}
-
-.gpii-feedback-dialog-content {
-    padding: 0 10px;
-}
-
 
 /* jQuery UI Dialog Overrides */
 
@@ -31,11 +19,6 @@
 
 .gpii-feedback-dialog.ui-dialog {
     position: fixed;
-    padding: 0;
-}
-
-.gpii-feedback-dialog.ui-dialog .ui-dialog-content {
-    padding: 0;
 }
 
 /* Contrast themes */
@@ -49,33 +32,5 @@
     font-family: inherit;
     font-size: inherit;
     border-radius: 0px;
-}
-
-.fl-theme-bw .gpii-feedback-dialog.ui-dialog:before,
-.fl-theme-wb .gpii-feedback-dialog.ui-dialog:after {
-    border-bottom-color: #000;
-}
-
-
-.fl-theme-wb .gpii-feedback-dialog.ui-dialog:before,
-.fl-theme-bw .gpii-feedback-dialog.ui-dialog:after {
-    border-bottom-color: #fff;
-}
-
-.fl-theme-by .gpii-feedback-dialog.ui-dialog:before,
-.fl-theme-yb .gpii-feedback-dialog.ui-dialog:after {
-    border-bottom-color: #000;
-}
-
-.fl-theme-yb .gpii-feedback-dialog.ui-dialog:before,
-.fl-theme-by .gpii-feedback-dialog.ui-dialog:after {
-    border-bottom-color: #ffff00;
-}
-
-.fl-theme-lgdg .gpii-feedback-dialog.ui-dialog:before {
-    border-bottom-color: #bdbdbb;
-}
-
-.fl-theme-lgdg .gpii-feedback-dialog.ui-dialog:after {
-    border-bottom-color: #555555;
+    border-width: 5px;
 }
