@@ -52,13 +52,14 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             activeCss: "gpii-icon-active"
         },
         markup: {
-            dialog: '<div>&nbsp;</div>'
+            dialog: '<section>&nbsp;</section>'
         },
         commonDialogOptions: {
             closeOnEscape: true,
             autoOpen: false,
             minHeight: 0,
             resizable: false,
+            width: 450,
             position: {
                 my: "center top",
                 at: "center-10% bottom+42%"

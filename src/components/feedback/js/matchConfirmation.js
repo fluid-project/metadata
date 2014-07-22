@@ -25,13 +25,16 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     fluid.defaults("gpii.metadata.feedback.matchConfirmation", {
         gradeNames: ["fluid.rendererRelayComponent", "autoInit"],
         selectors: {
-            content: ".gpiic-content"
+            content: ".gpiic-feedback-dialog-content",
+            header: ".gpiic-feedback-dialog-header"
         },
         strings: {
-            content: "Thanks! You will be matched with similar resources."
+            content: "Thanks! You will be matched with similar resources.",
+            header: "Feedback"
         },
         protoTree: {
-            content: {messagekey: "content"}
+            content: {messagekey: "content"},
+            header: {messagekey: "header"}
         },
         listeners: {
             "onCreate.init": "gpii.metadata.feedback.matchConfirmation.init"

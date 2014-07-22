@@ -5,6 +5,16 @@
     box-shadow: 0px 5px 5px 0px rgba(50, 50, 50, 0.75);
 }
 
+.gpii-feedback-dialog-header {
+    border: 0.2em solid #B2B2B2;
+    background-color: #B2B2B2;
+    margin-top: 0;
+}
+
+.gpii-feedback-dialog-content {
+    padding: 0 10px;
+}
+
 
 /* jQuery UI Dialog Overrides */
 
@@ -21,6 +31,11 @@
 
 .gpii-feedback-dialog.ui-dialog {
     position: fixed;
+    padding: 0;
+}
+
+.gpii-feedback-dialog.ui-dialog .ui-dialog-content {
+    padding: 0;
 }
 
 /* Contrast themes */
