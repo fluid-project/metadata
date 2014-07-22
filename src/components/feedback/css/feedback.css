@@ -134,7 +134,7 @@ _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
     content: "\e612";
 }
 
-.gpii-icon.gpii-icon-active:before {
+.gpii-icon-active .gpii-icon:before {
     color: #fff;
     background-color: #6699cc;
 }

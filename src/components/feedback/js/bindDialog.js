@@ -94,7 +94,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         invokers: {
             bindbutton: {
                 funcName: "gpii.metadata.feedback.bindbutton",
-                args: ["{that}.dialog", "{that}.dialogContainer", "{that}.options.markup.dialog", "{that}.events.onRenderDialogContent.fire", "{that}.container", "{that}"],
+                args: ["{arguments}.0", "{that}.dialog", "{that}.dialogContainer", "{that}.options.markup.dialog", "{that}.events.onRenderDialogContent.fire", "{that}.container", "{that}"],
                 dynamic: true
             },
             instantiateDialog: {
@@ -117,7 +117,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }]
     });
 
-    gpii.metadata.feedback.bindbutton = function (dialog, dialogContainer, dialogMarkup, fireRenderDialogContentEvent, buttonDom, that) {
+    gpii.metadata.feedback.bindbutton = function (event, dialog, dialogContainer, dialogMarkup, fireRenderDialogContentEvent, buttonDom, that) {
+        event.preventDefault();
         if (dialog && dialog.dialog("isOpen")) {
             dialog.dialog("close");
         } else {
