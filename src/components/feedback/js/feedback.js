@@ -24,10 +24,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             bindMatchConfirmation: {
                 type: "gpii.metadata.feedback.bindMatchConfirmation",
                 container: "{feedback}.dom.happyButton",
-                createOnEvent: "afterMarkupReady",
-                options: {
-                    matchConfirmationTemplate: "../../../src/components/feedback/html/matchConfirmationTemplate.html"
-                }
+                createOnEvent: "afterMarkupReady"
             }
         },
         styles: {
@@ -66,6 +63,11 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             template: {
                 url: "../html/feedbackTemplate.html"
             }
+        },
+        distributeOptions: {
+            source: "{that}.options.matchConfirmationTemplate",
+            remove: true,
+            target: "{that matchConfirmation}.options.resources.template.url"
         }
     });
 

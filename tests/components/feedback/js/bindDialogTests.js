@@ -33,23 +33,30 @@ https://github.com/gpii/universal/LICENSE.txt
     $(document).ready(function () {
         jqUnit.asyncTest("Test bindDialog", function () {
             jqUnit.expect(6);
+
             var containerSelector = ".gpiic-button";
             var nonDialogArea = $(".gpiic-nonDialog-area");
 
             gpii.metadata.feedback.bindDialog(containerSelector, {
+                renderDialogContentOptions: {
+                    listeners: {
+                        "onCreate.refreshView": "{that}.refreshView",
+                        "afterRender.fireContentReadyEvent": "{bindDialog}.events.onDialogContentReady"
+                    }
+                },
                 listeners: {
                     "onCreate.clickButton": {
                         listener: "fluid.tests.bindDialog.clickButton",
                         args: "{that}.container",
                         priority: "last"
                     },
-                    "onRenderDialogPanel.verifyPanelContainer": {
+                    "onRenderDialogContent.verifyPanelContainer": {
                         listener: "jqUnit.assertNotEquals",
-                        args: ["Initialization - The container for rendering the dialog content should have been created when onRenderDialogPanel fires", null, "{that}.panelContainer"]
+                        args: ["Initialization - The container for rendering the dialog content should have been created when onRenderDialogContent fires", null, "{that}.panelContainer"]
                     },
-                    "onDialogPanelReady.verifyRenderedPanel": {
+                    "onDialogContentReady.verifyRenderedPanel": {
                         listener: "jqUnit.assertNotNull",
-                        args: ["Initialization - The subcomponent for rendering dialog content has been instantiated and rendered when onDialogPanelReady fires", "{that}.renderDialogPanel"]
+                        args: ["Initialization - The subcomponent for rendering dialog content has been instantiated and rendered when onDialogContentReady fires", "{that}.renderDialogPanel"]
                     },
                     "onDialogReady.verifyDialog": {
                         listener: "jqUnit.assertNotEquals",

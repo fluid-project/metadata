@@ -50,6 +50,11 @@ https://github.com/gpii/universal/LICENSE.txt
                 funcName: "fluid.tests.assertMarkup",
                 args: ["The template should be rendered into the markup", "{that}.container", "{that}.options.resources.template.resourceText"]
             },
+            "afterMarkupReady.verifyMatchConfirmation": {
+                funcName: "jqUnit.assertNotNull",
+                args: ["The subcomponent bindMatchConfirmation should be created", "{that}.bindMatchConfirmation"],
+                priority: 1
+            },
             "afterMarkupReady.start": {
                 funcName: "jqUnit.start",
                 priority: "last"
@@ -59,7 +64,7 @@ https://github.com/gpii/universal/LICENSE.txt
 
     $(document).ready(function () {
         jqUnit.asyncTest("Initial settings", function () {
-            jqUnit.expect(4);
+            jqUnit.expect(5);
             fluid.tests.feedback.verifyInit(".gpiic-feedback");
         });
     });

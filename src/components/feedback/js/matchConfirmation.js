@@ -60,10 +60,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             listeners: {
                 "afterRender.fireContentReadyEvent": "{bindMatchConfirmation}.events.onDialogContentReady"
             }
-        },
-        distributeOptions: {
-            source: "{that}.options.matchConfirmationTemplate",
-            target: "{that > renderDialogContent}.options.resources.template.url"
         }
     });
 
