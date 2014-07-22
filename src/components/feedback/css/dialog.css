@@ -23,28 +23,6 @@
     position: fixed;
 }
 
-.gpii-feedback-dialog.ui-dialog:after, .gpii-feedback-dialog.ui-dialog:before {
-    bottom: 100%;
-    left: 50%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-}
-
-.gpii-feedback-dialog.ui-dialog:after {
-    border-bottom-color: #fff;
-    border-width: 0.9rem;
-    margin-left: -0.9rem;
-}
-.gpii-feedback-dialog.ui-dialog:before {
-    border-bottom-color: #B2B2B2;
-    border-width: 1rem;
-    margin-left: -1rem;
-}
-
 /* Contrast themes */
 
 .fl-theme-bw .gpii-feedback-dialog.ui-widget,
