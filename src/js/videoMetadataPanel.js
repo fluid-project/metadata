@@ -129,29 +129,24 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     model: {
                         keywords: "{videoMetadataPanel}.model.metadata.keywords"
                     },
-                    modelRelay: [{
+                    modelRelay: {
                         source: "{videoMetadataPanel}.model.modelInTransit",
                         target: "{that}.model",
                         backward: "liveOnly",
                         singleTransform: {
-                            type: "fluid.metadata.transforms.condition",
-                            conditionPath: "audio",
-                            "true": {
-                                transform: {
-                                    type: "fluid.transforms.literalValue",
-                                    value: "available",
-                                    outputPath: "audio"
-                                }
-                            },
-                            "false": {
-                                transform: {
-                                    type: "fluid.transforms.literalValue",
-                                    value: "unavailable",
-                                    outputPath: "audio"
-                                }
-                            }
+                            type: "fluid.transforms.valueMapper",
+                            inputPath: "audio",
+                            options: [{
+                                "inputValue": true,
+                                "outputPath": "audio",
+                                "outputValue": "available"
+                            }, {
+                                "inputValue": false,
+                                "outputPath": "audio",
+                                "outputValue": "unavailable"
+                            }]
                         }
-                    }],
+                    },
                     listeners: {
                         afterRender: "{videoMetadataPanel}.events.audioPanelRendered.fire"
                     }
