@@ -18,10 +18,22 @@ https://github.com/gpii/universal/LICENSE.txt
     fluid.registerNamespace("fluid.tests.matchConfirmation");
 
     $(document).ready(function () {
-        jqUnit.test("Test matchConfirmation", function () {
+        jqUnit.asyncTest("Test matchConfirmation", function () {
             jqUnit.expect(1);
-            var that = gpii.metadata.feedback.matchConfirmation(".gpiic-panel");
-            jqUnit.assertEquals("The correct content is rendered", that.options.strings.content, that.container.text());
+
+            var that = gpii.metadata.feedback.matchConfirmation(".gpiic-panel", {
+                resources: {
+                    template: {
+                        url: "../../../../src/components/feedback/html/matchConfirmationTemplate.html",
+                    }
+                },
+                listeners: {
+                    afterRender: function (that) {
+                        jqUnit.assertEquals("The correct content is rendered", that.options.strings.content, that.container.text());
+                        jqUnit.start();
+                    }
+                }
+            });
         });
     });
 })(jQuery);
