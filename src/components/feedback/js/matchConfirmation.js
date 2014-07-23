@@ -25,8 +25,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     fluid.defaults("gpii.metadata.feedback.matchConfirmation", {
         gradeNames: ["fluid.rendererRelayComponent", "autoInit"],
         selectors: {
-            content: ".gpiic-feedback-dialog-content",
-            header: ".gpiic-feedback-dialog-header"
+            content: ".gpiic-matchConfirmation-content",
+            header: ".gpiic-matchConfirmation-header"
         },
         strings: {
             header: "Thanks!",
