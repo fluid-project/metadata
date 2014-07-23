@@ -1,0 +1,35 @@
+{
+  "name": "metadata",
+  "description": "The Floe/Cloud4All metadata components provide web-based tools for automatically generating and refining accessibility metadata about content.",
+  "version": "0.1.0-SNAPSHOT",
+  "author": "Fluid Project",
+  "bugs": "http://issues.fluidproject.org/browse/FLOE",
+  "homepage": "http://www.floeproject.org",
+  "dependencies": {},
+  "licenses": [
+    {
+      "type": "BSD-3-Clause",
+      "url": "http://www.opensource.org/licenses/BSD-3-Clause"
+    },
+    {
+      "type": "ECL-2.0",
+      "url": "http://www.opensource.org/licenses/ECL-2.0"
+    }
+  ],
+  "keywords": [
+    "metadata",
+    "components",
+    "modules",
+    "authoring",
+    "feedback"
+  ],
+  "repository": "git://github.com/fluid-project/metadata.git",
+  "main": "",
+  "engines": {
+    "node": ">=0.1.9"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-jshint": "~0.9.2"
+  }
+}

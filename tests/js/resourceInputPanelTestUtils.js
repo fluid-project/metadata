@@ -8,13 +8,9 @@ You may obtain a copy of the License at
 https://github.com/gpii/universal/LICENSE.txt
 */
 
-// Declare dependencies
-/*global fluid, jqUnit, expect, jQuery*/
+(function ($, fluid) {
+    "use strict";
 
-// JSLint options
-/*jslint white: true, funcinvoke: true, undef: true, newcap: true, nomen: true, regexp: true, bitwise: true, browser: true, forin: true, maxerr: 100, indent: 4 */
-
-(function ($) {
     fluid.registerNamespace("fluid.tests");
 
     fluid.defaults("fluid.tests.resourceInputPanelTests", {
@@ -64,7 +60,7 @@ https://github.com/gpii/universal/LICENSE.txt
     };
 
     fluid.tests.checkModelValueByIndex = function (that, path, newSrcValue, index) {
-        return function (newModel, oldModel, changeRequest) {
+        return function (newModel) {
             jqUnit.assertEquals("The model path '" + path + "' has been updated to the new value", newSrcValue, fluid.get(newModel, ["resources", index, path]));
             jqUnit.assertTrue("The indicator state has been set to 'available'", that.locate("indicator").hasClass(that.indicator.options.styles.indicatorState.available));
         };
@@ -122,4 +118,4 @@ https://github.com/gpii/universal/LICENSE.txt
         }]
     });
 
-})(jQuery);
+})(jQuery, fluid);

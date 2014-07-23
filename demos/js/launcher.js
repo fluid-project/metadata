@@ -10,14 +10,10 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-/*global jQuery, fluid*/
-
-// JSLint options
-/*jslint white: true, funcinvoke: true, undef: true, newcap: true, nomen: true, regexp: true, bitwise: true, browser: true, forin: true, maxerr: 100, indent: 4 */
-
 var demo = demo || {};
 
 (function ($, fluid) {
+    "use strict";
 
     fluid.registerNamespace("demo.metadata");
 
@@ -67,11 +63,17 @@ var demo = demo || {};
         components: {
             setDB: {
                 type: "demo.metadata.setDb",
+                createOnEvent: "afterMarkupFetched",
                 options: {
                     databaseName: "{launcher}.options.dbName",
-                    content: "{launcher}.options.content",
+                    // content: "{launcher}.options.content",
+                    content: {
+                        markup: "{launcher}.options.resources.markup.resourceText",
+                        metadata: "{launcher}.options.content.metadata"
+                    },
                     listeners: {
-                        "afterSet": "{launcher}.events.afterSet"
+                        "afterSet": "{launcher}.events.afterSet",
+                        "onAttach": "{launcher}.launch"
                     }
                 }
             }
@@ -80,18 +82,32 @@ var demo = demo || {};
             onSet: null,
             afterSet: null,
             onRedirect: null,
-            onDbError: null
+            onDbError: null,
+            afterMarkupFetched: null
         },
         listeners: {
-            "onCreate.launch": "{that}.launch"
+            "onCreate.fetchResources": {
+                listener: "fluid.fetchResources",
+                args: ["{that}.options.resources", "{that}.events.afterMarkupFetched.fire"]
+            }
         },
         invokers: {
             launch: {
                 funcName: "demo.metadata.launcher.launch",
                 args: "{that}"
             }
+        },
+        resources: {
+            markup: {
+                forceCache: true,
+                url: "{that}.options.content.markup"
+            }
         }
     });
+
+    demo.metadata.launcher.fetchResources = function (resources, callback) {
+        fluid.fetchResources(resources, callback);
+    };
 
     demo.metadata.launcher.launch = function (that) {
         var listenerNamespace = "redirectListener";
