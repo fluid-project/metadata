@@ -19,7 +19,7 @@ https://github.com/gpii/universal/LICENSE.txt
 
     $(document).ready(function () {
         jqUnit.asyncTest("Test matchConfirmation", function () {
-            jqUnit.expect(1);
+            jqUnit.expect(2);
 
             var that = gpii.metadata.feedback.matchConfirmation(".gpiic-panel", {
                 resources: {
@@ -29,7 +29,8 @@ https://github.com/gpii/universal/LICENSE.txt
                 },
                 listeners: {
                     afterRender: function (that) {
-                        jqUnit.assertEquals("The correct content is rendered", that.options.strings.content, that.container.text());
+                        jqUnit.assertEquals("The correct content is rendered", that.options.strings.header, that.locate("header").text());
+                        jqUnit.assertEquals("The correct content is rendered", that.options.strings.content, that.locate("content").text());
                         jqUnit.start();
                     }
                 }
