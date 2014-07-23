@@ -116,7 +116,7 @@ _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
     content: "\e604";
 }
 
-.gpii-icon-happy:before {
+.gpii-icon-matchConfirmation:before {
     content: "\e610";
 }
 

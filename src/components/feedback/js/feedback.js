@@ -23,7 +23,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         components: {
             bindMatchConfirmation: {
                 type: "gpii.metadata.feedback.bindMatchConfirmation",
-                container: "{feedback}.dom.happyButton",
+                container: "{feedback}.dom.matchConfirmationButton",
                 createOnEvent: "afterMarkupReady"
             }
         },
@@ -31,7 +31,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             container: "gpii-feedback"
         },
         selectors: {
-            happyButton: ".gpiic-happy"
+            matchConfirmationButton: ".gpiic-matchConfirmation"
         },
         events: {
             afterTemplateFetched: null,
