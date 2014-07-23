@@ -64,9 +64,9 @@ https://github.com/gpii/universal/LICENSE.txt
     };
 
     fluid.tests.checkAudioStateChange = function (audioPanel, expectedRadiobuttons, expectedCheckboxes, state) {
-        audioPanel.events.afterAttributesRendered.addListener(function () {
+        audioPanel.applier.modelChanged.addListener("audio", function () {
             fluid.tests.checkAudioState(audioPanel, expectedRadiobuttons, expectedCheckboxes, state);
-            audioPanel.events.afterAttributesRendered.removeListener("checkAudioStateChange");
+            audioPanel.applier.modelChanged.removeListener("checkAudioStateChange");
         }, "checkAudioStateChange", null, "last");
     };
 
