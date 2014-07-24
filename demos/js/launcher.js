@@ -66,7 +66,6 @@ var demo = demo || {};
                 createOnEvent: "afterMarkupFetched",
                 options: {
                     databaseName: "{launcher}.options.dbName",
-                    // content: "{launcher}.options.content",
                     content: {
                         markup: "{launcher}.options.resources.markup.resourceText",
                         metadata: "{launcher}.options.content.metadata"
