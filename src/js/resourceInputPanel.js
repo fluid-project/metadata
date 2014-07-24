@@ -9,16 +9,8 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-// Declare dependencies
-/*global jQuery, fluid*/
-
-// JSLint options
-/*jslint white: true, funcinvoke: true, undef: true, newcap: true, nomen: true, regexp: true, bitwise: true, browser: true, forin: true, maxerr: 100, indent: 4 */
-
-var fluid_1_5 = fluid_1_5 || {};
-
-
 (function ($, fluid) {
+    "use strict";
 
     fluid.registerNamespace("fluid.metadata");
 
@@ -73,7 +65,7 @@ var fluid_1_5 = fluid_1_5 || {};
     });
 
     fluid.metadata.resourceInput.loadTemplate = function (that) {
-        fluid.fetchResources(that.options.resources, function (resourceSpec) {
+        fluid.fetchResources(that.options.resources, function () {
             that.refreshView();
         });
     };
@@ -153,7 +145,7 @@ var fluid_1_5 = fluid_1_5 || {};
         gradeNames: ["fluid.metadata.panel", "autoInit"],
         selectors: {
             inputs: ".gpiic-resourceInputPanel-inputs",
-            input: ".gpiic-resourceInputPanel-input",
+            input: ".gpiic-resourceInputPanel-input"
         },
         strings: {
             tooltip: {},
@@ -163,7 +155,7 @@ var fluid_1_5 = fluid_1_5 || {};
             container: ""
         },
         model: {
-            resources: null,
+            resources: null
         },
         modelRelay: {
             target: "resources",
@@ -371,7 +363,7 @@ var fluid_1_5 = fluid_1_5 || {};
             "afterMarkupReady.writeDescription": {
                 "this": "{that}.dom.description",
                 "method": "text",
-                "args": "{that}.options.strings.description",
+                "args": "{that}.options.strings.description"
             }
         },
         resources: {

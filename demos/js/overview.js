@@ -10,14 +10,10 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-/*global jQuery, fluid*/
-
-// JSLint options
-/*jslint white: true, funcinvoke: true, undef: true, newcap: true, nomen: true, regexp: true, bitwise: true, browser: true, forin: true, maxerr: 100, indent: 4 */
-
 var demo = demo || {};
 
 (function ($, fluid) {
+    "use strict";
 
     fluid.registerNamespace("demo.metadata");
 
@@ -72,7 +68,7 @@ var demo = demo || {};
     });
 
     $(document).ready(function () {
-        var overviewPanel = demo.metadata.overview(".gpiic-overviewPanel", {
+        demo.metadata.overview(".gpiic-overviewPanel", {
             overviewPanelTemplate: "../../src/lib/infusion/components/overviewPanel/html/overviewPanelTemplate.html",
             strings: {
                 "componentName": "FLOE Metadata Authoring",
@@ -80,19 +76,17 @@ var demo = demo || {};
                 "feedbackLinkText": "Let us know!"
             },
             markup: {
-                "description": "The FLOE metadata authoring components can be integrated into existing content editors to allow authors to create or edit \
-                                metadata that accompanies the content of their Open Education Resource (OER).  For the purposes of this demo, the metadata \
-                                components are shown within a simple content editor.",
-                "instructions": "<p>First choose whether to edit \"Climate Change Impacts\" or \"Create New Resource\". This will open a text editor.</p>\
-                                 <p>If creating a new resource, <em>insert a video</em> by typing text in the web address field.</p>\
-                                 <p><em>Note:</em> If editing \"Climate Change Impacts\", there will already be a video in the editor window \
-                                 and its address cannot be changed.</p>\
-                                 \
-                                 <ul>\
-                                    <li>A panel named <em>\"Video Details\"</em> will appear - add as much detail as possible.</li>\
-                                    <li>Select <em>\"Preview Content\"</em> to see an example of how the end user would see the content.</li>\
-                                    <li>Select <em>\"View Output HTML\"</em> to see the HTML mark-up with metadata included.</li>\
-                                </ul>"
+                "description": "The FLOE metadata authoring components can be integrated into existing content editors to allow authors to create or edit " +
+                                "metadata that accompanies the content of their Open Education Resource (OER).  For the purposes of this demo, the metadata " +
+                                "components are shown within a simple content editor.",
+                "instructions": "<p>First choose whether to edit \"Climate Change Impacts\" or \"Create New Resource\". This will open a text editor.</p>" +
+                                 "<p>If creating a new resource, <em>insert a video</em> by typing text in the web address field.</p>" +
+                                 "<p><em>Note:</em> If editing \"Climate Change Impacts\", there will already be a video in the editor window and its address cannot be changed.</p>" +
+                                 "<ul>" +
+                                 "   <li>A panel named <em>\"Video Details\"</em> will appear - add as much detail as possible.</li>" +
+                                 "   <li>Select <em>\"Preview Content\"</em> to see an example of how the end user would see the content.</li>" +
+                                 "   <li>Select <em>\"View Output HTML\"</em> to see the HTML mark-up with metadata included.</li>" +
+                                 "</ul>"
 
             },
             links: {

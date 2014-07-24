@@ -10,12 +10,10 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-/*global jQuery, fluid*/
-
-// JSLint options
-/*jslint white: true, funcinvoke: true, undef: true, newcap: true, nomen: true, regexp: true, bitwise: true, browser: true, forin: true, maxerr: 100, indent: 4 */
+/* global PouchDB */
 
 (function ($, fluid) {
+    "use strict";
 
     fluid.defaults("fluid.pouchdb.dataSource", {
         gradeNames: ["fluid.eventedComponent", "autoInit"],
@@ -51,7 +49,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 funcName: "fluid.pouchdb.dataSource.set",
                 args: ["{that}.database", "{arguments}.0", "{arguments}.1"]
             },
-            delete: {
+            "delete": {
                 funcName: "fluid.pouchdb.dataSource.delete",
                 args: ["{that}.database", "{arguments}.0", "{arguments}.1"]
             }
@@ -83,7 +81,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         });
     };
 
-    fluid.pouchdb.dataSource.delete = function (database, directModel, callback) {
+    fluid.pouchdb.dataSource["delete"] = function (database, directModel, callback) {
         database.get(directModel.id, function (err, result) {
             if (!err) {
                 database.remove(result, callback);

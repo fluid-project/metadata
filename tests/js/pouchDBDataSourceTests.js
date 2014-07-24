@@ -8,13 +8,11 @@ You may obtain a copy of the License at
 https://github.com/gpii/universal/LICENSE.txt
 */
 
-// Declare dependencies
-/*global fluid, jqUnit, expect, jQuery*/
+/* global PouchDB */
 
-// JSLint options
-/*jslint white: true, funcinvoke: true, undef: true, newcap: true, nomen: true, regexp: true, bitwise: true, browser: true, forin: true, maxerr: 100, indent: 4 */
+(function ($, fluid) {
+    "use strict";
 
-(function ($) {
     fluid.registerNamespace("fluid.tests");
 
     jqUnit.asyncTest("Creation", function () {
@@ -41,7 +39,7 @@ https://github.com/gpii/universal/LICENSE.txt
             "model": "data"
         };
 
-        ds.set(doc, function (err, result) {
+        ds.set(doc, function () {
             ds.database.get(doc.id, function (err, result) {
                 jqUnit.assertEquals("The document should be created", doc.model, result.model);
                 PouchDB.destroy(dbname);
@@ -65,8 +63,8 @@ https://github.com/gpii/universal/LICENSE.txt
         ds.database.put({
             _id: doc.id,
             "model": "original"
-        }, function (err, result) {
-            ds.set(doc, function (err, result) {
+        }, function () {
+            ds.set(doc, function () {
                 ds.database.get(doc.id, function (err, result) {
                     jqUnit.assertEquals("The document should be updated", doc.model, result.model);
                     PouchDB.destroy(dbname);
@@ -91,7 +89,7 @@ https://github.com/gpii/universal/LICENSE.txt
         ds.database.put({
             _id: doc.id,
             "model": doc.model
-        }, function (err, result) {
+        }, function () {
             ds.get(doc, function (result) {
                 jqUnit.assertEquals("The model should have been returned", doc.model, result);
                 PouchDB.destroy(dbname);
@@ -115,9 +113,9 @@ https://github.com/gpii/universal/LICENSE.txt
         ds.database.put({
             _id: doc.id,
             "model": doc.model
-        }, function (err, result) {
-            ds.delete(doc, function () {
-                ds.database.get(doc.id, function (err, result) {
+        }, function () {
+            ds["delete"](doc, function () {
+                ds.database.get(doc.id, function (err) {
                     jqUnit.assertTrue("The document should no longer exist", err);
                     PouchDB.destroy(dbname);
                     jqUnit.start();
@@ -151,4 +149,4 @@ https://github.com/gpii/universal/LICENSE.txt
 
     });
 
-})(jQuery);
+})(jQuery, fluid);

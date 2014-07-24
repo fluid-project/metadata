@@ -8,13 +8,9 @@ You may obtain a copy of the License at
 https://github.com/gpii/universal/LICENSE.txt
 */
 
-// Declare dependencies
-/*global fluid, jqUnit, expect, jQuery*/
+(function ($, fluid) {
+    "use strict";
 
-// JSLint options
-/*jslint white: true, funcinvoke: true, undef: true, newcap: true, nomen: true, regexp: true, bitwise: true, browser: true, forin: true, maxerr: 100, indent: 4 */
-
-(function ($) {
     fluid.registerNamespace("fluid.tests");
 
     jqUnit.test("Test panel with a defined model and defined rules", function () {
@@ -59,4 +55,4 @@ https://github.com/gpii/universal/LICENSE.txt
         jqUnit.assertTrue("The indicator status is properly set", that.locate("indicator").hasClass(that.indicator.options.styles.indicatorState.available));
     });
 
-})(jQuery);
+})(jQuery, fluid);

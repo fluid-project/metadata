@@ -1,5 +1,4 @@
-Floe/Cloud4All Metadata Components
-==================================
+# Floe/Cloud4All Metadata Components #
 
 The Floe/Cloud4All metadata components provide web-based tools for automatically generating and refining 
 accessibility metadata about content. These components are designed to be integrated into a variety of web-based
