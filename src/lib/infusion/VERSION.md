@@ -28,3 +28,5 @@ The following directories were stripped out of the build since they contain code
 * src/lib/infusion/lib/jquery/ui/js/
 * src/lib/infusion/lib/json/
 * README.md
+
+Additionally, the testing framework from Infusion is used (tests\lib\infusion) and should be updated to a matching version.
