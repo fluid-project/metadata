@@ -61,31 +61,31 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     };
 
     fluid.pouchdb.dataSource.get = function (database, directModel, callback) {
-        database.get(directModel.id, function (err, result) {
+        database.get(directModel.id).then(function (doc) {
             if (callback) {
-                callback(fluid.get(result, "model"));
+                callback(fluid.get(doc, "model"));
             }
         });
     };
 
     fluid.pouchdb.dataSource.set = function (database, directModel, callback) {
-        database.get(directModel.id, function (err, result) {
-            var doc = {
-                _id: directModel.id,
-                model: directModel.model
-            };
-            if (!err) {
-                doc._rev = result._rev;
+        var newDoc = {
+            _id: directModel.id,
+            model: directModel.model
+        };
+        database.get(directModel.id).then(function (otherDoc) {
+            newDoc._rev = otherDoc._rev;
+            database.put(newDoc).then(callback);
+        }, function (error) {
+            if (error.status === 404) {
+                database.put(newDoc).then(callback);
             }
-            database.put(doc, callback);
         });
     };
 
     fluid.pouchdb.dataSource["delete"] = function (database, directModel, callback) {
-        database.get(directModel.id, function (err, result) {
-            if (!err) {
-                database.remove(result, callback);
-            }
+        database.get(directModel.id).then(function (doc) {
+            database.remove(doc).then(callback);
         });
     };
 
