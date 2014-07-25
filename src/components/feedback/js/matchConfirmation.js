@@ -17,6 +17,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
 (function ($, fluid) {
 
+    "use strict";
+
     fluid.registerNamespace("gpii.metadata.feedback");
 
     /*
@@ -48,7 +50,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     });
 
     gpii.metadata.feedback.matchConfirmation.init = function (that) {
-        fluid.fetchResources(that.options.resources, function (resourceSpec) {
+        fluid.fetchResources(that.options.resources, function () {
             that.refreshView();
         });
     };

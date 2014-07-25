@@ -20,14 +20,28 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             bindMatchConfirmation: {
                 type: "gpii.metadata.feedback.bindMatchConfirmation",
                 container: "{feedback}.dom.matchConfirmationButton",
-                createOnEvent: "afterMarkupReady"
+                createOnEvent: "afterMarkupReady",
+                options: {
+                    strings: {
+                        buttonLabel: "{feedback}.options.strings.matchConfirmationLabel"
+                    },
+                    styles: {
+                        activeCss: "{feedback}.options.styles.activeCss"
+                    }
+                }
             }
         },
+        strings: {
+            matchConfirmationLabel: "I like this article, match me with similar content.",
+            unmatchDetailsLabel: "I don't like this article, request improvements.",
+            requestLabel: "Request improvements to the content."
+        },
         styles: {
-            container: "gpii-feedback"
+            container: "gpii-feedback",
+            activeCss: "gpii-icon-active"
         },
         selectors: {
-            matchConfirmationButton: ".gpiic-matchConfirmation"
+            matchConfirmationButton: ".gpiic-matchConfirmation-button"
         },
         events: {
             afterTemplateFetched: null,

@@ -8,36 +8,45 @@ You may obtain a copy of the License at
 https://github.com/gpii/universal/LICENSE.txt
 */
 
-// Declare dependencies
-/*global fluid, jqUnit, expect, jQuery*/
-
-// JSLint options
-/*jslint white: true, funcinvoke: true, undef: true, newcap: true, nomen: true, regexp: true, bitwise: true, browser: true, forin: true, maxerr: 100, indent: 4 */
-
 (function ($) {
+    "use strict";
+
     fluid.registerNamespace("fluid.tests.bindDialog");
 
     fluid.tests.bindDialog.clickButton = function (button) {
         button.click();
     };
 
-    fluid.tests.bindDialog.testDialog = function (that, nonDialogArea) {
+    fluid.tests.bindDialog.testDialog = function (that) {
+        var nonDialogArea = $(".gpiic-nonDialog-area");
+
+        that.events.onActiveStateChange.addListener(function (newValue) {
+            jqUnit.assertTrue("The button state is set to \"active\"", newValue);
+            jqUnit.assertTrue("The aria pressed is set", that.container.attr("aria-pressed"));
+            jqUnit.assertTrue("The active css is applied", that.container.hasClass(that.options.styles.activeCss));
+            that.events.onActiveStateChange.removeListener("checkState");
+        }, "checkState", null, "last");
+
         jqUnit.assertTrue("The dialog is open", that.dialog.dialog("isOpen"));
+        jqUnit.assertEquals("The aria role is set", "button", that.container.attr("role"));
+        jqUnit.assertEquals("The aria label is set", that.options.strings.buttonLabel, that.container.attr("aria-label"));
+
+        // Clicking on the dialog doesn't close itself
         that.dialog.click();
         jqUnit.assertTrue("Cicking on the dialog does not close itself", that.dialog.dialog("isOpen"));
+
+        // Clicking outside the dialog closes it
         nonDialogArea.click();
         jqUnit.assertFalse("Cicking anywhere outside of the dialog closes the dialog", that.dialog.dialog("isOpen"));
+
         jqUnit.start();
-    }
+    };
 
     $(document).ready(function () {
         jqUnit.asyncTest("Test bindDialog", function () {
-            jqUnit.expect(6);
+            jqUnit.expect(11);
 
-            var containerSelector = ".gpiic-button";
-            var nonDialogArea = $(".gpiic-nonDialog-area");
-
-            gpii.metadata.feedback.bindDialog(containerSelector, {
+            gpii.metadata.feedback.bindDialog(".gpiic-button", {
                 renderDialogContentOptions: {
                     listeners: {
                         "onCreate.refreshView": "{that}.refreshView",
@@ -62,9 +71,10 @@ https://github.com/gpii/universal/LICENSE.txt
                         listener: "jqUnit.assertNotEquals",
                         args: ["Initialization - The dialog has been created and attached as a member option when onDialogReady fires", null, "{that}.dialog"]
                     },
-                    "onReady.start": {
+                    "onDialogReady.start": {
                         listener: "fluid.tests.bindDialog.testDialog",
-                        args: ["{that}", nonDialogArea]
+                        args: ["{that}"],
+                        priority: "last"
                     }
                 }
             });

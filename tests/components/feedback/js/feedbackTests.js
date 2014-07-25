@@ -22,8 +22,10 @@ https://github.com/gpii/universal/LICENSE.txt
         }
     });
 
-    fluid.tests.assertMarkup = function (msg, container, expectedMarkup) {
-        jqUnit.assertEquals(msg, expectedMarkup, container.html());
+    fluid.tests.assertMarkup = function (that) {
+        jqUnit.assertNotNull("The template should be rendered into the markup", that.options.resources.template.resourceText, that.container.html());
+        jqUnit.assertEquals("The aria role is set for match confirmation button", "button", that.locate("matchConfirmationButton").attr("role"));
+        jqUnit.assertEquals("The aria label is set", that.options.strings.matchConfirmationLabel, that.locate("matchConfirmationButton").attr("aria-label"));
     };
 
     fluid.defaults("fluid.tests.feedback.verifyInit", {
@@ -44,7 +46,7 @@ https://github.com/gpii/universal/LICENSE.txt
             },
             "afterMarkupReady.verifyMarkup": {
                 funcName: "fluid.tests.assertMarkup",
-                args: ["The template should be rendered into the markup", "{that}.container", "{that}.options.resources.template.resourceText"]
+                args: ["{that}"]
             },
             "afterMarkupReady.verifyMatchConfirmation": {
                 funcName: "jqUnit.assertNotNull",
@@ -60,7 +62,7 @@ https://github.com/gpii/universal/LICENSE.txt
 
     $(document).ready(function () {
         jqUnit.asyncTest("Initial settings", function () {
-            jqUnit.expect(5);
+            jqUnit.expect(7);
             fluid.tests.feedback.verifyInit(".gpiic-feedback");
         });
     });

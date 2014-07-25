@@ -10,15 +10,12 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-/*global jQuery, fluid*/
-
-// JSLint options
-/*jslint white: true, funcinvoke: true, undef: true, newcap: true, nomen: true, regexp: true, bitwise: true, browser: true, forin: true, maxerr: 100, indent: 4 */
+var gpii = gpii || {};
 
 (function ($, fluid) {
 
     /**
-     * "gpii.metadata.feedback.bindDialog" is a view component that accepts a container. The click on the container, usually a button, triggers following steps:
+     * "gpii.metadata.feedback.bindDialog" is a view component that accepts a "button" container. The click on the container triggers following steps:
      *
      * 1. Close the dialog if the dialog exists and opens. Or, create a container for the dialog and fire onRenderDialogContent when the container is ready;
      * 2. Instantiate the subcomponent "renderDialogContent" to render the dialog content into the container created in step 1;
@@ -29,6 +26,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
      *
      * Note: every click on the container triggers re-rendering of the dialog content using onRenderDialogContent event.
      **/
+
+    "use strict";
 
     fluid.registerNamespace("gpii.metadata.feedback");
 
@@ -46,13 +45,17 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         },
         members: {
             dialog: null,
-            dialogContainer: null
+            dialogContainer: null,
+            isActive: false    // Keep track of the active state of the button
+        },
+        strings: {
+            buttonLabel: null
         },
         styles: {
             activeCss: "gpii-icon-active"
         },
         markup: {
-            dialog: '<section>&nbsp;</section>'
+            dialog: "<section>&nbsp;</section>"
         },
         commonDialogOptions: {
             closeOnEscape: true,
@@ -67,13 +70,23 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             dialogClass: "gpii-feedback-noClose gpii-feedback-dialog"
         },
         events: {
+            onActiveStateChange: null,   // The argument for this event is a boolean value indicating whether the button is active.
             onRenderDialogContent: null,
             onDialogContentReady: null,
             onBindDialogHandlers: null,
-            onDialogReady: null,
-            onReady: null
+            onDialogReady: null
         },
         listeners: {
+            "onCreate.addAriaRole": {
+                "this": "{that}.container",
+                method: "attr",
+                args: ["role", "button"]
+            },
+            "onCreate.addAriaLabel": {
+                "this": "{that}.container",
+                method: "attr",
+                args: ["aria-label", "{that}.options.strings.buttonLabel"]
+            },
             "onCreate.bindButtonClick": {
                 "this": "{that}.container",
                 method: "click",
@@ -85,22 +98,17 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 "this": "{that}.dialog",
                 method: "dialog",
                 args: "open"
-            },
-            "onDialogReady.fireReadyEvent": {
-                listener: "{that}.events.onReady.fire",
-                args: "{that}",
-                priority: "last"
             }
         },
         invokers: {
             bindbutton: {
                 funcName: "gpii.metadata.feedback.bindbutton",
-                args: ["{arguments}.0", "{that}.dialog", "{that}.dialogContainer", "{that}.options.markup.dialog", "{that}.events.onRenderDialogContent.fire", "{that}.container", "{that}"],
+                args: ["{arguments}.0", "{that}.dialog", "{that}.dialogContainer", "{that}.options.markup.dialog", "{that}.container", "{that}.options.styles.activeCss", "{that}"],
                 dynamic: true
             },
             instantiateDialog: {
                 funcName: "gpii.metadata.feedback.instantiateDialog",
-                args: ["{that}.dialogContainer", "{that}.container", "{that}.options.commonDialogOptions", "{that}.options.styles.activeCss", "{that}"]
+                args: ["{that}.dialogContainer", "{that}.container", "{that}.options.commonDialogOptions", "{that}"]
             },
             bindOutsideOfDialogClick: {
                 funcName: "gpii.metadata.feedback.bindOutsideOfDialogClick",
@@ -118,35 +126,43 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }]
     });
 
-    gpii.metadata.feedback.bindbutton = function (event, dialog, dialogContainer, dialogMarkup, fireRenderDialogContentEvent, buttonDom, that) {
+    gpii.metadata.feedback.bindbutton = function (event, dialog, dialogContainer, dialogMarkup, buttonDom, activeCss, that) {
         event.preventDefault();
-        if (dialog && dialog.dialog("isOpen")) {
+
+        if (dialog && dialog.dialog("isOpen") && that.isActive) {
             dialog.dialog("close");
-        } else {
-            // The dialog content is re-rendered at every button click
+        } else if (!that.isActive) {
             if (!that.dialogContainer) {
                 that.dialogContainer = $(dialogMarkup);
             }
-            fireRenderDialogContentEvent();
+            that.events.onRenderDialogContent.fire();
         }
+
+        that.isActive = !that.isActive;
+        if (that.isActive) {
+            buttonDom.addClass(activeCss);
+            buttonDom.attr("aria-pressed", true);
+        } else {
+            buttonDom.removeClass(activeCss);
+            buttonDom.attr("aria-pressed", false);
+        }
+        that.events.onActiveStateChange.fire(that.isActive);
     };
 
-    gpii.metadata.feedback.instantiateDialog = function (dialogContainer, buttonDom, commonDialogOptions, activeCss, that) {
+    gpii.metadata.feedback.instantiateDialog = function (dialogContainer, buttonDom, commonDialogOptions, that) {
         if (!that.dialog) {
             var moreOptions = {
                 position: {
                     of: buttonDom
-                },
-                open: function () {
-                    buttonDom.addClass(activeCss);
-                },
-                close: function () {
-                    buttonDom.removeClass(activeCss);
                 }
             };
 
             var dialogOptions = $.extend(true, {}, commonDialogOptions, moreOptions);
-            that.dialog = dialogContainer.dialog(dialogOptions);
+            var dialogId = gpii.metadata.feedback.utils.getUniqueId("matchConfirmationDialog");
+
+            that.dialog = dialogContainer.dialog(dialogOptions).attr("id", dialogId);
+            buttonDom.attr("aria-controls", dialogId);
+
             that.events.onBindDialogHandlers.fire();
         }
 
@@ -155,10 +171,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
     gpii.metadata.feedback.bindOutsideOfDialogClick = function (dialog, buttonDom) {
         $("body").bind("click", function (e) {
-            if (dialog.dialog("isOpen")
-                && !$(e.target).is(buttonDom)
-                && !$(e.target).is('.ui-dialog, a')
-                && !$(e.target).closest('.ui-dialog').length) {
+            if (dialog.dialog("isOpen") &&
+                !$(e.target).is(buttonDom) &&
+                !$(e.target).is(".ui-dialog, a") &&
+                !$(e.target).closest(".ui-dialog").length) {
                 dialog.dialog("close");
             }
         });
