@@ -10,12 +10,10 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-/*global jQuery, fluid*/
-
-// JSLint options
-/*jslint white: true, funcinvoke: true, undef: true, newcap: true, nomen: true, regexp: true, bitwise: true, browser: true, forin: true, maxerr: 100, indent: 4 */
+/* global markup_beauty */
 
 (function ($, fluid) {
+    "use strict";
 
     fluid.defaults("fluid.markup", {
         gradeNames: ["fluid.viewComponent", "autoInit"],
@@ -73,7 +71,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     fluid.markup.generateVideoElm = function (metadata, videoContainerMarkup, captionsContainerMarkup, videoElm) {
         if (!videoElm) {
             videoElm = $("<video controls></video>");
-            $('<source>').attr({
+            $("<source>").attr({
                 src: metadata.url,
                 type: "video/" + metadata.url.split(".").pop()
             }).appendTo(videoElm);

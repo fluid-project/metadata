@@ -14,7 +14,6 @@
         <script type="text/javascript" src="../../src/lib/infusion/infusion-custom.js"></script>
         <script type="text/javascript" src="../../src/lib/pouchDB/pouchdb-nightly.min.js"></script>
         <script type="text/javascript" src="../../src/js/pouchDBDataSource.js"></script>
-        <script type="text/javascript" src="../js/predefinedOER.js"></script>
         <script type="text/javascript" src="../js/utility.js"></script>
         <script type="text/javascript" src="../js/cookieStore.js"></script>
         <script type="text/javascript" src="../js/overview.js"></script>
@@ -93,7 +92,7 @@
             launchDemo({
                 dbName: "Create_new_resource",
                 content: {
-                    markup: "<p>This is a content editor - add a video by entering text in the web address field in the toolbar.</p><p>You can also add some text here.</p>"
+                    markup: "./newOERContent.html"
                 }
             });
             e.preventDefault();
@@ -104,9 +103,9 @@
             launchDemo({
                 dbName: "Climate_Change_Impacts",
                 content: {
-                    markup: demo.metadata.predefinedOER.content,
+                    markup: "./predefinedOERContent.html",
                     metadata: {
-                        url: demo.metadata.predefinedOER.url,
+                        url: "https://archive.org/details/gov.ntis.ava11754vnb1",
                         audio: "available",
                         flashing: "noFlashing",
                         keywords: ["dialogue"]

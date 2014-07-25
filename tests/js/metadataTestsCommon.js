@@ -8,13 +8,9 @@ You may obtain a copy of the License at
 https://github.com/gpii/universal/LICENSE.txt
 */
 
-// Declare dependencies
-/*global fluid, jqUnit, expect, jQuery*/
+(function ($, fluid) {
+    "use strict";
 
-// JSLint options
-/*jslint white: true, funcinvoke: true, undef: true, newcap: true, nomen: true, regexp: true, bitwise: true, browser: true, forin: true, maxerr: 100, indent: 4 */
-
-(function ($) {
     fluid.registerNamespace("fluid.tests");
 
     fluid.tests.findRendererSubcomponent = function (that, componentName) {
@@ -39,4 +35,4 @@ https://github.com/gpii/universal/LICENSE.txt
         jqUnit.assertFalse("The video panel has not been rendered", fluid.tests.findRendererSubcomponent(videoMetadataPanel, "renderer-captionsPanel"));
     };
 
-})(jQuery);
+})(jQuery, fluid);
