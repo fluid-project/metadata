@@ -71,48 +71,34 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                         highContrast: "{videoMetadataPanel}.model.modelInTransit.highContrast",
                         signLanguage: "{videoMetadataPanel}.model.modelInTransit.signLanguage"
                     },
-                    modelRelay: [{
+                    modelRelay: {
                         source: "{videoMetadataPanel}.model.modelInTransit",
-                        target: "{that}.model",
+                        target: "{that}.model.flashing",
                         backward: "liveOnly",
                         singleTransform: {
-                            type: "fluid.metadata.transforms.condition",
-                            conditionPath: "flashing",
-                            "true": {
-                                transform: {
-                                    type: "fluid.metadata.transforms.condition",
-                                    conditionPath: "noFlashing",
-                                    "false": {
-                                        transform: {
-                                            type: "fluid.transforms.literalValue",
-                                            value: "flashing",
-                                            outputPath: "flashing"
-                                        }
-                                    }
-                                }
-                            },
-                            "false": {
-                                transform: {
-                                    type: "fluid.metadata.transforms.condition",
-                                    conditionPath: "noFlashing",
-                                    "true": {
-                                        transform: {
-                                            type: "fluid.transforms.literalValue",
-                                            value: "noFlashing",
-                                            outputPath: "flashing"
-                                        }
-                                    },
-                                    "false": {
-                                        transform: {
-                                            type: "fluid.transforms.literalValue",
-                                            value: "unknown",
-                                            outputPath: "flashing"
-                                        }
-                                    }
-                                }
-                            }
+                            type: "fluid.transforms.valueMapper",
+                            inputPath: "",
+                            options: [{
+                                inputValue: {
+                                    "flashing": true,
+                                    "noFlashing": false
+                                },
+                                outputValue: "flashing"
+                            }, {
+                                inputValue: {
+                                    "flashing": false,
+                                    "noFlashing": true
+                                },
+                                outputValue: "noFlashing"
+                            }, {
+                                inputValue: {
+                                    "flashing": false,
+                                    "noFlashing": false
+                                },
+                                outputValue: "unknown"
+                            }]
                         }
-                    }],
+                    },
                     listeners: {
                         afterRender: "{videoMetadataPanel}.events.videoPanelRendered.fire"
                     }
