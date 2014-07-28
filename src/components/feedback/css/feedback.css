@@ -229,19 +229,19 @@ _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
     background-color: #bdbdbb !important;
 }
 
-.fl-theme-bw .gpii-feedback .gpii-icon-active:after,
-.fl-theme-by .gpii-feedback .gpii-icon-active:after {
-    border-bottom-color: #000;
+.fl-theme-bw .gpii-icon-arrow:after,
+.fl-theme-by .gpii-icon-arrow:after {
+    border-bottom-color: #000 !important;
 }
 
-.fl-theme-wb .gpii-feedback .gpii-icon-active:after {
-    border-bottom-color: #fff;
+.fl-theme-wb .gpii-icon-arrow:after {
+    border-bottom-color: #fff !important;
 }
 
-.fl-theme-yb .gpii-feedback .gpii-icon-active:after {
-    border-bottom-color: #ff0;
+.fl-theme-yb .gpii-icon-arrow:after {
+    border-bottom-color: #ff0 !important;
 }
 
-.fl-theme-lgdg .gpii-feedback .gpii-icon-active:after {
-    border-bottom-color: #bdbdbb;
+.fl-theme-lgdg .gpii-icon-arrow:after {
+    border-bottom-color: #bdbdbb !important;
 }
