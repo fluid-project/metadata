@@ -207,6 +207,9 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                         }],
                         afterRender: {
                             listener: "fluid.metadata.baseResourceInputPanel.checkLastResourceInput",
+                            // {that}.options.source saves all the arguments fired for its createOnEvent "onCreateInput".
+                            // {that}.options.source.3 is to retrieve the 4th argument "isLastInstance".
+                            // @See the calculation of "isLastInstance" in function fluid.metadata.baseResourceInputPanel.renderInputContainer().
                             args: ["{that}.options.source.3", "{that}.events.onLastResourceInputRendered.fire"]
                         }
                     }

@@ -19,11 +19,12 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
      * The component used in conjunction with as a base grade for media
      * panels such as "fluid.metadata.videoMetadataPanel". It contains
      * common functionalities to be shared by all media panels.
+     *
+     * Note: "inputModel" option MUST be provided by integrators
      ****************************************************************/
 
     fluid.defaults("fluid.metadata.metadataPanel", {
         gradeNames: ["fluid.viewRelayComponent", "autoInit"],
-        inputModel: null,   // Provided by integrators
         model: {
             expander: {
                 funcName: "{that}.generateModel",
