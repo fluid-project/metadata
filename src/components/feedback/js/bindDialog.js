@@ -41,6 +41,13 @@ var gpii = gpii || {};
                 options: {
                     gradeNames: ["{that}.options.panelType"]
                 }
+            },
+            tooltip: {
+                type: "fluid.tooltip",
+                container: "{bindDialog}.container",
+                options: {
+                    content: "{bindDialog}.options.strings.buttonLabel"
+                }
             }
         },
         members: {
