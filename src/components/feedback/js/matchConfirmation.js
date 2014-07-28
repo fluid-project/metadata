@@ -39,7 +39,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             header: {messagekey: "header"}
         },
         listeners: {
-            "onCreate.init": "gpii.metadata.feedback.matchConfirmation.init"
+            "onCreate.fetchResources": {
+                listener: "fluid.fetchResources",
+                args: ["{that}.options.resources", "{that}.refreshView"]
+            }
         },
         resources: {
             template: {
@@ -48,12 +51,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             }
         }
     });
-
-    gpii.metadata.feedback.matchConfirmation.init = function (that) {
-        fluid.fetchResources(that.options.resources, function () {
-            that.refreshView();
-        });
-    };
 
     /*
      * Attaches match confirmation panel with "bindDialog" component

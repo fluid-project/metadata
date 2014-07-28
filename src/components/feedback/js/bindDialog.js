@@ -66,7 +66,8 @@ var gpii = gpii || {};
             width: 450,
             position: {
                 my: "center top",
-                at: "center-10% bottom+42%"
+                at: "center-10% bottom+42%",
+                of: "{that}.container"
             },
             dialogClass: "gpii-feedback-noClose gpii-feedback-dialog"
         },
@@ -104,12 +105,11 @@ var gpii = gpii || {};
         invokers: {
             bindbutton: {
                 funcName: "gpii.metadata.feedback.bindbutton",
-                args: ["{arguments}.0", "{that}.dialog", "{that}.dialogContainer", "{that}.options.markup.dialog", "{that}.container", "{that}.options.styles.activeCss", "{that}"],
-                dynamic: true
+                args: ["{arguments}.0", "{that}"]
             },
             instantiateDialog: {
                 funcName: "gpii.metadata.feedback.instantiateDialog",
-                args: ["{that}.dialogContainer", "{that}.container", "{that}.options.commonDialogOptions", "{that}"]
+                args: ["{that}"]
             },
             bindOutsideOfDialogClick: {
                 funcName: "gpii.metadata.feedback.bindOutsideOfDialogClick",
@@ -127,48 +127,45 @@ var gpii = gpii || {};
         }]
     });
 
-    gpii.metadata.feedback.bindbutton = function (event, dialog, dialogContainer, dialogMarkup, buttonDom, activeCss, that) {
+    gpii.metadata.feedback.bindbutton = function (event, that) {
         event.preventDefault();
 
-        if (dialog && dialog.dialog("isOpen") && that.isActive) {
-            dialog.dialog("close");
+        if (that.dialog && that.dialog.dialog("isOpen") && that.isActive) {
+            that.dialog.dialog("close");
         } else if (!that.isActive) {
             if (!that.dialogContainer) {
-                that.dialogContainer = $(dialogMarkup);
+                that.dialogContainer = $(that.options.markup.dialog);
             }
             that.events.onRenderDialogContent.fire();
         }
 
         that.isActive = !that.isActive;
         if (that.isActive) {
-            buttonDom.addClass(activeCss);
-            buttonDom.attr("aria-pressed", true);
+            that.container.addClass(that.options.styles.activeCss);
+            that.container.attr("aria-pressed", true);
         } else {
-            buttonDom.removeClass(activeCss);
-            buttonDom.attr("aria-pressed", false);
+            that.container.removeClass(that.options.styles.activeCss);
+            that.container.attr("aria-pressed", false);
         }
         that.events.onActiveStateChange.fire(that.isActive);
     };
 
-    gpii.metadata.feedback.instantiateDialog = function (dialogContainer, buttonDom, commonDialogOptions, that) {
+    gpii.metadata.feedback.instantiateDialog = function (that) {
         if (!that.dialog) {
             var moreOptions = {
-                position: {
-                    of: buttonDom
-                },
                 open: function () {
-                    buttonDom.addClass(that.options.styles.arrowCss);
+                    that.container.addClass(that.options.styles.arrowCss);
                 },
                 close: function () {
-                    buttonDom.removeClass(that.options.styles.arrowCss);
+                    that.container.removeClass(that.options.styles.arrowCss);
                 }
             };
 
-            var dialogOptions = $.extend(true, {}, commonDialogOptions, moreOptions);
+            var dialogOptions = $.extend(true, {}, that.options.commonDialogOptions, moreOptions);
             var dialogId = gpii.metadata.feedback.utils.getUniqueId("matchConfirmationDialog");
 
-            that.dialog = dialogContainer.dialog(dialogOptions).attr("id", dialogId);
-            buttonDom.attr("aria-controls", dialogId);
+            that.dialog = that.dialogContainer.dialog(dialogOptions).attr("id", dialogId);
+            that.container.attr("aria-controls", dialogId);
 
             that.events.onBindDialogHandlers.fire();
         }
