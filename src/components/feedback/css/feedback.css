@@ -41,6 +41,10 @@
 
 /* icons */
 
+.gpii-icon {
+    text-decoration: none;
+}
+
 .gpii-icon:before {
     font-family: 'FloeMetadataIcons';
     color: #fff;
@@ -134,23 +138,20 @@ _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
     background-color: #6699cc;
 }
 
-.gpii-feedback .gpii-icon-active {
+.gpii-feedback .gpii-icon-arrow {
     margin-right: -2.21875rem;
     margin-top: -1.88rem;
-}
-
-.gpii-feedback .gpii-icon-active:after {
-    border: 1rem solid transparent;
-    content: "";
-    position: relative;
-    pointer-events: none;
-    display: inline-block;
 }
 
 .gpii-feedback .gpii-icon-arrow:after {
     bottom: -2rem;
     left: -2.5rem;
+    border: 1rem solid transparent;
     border-bottom-color: #B2B2B2;
+    content: "";
+    position: relative;
+    pointer-events: none;
+    display: inline-block;
 }
 
 /* Contrast themes */
