@@ -52,7 +52,8 @@ var gpii = gpii || {};
             buttonLabel: null
         },
         styles: {
-            activeCss: "gpii-icon-active"
+            activeCss: "gpii-icon-active",
+            arrowCss: "gpii-icon-arrow"
         },
         markup: {
             dialog: "<section>&nbsp;</section>"
@@ -154,6 +155,12 @@ var gpii = gpii || {};
             var moreOptions = {
                 position: {
                     of: buttonDom
+                },
+                open: function () {
+                    buttonDom.addClass(that.options.styles.arrowCss);
+                },
+                close: function () {
+                    buttonDom.removeClass(that.options.styles.arrowCss);
                 }
             };
 

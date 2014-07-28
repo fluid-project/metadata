@@ -140,14 +140,17 @@ _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
 }
 
 .gpii-feedback .gpii-icon-active:after {
-    bottom: -2rem;
-    left: -2.5rem;
     border: 1rem solid transparent;
-    border-bottom-color: #B2B2B2;
     content: "";
     position: relative;
     pointer-events: none;
     display: inline-block;
+}
+
+.gpii-feedback .gpii-icon-arrow:after {
+    bottom: -2rem;
+    left: -2.5rem;
+    border-bottom-color: #B2B2B2;
 }
 
 /* Contrast themes */
