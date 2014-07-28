@@ -31,7 +31,25 @@ https://github.com/gpii/universal/LICENSE.txt
         });
     });
 
-    jqUnit.asyncTest("Set: create document", function () {
+    jqUnit.asyncTest("Set: create document - POST", function () {
+        var dbname = "test";
+        var ds = fluid.pouchdb.dataSource({
+            databaseName: dbname
+        });
+
+        var doc = {
+            "model": "data"
+        };
+
+        ds.set(doc, function (createdDoc) {
+            ds.database.get(createdDoc.id).then(function (getDoc) {
+                jqUnit.assertEquals("The document should be created", doc.model, getDoc.model);
+                fluid.tests.cleanUp (dbname);
+            });
+        });
+    });
+
+    jqUnit.asyncTest("Set: create document - PUT", function () {
         var dbname = "test";
         var ds = fluid.pouchdb.dataSource({
             databaseName: dbname
@@ -147,7 +165,7 @@ https://github.com/gpii/universal/LICENSE.txt
         });
     });
 
-    jqUnit.asyncTest("createView", function () {
+    jqUnit.asyncTest("createView: view added", function () {
         var dbname = "test";
         var ds = fluid.pouchdb.dataSource({
             databaseName: dbname
@@ -170,7 +188,7 @@ https://github.com/gpii/universal/LICENSE.txt
         });
     });
 
-    jqUnit.asyncTest("test view", function () {
+    jqUnit.asyncTest("createView: assert view", function () {
         var dbname = "test";
         var ds = fluid.pouchdb.dataSource({
             databaseName: dbname

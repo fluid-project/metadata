@@ -88,7 +88,11 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         });
     };
 
-    fluid.pouchdb.dataSource.setImpl = function (database, doc, callback) {
+    fluid.pouchdb.dataSource.postImpl = function (database, doc, callback) {
+        database.post(doc).then(callback);
+    };
+
+    fluid.pouchdb.dataSource.putImpl = function (database, doc, callback) {
         database.get(doc._id).then(function (otherDoc) {
             doc._rev = otherDoc._rev;
             database.put(doc).then(callback);
@@ -100,11 +104,17 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     };
 
     fluid.pouchdb.dataSource.set = function (database, directModel, callback) {
+        var method = "postImpl";
         var newDoc = {
-            _id: directModel.id,
             model: directModel.model
         };
-        fluid.pouchdb.dataSource.setImpl(database, newDoc, callback);
+
+        if (directModel.id) {
+            newDoc._id = directModel.id;
+            method = "putImpl";
+        }
+
+        fluid.pouchdb.dataSource[method](database, newDoc, callback);
     };
 
     fluid.pouchdb.dataSource["delete"] = function (database, directModel, callback) {
@@ -127,7 +137,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             designDoc.views[name].reduce = reduce.toString();
         }
 
-        fluid.pouchdb.dataSource.setImpl(database, designDoc, callback);
+        fluid.pouchdb.dataSource.putImpl(database, designDoc, callback);
     };
 
 })(jQuery, fluid);
