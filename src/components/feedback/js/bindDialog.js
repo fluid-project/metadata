@@ -105,7 +105,16 @@ var gpii = gpii || {};
                 method: "dialog",
                 args: "open"
             },
-            "onActiveStateChange.setActiveProps": "{that}.setActiveProps",
+            "onActiveStateChange.toggleClass": {
+                "this": "{that}.container",
+                method: "toggleClass",
+                args: ["{that}.options.styles.activeCss", "{arguments}.0"]
+            },
+            "onActiveStateChange.setAria": {
+                "this": "{that}.container",
+                method: "attr",
+                args: ["aria-pressed", "{arguments}.0"]
+            },
             "onDialogOpen.applyArrowCss": {
                 "this": "{that}.container",
                 method: "addClass",
@@ -129,10 +138,6 @@ var gpii = gpii || {};
             bindOutsideOfDialogClick: {
                 funcName: "gpii.metadata.feedback.bindOutsideOfDialogClick",
                 args: ["{that}.dialog", "{that}.container"]
-            },
-            setActiveProps: {
-                funcName: "gpii.metadata.feedback.setActiveProps",
-                args: ["{arguments}.0", "{that}.container", "{that}.options.styles.activeCss"]
             }
         },
         distributeOptions: [{
@@ -190,16 +195,6 @@ var gpii = gpii || {};
         $("body").find("iframe").contents().find("body").on("click", function () {
             dialog.dialog("close");
         });
-    };
-
-    gpii.metadata.feedback.setActiveProps = function (isActive, buttonDom, activeCss) {
-        if (isActive) {
-            buttonDom.addClass(activeCss);
-            buttonDom.attr("aria-pressed", true);
-        } else {
-            buttonDom.removeClass(activeCss);
-            buttonDom.attr("aria-pressed", false);
-        }
     };
 
 })(jQuery, fluid);
