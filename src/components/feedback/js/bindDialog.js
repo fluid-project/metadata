@@ -176,13 +176,15 @@ var gpii = gpii || {};
 
     gpii.metadata.feedback.bindOutsideOfDialogClick = function (dialog, buttonDom) {
         $("body").bind("click", function (e) {
-            fluid.globalDismissal({
-                button: buttonDom,
-                dialog: dialog,
-                dialogDescendant: $.contains(dialog, e.target)
-            }, function () {
-                dialog.dialog("close");
-            });
+            if (dialog.dialog("isOpen")) {
+                fluid.globalDismissal({
+                    button: buttonDom,
+                    dialog: dialog,
+                    dialogDescendant: $.contains(dialog, e.target)
+                }, function () {
+                    dialog.dialog("close");
+                });
+            }
         });
 
         $("body").find("iframe").contents().find("body").on("click", function () {
