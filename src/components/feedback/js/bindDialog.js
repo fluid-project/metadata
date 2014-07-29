@@ -184,8 +184,7 @@ var gpii = gpii || {};
             if (dialog.dialog("isOpen")) {
                 fluid.globalDismissal({
                     button: buttonDom,
-                    dialog: dialog,
-                    dialogDescendant: $.contains(dialog, e.target)
+                    dialog: dialog
                 }, function () {
                     dialog.dialog("close");
                 });
