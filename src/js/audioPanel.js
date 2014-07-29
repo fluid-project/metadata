@@ -33,10 +33,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     modelRelay: {
                         source: "{audioPanel}.model.audio",
                         target: "{that}.model.value",
-                        // The indicator only reflects the audio state in color based upon the given
-                        // model value. The indicator itself doesn't cause any model change so the
-                        // backward relay is unnecessary.
-                        backward: "never",
                         singleTransform: {
                             type: "fluid.transforms.identity"
                         }

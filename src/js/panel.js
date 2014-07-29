@@ -55,7 +55,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     modelRelay: {
                         source: "{panel}.model.value",
                         target: "{that}.model.value",
-                        backward: "never",
                         singleTransform: {
                             type: "fluid.transforms.identity"
                         }
