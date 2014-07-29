@@ -46,7 +46,17 @@ var gpii = gpii || {};
                 type: "fluid.tooltip",
                 container: "{bindDialog}.container",
                 options: {
-                    content: "{bindDialog}.options.strings.buttonLabel"
+                    content: "{bindDialog}.options.strings.buttonLabel",
+                    styles: {
+                        tooltip: "gpii-feedback-tooltip"
+                    },
+                    position: {
+                        my: "center top",
+                        at: "center-10% bottom+42%",
+                        of: "{bindDialog}.container"
+                    },
+                    delay: 0,
+                    duration: 0
                 }
             }
         },
