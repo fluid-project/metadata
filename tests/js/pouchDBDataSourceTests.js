@@ -114,6 +114,34 @@ https://github.com/gpii/universal/LICENSE.txt
         });
     });
 
+    jqUnit.asyncTest("Get: query view", function () {
+        var dbname = "test";
+        var ds = fluid.pouchdb.dataSource({
+            databaseName: dbname
+        });
+
+        var view = {
+            _id: "_design/nameView",
+            views: {
+                "nameView": {
+                    map: function (doc) {
+                        emit(doc.name);
+                    }.toString()
+                }
+            }
+        };
+        var newDocName = "JavaScript";
+
+        ds.database.put(view).then(function () {
+            ds.database.post({name: newDocName});
+        }).then(function () {
+            ds.get({id: "nameView", query: {}}, function (doc) {
+                jqUnit.assertEquals("The correct value should be returned from the query.", newDocName, doc[0].key);
+                fluid.tests.cleanUp (dbname);
+            });
+        });
+    });
+
     jqUnit.asyncTest("Delete", function () {
         var dbname = "test";
         var ds = fluid.pouchdb.dataSource({
