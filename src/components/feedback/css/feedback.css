@@ -46,6 +46,7 @@
     color: #fff;
     font-size: 1.5rem;
     border-radius: 50%;
+    border: 2px solid transparent;
     padding: 0.5rem;
     background: #66cc99;
     font-weight: normal;
@@ -60,15 +61,13 @@
 .gpii-icon.gpii-icon-partial:before {
     color: #66cc99;
     background-color: #fff;
-    margin-top: -1px;
-    border: 2px solid #66cc99;
+    border-color: #66cc99;
 }
 
 .gpii-icon.gpii-icon-unavailable:before {
     color: #B2B2B2;
     background-color: #fff;
-    margin-top: -1px;
-    border: 2px solid #B2B2B2;
+    border-color: #B2B2B2;
 }
 
 .gpii-icon.gpii-icon-unavailable:after {
@@ -90,8 +89,7 @@
 .gpii-feedback-button .gpii-icon:before {
     color: #6699cc;
     background-color: #fff;
-    margin-top: -1px;
-    border: 2px solid #6699cc;
+    border-color: #6699cc;
 }
 
 /* IE 11 hack to correct presentation of the unavailable badge */
@@ -152,6 +150,14 @@ _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
     display: inline-block;
 }
 
+.gpii-feedback-button:hover:before {
+    border-top: 0.313rem solid #F6D962;
+    content: "";
+    width: 2.625rem;
+    position: fixed;
+    top: 0;
+}
+
 .gpii-feedback-dialog {
     background-color: #fff;
     border: 5px solid #6699cc;
@@ -179,6 +185,7 @@ _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
     background-color: #6699cc;
     border: 5px solid #6699cc;
     box-shadow: none;
+    position: fixed;
 }
 
 /* Contrast themes */
@@ -201,6 +208,7 @@ _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
 }
 
 .fl-theme-bw .gpii-icon:before,
+.fl-theme-bw .gpii-feedback-button:hover:before,
 .fl-theme-wb .gpii-icon:after,
 .fl-theme-wb .gpii-icon.gpii-icon-available:before {
     color: #000 !important;
@@ -209,6 +217,7 @@ _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
 }
 
 .fl-theme-wb .gpii-icon:before,
+.fl-theme-wb .gpii-feedback-button:hover:before,
 .fl-theme-bw .gpii-icon:after,
 .fl-theme-bw .gpii-icon.gpii-icon-available:before {
     color: #fff !important;
@@ -217,6 +226,7 @@ _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
 }
 
 .fl-theme-yb .gpii-icon:before,
+.fl-theme-yb .gpii-feedback-button:hover:before,
 .fl-theme-by .gpii-icon:after,
 .fl-theme-by .gpii-icon.gpii-icon-available:before {
     color: #ffff00 !important;
@@ -225,6 +235,7 @@ _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
 }
 
 .fl-theme-by .gpii-icon:before,
+.fl-theme-by .gpii-feedback-button:hover:before,
 .fl-theme-yb .gpii-icon:after,
 .fl-theme-yb .gpii-icon.gpii-icon-available:before {
     color: #000 !important;
@@ -232,7 +243,8 @@ _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
     border-color: #000 !important;
 }
 
-.fl-theme-lgdg .gpii-icon:before {
+.fl-theme-lgdg .gpii-icon:before,
+.fl-theme-lgdg .gpii-feedback-button:hover:before {
     color: #bdbdbb !important;
     background-color: #555555 !important;
     border-color: #bdbdbb !important;
