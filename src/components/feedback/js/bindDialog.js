@@ -69,14 +69,18 @@ var gpii = gpii || {};
                 at: "center-10% bottom+42%",
                 of: "{that}.container"
             },
-            dialogClass: "gpii-feedback-noClose gpii-feedback-dialog"
+            dialogClass: "gpii-feedback-noClose gpii-feedback-dialog",
+            open: "{that}.events.onDialogOpen.fire",
+            close: "{that}.events.onDialogClose.fire"
         },
         events: {
             onActiveStateChange: null,   // The argument for this event is a boolean value indicating whether the button is active.
             onRenderDialogContent: null,
             onDialogContentReady: null,
             onBindDialogHandlers: null,
-            onDialogReady: null
+            onDialogReady: null,
+            onDialogOpen: null,
+            onDialogClose: null
         },
         listeners: {
             "onCreate.addAriaRole": {
@@ -100,6 +104,17 @@ var gpii = gpii || {};
                 "this": "{that}.dialog",
                 method: "dialog",
                 args: "open"
+            },
+            "onActiveStateChange.setActiveProps": "{that}.setActiveProps",
+            "onDialogOpen.applyArrowCss": {
+                "this": "{that}.container",
+                method: "addClass",
+                args: "{that}.options.styles.arrowCss"
+            },
+            "onDialogClose.removeArrowCss": {
+                "this": "{that}.container",
+                method: "removeClass",
+                args: "{that}.options.styles.arrowCss"
             }
         },
         invokers: {
@@ -114,6 +129,10 @@ var gpii = gpii || {};
             bindOutsideOfDialogClick: {
                 funcName: "gpii.metadata.feedback.bindOutsideOfDialogClick",
                 args: ["{that}.dialog", "{that}.container"]
+            },
+            setActiveProps: {
+                funcName: "gpii.metadata.feedback.setActiveProps",
+                args: ["{arguments}.0", "{that}.container", "{that}.options.styles.activeCss"]
             }
         },
         distributeOptions: [{
@@ -140,31 +159,13 @@ var gpii = gpii || {};
         }
 
         that.isActive = !that.isActive;
-        if (that.isActive) {
-            that.container.addClass(that.options.styles.activeCss);
-            that.container.attr("aria-pressed", true);
-        } else {
-            that.container.removeClass(that.options.styles.activeCss);
-            that.container.attr("aria-pressed", false);
-        }
         that.events.onActiveStateChange.fire(that.isActive);
     };
 
     gpii.metadata.feedback.instantiateDialog = function (that) {
         if (!that.dialog) {
-            var moreOptions = {
-                open: function () {
-                    that.container.addClass(that.options.styles.arrowCss);
-                },
-                close: function () {
-                    that.container.removeClass(that.options.styles.arrowCss);
-                }
-            };
-
-            var dialogOptions = $.extend(true, {}, that.options.commonDialogOptions, moreOptions);
-            var dialogId = gpii.metadata.feedback.utils.getUniqueId("matchConfirmationDialog");
-
-            that.dialog = that.dialogContainer.dialog(dialogOptions).attr("id", dialogId);
+            var dialogId = fluid.allocateSimpleId();
+            that.dialog = that.dialogContainer.dialog(that.options.commonDialogOptions).attr("id", dialogId);
             that.container.attr("aria-controls", dialogId);
 
             that.events.onBindDialogHandlers.fire();
@@ -186,6 +187,16 @@ var gpii = gpii || {};
         $("body").find("iframe").contents().find("body").on("click", function () {
             dialog.dialog("close");
         });
+    };
+
+    gpii.metadata.feedback.setActiveProps = function (isActive, buttonDom, activeCss) {
+        if (isActive) {
+            buttonDom.addClass(activeCss);
+            buttonDom.attr("aria-pressed", true);
+        } else {
+            buttonDom.removeClass(activeCss);
+            buttonDom.attr("aria-pressed", false);
+        }
     };
 
 })(jQuery, fluid);
