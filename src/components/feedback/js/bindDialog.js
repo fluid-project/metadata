@@ -99,7 +99,6 @@ var gpii = gpii || {};
                 args: "{that}.bindbutton"
             },
             "onDialogContentReady.instantiateDialog": "{that}.instantiateDialog",
-            "onBindDialogHandlers.bindOutsideOfDialogClick": "{that}.bindOutsideOfDialogClick",
             "onDialogReady.openDialog": {
                 "this": "{that}.dialog",
                 method: "dialog",
@@ -120,23 +119,41 @@ var gpii = gpii || {};
                 method: "addClass",
                 args: "{that}.options.styles.arrowCss"
             },
+            "onDialogOpen.bindUIOIframeClick": "{that}.bindUIOIframeClick",
+            "onDialogOpen.bindOutsideOfDialogClick": {
+                listener: "fluid.globalDismissal",
+                args: [{
+                    button: "{that}.container",
+                    dialog: "{that}.dialog"
+                }, "{that}.closeDialog"]
+            },
             "onDialogClose.removeArrowCss": {
                 "this": "{that}.container",
                 method: "removeClass",
                 args: "{that}.options.styles.arrowCss"
-            }
+            },
+            "onDialogClose.unbindUIOIframeClick": "{that}.unbindUIOIframeClick"
         },
         invokers: {
             bindbutton: {
                 funcName: "gpii.metadata.feedback.bindbutton",
-                args: ["{arguments}.0", "{that}"]
+                args: ["{that}", "{arguments}.0"]
             },
             instantiateDialog: {
                 funcName: "gpii.metadata.feedback.instantiateDialog",
                 args: ["{that}"]
             },
-            bindOutsideOfDialogClick: {
-                funcName: "gpii.metadata.feedback.bindOutsideOfDialogClick",
+            closeDialog: {
+                "this": "{that}.dialog",
+                method: "dialog",
+                args: "close"
+            },
+            bindUIOIframeClick: {
+                funcName: "gpii.metadata.feedback.bindUIOIframeClick",
+                args: ["{that}.dialog", "{that}.container", "{that}.closeDialog"]
+            },
+            unbindUIOIframeClick: {
+                funcName: "gpii.metadata.feedback.unbindUIOIframeClick",
                 args: ["{that}.dialog", "{that}.container"]
             }
         },
@@ -151,11 +168,11 @@ var gpii = gpii || {};
         }]
     });
 
-    gpii.metadata.feedback.bindbutton = function (event, that) {
+    gpii.metadata.feedback.bindbutton = function (that, event) {
         event.preventDefault();
 
         if (that.dialog && that.dialog.dialog("isOpen") && that.isActive) {
-            that.dialog.dialog("close");
+            that.closeDialog();
         } else if (!that.isActive) {
             if (!that.dialogContainer) {
                 that.dialogContainer = $(that.options.markup.dialog);
@@ -169,8 +186,8 @@ var gpii = gpii || {};
 
     gpii.metadata.feedback.instantiateDialog = function (that) {
         if (!that.dialog) {
-            var dialogId = fluid.allocateSimpleId();
-            that.dialog = that.dialogContainer.dialog(that.options.commonDialogOptions).attr("id", dialogId);
+            that.dialog = that.dialogContainer.dialog(that.options.commonDialogOptions);
+            var dialogId = fluid.allocateSimpleId(that.dialog);
             that.container.attr("aria-controls", dialogId);
 
             that.events.onBindDialogHandlers.fire();
@@ -179,21 +196,20 @@ var gpii = gpii || {};
         that.events.onDialogReady.fire(that.dialog);
     };
 
-    gpii.metadata.feedback.bindOutsideOfDialogClick = function (dialog, buttonDom) {
-        $("body").bind("click", function (e) {
-            if (dialog.dialog("isOpen")) {
-                fluid.globalDismissal({
-                    button: buttonDom,
-                    dialog: dialog
-                }, function () {
-                    dialog.dialog("close");
-                });
-            }
-        });
+    gpii.metadata.feedback.getUIOIframe = function () {
+        return $("body").find("iframe").contents().find("body");
+    };
 
-        $("body").find("iframe").contents().find("body").on("click", function () {
-            dialog.dialog("close");
+    gpii.metadata.feedback.bindUIOIframeClick = function (dialog, buttonDom, closeDialogFunc) {
+        var UIOIframe = gpii.metadata.feedback.getUIOIframe();
+        UIOIframe.on("click.closeDialog", function () {
+            closeDialogFunc();
         });
+    };
+
+    gpii.metadata.feedback.unbindUIOIframeClick = function (dialog, buttonDom) {
+        var UIOIframe = gpii.metadata.feedback.getUIOIframe();
+        UIOIframe.off("click.closeDialog");
     };
 
 })(jQuery, fluid);
