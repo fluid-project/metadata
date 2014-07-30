@@ -70,7 +70,8 @@ var gpii = gpii || {};
         },
         styles: {
             activeCss: "gpii-icon-active",
-            arrowCss: "gpii-icon-arrow"
+            arrowCss: "gpii-icon-arrow",
+            focus: "gpii-feedback-buttonFocus"
         },
         markup: {
             dialog: "<section>&nbsp;</section>"
@@ -92,7 +93,9 @@ var gpii = gpii || {};
             onRenderDialogContent: null,
             onDialogContentReady: null,
             onBindDialogHandlers: null,
-            onDialogReady: null
+            onDialogReady: null,
+            focusin: null,
+            focusout: null
         },
         listeners: {
             "onCreate.addAriaRole": {
@@ -110,12 +113,33 @@ var gpii = gpii || {};
                 method: "click",
                 args: "{that}.bindbutton"
             },
+            "onCreate.bindFocusin": {
+                "this": "{that}.container",
+                method: "focusin",
+                args: ["{that}.events.focusin.fire"]
+
+            },
+            "onCreate.bindFocusout": {
+                "this": "{that}.container",
+                method: "focusout",
+                args: ["{that}.events.focusout.fire"]
+            },
             "onDialogContentReady.instantiateDialog": "{that}.instantiateDialog",
             "onBindDialogHandlers.bindOutsideOfDialogClick": "{that}.bindOutsideOfDialogClick",
             "onDialogReady.openDialog": {
                 "this": "{that}.dialog",
                 method: "dialog",
                 args: "open"
+            },
+            "focusin.addFocusClass": {
+                "this": "{that}.container",
+                method: "addClass",
+                args: ["{that}.options.styles.focus"]
+            },
+            "focusout.removeFocusClass": {
+                "this": "{that}.container",
+                method: "removeClass",
+                args: ["{that}.options.styles.focus"]
             }
         },
         invokers: {
