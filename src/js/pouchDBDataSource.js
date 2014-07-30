@@ -23,13 +23,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         },
         listeners: {
             "onCreate.bindChange": {
-                "this": "{that}.database",
-                "method": "changes",
-                "args": [{
-                    since: 0,
-                    continuous: true,
-                    "onChange": "{that}.events.afterChange.fire"
-                }]
+                listener: "fluid.pouchdb.dataSource.bindChange",
+                args: ["{that}.database", {since: "now"}, "{that}.events.afterChange.fire"]
             }
         },
         members: {
@@ -138,6 +133,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }
 
         fluid.pouchdb.dataSource.putImpl(database, designDoc, callback);
+    };
+
+    fluid.pouchdb.dataSource.bindChange = function (database, options, callback) {
+        database.changes(options).on("change", callback);
     };
 
 })(jQuery, fluid);
