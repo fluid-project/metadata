@@ -20,31 +20,42 @@ https://github.com/gpii/universal/LICENSE.txt
     fluid.tests.bindDialog.testDialog = function (that) {
         var nonDialogArea = $(".gpiic-nonDialog-area");
 
-        that.events.onActiveStateChange.addListener(function (newValue) {
-            jqUnit.assertTrue("The button state is set to \"active\"", newValue);
-            jqUnit.assertTrue("The aria pressed is set", that.container.attr("aria-pressed"));
-            jqUnit.assertTrue("The active css is applied", that.container.hasClass(that.options.styles.activeCss));
-            that.events.onActiveStateChange.removeListener("checkState");
-        }, "checkState", null, "last");
-
-        jqUnit.assertTrue("The dialog is open", that.dialog.dialog("isOpen"));
+        jqUnit.assertTrue("The dialog is open", that.model.isDialogOpen);
         jqUnit.assertEquals("The aria role is set", "button", that.container.attr("role"));
         jqUnit.assertEquals("The aria label is set", that.options.strings.buttonLabel, that.container.attr("aria-label"));
 
         // Clicking on the dialog doesn't close itself
         that.dialog.click();
-        jqUnit.assertTrue("Cicking on the dialog does not close itself", that.dialog.dialog("isOpen"));
+        jqUnit.assertTrue("Cicking on the dialog does not close itself", that.model.isDialogOpen);
 
         // Clicking outside the dialog closes it
         nonDialogArea.click();
-        jqUnit.assertFalse("Cicking anywhere outside of the dialog closes the dialog", that.dialog.dialog("isOpen"));
+        jqUnit.assertFalse("Cicking anywhere outside of the dialog closes the dialog", that.model.isDialogOpen);
 
         jqUnit.start();
     };
 
+    fluid.tests.bindDialog.verifyStyle = function (state, domElement, css, stateType) {
+        if (state) {
+            jqUnit.assertTrue("The " + stateType + " css is applied", domElement.hasClass(css));
+        } else {
+            jqUnit.assertFalse("The " + stateType + " css is applied", domElement.hasClass(css));
+        }
+    };
+
+    fluid.tests.bindDialog.verifyActiveState = function (isActive, buttonDom, activeCss) {
+        fluid.tests.bindDialog.verifyStyle(isActive, buttonDom, activeCss, "active");
+
+        if (isActive) {
+            jqUnit.assertEquals("The aria-pressed is set to true", "true", buttonDom.attr("aria-pressed"));
+        } else {
+            jqUnit.assertEquals("The aria-pressed is set to false", "false", buttonDom.attr("aria-pressed"));
+        }
+    };
+
     $(document).ready(function () {
         jqUnit.asyncTest("Test bindDialog", function () {
-            jqUnit.expect(11);
+            jqUnit.expect(15);
 
             gpii.metadata.feedback.bindDialog(".gpiic-button", {
                 renderDialogContentOptions: {
@@ -74,6 +85,18 @@ https://github.com/gpii/universal/LICENSE.txt
                     "onDialogReady.start": {
                         listener: "fluid.tests.bindDialog.testDialog",
                         args: ["{that}"],
+                        priority: "last"
+                    }
+                },
+                modelListeners: {
+                    isActive: {
+                        listener: "fluid.tests.bindDialog.verifyActiveState",
+                        args: ["{change}.value", "{that}.container", "{that}.options.styles.active"],
+                        priority: "last"
+                    },
+                    isDialogOpen: {
+                        listener: "fluid.tests.bindDialog.verifyStyle",
+                        args: ["{change}.value", "{that}.container", "{that}.options.styles.dialogOpen", "dialogOpen"],
                         priority: "last"
                     }
                 }

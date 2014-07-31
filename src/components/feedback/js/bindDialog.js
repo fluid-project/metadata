@@ -43,9 +43,6 @@ var gpii = gpii || {};
                 }
             }
         },
-        model: {
-            isActive: false    // Keep track of the active state of the button
-        },
         members: {
             dialog: null,
             dialogContainer: null
@@ -54,8 +51,8 @@ var gpii = gpii || {};
             buttonLabel: null
         },
         styles: {
-            activeCss: "gpii-icon-active",
-            arrowCss: "gpii-icon-arrow"
+            active: "gpii-icon-active",
+            dialogOpen: "gpii-icon-arrow"
         },
         markup: {
             dialog: "<section>&nbsp;</section>"
@@ -71,18 +68,13 @@ var gpii = gpii || {};
                 at: "center-10% bottom+42%",
                 of: "{that}.container"
             },
-            dialogClass: "gpii-feedback-noClose gpii-feedback-dialog",
-            open: "{that}.events.onDialogOpen.fire",
-            close: "{that}.events.onDialogClose.fire"
+            dialogClass: "gpii-feedback-noClose gpii-feedback-dialog"
         },
         events: {
-            onActiveStateChange: null,   // The argument for this event is a boolean value indicating whether the button is active.
             onRenderDialogContent: null,
             onDialogContentReady: null,
             onBindDialogHandlers: null,
             onDialogReady: null,
-            onDialogOpen: null,
-            onDialogClose: null
         },
         listeners: {
             "onCreate.addAriaRole": {
@@ -98,47 +90,26 @@ var gpii = gpii || {};
             "onCreate.bindButtonClick": {
                 "this": "{that}.container",
                 method: "click",
-                args: "{that}.bindbutton"
+                args: "{that}.bindButton"
             },
             "onDialogContentReady.instantiateDialog": "{that}.instantiateDialog",
             "onDialogReady.openDialog": {
                 "this": "{that}.dialog",
                 method: "dialog",
                 args: "open"
-            },
-            "onActiveStateChange.toggleClass": {
-                "this": "{that}.container",
-                method: "toggleClass",
-                args: ["{that}.options.styles.activeCss", "{arguments}.0"]
-            },
-            "onActiveStateChange.setAria": {
-                "this": "{that}.container",
-                method: "attr",
-                args: ["aria-pressed", "{arguments}.0"]
-            },
-            "onDialogOpen.applyArrowCss": {
-                "this": "{that}.container",
-                method: "addClass",
-                args: "{that}.options.styles.arrowCss"
-            },
-            "onDialogOpen.bindUIOIframeClick": "{that}.bindUIOIframeClick",
-            "onDialogOpen.bindOutsideOfDialogClick": {
-                listener: "fluid.globalDismissal",
-                args: [{
-                    button: "{that}.container",
-                    dialog: "{that}.dialog"
-                }, "{that}.closeDialog"]
-            },
-            "onDialogClose.removeArrowCss": {
-                "this": "{that}.container",
-                method: "removeClass",
-                args: "{that}.options.styles.arrowCss"
-            },
-            "onDialogClose.unbindUIOIframeClick": "{that}.unbindUIOIframeClick"
+            }
+        },
+        model: {
+            isActive: false,    // Keep track of the active state of the button
+            isDialogOpen: false
+        },
+        modelListeners: {
+            "isActive": "gpii.metadata.feedback.handleActiveState({change}.value, {that}.container, {that}.options.styles.active)",
+            "isDialogOpen": "gpii.metadata.feedback.handleDialogState({that}, {change}.value, {that}.container, {that}.dialog, {that}.options.styles.dialogOpen, {that}.closeDialog, {that}.bindIframeClick, {that}.unbindIframeClick)"
         },
         invokers: {
-            bindbutton: {
-                funcName: "gpii.metadata.feedback.bindbutton",
+            bindButton: {
+                funcName: "gpii.metadata.feedback.bindButton",
                 args: ["{that}", "{arguments}.0"]
             },
             instantiateDialog: {
@@ -150,12 +121,12 @@ var gpii = gpii || {};
                 method: "dialog",
                 args: "close"
             },
-            bindUIOIframeClick: {
-                funcName: "gpii.metadata.feedback.bindUIOIframeClick",
+            bindIframeClick: {
+                funcName: "gpii.metadata.feedback.bindIframeClick",
                 args: ["{that}.dialog", "{that}.container", "{that}.closeDialog"]
             },
-            unbindUIOIframeClick: {
-                funcName: "gpii.metadata.feedback.unbindUIOIframeClick",
+            unbindIframeClick: {
+                funcName: "gpii.metadata.feedback.unbindIframeClick",
                 args: ["{that}.dialog", "{that}.container"]
             }
         },
@@ -170,7 +141,7 @@ var gpii = gpii || {};
         }]
     });
 
-    gpii.metadata.feedback.bindbutton = function (that, event) {
+    gpii.metadata.feedback.bindButton = function (that, event) {
         event.preventDefault();
 
         if (that.dialog && that.dialog.dialog("isOpen") && that.model.isActive) {
@@ -182,13 +153,23 @@ var gpii = gpii || {};
             that.events.onRenderDialogContent.fire();
         }
 
-        that.model.isActive = !that.model.isActive;
-        that.events.onActiveStateChange.fire(that.model.isActive);
+        that.applier.change("isActive", !that.model.isActive);
     };
 
     gpii.metadata.feedback.instantiateDialog = function (that) {
         if (!that.dialog) {
-            that.dialog = that.dialogContainer.dialog(that.options.commonDialogOptions);
+            var moreOptions = {
+                open: function () {
+                    that.applier.change("isDialogOpen", true);
+                },
+                close: function () {
+                    that.applier.change("isDialogOpen", false);
+                }
+            };
+
+            var fullOptions = $.extend(true, moreOptions, that.options.commonDialogOptions);
+
+            that.dialog = that.dialogContainer.dialog(fullOptions);
             var dialogId = fluid.allocateSimpleId(that.dialog);
             that.container.attr("aria-controls", dialogId);
 
@@ -198,20 +179,39 @@ var gpii = gpii || {};
         that.events.onDialogReady.fire(that.dialog);
     };
 
-    gpii.metadata.feedback.getUIOIframe = function () {
+    gpii.metadata.feedback.handleActiveState = function (isActive, buttonDom, activeCss) {
+        buttonDom.toggleClass(activeCss, isActive);
+        buttonDom.attr("aria-pressed", isActive);
+    };
+
+    gpii.metadata.feedback.handleDialogState = function (that, isDialogOpen, buttonDom, dialog, dialogOpenCss, closeDialogFunc, bindIframeClickFunc, unbindIframeClickFunc) {
+        if (isDialogOpen) {
+            buttonDom.addClass(dialogOpenCss);
+            bindIframeClickFunc();
+            fluid.globalDismissal({
+                button: buttonDom,
+                dialog: dialog
+            }, closeDialogFunc);
+        } else {
+            buttonDom.removeClass(dialogOpenCss);
+            unbindIframeClickFunc();
+        }
+    };
+
+    gpii.metadata.feedback.getIframe = function () {
         return $("body").find("iframe").contents().find("body");
     };
 
-    gpii.metadata.feedback.bindUIOIframeClick = function (dialog, buttonDom, closeDialogFunc) {
-        var UIOIframe = gpii.metadata.feedback.getUIOIframe();
-        UIOIframe.on("click.closeDialog", function () {
+    gpii.metadata.feedback.bindIframeClick = function (dialog, buttonDom, closeDialogFunc) {
+        var iframe = gpii.metadata.feedback.getIframe();
+        iframe.on("click.closeDialog", function () {
             closeDialogFunc();
         });
     };
 
-    gpii.metadata.feedback.unbindUIOIframeClick = function (dialog, buttonDom) {
-        var UIOIframe = gpii.metadata.feedback.getUIOIframe();
-        UIOIframe.off("click.closeDialog");
+    gpii.metadata.feedback.unbindIframeClick = function (dialog, buttonDom) {
+        var iframe = gpii.metadata.feedback.getIframe();
+        iframe.off("click.closeDialog");
     };
 
 })(jQuery, fluid);
