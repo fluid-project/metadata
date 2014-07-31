@@ -43,10 +43,12 @@ var gpii = gpii || {};
                 }
             }
         },
+        model: {
+            isActive: false    // Keep track of the active state of the button
+        },
         members: {
             dialog: null,
-            dialogContainer: null,
-            isActive: false    // Keep track of the active state of the button
+            dialogContainer: null
         },
         strings: {
             buttonLabel: null
@@ -171,17 +173,17 @@ var gpii = gpii || {};
     gpii.metadata.feedback.bindbutton = function (that, event) {
         event.preventDefault();
 
-        if (that.dialog && that.dialog.dialog("isOpen") && that.isActive) {
+        if (that.dialog && that.dialog.dialog("isOpen") && that.model.isActive) {
             that.closeDialog();
-        } else if (!that.isActive) {
+        } else if (!that.model.isActive) {
             if (!that.dialogContainer) {
                 that.dialogContainer = $(that.options.markup.dialog);
             }
             that.events.onRenderDialogContent.fire();
         }
 
-        that.isActive = !that.isActive;
-        that.events.onActiveStateChange.fire(that.isActive);
+        that.model.isActive = !that.model.isActive;
+        that.events.onActiveStateChange.fire(that.model.isActive);
     };
 
     gpii.metadata.feedback.instantiateDialog = function (that) {
