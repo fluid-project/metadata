@@ -13,51 +13,43 @@ https://github.com/gpii/universal/LICENSE.txt
 
     fluid.registerNamespace("fluid.tests");
 
-    jqUnit.asyncTest("Test video metadata panel - with URL", function () {
-        fluid.metadata.videoMetadataPanel(".gpiic-videoMetadataPanel-withURL", {
-            renderOnInit: true,
-            model: {
-                url: "http://example.com/test.mp4"
-            },
+    fluid.tests.createMetadataPanel = function (container, options) {
+        var defaultOptions = {
             videoPanelTemplate: "../../src/html/video-template.html",
             audioPanelTemplate: "../../src/html/audio-template.html",
             audioAttributesTemplate: "../../src/html/audio-attributes-template.html",
             captionsPanelTemplate: "../../src/html/resourceInputPanel-template.html",
-            captionsInputTemplate: "../../src/html/resourceInput-template.html",
+            captionsInputTemplate: "../../src/html/resourceInput-template.html"
+        },
+        opts = $.extend(true, {}, defaultOptions, options);
+
+        return fluid.metadata.videoMetadataPanel(container, opts);
+    };
+
+    jqUnit.asyncTest("Test metadata panel - Init", function () {
+        fluid.tests.createMetadataPanel(".gpiic-metadataPanel-init", {
             listeners: {
                 afterSubpanelsRendered: function (that) {
                     jqUnit.expect(4);
-
-                    fluid.tests.checkRenderedVideoMetadataPanel(that);
-
+                    fluid.tests.checkNotRenderedVideoMetadataPanel(that);
                     jqUnit.start();
                 }
             }
         });
     });
 
-    fluid.tests.findRendererSubcomponent = function (that, componentName) {
-        return fluid.find(that, function (ignored, name) {
-            if (name.indexOf(componentName) >= 0) {
-                return true;
-            }
-        }) === true;
-    };
-
-    jqUnit.asyncTest("Test video metadata panel - without URL", function () {
-        fluid.metadata.videoMetadataPanel(".gpiic-videoMetadataPanel-noURL", {
-            renderOnInit: true,
-            videoPanelTemplate: "../../src/html/video-template.html",
-            audioPanelTemplate: "../../src/html/audio-template.html",
-            audioAttributesTemplate: "../../src/html/audio-attributes-template.html",
-            captionsPanelTemplate: "../../src/html/resourceInputPanel-template.html",
-            captionsInputTemplate: "../../src/html/resourceInput-template.html",
+    jqUnit.asyncTest("Test metadata panel - provide an video URL", function () {
+        fluid.tests.createMetadataPanel(".gpiic-metadataPanel-with-url", {
             listeners: {
-                afterRender: function (that) {
+                onCreate: {
+                    listener: function (that) {
+                        that.applier.change("url", "http://example.com/test.mp4");
+                    },
+                    priority: "last"
+                },
+                afterSubpanelsRendered: function (that) {
                     jqUnit.expect(4);
-
-                    fluid.tests.checkNotRenderedVideoMetadataPanel(that);
-
+                    fluid.tests.checkRenderedVideoMetadataPanel(that);
                     jqUnit.start();
                 }
             }

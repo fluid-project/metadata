@@ -48,12 +48,12 @@ https://github.com/gpii/universal/LICENSE.txt
 
         jqUnit.expect(3);
         var currentState = "available";
-        that.applier.requestChange("value", currentState);
+        that.applier.change("value", currentState);
         fluid.tests.checkState(that, "unknown", currentState);
 
         jqUnit.expect(3);
         currentState = "unavailable";
-        that.applier.requestChange("value", currentState);
+        that.applier.change("value", currentState);
         fluid.tests.checkState(that, "available", currentState);
     });
 

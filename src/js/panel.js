@@ -19,7 +19,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
      *******************************************************************************/
 
     fluid.defaults("fluid.metadata.basePanel", {
-        gradeNames: ["fluid.viewComponent", "autoInit"],
+        gradeNames: ["fluid.viewRelayComponent", "autoInit"],
         components: {
             indicator: {
                 type: "fluid.metadata.indicator",
@@ -52,41 +52,16 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         components: {
             indicator: {
                 options: {
-                    model: {
-                        expander: {
-                            funcName: "{that}.transformPanelModel"
-                        }
-                    },
-                    invokers: {
-                        transformPanelModel: {
-                            funcName: "fluid.metadata.panel.transformPanelModel",
-                            args: ["{panel}.model", "{panel}.options.indicatorModelRules"],
-                            dynamic: true
-                        }
-                    },
-                    modelListeners: {
-                        "{panel}.model": {
-                            func: "fluid.metadata.panel.updateModel",
-                            args: ["{that}"]
+                    modelRelay: {
+                        source: "{panel}.model.value",
+                        target: "{that}.model.value",
+                        singleTransform: {
+                            type: "fluid.transforms.identity"
                         }
                     }
                 }
             }
         }
     });
-
-    // At every panel model change, transform it to the model value required by the indicator sub-component,
-    // as well as requesting the indicator to refresh its state. This model relay is only one way from the
-    // panel model to the indicator model.
-    // When FLUID-5337 is fixed, this manual inverse relay will be performed autoamtically by the framework
-    // http://issues.fluidproject.org/browse/FLUID-5337
-    fluid.metadata.panel.updateModel = function (that) {
-        var model = that.transformPanelModel();
-        that.applier.change("value", model.value);
-    };
-
-    fluid.metadata.panel.transformPanelModel = function (panelModel, transformationRules) {
-        return transformationRules ? fluid.model.transform(panelModel, transformationRules) : panelModel;
-    };
 
 })(jQuery, fluid);
