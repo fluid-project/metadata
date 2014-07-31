@@ -74,7 +74,7 @@ var gpii = gpii || {};
             onRenderDialogContent: null,
             onDialogContentReady: null,
             onBindDialogHandlers: null,
-            onDialogReady: null,
+            onDialogReady: null
         },
         listeners: {
             "onCreate.addAriaRole": {
@@ -123,12 +123,9 @@ var gpii = gpii || {};
             },
             bindIframeClick: {
                 funcName: "gpii.metadata.feedback.bindIframeClick",
-                args: ["{that}.dialog", "{that}.container", "{that}.closeDialog"]
+                args: ["{that}.closeDialog"]
             },
-            unbindIframeClick: {
-                funcName: "gpii.metadata.feedback.unbindIframeClick",
-                args: ["{that}.dialog", "{that}.container"]
-            }
+            unbindIframeClick: "gpii.metadata.feedback.unbindIframeClick"
         },
         distributeOptions: [{
             source: "{that}.options.panelType",
@@ -202,14 +199,14 @@ var gpii = gpii || {};
         return $("body").find("iframe").contents().find("body");
     };
 
-    gpii.metadata.feedback.bindIframeClick = function (dialog, buttonDom, closeDialogFunc) {
+    gpii.metadata.feedback.bindIframeClick = function (closeDialogFunc) {
         var iframe = gpii.metadata.feedback.getIframe();
         iframe.on("click.closeDialog", function () {
             closeDialogFunc();
         });
     };
 
-    gpii.metadata.feedback.unbindIframeClick = function (dialog, buttonDom) {
+    gpii.metadata.feedback.unbindIframeClick = function () {
         var iframe = gpii.metadata.feedback.getIframe();
         iframe.off("click.closeDialog");
     };
