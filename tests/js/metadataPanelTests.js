@@ -13,46 +13,41 @@ https://github.com/gpii/universal/LICENSE.txt
 
     fluid.registerNamespace("fluid.tests");
 
-    fluid.tests.createMetadataPanel = function (container, options) {
-        var defaultOptions = {
-            gradeNames: "fluid.metadata.videoMetadataPanel",
-            videoPanelTemplate: "../../src/html/video-template.html",
-            audioPanelTemplate: "../../src/html/audio-template.html",
-            audioAttributesTemplate: "../../src/html/audio-attributes-template.html",
-            captionsPanelTemplate: "../../src/html/captions-template.html",
-            captionsInputTemplate: "../../src/html/captions-input-template.html"
-        },
-        opts = $.extend(true, {}, defaultOptions, options);
+    var url = "http://a.test.url",
+        defaultModel = {"default": "defaultValue"},
+        inputModel = {"input": "inputValue"};
 
-        return fluid.metadata.metadataPanel(container, opts);
+    fluid.tests.checkMetadataPanel = function (that, expectedModel, message) {
+        jqUnit.assertDeepEq("The model is expected - " + message, expectedModel, that.model);
     };
 
-    jqUnit.asyncTest("Test metadata panel - Init", function () {
-        fluid.tests.createMetadataPanel(".flc-metadataPanel", {
-            listeners: {
-                afterRender: function (that) {
-                    jqUnit.expect(4);
-                    fluid.tests.checkNotRenderedVideoMetadataPanel(that);
-                    that.events.afterRender.removeListener("checkInit");
-                    jqUnit.start();
-                }
-            }
-        });
+    jqUnit.test("Test metadata panel - Standalone", function () {
+        jqUnit.expect(2);
+
+        var that = fluid.metadata.metadataPanel(".gpiic-metadataPanel-standalone");
+
+        fluid.tests.checkMetadataPanel(that, {}, "Initializing a standalone");
+        that.applier.change("url", url);
+        fluid.tests.checkMetadataPanel(that, {url: url}, "Change URL in a standalone");
     });
 
-    jqUnit.asyncTest("Test metadata panel - provide an video URL", function () {
-        var that = fluid.tests.createMetadataPanel(".flc-metadataPanel");
+    fluid.defaults("fluid.tests.metadataPanelAsGrade", {
+        gradeNames: ["fluid.metadata.metadataPanel", "autoInit"],
+        members: {
+            defaultModel: defaultModel
+        },
+        inputModel: inputModel
+    });
 
-        that.events.afterRender.addListener(function () {
-            jqUnit.expect(4);
-            fluid.tests.checkRenderedVideoMetadataPanel(that);
-            that.events.afterRender.removeListener("checkRendered");
-            jqUnit.start();
-        }, "checkRendered", null, "last");
+    jqUnit.test("Test metadata panel - Use as a grade", function () {
+        jqUnit.expect(2);
 
-        that.setModel({
-            url: "http://example.com/test.mp4"
-        });
+        var that = fluid.tests.metadataPanelAsGrade(".gpiic-metadataPanel-grade");
+        var expectedInitialModel = $.extend(true, null, defaultModel, inputModel);
+
+        fluid.tests.checkMetadataPanel(that, expectedInitialModel, "Initializing a component that has the metadataPanel as a grade");
+        that.applier.change("url", url);
+        fluid.tests.checkMetadataPanel(that, $.extend(true, null, expectedInitialModel, {url: url}), "Change URL in a component that has the metadataPanel as a grade");
     });
 
 })(jQuery, fluid);

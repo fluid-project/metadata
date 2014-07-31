@@ -20,12 +20,13 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     };
 
     fluid.defaults("fluid.simpleEditor", {
-        gradeNames: ["fluid.viewComponent", "autoInit"],
+        gradeNames: ["fluid.viewRelayComponent", "autoInit"],
         selectors: {
             controls: ".gpiic-metadataDemo-resourceEditor-toolbar-button",
             content: "#gpiic-metadataDemo-resourceEditor-textEditor"
         },
         events: {
+            onContentAreaReady: null,
             afterVideoInserted: null
         },
         listeners: {
@@ -35,14 +36,17 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 "args": [{contentEditable: true}]
             },
             "onCreate.setFocus": {
-                listener: "fluid.simpleEditor.setFocus",
+                listener: "fluid.focus",
                 args: "{that}.dom.content"
+            },
+            "onCreate.onContentAreaReady": {
+                listener: "{that}.events.onContentAreaReady.fire"
             }
         },
         modelListeners: {
             "markup": {
-                func: "{dataSource}.set",
-                args: [{id: "markup", model: "{that}.model.markup"}]
+                func: "fluid.simpleEditor.saveMarkup",
+                args: ["{dataSource}.set", "{change}.value"]
             }
         },
         invokers: {
@@ -50,8 +54,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 funcName: "fluid.simpleEditor.setContent",
                 args: ["{that}.dom.content", "{arguments}.0"]
             },
-            updateModel: {
-                funcName: "fluid.simpleEditor.updateModel",
+            updateModelMarkup: {
+                funcName: "fluid.simpleEditor.updateModelMarkup",
                 args: ["{that}"]
             }
         },
@@ -60,15 +64,15 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 type: "fluid.simpleEditor.insertVideo",
                 container: "{that}.container",
                 options: {
-                    members: {
-                        applier: "{simpleEditor}.applier"
+                    model: {
+                        url: "{simpleEditor}.model.url",
+                        markup: "{simpleEditor}.model.markup"
                     },
-                    model: "{simpleEditor}.model",
                     selectors: {
                         content: "{simpleEditor}.options.selectors.content"
                     },
                     listeners: {
-                        "afterInsert.updateEditor": "{simpleEditor}.updateModel",
+                        "afterInsert.updateEditor": "{simpleEditor}.updateModelMarkup",
                         "afterInsert.escalateEvent": "{simpleEditor}.events.afterVideoInserted"
                     }
                 }
@@ -79,6 +83,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 sources: "{that}.dom.controls",
                 type: "fluid.simpleEditor.button",
                 container: "{source}",
+                createOnEvent: "{simpleEditor}.events.onContentAreaReady",
                 options: {
                     ariaOptions: {
                         editorToControl: "{simpleEditor}.options.selectors.content"
@@ -108,13 +113,13 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                             "method": "mouseup",
                             "args": ["{that}.updateActiveState"]
                         },
-                        "onCreate.input_updateModel": {
+                        "onCreate.input_updateModelMarkup": {
                             "this": "{simpleEditor}.dom.content",
                             "method": "on",
-                            "args": ["input", "{simpleEditor}.updateModel"]
+                            "args": ["input", "{simpleEditor}.updateModelMarkup"]
                         },
-                        "click.updateModel": {
-                            listener: "{simpleEditor}.updateModel"
+                        "click.updateModelMarkup": {
+                            listener: "{simpleEditor}.updateModelMarkup"
                         }
                     }
                 }
@@ -122,8 +127,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }
     });
 
-    fluid.simpleEditor.setFocus = function (contentEditor) {
-        contentEditor.get(0).focus();
+    fluid.simpleEditor.saveMarkup = function (setFunc, newValue) {
+        if (newValue !== undefined) {
+            setFunc({id: "markup", model: newValue});
+        }
     };
 
     fluid.simpleEditor.setContent = function (elm, content) {
@@ -132,8 +139,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }
     };
 
-    fluid.simpleEditor.updateModel = function (that) {
-        that.applier.requestChange("markup", that.locate("content").html());
+    fluid.simpleEditor.updateModelMarkup = function (that) {
+        that.applier.change("markup", that.locate("content").html());
     };
 
     fluid.registerNamespace("fluid.simpleEditor.button");
@@ -167,7 +174,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     });
 
     fluid.defaults("fluid.simpleEditor.button", {
-        gradeNames: ["fluid.viewComponent", "fluid.progressiveCheckerForComponent", "autoInit"],
+        gradeNames: ["fluid.viewRelayComponent", "fluid.progressiveCheckerForComponent", "autoInit"],
         componentName: "fluid.simpleEditor.button",
         progressiveCheckerOptions: {
             checks: [{
@@ -291,7 +298,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     };
 
     fluid.defaults("fluid.simpleEditor.insertVideo", {
-        gradeNames: ["fluid.viewComponent", "autoInit"],
+        gradeNames: ["fluid.viewRelayComponent", "autoInit"],
         disableVideoInput: false,    // boolean. Default value: false. At true, disable the input field and button for video url input.
         selectors: {
             url: ".gpiic-metadataDemo-resourceEditor-toolbar-url",
@@ -353,15 +360,15 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 listener: "fluid.simpleEditor.insertVideo.bindEnter",
                 args: ["{that}.dom.url", "{that}.dom.submit"]
             },
-            "afterInsert.updateModel": "{that}.updateModel"
+            "afterInsert.updateModelUrl": "{that}.updateModelUrl"
         },
         invokers: {
             insertPlaceHolder: {
                 funcName: "fluid.simpleEditor.insertVideo.insertPlaceHolder",
                 args: ["{that}.dom.content", "{that}.options.placeHolderID", "{that}.options.markup.placeHolder", "{that}.options.styles.placeHolder", "{that}.events.afterInsert.fire"]
             },
-            updateModel: {
-                funcName: "fluid.simpleEditor.insertVideo.updateModel",
+            updateModelUrl: {
+                funcName: "fluid.simpleEditor.insertVideo.updateModelUrl",
                 args: ["{that}"]
             },
             updateActiveState: {
@@ -405,8 +412,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }
     };
 
-    fluid.simpleEditor.insertVideo.updateModel = function (that) {
-        that.applier.requestChange("url", that.locate("url").val());
+    fluid.simpleEditor.insertVideo.updateModelUrl = function (that) {
+        that.applier.change("url", that.locate("url").val());
     };
 
     fluid.simpleEditor.insertVideo.setURLText = function (urlElm, url) {

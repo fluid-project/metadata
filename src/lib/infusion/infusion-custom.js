@@ -1,4 +1,4 @@
-/*! infusion - v1.5.0 Wednesday, July 9th, 2014, 9:15:07 AM*/
+/*! infusion - v2.0.0-SNAPSHOT Friday, July 25th, 2014, 2:52:09 PM*/
 /*!
  * jQuery JavaScript Library v1.11.0
  * http://jquery.com/
@@ -16928,7 +16928,7 @@ $.widget( "ui.tooltip", {
 
 }( jQuery ) );
 ;/*!
- * Fluid Infusion v1.5
+ * Fluid Infusion v2.0
  *
  * Infusion is distributed under the Educational Community License 2.0 and new BSD licenses:
  * http://wiki.fluidproject.org/display/fluid/Fluid+Licensing
@@ -16955,13 +16955,13 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 // Declare dependencies
 /* global console, opera, YAHOO*/
 
-var fluid_1_5 = fluid_1_5 || {};
-var fluid = fluid || fluid_1_5;
+var fluid_2_0 = fluid_2_0 || {};
+var fluid = fluid || fluid_2_0;
 
 (function ($, fluid) {
     "use strict";
 
-    fluid.version = "Infusion 1.5";
+    fluid.version = "Infusion 2.0-SNAPSHOT";
 
     // Export this for use in environments like node.js, where it is useful for
     // configuring stack trace behaviour
@@ -18627,7 +18627,7 @@ var fluid = fluid || fluid_1_5;
             // will THEN return to "evaluation of arguments" (expander blocks) and only then FINALLY to this "slow"
             // traversal of concrete properties to do the final merge.
             if (source !== undefined) {
-                // This use of function creation within a loop is acceptable since 
+                // This use of function creation within a loop is acceptable since
                 // the function does not attempt to close directly over the loop counter
                 fluid.each(source, function (newSource, name) {
                     if (!target.hasOwnProperty(name)) { // only request each new target key once -- all sources will be queried per strategy
@@ -19144,14 +19144,14 @@ var fluid = fluid || fluid_1_5;
             fluid.fireEvent(that, "events.afterDestroy", [that, "", null]);
         };
     };
-    
+
     /** Returns <code>true</code> if the supplied reference holds a component which has been destroyed **/
-    
+
     fluid.isDestroyed = function (that) {
         return that.destroy === fluid.destroyedMarker;
     };
 
-    // unsupported, NON-API function    
+    // unsupported, NON-API function
     fluid.doDestroy = function (that, name, parent) {
         fluid.fireEvent(that, "events.onDestroy", [that, name || "", parent]);
         that.destroy = fluid.destroyedMarker;
@@ -19426,7 +19426,7 @@ var fluid = fluid || fluid_1_5;
         };
     };
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2007-2010 University of Cambridge
 Copyright 2007-2009 University of Toronto
@@ -19445,7 +19445,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 /** This file contains functions which depend on the presence of a DOM document
  * but which do not depend on the contents of Fluid.js **/
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
     "use strict";
@@ -19603,7 +19603,7 @@ var fluid_1_5 = fluid_1_5 || {};
         };
     });
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2008-2010 University of Cambridge
 Copyright 2008-2009 University of Toronto
@@ -19616,7 +19616,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
     "use strict";
@@ -19719,7 +19719,7 @@ var fluid_1_5 = fluid_1_5 || {};
         return text;
     };
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2008-2010 University of Cambridge
 Copyright 2008-2009 University of Toronto
@@ -19733,7 +19733,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-fluid_1_5 = fluid_1_5 || {};
+fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
     "use strict";
@@ -19836,7 +19836,7 @@ fluid_1_5 = fluid_1_5 || {};
         return messageString;
     };
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2007-2010 University of Cambridge
 Copyright 2007-2009 University of Toronto
@@ -19852,8 +19852,8 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
-var fluid = fluid || fluid_1_5;
+var fluid_2_0 = fluid_2_0 || {};
+var fluid = fluid || fluid_2_0;
 
 (function ($, fluid) {
     "use strict";
@@ -20059,7 +20059,7 @@ var fluid = fluid || fluid_1_5;
         return togo;
     };
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2011-2013 OCAD University
 Copyright 2010-2011 Lucendo Development Ltd.
@@ -20072,7 +20072,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
     "use strict";
@@ -20338,7 +20338,7 @@ var fluid_1_5 = fluid_1_5 || {};
         } else {
             fluid.registerCollectedClearer(shadows[shadows.length - 1], parentShadow, memberNames[memberNames.length - 1]);
         }
-        // This use of function creation within a loop is acceptable since 
+        // This use of function creation within a loop is acceptable since
         // the function does not attempt to close directly over the loop counter
         for (var i = 0; i < thatStack.length - 1; ++ i) {
             fluid.each(shadows[i].distributions, function (distribution) {
@@ -22342,7 +22342,7 @@ outer:  for (var i = 0; i < exist.length; ++i) {
     fluid.noexpand = fluid.expander.noexpand; // TODO: check naming and namespacing
 
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2008-2010 University of Cambridge
 Copyright 2008-2009 University of Toronto
@@ -22357,7 +22357,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
     "use strict";
@@ -22876,7 +22876,7 @@ var fluid_1_5 = fluid_1_5 || {};
             }
         }
     };
-    
+
     fluid.model.guardedAdapter = function (componentThat, cond, func, args) {
         // TODO: We can't use fluid.isModelComplete here because of the broken half-transactional system - it may appear that model has arrived halfway through init transaction
         var isInit = componentThat.modelRelay === fluid.inEvaluationMarker;
@@ -22945,14 +22945,14 @@ var fluid_1_5 = fluid_1_5 || {};
             }
         };
     };
-    
+
     fluid.model.relayConditions = {
         initOnly: {init: true,  live: false},
         liveOnly: {init: false, live: true},
         never:    {init: false, live: false},
         always:   {init: true,  live: true}
     };
-    
+
     fluid.model.parseRelayCondition = function (condition) {
         return fluid.model.relayConditions[condition || "always"];
     };
@@ -23009,8 +23009,8 @@ var fluid_1_5 = fluid_1_5 || {};
         }
         return value;
     };
-    
-        
+
+
     // Conclude the transaction by firing to all external listeners in priority order
     fluid.model.notifyExternal = function (transRec) {
         var allChanges = transRec ? fluid.values(transRec.externalChanges) : [];
@@ -23021,7 +23021,7 @@ var fluid_1_5 = fluid_1_5 || {};
         }
         fluid.clearLinkCounts(transRec, true); // "options" structures for relayCount are aliased
     };
-    
+
     fluid.model.commitRelays = function (instantiator, transactionId) {
         var transRec = instantiator.modelTransactions[transactionId];
         fluid.each(transRec, function (transEl) {
@@ -23073,14 +23073,14 @@ var fluid_1_5 = fluid_1_5 || {};
                 fluid.model.commitRelays(instantiator, transaction.id);
             }
         }
-        
+
         function concludeTransaction(transaction, applier, code) {
             if (code !== "relay") {
                 fluid.model.notifyExternal(instantiator.modelTransactions[transaction.id]);
                 delete instantiator.modelTransactions[transaction.id];
             }
         }
-        
+
         applier.preCommit.addListener(updateRelays);
         applier.preCommit.addListener(commitRelays);
         applier.postCommit.addListener(concludeTransaction);
@@ -23449,7 +23449,7 @@ var fluid_1_5 = fluid_1_5 || {};
         }
         return togo;
     };
-    
+
     fluid.storeExternalChange = function (transRec, applier, invalidPath, spec, args) {
         var pathString = applier.composeSegments.apply(null, invalidPath);
         var keySegs = [applier.applierId, fluid.event.identifyListener(spec.listener), spec.listenerIndex, pathString];
@@ -24059,7 +24059,7 @@ var fluid_1_5 = fluid_1_5 || {};
         return togo;
     };
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2010 University of Toronto
 Copyright 2010-2011 OCAD University
@@ -24072,8 +24072,8 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
-var fluid = fluid || fluid_1_5;
+var fluid_2_0 = fluid_2_0 || {};
+var fluid = fluid || fluid_2_0;
 
 (function ($, fluid) {
     "use strict";
@@ -24175,13 +24175,13 @@ var fluid = fluid || fluid_1_5;
     // in a compound transform definition
     fluid.model.transform.NONDEFAULT_OUTPUT_PATH_RETURN = {};
 
-    fluid.model.transform.setValue = function (userOutputPath, value, transform, merge) {
+    fluid.model.transform.setValue = function (userOutputPath, value, transform) {
         // avoid crosslinking to input object - this might be controlled by a "nocopy" option in future
         var toset = fluid.copy(value);
         var outputPath = fluid.model.composePaths(transform.outputPrefix, userOutputPath);
         // TODO: custom resolver config here to create non-hash output model structure
         if (toset !== undefined) {
-            transform.applier.requestChange(outputPath, toset, merge ? "MERGE" : undefined);
+            transform.applier.requestChange(outputPath, toset);
         }
         return userOutputPath ? fluid.model.transform.NONDEFAULT_OUTPUT_PATH_RETURN : toset;
     };
@@ -24212,9 +24212,9 @@ var fluid = fluid || fluid_1_5;
                 stats.messages.push("Type mismatch at path " + stats.path + ": expected " + typeof(expected)  + " actual " + typeof(actual));
             } else {
                 fluid.each(expected, function (value, key) {
-                    stats.pathOps.push(key);
+                    stats.pathOp.push(key);
                     fluid.deepEquals(expected[key], actual[key], stats);
-                    stats.pathOps.pop(key);
+                    stats.pathOp.pop(key);
                 });
             }
         }
@@ -24229,7 +24229,7 @@ var fluid = fluid || fluid_1_5;
                 mismatchCount: 0,
                 messages: []
             };
-            fluid.model.makePathStack(stats, "path");
+            stats.pathOp = fluid.model.makePathStack(stats, "path");
             fluid.deepEquals(expected, actual, stats);
             return stats.matchCount;
         }
@@ -24331,7 +24331,7 @@ var fluid = fluid || fluid_1_5;
                 //If outputPath is given in the expander we want to:
                 // (1) output to the document
                 // (2) return undefined, to ensure that expanders higher up in the hierarchy doesn't attempt to output it again
-                fluid.model.transform.setValue(transformSpec.outputPath, transformed, transform, transformSpec.merge);
+                fluid.model.transform.setValue(transformSpec.outputPath, transformed, transform);
                 transformed = undefined;
             }
         }
@@ -24445,14 +24445,23 @@ var fluid = fluid || fluid_1_5;
         var defaults = fluid.defaults(typeName);
         return { defaults: defaults, typeName: typeName};
     };
+    
+    // A utility which is helpful in computing inverses involving compound values. 
+    // For example, with the valueMapper, compound input values are accepted as literals implicitly,
+    // whereas as output values they must be escaped. This utility escapes a value if it is not primitive.
+    fluid.model.transform.literaliseValue = function (value) {
+        return fluid.isPrimitive(value) ? value : {
+            literalValue: value
+        };
+    };
 
     // unsupported, NON-API function
     fluid.model.transform.processRule = function (rule, transform) {
         if (typeof(rule) === "string") {
             rule = fluid.model.transform.pathToRule(rule);
         }
-        // special dispensation to allow "literalValue" at top level
-        else if (rule.literalValue && transform.outputPrefix !== "") {
+        // special dispensation to allow "literalValue" to escape any value
+        else if (rule.literalValue !== undefined) {
             rule = fluid.model.transform.literalValueToRule(rule.literalValue);
         }
         var togo;
@@ -24629,9 +24638,11 @@ var fluid = fluid || fluid_1_5;
 
         var transform = {
             source: source,
-            target: schemaStrategy ? fluid.model.transform.defaultSchemaValue(schemaStrategy(null, "", 0, [""])) : {},
+            target: {
+                model: schemaStrategy ? fluid.model.transform.defaultSchemaValue(schemaStrategy(null, "", 0, [""])) : {}
+            },
             resolverGetConfig: getConfig,
-            collectedFlatSchemaOpts: undefined, //to hold options for flat schema collected during transforms
+            collectedFlatSchemaOpts: undefined, // to hold options for flat schema collected during transforms
             queuedChanges: [],
             queuedTransforms: [] // TODO: This is used only by wildcard applier - explain its operation
         };
@@ -24654,7 +24665,7 @@ var fluid = fluid || fluid_1_5;
         }
         setConfig.strategies = [fluid.model.defaultFetchStrategy, schemaStrategy ? fluid.model.transform.schemaToCreatorStrategy(schemaStrategy)
                 : fluid.model.defaultCreatorStrategy];
-        transform.finalApplier = options.finalApplier || fluid.makeChangeApplier(transform.target, {resolverSetConfig: setConfig});
+        transform.finalApplier = options.finalApplier || fluid.makeNewChangeApplier(transform.target, {resolverSetConfig: setConfig});
 
         if (transform.queuedTransforms.length > 0) {
             transform.typeStack = [];
@@ -24662,7 +24673,7 @@ var fluid = fluid || fluid_1_5;
             fluid.model.transform.expandWildcards(transform, source);
         }
         fluid.model.fireSortedChanges(transform.queuedChanges, transform.finalApplier);
-        return transform.target;
+        return transform.target.model;
     };
 
     $.extend(fluid.model.transformWithRules, fluid.model.transform);
@@ -24688,7 +24699,7 @@ var fluid = fluid || fluid_1_5;
         };
     };
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2010 University of Toronto
 Copyright 2010-2011 OCAD University
@@ -24702,8 +24713,8 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
-var fluid = fluid || fluid_1_5;
+var fluid_2_0 = fluid_2_0 || {};
+var fluid = fluid || fluid_2_0;
 
 (function ($, fluid) {
     "use strict";
@@ -24912,7 +24923,8 @@ var fluid = fluid || fluid_1_5;
             var option = o[i];
             var value = fluid.firstDefined(fluid.model.transform.getValue(option.inputPath, undefined, transform),
                 outerValue);
-            var matchCount = fluid.model.transform.matchValue(option.undefinedInputValue ? undefined : option.inputValue, value);
+            var matchCount = fluid.model.transform.matchValue(option.undefinedInputValue ? undefined :
+                (option.inputValue === undefined ? transformSpec.defaultInputValue : option.inputValue), value);
             matchPower[i] = {index: i, matchCount: matchCount};
         }
         matchPower.sort(fluid.model.transform.compareMatches);
@@ -24921,7 +24933,7 @@ var fluid = fluid || fluid_1_5;
 
     fluid.transforms.valueMapper = function (transformSpec, transform) {
         if (!transformSpec.options) {
-            fluid.fail("demultiplexValue requires a list or hash of options at path named \"options\", supplied ", transformSpec);
+            fluid.fail("valueMapper requires a list or hash of options at path named \"options\", supplied ", transformSpec);
         }
         var value = fluid.model.transform.getValue(transformSpec.inputPath, undefined, transform);
         var deref = fluid.isArrayable(transformSpec.options) ? // long form with list of records
@@ -24958,7 +24970,7 @@ var fluid = fluid || fluid_1_5;
                 outputValue = (outputValue === undefined) ? transformSpec.defaultOutputValue : outputValue;
             }
         }
-        //output if outputPath or defaultOutputPath have been specified and the relevant child hasn't done the outputting
+        // output if outputPath or defaultOutputPath have been specified and the relevant child hasn't done the outputting
         if (typeof(outputPath) === "string" && outputValue !== undefined) {
             fluid.model.transform.setValue(undefined, outputValue, transform, transformSpec.merge);
             outputValue = undefined;
@@ -24984,7 +24996,7 @@ var fluid = fluid || fluid_1_5;
         var anyCustomOutput = findCustom("outputPath");
         var anyCustomInput = findCustom("inputPath");
         if (!anyCustomOutput) {
-            togo.inputPath = fluid.model.composePaths(transform.outputPrefix, transformSpec.outputPath);
+            togo.inputPath = fluid.model.composePaths(transform.outputPrefix, transformSpec.defaultOutputPath);
         }
         if (!anyCustomInput) {
             togo.defaultOutputPath = fluid.model.composePaths(transform.inputPrefix, transformSpec.inputPath);
@@ -24996,7 +25008,7 @@ var fluid = fluid || fluid_1_5;
             if (origInputValue === undefined) {
                 fluid.fail("Failure inverting configuration for valueMapper - inputValue could not be resolved for record " + key + ": ", transformSpec);
             }
-            outOption.outputValue = origInputValue;
+            outOption.outputValue = fluid.model.transform.literaliseValue(origInputValue);
             var origOutputValue = def(option.outputValue, transformSpec.defaultOutputValue);
             outOption.inputValue = fluid.model.transform.getValue(option.outputValuePath, origOutputValue, transform);
             if (anyCustomOutput) {
@@ -25277,7 +25289,7 @@ var fluid = fluid || fluid_1_5;
         return fluid.invokeGlobalFunction(transformSpec.func, args);
     };
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2008-2010 University of Cambridge
 Copyright 2008-2010 University of Toronto
@@ -25292,8 +25304,8 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
-var fluid = fluid || fluid_1_5;
+var fluid_2_0 = fluid_2_0 || {};
+var fluid = fluid || fluid_2_0;
 
 (function ($, fluid) {
     "use strict";
@@ -25344,7 +25356,7 @@ var fluid = fluid || fluid_1_5;
     };
 
     fluid.thatistBridge("fluid", fluid);
-    fluid.thatistBridge("fluid_1_5", fluid_1_5);
+    fluid.thatistBridge("fluid_2_0", fluid_2_0);
 
 /*************************************************************************
  * Tabindex normalization - compensate for browser differences in naming
@@ -25900,7 +25912,7 @@ var fluid = fluid || fluid_1_5;
     };
 
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2010-2011 Lucendo Development Ltd.
 Copyright 2010-2011 OCAD University
@@ -25916,7 +25928,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 /** This file contains functions which depend on the presence of a DOM document
  *  and which depend on the contents of Fluid.js **/
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
     "use strict";
@@ -26564,7 +26576,7 @@ var fluid_1_5 = fluid_1_5 || {};
         backDelay: 100
     });
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2010-2011 OCAD University
 Copyright 2010-2011 Lucendo Development Ltd.
@@ -26577,7 +26589,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
     "use strict";
@@ -26911,7 +26923,7 @@ var fluid_1_5 = fluid_1_5 || {};
     };
 
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2010 OCAD University
 
@@ -26923,7 +26935,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
     "use strict";
@@ -26959,7 +26971,7 @@ var fluid_1_5 = fluid_1_5 || {};
             } else {
                 return null;
             }
-            
+
         };
     };
 
@@ -27127,7 +27139,7 @@ var fluid_1_5 = fluid_1_5 || {};
         delay: 300
     });
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2008-2009 University of Toronto
 Copyright 2010-2011 OCAD University
@@ -27141,7 +27153,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
     "use strict";
@@ -27282,7 +27294,7 @@ var fluid_1_5 = fluid_1_5 || {};
         $("head").append("<style type='text/css'>.fl-progEnhance-basic, .fl-ProgEnhance-basic { display: none; } .fl-progEnhance-enhanced, .fl-ProgEnhance-enhanced { display: block; }</style>");
     }
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;// =========================================================================
 //
 // tinyxmlsax.js - an XML SAX parser in JavaScript compressed for downloading
@@ -27335,7 +27347,7 @@ freely, subject to the following restrictions:
     distribution.
  */
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
     "use strict";
@@ -27759,7 +27771,7 @@ var fluid_1_5 = fluid_1_5 || {};
         return strD.substring(iB, iE).split(strF).join(strR);
     };
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2008-2010 University of Cambridge
 Copyright 2008-2009 University of Toronto
@@ -27773,7 +27785,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-fluid_1_5 = fluid_1_5 || {};
+fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
     "use strict";
@@ -28232,7 +28244,7 @@ parseloop:
         return togo;
     };
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2008-2010 University of Cambridge
 Copyright 2008-2009 University of Toronto
@@ -28246,7 +28258,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-fluid_1_5 = fluid_1_5 || {};
+fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
     "use strict";
@@ -29822,7 +29834,7 @@ fluid_1_5 = fluid_1_5 || {};
         return fluid.render({node: node, armouring: options.armouring}, node, tree, options);
     };
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2008-2010 University of Cambridge
 Copyright 2008-2009 University of Toronto
@@ -29836,7 +29848,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-fluid_1_5 = fluid_1_5 || {};
+fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
     "use strict";
@@ -30395,7 +30407,7 @@ fluid_1_5 = fluid_1_5 || {};
                 var comp = { children: target};
 
                 var child = children[i];
-                // This use of function creation within a loop is acceptable since 
+                // This use of function creation within a loop is acceptable since
                 // the function does not attempt to close directly over the loop counter
                 var childPusher = function (comp) {
                     target[target.length] = comp;
@@ -30484,7 +30496,7 @@ fluid_1_5 = fluid_1_5 || {};
         };
     };
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2011 OCAD University
 Copyright 2011 Lucendo Development Ltd.
@@ -30497,7 +30509,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
     "use strict";
@@ -30599,7 +30611,7 @@ var fluid_1_5 = fluid_1_5 || {};
         that.events[that.model.isShowing ? "onPanelShow" : "onPanelHide"].fire();
     };
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*!
  * jQuery UI Touch Punch 0.2.2
  *
@@ -30770,7 +30782,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
     "use strict";
@@ -30946,7 +30958,7 @@ var fluid_1_5 = fluid_1_5 || {};
 
     };
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2011 OCAD University
 Copyright 2011 Lucendo Development Ltd.
@@ -30959,7 +30971,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
     "use strict";
@@ -31314,7 +31326,7 @@ var fluid_1_5 = fluid_1_5 || {};
 
     });
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
     json2.js
     2007-11-06
@@ -31591,7 +31603,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
     "use strict";
@@ -31737,7 +31749,7 @@ var fluid_1_5 = fluid_1_5 || {};
         return back + front;
     };
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2009 University of Toronto
 Copyright 2011-2013 OCAD University
@@ -31750,7 +31762,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
     "use strict";
@@ -31891,7 +31903,7 @@ var fluid_1_5 = fluid_1_5 || {};
         funcName: "fluid.cookieStore"
     });
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2009 University of Toronto
 Copyright 2010-2011 OCAD University
@@ -31905,7 +31917,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
     "use strict";
@@ -31986,7 +31998,7 @@ var fluid_1_5 = fluid_1_5 || {};
         fluid.staticEnvironment.uiEnhancer = that.uiEnhancer;
     };
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2009 University of Toronto
 Copyright 2010-2011 OCAD University
@@ -32000,7 +32012,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
     "use strict";
@@ -32485,7 +32497,7 @@ var fluid_1_5 = fluid_1_5 || {};
         that.container.attr("src", templateUrl);
     };
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2013 OCAD University
 
@@ -32497,7 +32509,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 
 (function ($, fluid) {
@@ -33441,7 +33453,7 @@ var fluid_1_5 = fluid_1_5 || {};
         });
     };
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2013 OCAD University
 
@@ -33453,7 +33465,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
     "use strict";
@@ -33511,7 +33523,7 @@ var fluid_1_5 = fluid_1_5 || {};
         });
     };
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2013 OCAD University
 
@@ -33523,7 +33535,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
     "use strict";
@@ -34056,7 +34068,7 @@ var fluid_1_5 = fluid_1_5 || {};
         }
     });
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2013 OCAD University
 
@@ -34068,7 +34080,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
     "use strict";
@@ -34472,7 +34484,7 @@ var fluid_1_5 = fluid_1_5 || {};
         }
     });
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2011 OCAD University
 Copyright 2011 Lucendo Development Ltd.
@@ -34485,7 +34497,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
     "use strict";
@@ -34754,7 +34766,7 @@ var fluid_1_5 = fluid_1_5 || {};
         setTimeout(callback, 1);
     };
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2011 OCAD University
 Copyright 2011 Lucendo Development Ltd.
@@ -34767,7 +34779,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
     "use strict";
@@ -34801,7 +34813,7 @@ var fluid_1_5 = fluid_1_5 || {};
         }
     });
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2011 OCAD University
 Copyright 2011 Lucendo Development Ltd.
@@ -34814,7 +34826,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
     "use strict";
@@ -34878,7 +34890,7 @@ var fluid_1_5 = fluid_1_5 || {};
         }]
     });
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2013 OCAD University
 
@@ -34890,7 +34902,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
     "use strict";
@@ -35007,7 +35019,7 @@ var fluid_1_5 = fluid_1_5 || {};
         }
     });
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2013 OCAD University
 
@@ -35019,7 +35031,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 
 (function ($, fluid) {
@@ -35497,7 +35509,7 @@ var fluid_1_5 = fluid_1_5 || {};
         return fluid.keys(defaults.preferenceMap);
     };
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2013 OCAD University
 
@@ -35509,7 +35521,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 (function (fluid) {
     "use strict";
@@ -35741,7 +35753,7 @@ var fluid_1_5 = fluid_1_5 || {};
             }
         }
     });
-})(fluid_1_5);
+})(fluid_2_0);
 ;/*
 Copyright 2013 OCAD University
 
@@ -35753,7 +35765,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 
 (function ($, fluid) {
@@ -35947,7 +35959,7 @@ var fluid_1_5 = fluid_1_5 || {};
         return fluid.invokeGlobalFunction(builder.options.assembledPrefsEditorGrade, [container, options.prefsEditor]);
     };
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2013 OCAD University
 
@@ -35959,7 +35971,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 (function ($, fluid) {
     "use strict";
 
@@ -35972,19 +35984,17 @@ var fluid_1_5 = fluid_1_5 || {};
         gradeNames: ["fluid.prefs.constructed.prefsEditor", "autoInit"],
         distributeOptions: {
             source: "{that}.options.tocTemplate",
-            removeSource: true,
             target: "{that uiEnhancer}.options.tocTemplate"
         },
         enhancer: {
             distributeOptions: {
                 source: "{that}.options.tocTemplate",
-                removeSource: true,
                 target: "{that > fluid.prefs.enactor.tableOfContents}.options.tocTemplate"
             }
         }
     });
-    
-})(jQuery, fluid_1_5);
+
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2011 OCAD University
 Copyright 2011 Lucendo Development Ltd.
@@ -35997,7 +36007,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
     "use strict";
@@ -36035,7 +36045,7 @@ var fluid_1_5 = fluid_1_5 || {};
         });
     };
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);
 ;/*
 Copyright 2014 OCAD University
 
@@ -36048,7 +36058,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
 */
 
-var fluid_1_5 = fluid_1_5 || {};
+var fluid_2_0 = fluid_2_0 || {};
 
 (function ($, fluid) {
 
@@ -36233,4 +36243,4 @@ var fluid_1_5 = fluid_1_5 || {};
         }
     };
 
-})(jQuery, fluid_1_5);
+})(jQuery, fluid_2_0);

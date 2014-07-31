@@ -19,7 +19,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
      *******************************************************************************/
 
     fluid.defaults("fluid.metadata.videoPanel", {
-        gradeNames: ["fluid.rendererComponent", "fluid.metadata.basePanel", "autoInit"],
+        gradeNames: ["fluid.rendererRelayComponent", "fluid.metadata.basePanel", "autoInit"],
         components: {
             indicator: {
                 createOnEvent: "afterRender",
@@ -34,7 +34,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         model: {
             highContrast: false,
             signLanguage: false,
-            flashing: "unknown" // flashing, noFlashing are alternatives
+            flashing: "unknown" // flashing, noFlashing are other possible values
         },
         strings: {
             title: "Video",

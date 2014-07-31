@@ -7,7 +7,7 @@
 
         <!-- Custom build of Foundation -->
         <link rel="stylesheet" href="../lib/foundation/css/foundation.min.css" />
-        <link rel="stylesheet" href="../../src/lib/infusion/components/overviewPanel/css/OverviewPanel.css" />
+        <link rel="stylesheet" href="../../src/lib/infusion/src/components/overviewPanel/css/OverviewPanel.css" />
         <link rel="stylesheet" href="../css/metadataDemo.css" />
 
         <script type="text/javascript" src="../../src/lib/infusion/infusion-custom.js"></script>
@@ -105,9 +105,11 @@
                     markup: "./predefinedOERContent.html",
                     metadata: {
                         url: "https://archive.org/details/gov.ntis.ava11754vnb1",
-                        audio: "available",
-                        flashing: "noFlashing",
-                        keywords: ["dialogue"]
+                        metadata: {
+                            accessibilityHazard: ["noFlashing"],
+                            accessMode: ["audio"],
+                            keywords: ["dialogue"]
+                        }
                     }
                 }
             });
