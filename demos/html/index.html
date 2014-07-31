@@ -105,9 +105,11 @@
                     markup: "./predefinedOERContent.html",
                     metadata: {
                         url: "https://archive.org/details/gov.ntis.ava11754vnb1",
-                        audio: "available",
-                        flashing: "noFlashing",
-                        keywords: ["dialogue"]
+                        metadata: {
+                            accessibilityHazard: ["noFlashing"],
+                            accessMode: ["audio"],
+                            keywords: ["dialogue"]
+                        }
                     }
                 }
             });
