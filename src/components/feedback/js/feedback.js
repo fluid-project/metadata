@@ -29,11 +29,27 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                         activeCss: "{feedback}.options.styles.activeCss"
                     }
                 }
+            },
+            bindMismatchDetails: {
+                type: "gpii.metadata.feedback.bindMismatchDetails",
+                container: "{feedback}.dom.mismatchDetailsButton",
+                createOnEvent: "afterMarkupReady",
+                options: {
+                    strings: {
+                        buttonLabel: "{feedback}.options.strings.mismatchDetailsLabel"
+                    },
+                    styles: {
+                        activeCss: "{feedback}.options.styles.activeCss"
+                    },
+                    listeners: {
+                        "onCreate.debug": "console.log"
+                    }
+                }
             }
         },
         strings: {
             matchConfirmationLabel: "I like this article, match me with similar content.",
-            unmatchDetailsLabel: "I don't like this article, request improvements.",
+            mismatchDetailsLabel: "I don't like this article, request improvements.",
             requestLabel: "Request improvements to the content."
         },
         styles: {
@@ -41,7 +57,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             activeCss: "gpii-icon-active"
         },
         selectors: {
-            matchConfirmationButton: ".gpiic-matchConfirmation-button"
+            matchConfirmationButton: ".gpiic-matchConfirmation-button",
+            mismatchDetailsButton: ".gpiic-mismatchDetails-button"
         },
         events: {
             afterTemplateFetched: null,
@@ -74,11 +91,15 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 url: "../html/feedbackTemplate.html"
             }
         },
-        distributeOptions: {
+        distributeOptions: [{
             source: "{that}.options.matchConfirmationTemplate",
             remove: true,
             target: "{that matchConfirmation}.options.resources.template.url"
-        }
+        }, {
+            source: "{that}.options.mismatchDetailsTemplate",
+            remove: true,
+            target: "{that mismatchDetails}.options.resources.template.url"
+        }]
     });
 
 })(jQuery, fluid);

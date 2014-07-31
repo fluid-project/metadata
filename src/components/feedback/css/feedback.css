@@ -120,7 +120,7 @@ _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
     content: "\e610";
 }
 
-.gpii-icon-sad:before {
+.gpii-icon-mismatchDetails:before {
     content: "\e611";
 }
 
