@@ -141,7 +141,7 @@ var gpii = gpii || {};
     gpii.metadata.feedback.bindButton = function (that, event) {
         event.preventDefault();
 
-        if (that.dialog && that.dialog.dialog("isOpen") && that.model.isActive) {
+        if (that.dialog && that.model.isDialogOpen && that.model.isActive) {
             that.closeDialog();
         } else if (!that.model.isActive) {
             if (!that.dialogContainer) {
@@ -195,20 +195,20 @@ var gpii = gpii || {};
         }
     };
 
-    gpii.metadata.feedback.getIframe = function () {
+    gpii.metadata.feedback.getIframes = function () {
         return $("body").find("iframe").contents().find("body");
     };
 
     gpii.metadata.feedback.bindIframeClick = function (closeDialogFunc) {
-        var iframe = gpii.metadata.feedback.getIframe();
-        iframe.on("click.closeDialog", function () {
+        var iframes = gpii.metadata.feedback.getIframes();
+        iframes.on("click.closeDialog", function () {
             closeDialogFunc();
         });
     };
 
     gpii.metadata.feedback.unbindIframeClick = function () {
-        var iframe = gpii.metadata.feedback.getIframe();
-        iframe.off("click.closeDialog");
+        var iframes = gpii.metadata.feedback.getIframes();
+        iframes.off("click.closeDialog");
     };
 
 })(jQuery, fluid);
