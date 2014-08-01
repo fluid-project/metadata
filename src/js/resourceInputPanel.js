@@ -19,7 +19,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
      ******************/
 
     fluid.defaults("fluid.metadata.resourceInput", {
-        gradeNames: ["fluid.rendererComponent", "autoInit"],
+        gradeNames: ["fluid.rendererRelayComponent", "autoInit"],
         selectors: {
             srcLabel: ".gpiic-resourceInput-srcLabel",
             src: ".gpiic-resourceInput-src",
@@ -127,7 +127,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     });
 
     fluid.transforms.find = function (inputs, transformSpec, transform) {
-
         var conditions = transformSpec.conditionPath ? fluid.get(transform.source, transformSpec.conditionPath) : transformSpec.condition;
         var innerPath = transformSpec.innerPath || "";
         var result = fluid.find(conditions, function (condition) {
@@ -156,16 +155,26 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             container: ""
         },
         model: {
-            resources: [{
-                src: "",
-                language: "en"
-            }, {
-                src: "",
-                language: "en"
-            }]
+            resources: null
+        },
+        modelRelay: {
+            target: "resources",
+            forward: "initOnly",
+            singleTransform: {
+                type: "fluid.transforms.free",
+                func: "fluid.metadata.baseResourceInputPanel.setInitialResources",
+                args: {
+                    "defaultInputModelElement": "{that}.defaultInputModelElement",
+                    "resources": "{that}.model.resources"
+                }
+            }
         },
         members: {
-            inputs: []
+            inputs: [],
+            defaultInputModelElement: {
+                src: "",
+                language: "en"
+            }
         },
         dynamicComponents: {
             input: {
@@ -188,10 +197,20 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                             args: ["{change}.value", "{change}.path", "{that}.options.source.2"]
                         }
                     },
+                    events: {
+                        onLastResourceInputRendered: "{baseResourceInputPanel}.events.onResourceInputsReady"
+                    },
                     listeners: {
-                        onCreate: {
+                        onCreate: [{
                             "this": "{baseResourceInputPanel}.inputs",
                             "method": "push"
+                        }],
+                        afterRender: {
+                            listener: "fluid.metadata.baseResourceInputPanel.checkLastResourceInput",
+                            // {that}.options.source saves all the arguments fired for its createOnEvent "onCreateInput".
+                            // {that}.options.source.3 is to retrieve the 4th argument "isLastInstance".
+                            // @See the calculation of "isLastInstance" in function fluid.metadata.baseResourceInputPanel.renderInputContainer().
+                            args: ["{that}.options.source.3", "{that}.events.onLastResourceInputRendered.fire"]
                         }
                     }
                 }
@@ -209,6 +228,17 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                             listener: "{baseResourceInputPanel}.events.afterIndicatorReady",
                             priority: "last"
                         }
+                    },
+                    modelRelay: {
+                        source: "{baseResourceInputPanel}.model",
+                        target: "{that}.model.value",
+                        singleTransform: {
+                            type: "fluid.transforms.find",
+                            conditionPath: "resources",
+                            innerPath: "src",
+                            "true": "available",
+                            "false": "unavailable"
+                        }
                     }
                 }
             }
@@ -220,14 +250,17 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             onCreateInput: null,
             onRenderInputContainer: null,
             afterIndicatorReady: null,
+            onResourceInputsReady: null,
             onReady: {
                 events: {
                     onCreate: "onCreate",
-                    afterMarkupReady: "afterMarkupReady",
-                    afterIndicatorReady: "afterIndicatorReady"
+                    afterIndicatorReady: "afterIndicatorReady",
+                    onResourceInputsReady: "onResourceInputsReady"
                 },
                 args: "{that}"
-            }
+            },
+
+            onIndicatorUpdated: null
         },
         listeners: {
             "onCreate.fetchTemplate": "fluid.metadata.baseResourceInputPanel.fetchTemplate",
@@ -246,7 +279,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 args: ["{that}", "{that}.dom.input"],
                 priority: "first"
             },
-            "afterMarkupReady.initInputs": "{that}.initInputs",
+            "afterMarkupReady.initInputs": {
+                listener: "{that}.initInputs",
+                priority: "first"
+            },
             "onRenderInputContainer.renderInputContainer": "{that}.renderInputContainer"
         },
         invokers: {
@@ -261,18 +297,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             },
             renderInputContainer: {
                 funcName: "fluid.metadata.baseResourceInputPanel.renderInputContainer",
-                args: ["{that}.dom.inputs", "{that}.inputTemplate", "{arguments}.0", "{arguments}.1", "{that}.events.onCreateInput.fire"]
-            }
-        },
-        indicatorModelRules: {
-            value: {
-                transform: {
-                    type: "fluid.transforms.find",
-                    conditionPath: "resources",
-                    innerPath: "src",
-                    "true": "available",
-                    "false": "unavailable"
-                }
+                args: ["{that}.dom.inputs", "{that}.inputTemplate", "{arguments}.0", "{arguments}.1", "{that}.model.resources", "{that}.events.onCreateInput.fire"]
             }
         },
         resources: {
@@ -291,6 +316,15 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }]
     });
 
+    fluid.metadata.baseResourceInputPanel.setInitialResources = function (model) {
+        var resources = fluid.makeArray(fluid.copy(model.resources));
+
+        for (var i = resources.length; i < 2; i++) {
+            resources.push(fluid.copy(model.defaultInputModelElement));
+        }
+        return resources;
+    };
+
     fluid.metadata.baseResourceInputPanel.updateModel = function (that, value, path, index, root) {
         var changePath = [root, index, path].join(".");
         that.applier.change(changePath, value);
@@ -307,10 +341,17 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         that.inputTemplate = elm.remove();
     };
 
-    fluid.metadata.baseResourceInputPanel.renderInputContainer = function (container, elm, model, idx, callback) {
+    fluid.metadata.baseResourceInputPanel.renderInputContainer = function (container, elm, model, idx, resources, callback) {
         var input = elm.clone();
+        var isLastInstance = idx === resources.length - 1 ? true : false;
         container.append(input);
-        callback(input, model, idx);
+        callback(input, model, idx, isLastInstance);
+    };
+
+    fluid.metadata.baseResourceInputPanel.checkLastResourceInput = function (isLastInstance, callback) {
+        if (isLastInstance) {
+            callback();
+        }
     };
 
     fluid.defaults("fluid.metadata.resourceInputPanel", {

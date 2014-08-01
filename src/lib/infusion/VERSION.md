@@ -1,4 +1,8 @@
-The version of Infusion included in this folder was created using a custom build from [Infusion 1.5](https://github.com/fluid-project/infusion/tree/infusion-1.5).
+The version of Infusion included in this folder was created using a custom build from the infusion master branch:
+
+https://github.com/fluid-project/infusion/
+
+commit#: f0f9696b5b86a78f82523858c769259122fb3eb4
 
 ```
     grunt custom --source=true --include="tooltip, uiOptions, tabs, overviewPanel"
@@ -6,27 +10,39 @@ The version of Infusion included in this folder was created using a custom build
 
 The following directories were stripped out of the build since they contain code that is included in the infusion-custom.js file or is not required:
 
-* src/lib/infusion/components/overviewPanel/js/
-* src/lib/infusion/components/overviewPanel/overviewPanelDependencies.json
-* src/lib/infusion/components/slidingPanel/
-* src/lib/infusion/components/tableOfContents/js/
-* src/lib/infusion/components/tableOfContents/tableOfContentsDependencies.json
-* src/lib/infusion/components/tabs/
-* src/lib/infusion/components/textfieldSlider/
-* src/lib/infusion/components/tooltip/
-* src/lib/infusion/components/uiOptions/
-* src/lib/infusion/framework/core/
-* src/lib/infusion/framework/enhancement/
-* src/lib/infusion/framework/preferences/js/
-* src/lib/infusion/framework/preferences/preferencesDependencies.json
-* src/lib/infusion/framework/renderer/
-* src/lib/infusion/lib/fastXmlPull/
-* src/lib/infusion/lib/jquery/core/
-* src/lib/infusion/lib/jquery/plugins/
-* src/lib/infusion/lib/jquery/ui/jQueryUICoreDependencies.json
-* src/lib/infusion/lib/jquery/ui/jQueryUIWidgetsDependencies.json
-* src/lib/infusion/lib/jquery/ui/js/
-* src/lib/infusion/lib/json/
+* src/lib/infusion/src/components/overviewPanel/js/
+* src/lib/infusion/src/components/overviewPanel/overviewPanelDependencies.json
+* src/lib/infusion/src/components/slidingPanel/
+* src/lib/infusion/src/components/tableOfContents/js/
+* src/lib/infusion/src/components/tableOfContents/tableOfContentsDependencies.json
+* src/lib/infusion/src/components/tabs/
+* src/lib/infusion/src/components/textfieldSlider/
+* src/lib/infusion/src/components/tooltip/
+* src/lib/infusion/src/components/uiOptions/
+* src/lib/infusion/src/framework/core/
+* src/lib/infusion/src/framework/enhancement/
+* src/lib/infusion/src/framework/preferences/js/
+* src/lib/infusion/src/framework/preferences/preferencesDependencies.json
+* src/lib/infusion/src/framework/renderer/
+* src/lib/infusion/src/lib/fastXmlPull/
+* src/lib/infusion/src/lib/jquery/core/
+* src/lib/infusion/src/lib/jquery/plugins/
+* src/lib/infusion/src/lib/jquery/ui/jQueryUICoreDependencies.json
+* src/lib/infusion/src/lib/jquery/ui/jQueryUIWidgetsDependencies.json
+* src/lib/infusion/src/lib/jquery/ui/js/
+* src/lib/infusion/src/lib/json/
 * README.md
 
-Additionally, the testing framework from Infusion is used (tests\lib\infusion) and should be updated to a matching version.
+Additionally, the testing framework from Infusion is used (tests/lib/infusion) and should be updated to a matching version. This directory is a copy of
+
+https://github.com/fluid-project/infusion/tree/master/tests
+
+The following directories were stripped out since they contain code that is not required:
+
+* all-tests.html
+* component-tests/
+* framework-tests/
+* lib/jquery-ui/
+* lib/mockjax/
+* manual-tests/
+* test-core/testTests/

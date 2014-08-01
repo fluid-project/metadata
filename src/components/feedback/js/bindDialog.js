@@ -62,15 +62,14 @@ var gpii = gpii || {};
         },
         members: {
             dialog: null,
-            dialogContainer: null,
-            isActive: false    // Keep track of the active state of the button
+            dialogContainer: null
         },
         strings: {
             buttonLabel: null
         },
         styles: {
-            activeCss: "gpii-icon-active",
-            arrowCss: "gpii-icon-arrow",
+            active: "gpii-icon-active",
+            dialogOpen: "gpii-icon-arrow",
             focus: "gpii-feedback-buttonFocus"
         },
         markup: {
@@ -84,12 +83,12 @@ var gpii = gpii || {};
             width: 450,
             position: {
                 my: "center top",
-                at: "center-10% bottom+42%"
+                at: "center-10% bottom+42%",
+                of: "{that}.container"
             },
             dialogClass: "gpii-feedback-noClose gpii-feedback-dialog"
         },
         events: {
-            onActiveStateChange: null,   // The argument for this event is a boolean value indicating whether the button is active.
             onRenderDialogContent: null,
             onDialogContentReady: null,
             onBindDialogHandlers: null,
@@ -111,7 +110,7 @@ var gpii = gpii || {};
             "onCreate.bindButtonClick": {
                 "this": "{that}.container",
                 method: "click",
-                args: "{that}.bindbutton"
+                args: "{that}.bindButton"
             },
             "onCreate.bindFocusin": {
                 "this": "{that}.container",
@@ -125,7 +124,6 @@ var gpii = gpii || {};
                 args: ["{that}.events.focusout.fire"]
             },
             "onDialogContentReady.instantiateDialog": "{that}.instantiateDialog",
-            "onBindDialogHandlers.bindOutsideOfDialogClick": "{that}.bindOutsideOfDialogClick",
             "onDialogReady.openDialog": {
                 "this": "{that}.dialog",
                 method: "dialog",
@@ -142,20 +140,33 @@ var gpii = gpii || {};
                 args: ["{that}.options.styles.focus"]
             }
         },
+        model: {
+            isActive: false,    // Keep track of the active state of the button
+            isDialogOpen: false
+        },
+        modelListeners: {
+            "isActive": "gpii.metadata.feedback.handleActiveState({change}.value, {that}.container, {that}.options.styles.active)",
+            "isDialogOpen": "gpii.metadata.feedback.handleDialogState({that}, {change}.value, {that}.container, {that}.dialog, {that}.options.styles.dialogOpen, {that}.closeDialog, {that}.bindIframeClick, {that}.unbindIframeClick)"
+        },
         invokers: {
-            bindbutton: {
-                funcName: "gpii.metadata.feedback.bindbutton",
-                args: ["{arguments}.0", "{that}.dialog", "{that}.dialogContainer", "{that}.options.markup.dialog", "{that}.container", "{that}.options.styles.activeCss", "{that}"],
-                dynamic: true
+            bindButton: {
+                funcName: "gpii.metadata.feedback.bindButton",
+                args: ["{that}", "{arguments}.0"]
             },
             instantiateDialog: {
                 funcName: "gpii.metadata.feedback.instantiateDialog",
-                args: ["{that}.dialogContainer", "{that}.container", "{that}.options.commonDialogOptions", "{that}"]
+                args: ["{that}"]
             },
-            bindOutsideOfDialogClick: {
-                funcName: "gpii.metadata.feedback.bindOutsideOfDialogClick",
-                args: ["{that}.dialog", "{that}.container"]
-            }
+            closeDialog: {
+                "this": "{that}.dialog",
+                method: "dialog",
+                args: "close"
+            },
+            bindIframeClick: {
+                funcName: "gpii.metadata.feedback.bindIframeClick",
+                args: ["{that}.closeDialog"]
+            },
+            unbindIframeClick: "gpii.metadata.feedback.unbindIframeClick"
         },
         distributeOptions: [{
             source: "{that}.options.panelType",
@@ -168,48 +179,37 @@ var gpii = gpii || {};
         }]
     });
 
-    gpii.metadata.feedback.bindbutton = function (event, dialog, dialogContainer, dialogMarkup, buttonDom, activeCss, that) {
+    gpii.metadata.feedback.bindButton = function (that, event) {
         event.preventDefault();
 
-        if (dialog && dialog.dialog("isOpen") && that.isActive) {
-            dialog.dialog("close");
-        } else if (!that.isActive) {
+        if (that.dialog && that.model.isDialogOpen && that.model.isActive) {
+            that.closeDialog();
+        } else if (!that.model.isActive) {
             if (!that.dialogContainer) {
-                that.dialogContainer = $(dialogMarkup);
+                that.dialogContainer = $(that.options.markup.dialog);
             }
             that.events.onRenderDialogContent.fire();
         }
 
-        that.isActive = !that.isActive;
-        if (that.isActive) {
-            buttonDom.addClass(activeCss);
-            buttonDom.attr("aria-pressed", true);
-        } else {
-            buttonDom.removeClass(activeCss);
-            buttonDom.attr("aria-pressed", false);
-        }
-        that.events.onActiveStateChange.fire(that.isActive);
+        that.applier.change("isActive", !that.model.isActive);
     };
 
-    gpii.metadata.feedback.instantiateDialog = function (dialogContainer, buttonDom, commonDialogOptions, that) {
+    gpii.metadata.feedback.instantiateDialog = function (that) {
         if (!that.dialog) {
             var moreOptions = {
-                position: {
-                    of: buttonDom
-                },
                 open: function () {
-                    buttonDom.addClass(that.options.styles.arrowCss);
+                    that.applier.change("isDialogOpen", true);
                 },
                 close: function () {
-                    buttonDom.removeClass(that.options.styles.arrowCss);
+                    that.applier.change("isDialogOpen", false);
                 }
             };
 
-            var dialogOptions = $.extend(true, {}, commonDialogOptions, moreOptions);
-            var dialogId = gpii.metadata.feedback.utils.getUniqueId("matchConfirmationDialog");
+            var fullOptions = $.extend(true, moreOptions, that.options.commonDialogOptions);
 
-            that.dialog = dialogContainer.dialog(dialogOptions).attr("id", dialogId);
-            buttonDom.attr("aria-controls", dialogId);
+            that.dialog = that.dialogContainer.dialog(fullOptions);
+            var dialogId = fluid.allocateSimpleId(that.dialog);
+            that.container.attr("aria-controls", dialogId);
 
             that.events.onBindDialogHandlers.fire();
         }
@@ -217,19 +217,39 @@ var gpii = gpii || {};
         that.events.onDialogReady.fire(that.dialog);
     };
 
-    gpii.metadata.feedback.bindOutsideOfDialogClick = function (dialog, buttonDom) {
-        $("body").bind("click", function (e) {
-            if (dialog.dialog("isOpen") &&
-                !$(e.target).is(buttonDom) &&
-                !$(e.target).is(".ui-dialog, a") &&
-                !$(e.target).closest(".ui-dialog").length) {
-                dialog.dialog("close");
-            }
-        });
+    gpii.metadata.feedback.handleActiveState = function (isActive, buttonDom, activeCss) {
+        buttonDom.toggleClass(activeCss, isActive);
+        buttonDom.attr("aria-pressed", isActive);
+    };
 
-        $("body").find("iframe").contents().find("body").on("click", function () {
-            dialog.dialog("close");
+    gpii.metadata.feedback.handleDialogState = function (that, isDialogOpen, buttonDom, dialog, dialogOpenCss, closeDialogFunc, bindIframeClickFunc, unbindIframeClickFunc) {
+        if (isDialogOpen) {
+            buttonDom.addClass(dialogOpenCss);
+            bindIframeClickFunc();
+            fluid.globalDismissal({
+                button: buttonDom,
+                dialog: dialog
+            }, closeDialogFunc);
+        } else {
+            buttonDom.removeClass(dialogOpenCss);
+            unbindIframeClickFunc();
+        }
+    };
+
+    gpii.metadata.feedback.getIframes = function () {
+        return $("body").find("iframe").contents().find("body");
+    };
+
+    gpii.metadata.feedback.bindIframeClick = function (closeDialogFunc) {
+        var iframes = gpii.metadata.feedback.getIframes();
+        iframes.on("click.closeDialog", function () {
+            closeDialogFunc();
         });
+    };
+
+    gpii.metadata.feedback.unbindIframeClick = function () {
+        var iframes = gpii.metadata.feedback.getIframes();
+        iframes.off("click.closeDialog");
     };
 
 })(jQuery, fluid);

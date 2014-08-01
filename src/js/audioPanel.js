@@ -19,7 +19,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
      *******************************************************************************/
 
     fluid.defaults("fluid.metadata.audioPanel", {
-        gradeNames: ["fluid.rendererComponent", "fluid.metadata.panel", "autoInit"],
+        gradeNames: ["fluid.rendererRelayComponent", "fluid.metadata.panel", "autoInit"],
         components: {
             indicator: {
                 createOnEvent: "afterRender",
@@ -27,8 +27,14 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     strings: {
                         tooltipContent: {
                             "available": "${{that}.options.strings.audioAvailable}",
-                            "unavailable": "${{that}.options.strings.audioUnavailable}",
-                            "unknown": "${{that}.options.strings.audioUnavailable}"
+                            "unavailable": "${{that}.options.strings.audioUnavailable}"
+                        }
+                    },
+                    modelRelay: {
+                        source: "{audioPanel}.model.audio",
+                        target: "{that}.model.value",
+                        singleTransform: {
+                            type: "fluid.transforms.identity"
                         }
                     }
                 }
@@ -42,10 +48,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     }
                 },
                 options: {
-                    members: {
-                        applier: "{audioPanel}.applier"
+                    model: {
+                        audio: "{audioPanel}.model.audio",
+                        keywords: "{audioPanel}.model.keywords"
                     },
-                    model: "{audioPanel}.model",
                     resources: {
                         template: "{audioPanel}.options.resources.attributesTemplate"
                     },
@@ -61,19 +67,15 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         model: {
             audio: "available"
         },
-        indicatorModelRules: {
-            value: "audio"
-        },
         strings: {
             title: "Audio",
-            audio: ["Yes, this video has an audio track.", "No, this video has no audio track.", "I am not sure if this video has an audio track."],
+            audio: ["Yes, this video has an audio track.", "No, this video has no audio track or I am not sure."],
             audioAvailable: "Audio Attribute is available.",
             audioUnavailable: "Audio Attribute is unavailable."
         },
-        controlValues: ["available", "unavailable", "unknown"],
+        controlValues: ["available", "unavailable"],
         selectors: {
             title: ".gpiic-audio-title",
-            instruction: ".gpiic-audio-instruction",
             indicator: ".gpiic-audio-icon",
             audioRow: ".gpiic-audio-row",
             audioLabel: ".gpiic-audio-label",
@@ -84,7 +86,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         repeatingSelectors: ["audioRow"],
         protoTree: {
             title: {messagekey: "title"},
-            instruction: {messagekey: "instruction"},
             expander: {
                 type: "fluid.renderer.selection.inputs",
                 rowID: "audioRow",
@@ -151,7 +152,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
      *******************************************************************************/
 
     fluid.defaults("fluid.metadata.audioPanel.attributes", {
-        gradeNames: ["fluid.rendererComponent", "autoInit"],
+        gradeNames: ["fluid.rendererRelayComponent", "autoInit"],
         strings: {
             instruction: "Select all that apply",
             keywords: ["Dialogue or narrative.", "Soundtrack.", "Sound effects."]
