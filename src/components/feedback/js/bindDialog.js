@@ -56,7 +56,23 @@ var gpii = gpii || {};
                         of: "{bindDialog}.container"
                     },
                     delay: 0,
-                    duration: 0
+                    duration: 0,
+                    modelListeners: {
+                        "{bindDialog}.model.isDialogOpen": [{
+                            "this": "{that}.container",
+                            method: "tooltip",
+                            args: ["option", "disabled", "{change}.value"]
+                        }, {
+                            "funcName": "gpii.metadata.feedback.reopenTooltip",
+                            args: ["{that}", "{change}.value"]
+                        }]
+                    },
+                    listeners: {
+                        "onCreate.unbindESC": {
+                            listener: "gpii.metadata.feedback.unbindESC",
+                            args: ["{that}.container"]
+                        }
+                    }
                 }
             }
         },
@@ -200,7 +216,7 @@ var gpii = gpii || {};
                 open: function () {
                     that.applier.change("isDialogOpen", true);
                 },
-                close: function () {
+                close: function (event) {
                     that.applier.change("isDialogOpen", false);
                 }
             };
@@ -250,6 +266,25 @@ var gpii = gpii || {};
     gpii.metadata.feedback.unbindIframeClick = function () {
         var iframes = gpii.metadata.feedback.getIframes();
         iframes.off("click.closeDialog");
+    };
+
+    // This is meant to be used as a model listener for isDialogOpen
+    // If the dialog is closed, focus is pushed back onto the button,
+    // which should trigger the tooltip to reappear.
+    gpii.metadata.feedback.reopenTooltip = function (tooltip, isDialogOpen) {
+        if (!isDialogOpen) {
+            tooltip.open();
+        }
+    };
+
+    gpii.metadata.feedback.unbindESC = function (elm) {
+        var elms = elm.contents().addBack(); // self plus decendants
+        elms.keyup(function (e) {
+            // ESC keycode === 27
+            if (e.keyCode === 27) {
+                e.stopImmediatePropagation();
+            }
+        });
     };
 
 })(jQuery, fluid);
