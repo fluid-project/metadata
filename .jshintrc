@@ -29,6 +29,7 @@
 
     "globals": {
         "fluid": false,
-        "jqUnit": false
+        "jqUnit": false,
+        "gpii": true
     }
 }

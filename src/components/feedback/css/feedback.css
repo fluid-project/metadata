@@ -10,8 +10,7 @@
     position: fixed;
     top: 0px;
     background-color: #fff;
-    border-bottom: 1px solid #888;
-    box-shadow: 0px 1px 5px 0px rgba(50, 50, 50, 0.75);
+    border-bottom: 5px solid #B2B2B2;
     z-index: 999;
 }
 
@@ -38,18 +37,6 @@
 
 .gpii-feedback-button {
     cursor: pointer;
-}
-
-.gpii-icon.gpii-feedback-button:before {
-    color: #6699cc;
-    background-color: #fff;
-    margin-top: -1px;
-    border: 2px solid #6699cc;
-}
-
-.gpii-icon.gpii-feedback-button:hover:before {
-    color: #fff;
-    background-color: #6699cc;
 }
 
 /* icons */
@@ -100,6 +87,13 @@
     left: -0.86rem;
 }
 
+.gpii-icon.gpii-feedback-button:before {
+    color: #6699cc;
+    background-color: #fff;
+    margin-top: -1px;
+    border: 2px solid #6699cc;
+}
+
 /* IE 11 hack to correct presentation of the unavailable badge */
 _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
     padding: 0.1rem 0.2rem;
@@ -122,7 +116,7 @@ _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
     content: "\e604";
 }
 
-.gpii-icon-happy:before {
+.gpii-icon-matchConfirmation:before {
     content: "\e610";
 }
 
@@ -132,6 +126,31 @@ _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
 
 .gpii-icon-request:before {
     content: "\e612";
+}
+
+.gpii-icon-active .gpii-icon:before,
+.gpii-icon.gpii-feedback-button:hover:before {
+    color: #fff;
+    background-color: #6699cc;
+}
+
+.gpii-feedback .gpii-icon-active {
+    margin-right: -2.21875rem;
+    margin-top: -1.88rem;
+}
+
+.gpii-feedback .gpii-icon-active:after {
+    border: 1rem solid transparent;
+    content: "";
+    position: relative;
+    pointer-events: none;
+    display: inline-block;
+}
+
+.gpii-feedback .gpii-icon-arrow:after {
+    bottom: -2rem;
+    left: -2.5rem;
+    border-bottom-color: #B2B2B2;
 }
 
 /* Contrast themes */
@@ -178,4 +197,51 @@ _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
     color: #555555 !important;
     background-color: #bdbdbb !important;
     border-color: #555555 !important;
+}
+
+.fl-theme-bw .gpii-icon-active .gpii-icon:before,
+.fl-theme-bw .gpii-icon.gpii-feedback-button:hover:before {
+    color: #fff !important;
+    background-color: #000 !important;
+}
+
+.fl-theme-wb .gpii-icon-active .gpii-icon:before,
+.fl-theme-wb .gpii-icon.gpii-feedback-button:hover:before {
+    color: #000 !important;
+    background-color: #fff !important;
+}
+
+.fl-theme-by .gpii-icon-active .gpii-icon:before,
+.fl-theme-by .gpii-icon.gpii-feedback-button:hover:before {
+    color: #ff0 !important;
+    background-color: #000 !important;
+}
+
+.fl-theme-yb .gpii-icon-active .gpii-icon:before,
+.fl-theme-yb .gpii-icon.gpii-feedback-button:hover:before {
+    color: #000 !important;
+    background-color: #ff0 !important;
+}
+
+.fl-theme-lgdg .gpii-icon-active .gpii-icon:before,
+.fl-theme-lgdg .gpii-icon.gpii-feedback-button:hover:before {
+    color: #555555 !important;
+    background-color: #bdbdbb !important;
+}
+
+.fl-theme-bw .gpii-icon-arrow:after,
+.fl-theme-by .gpii-icon-arrow:after {
+    border-bottom-color: #000 !important;
+}
+
+.fl-theme-wb .gpii-icon-arrow:after {
+    border-bottom-color: #fff !important;
+}
+
+.fl-theme-yb .gpii-icon-arrow:after {
+    border-bottom-color: #ff0 !important;
+}
+
+.fl-theme-lgdg .gpii-icon-arrow:after {
+    border-bottom-color: #bdbdbb !important;
 }

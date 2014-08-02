@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Feedback tool complete tests runner</title>
+
+    <link rel="stylesheet" href="../../lib/infusion/lib/qunit/css/qunit.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="../../lib/infusion/lib/qunit/addons/composite/qunit-composite.css">
+    <script src="../../lib/infusion/lib/qunit/js/qunit.js"></script>
+    <script src="../../lib/infusion/lib/qunit/addons/composite/qunit-composite.js"></script>
+<!-- Stupid bloody escaping rules:
+    find . -name "*-Test.html" | awk '{print "\""$1"\","}' -->
+    <script>
+    QUnit.testSuites("Feedback Tool Tests", [
+        "./html/bindDialog-Test.html",
+        "./html/feedback-Test.html",
+        "./html/matchConfirmation-Test.html"
+    ]);
+    </script>
+</head>
+<body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture">
+</div>
+</body>
+</html>
