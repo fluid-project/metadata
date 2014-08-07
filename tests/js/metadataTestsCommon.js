@@ -22,14 +22,14 @@ https://github.com/gpii/universal/LICENSE.txt
     };
 
     fluid.tests.checkRenderedVideoMetadataPanel = function (videoMetadataPanel) {
-        jqUnit.assertDeepEq("The video default model has been set", fluid.defaults("fluid.metadata.defaultVideoModel").members.defaultModel, videoMetadataPanel.defaultModel);
+        jqUnit.assertDeepEq("The video default model has been set", fluid.defaults("gpii.metadata.defaultVideoModel").members.defaultModel, videoMetadataPanel.defaultModel);
         jqUnit.assertNotEquals("The video panel has been rendered", "", videoMetadataPanel.locate("videoPanel").html());
         jqUnit.assertNotEquals("The audio panel has been rendered", "", videoMetadataPanel.locate("audioPanel").html());
         jqUnit.assertNotEquals("The captions panel has been rendered", "", videoMetadataPanel.locate("captionsPanel").html());
     };
 
     fluid.tests.checkNotRenderedVideoMetadataPanel = function (videoMetadataPanel) {
-        jqUnit.assertDeepEq("The video default model has been set", fluid.defaults("fluid.metadata.defaultVideoModel").members.defaultModel, videoMetadataPanel.defaultModel);
+        jqUnit.assertDeepEq("The video default model has been set", fluid.defaults("gpii.metadata.defaultVideoModel").members.defaultModel, videoMetadataPanel.defaultModel);
         jqUnit.assertFalse("The video panel has not been rendered", fluid.tests.findRendererSubcomponent(videoMetadataPanel, "renderer-videoPanel"));
         jqUnit.assertFalse("The video panel has not been rendered", fluid.tests.findRendererSubcomponent(videoMetadataPanel, "renderer-audioPanel"));
         jqUnit.assertFalse("The video panel has not been rendered", fluid.tests.findRendererSubcomponent(videoMetadataPanel, "renderer-captionsPanel"));

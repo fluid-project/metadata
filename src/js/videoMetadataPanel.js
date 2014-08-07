@@ -13,15 +13,15 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 (function ($, fluid) {
     "use strict";
 
-    fluid.registerNamespace("fluid.metadata");
+    fluid.registerNamespace("gpii.metadata");
 
     /****************************************************************
      * The grade component that renders all panels for defining
      * metadata for video element.
      ****************************************************************/
 
-    fluid.defaults("fluid.metadata.videoMetadataPanel", {
-        gradeNames: ["fluid.metadata.metadataPanel", "fluid.metadata.defaultVideoModel", "autoInit"],
+    fluid.defaults("gpii.metadata.videoMetadataPanel", {
+        gradeNames: ["gpii.metadata.metadataPanel", "gpii.metadata.defaultVideoModel", "autoInit"],
         selectors: {
             videoPanel: ".gpiic-videoPanel",
             audioPanel: ".gpiic-audioPanel",
@@ -64,7 +64,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }],
         components: {
             videoPanel: {
-                type: "fluid.metadata.videoPanel",
+                type: "gpii.metadata.videoPanel",
                 container: "{videoMetadataPanel}.dom.videoPanel",
                 options: {
                     model: {
@@ -105,7 +105,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 }
             },
             audioPanel: {
-                type: "fluid.metadata.audioPanel",
+                type: "gpii.metadata.audioPanel",
                 container: "{videoMetadataPanel}.dom.audioPanel",
                 options: {
                     model: {
@@ -135,7 +135,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 }
             },
             captionsPanel: {
-                type: "fluid.metadata.captionsPanel",
+                type: "gpii.metadata.captionsPanel",
                 container: "{videoMetadataPanel}.dom.captionsPanel",
                 options: {
                     model: {
@@ -178,7 +178,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }]
     });
 
-    fluid.defaults("fluid.metadata.defaultVideoModel", {
+    fluid.defaults("gpii.metadata.defaultVideoModel", {
         gradeNames: ["fluid.standardRelayComponent", "autoInit"],
         members: {
             defaultModel: {

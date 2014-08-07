@@ -74,13 +74,13 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }
 
         var videoContainer = $(videoContainerMarkup);
-        fluid.metadata.writer(videoContainer, fluid.markup.transformToVideoMetadata(metadata), {
+        gpii.metadata.writer(videoContainer, fluid.markup.transformToVideoMetadata(metadata), {
             itemprop: "video",
-            itemtype: fluid.metadata.itemtype.VIDEO_OBJECT
+            itemtype: gpii.metadata.itemtype.VIDEO_OBJECT
         });
         fluid.each(metadata.captions, function (caption) {
             var captionContainer = $(captionsContainerMarkup);
-            fluid.metadata.writer(captionContainer, {inLanguage: caption.language});
+            gpii.metadata.writer(captionContainer, {inLanguage: caption.language});
             $("<track>").attr({
                 type: "captions",
                 src: caption.src,

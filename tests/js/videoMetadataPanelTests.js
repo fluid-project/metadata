@@ -23,7 +23,7 @@ https://github.com/gpii/universal/LICENSE.txt
         },
         opts = $.extend(true, {}, defaultOptions, options);
 
-        return fluid.metadata.videoMetadataPanel(container, opts);
+        return gpii.metadata.videoMetadataPanel(container, opts);
     };
 
     jqUnit.asyncTest("Test metadata panel - Init", function () {

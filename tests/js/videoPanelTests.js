@@ -17,7 +17,7 @@ https://github.com/gpii/universal/LICENSE.txt
         gradeNames: ["fluid.test.testEnvironment", "autoInit"],
         components: {
             videoPanel: {
-                type: "fluid.metadata.videoPanel",
+                type: "gpii.metadata.videoPanel",
                 container: ".gpiic-video",
                 createOnEvent: "{videoPanelTester}.events.onTestCaseStart",
                 options: {
@@ -121,7 +121,7 @@ https://github.com/gpii/universal/LICENSE.txt
     };
 
     jqUnit.asyncTest("Click on flashing attribute", function () {
-        fluid.metadata.videoPanel(".gpiic-video-flashing", {
+        gpii.metadata.videoPanel(".gpiic-video-flashing", {
             resources: {
                 template: {
                     url: "../../src/html/video-template.html"

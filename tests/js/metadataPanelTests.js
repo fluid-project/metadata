@@ -24,7 +24,7 @@ https://github.com/gpii/universal/LICENSE.txt
     jqUnit.test("Test metadata panel - Standalone", function () {
         jqUnit.expect(2);
 
-        var that = fluid.metadata.metadataPanel(".gpiic-metadataPanel-standalone");
+        var that = gpii.metadata.metadataPanel(".gpiic-metadataPanel-standalone");
 
         fluid.tests.checkMetadataPanel(that, {}, "Initializing a standalone");
         that.applier.change("url", url);
@@ -32,7 +32,7 @@ https://github.com/gpii/universal/LICENSE.txt
     });
 
     fluid.defaults("fluid.tests.metadataPanelAsGrade", {
-        gradeNames: ["fluid.metadata.metadataPanel", "autoInit"],
+        gradeNames: ["gpii.metadata.metadataPanel", "autoInit"],
         members: {
             defaultModel: defaultModel
         },

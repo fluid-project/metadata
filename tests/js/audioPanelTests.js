@@ -14,7 +14,7 @@ https://github.com/gpii/universal/LICENSE.txt
     fluid.registerNamespace("fluid.tests");
 
     fluid.tests.checkAudioState = function (audioPanel, expectedRadiobuttons, expectedCheckboxes, state) {
-        audioPanel = audioPanel.typeName === "fluid.metadata.audioPanel" ? audioPanel : audioPanel;
+        audioPanel = audioPanel.typeName === "gpii.metadata.audioPanel" ? audioPanel : audioPanel;
 
         var radiobuttons = audioPanel.container.find("[type='radio']");
         var checkboxes = audioPanel.locate("attributes").find("[type='checkbox']");
@@ -75,7 +75,7 @@ https://github.com/gpii/universal/LICENSE.txt
             audioAttributesTemplate: "../../src/html/audio-attributes-template.html"
         };
 
-        return fluid.metadata.audioPanel(container, $.extend(true, {}, defaultOptions, options));
+        return gpii.metadata.audioPanel(container, $.extend(true, {}, defaultOptions, options));
     };
 
     jqUnit.asyncTest("Initial settings", function () {

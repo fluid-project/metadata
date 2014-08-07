@@ -22,11 +22,11 @@ https://github.com/gpii/universal/LICENSE.txt
         });
     };
 
-    jqUnit.test("fluid.metadata.writer", function () {
+    jqUnit.test("gpii.metadata.writer", function () {
         var elm1 = $("<div></div>");
         var elm2 = $("<div></div>");
         var options = {
-            itemtype: fluid.metadata.itemtype.VIDEO_OBJECT,
+            itemtype: gpii.metadata.itemtype.VIDEO_OBJECT,
             itemprop: "video"
         };
         var metadata = {
@@ -36,14 +36,14 @@ https://github.com/gpii/universal/LICENSE.txt
             accessibilityHazard: "noFlashing"
         };
 
-        fluid.metadata.writer(elm1, metadata);
+        gpii.metadata.writer(elm1, metadata);
 
         jqUnit.assertValue("An itemscope should have been added to the container", elm1.attr("itemscope"));
         jqUnit.assertFalse("No itemtype attribute should have been added to the container", elm1.attr("itemtype"));
         jqUnit.assertFalse("No itemprop attribute should have been added to the container", elm1.attr("itemprop"));
         assertMetaTags(elm1, 6, metadata);
 
-        fluid.metadata.writer(elm2, metadata, options);
+        gpii.metadata.writer(elm2, metadata, options);
 
         jqUnit.assertValue("An itemscope should have been added to the container", elm2.attr("itemscope"));
         jqUnit.assertEquals("The itemtype attribute should have been added to the container", options.itemtype, elm2.attr("itemtype"));

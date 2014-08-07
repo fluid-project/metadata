@@ -124,11 +124,11 @@ var demo = demo || {};
                 }
             },
             metadataPanel: {
-                type: "fluid.metadata.videoMetadataPanel",
+                type: "gpii.metadata.videoMetadataPanel",
                 container: "{that}.dom.metadataPanel",
                 createOnEvent: "onCreateMetadataPanel",
                 options: {
-                    gradeNames: ["fluid.metadata.saveVideoMetadata"],
+                    gradeNames: ["gpii.metadata.saveVideoMetadata"],
                     inputModel: "{metadata}.metadataPanelModel",
                     modelListeners: {
                         "*": [{
@@ -250,7 +250,7 @@ var demo = demo || {};
         return databaseName.replace(/_/g, " ");
     };
 
-    fluid.defaults("fluid.metadata.saveVideoMetadata", {
+    fluid.defaults("gpii.metadata.saveVideoMetadata", {
         gradeNames: ["fluid.standardRelayComponent", "autoInit"],
         modelListeners: {
             "": {

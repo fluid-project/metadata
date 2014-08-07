@@ -13,17 +13,17 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 (function ($, fluid) {
     "use strict";
 
-    fluid.registerNamespace("fluid.metadata");
+    fluid.registerNamespace("gpii.metadata");
 
     /*******************************************************************
      * The component used in conjunction with as a base grade for media
-     * panels such as "fluid.metadata.videoMetadataPanel". It contains
+     * panels such as "gpii.metadata.videoMetadataPanel". It contains
      * common functionalities to be shared by all media panels.
      *
      * Note: "inputModel" option MUST be provided by integrators
      ****************************************************************/
 
-    fluid.defaults("fluid.metadata.metadataPanel", {
+    fluid.defaults("gpii.metadata.metadataPanel", {
         gradeNames: ["fluid.viewRelayComponent", "autoInit"],
         model: {
             expander: {
@@ -33,13 +33,13 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         },
         invokers: {
             generateModel: {
-                funcName: "fluid.metadata.metadataPanel.generateModel",
+                funcName: "gpii.metadata.metadataPanel.generateModel",
                 args: ["{that}.defaultModel", "{arguments}.0"]
             }
         }
     });
 
-    fluid.metadata.metadataPanel.generateModel = function (defaultModel, inputModel) {
+    gpii.metadata.metadataPanel.generateModel = function (defaultModel, inputModel) {
         inputModel = inputModel || {};
         return fluid.merge({"metadata": "replace"}, defaultModel, inputModel);
     };

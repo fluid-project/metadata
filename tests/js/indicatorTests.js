@@ -40,7 +40,7 @@ https://github.com/gpii/universal/LICENSE.txt
     };
 
     jqUnit.test("Test metadata indicator", function () {
-        var that = fluid.metadata.indicator(".gpiic-indicator");
+        var that = gpii.metadata.indicator(".gpiic-indicator");
 
         jqUnit.expect(3);
         fluid.tests.addIndicatorListener(that, "unknown");

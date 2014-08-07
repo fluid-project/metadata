@@ -13,9 +13,9 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 (function ($, fluid) {
     "use strict";
 
-    fluid.registerNamespace("fluid.metadata");
+    fluid.registerNamespace("gpii.metadata");
 
-    fluid.metadata.itemtype = {
+    gpii.metadata.itemtype = {
         "VIDEO_OBJECT": "http://schema.org/VideoObject"
     };
 
@@ -26,7 +26,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
      * These are written out as meta tags within the container.
      * @param {Object} options, extra attributes to add to the container element, likely only itemprop and itemtype.
      */
-    fluid.metadata.writer = function (container, metadata, options) {
+    gpii.metadata.writer = function (container, metadata, options) {
         var containerAttrs = {
             itemscope: ""
         };

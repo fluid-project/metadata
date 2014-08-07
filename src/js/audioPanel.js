@@ -12,14 +12,14 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 (function ($, fluid) {
     "use strict";
 
-    fluid.registerNamespace("fluid.metadata");
+    fluid.registerNamespace("gpii.metadata");
 
     /*******************************************************************************
      * The panel to define audio related metadata
      *******************************************************************************/
 
-    fluid.defaults("fluid.metadata.audioPanel", {
-        gradeNames: ["fluid.rendererRelayComponent", "fluid.metadata.panel", "autoInit"],
+    fluid.defaults("gpii.metadata.audioPanel", {
+        gradeNames: ["fluid.rendererRelayComponent", "gpii.metadata.panel", "autoInit"],
         components: {
             indicator: {
                 createOnEvent: "afterRender",
@@ -40,7 +40,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 }
             },
             attributes: {
-                type: "fluid.metadata.audioPanel.attributes",
+                type: "gpii.metadata.audioPanel.attributes",
                 createOnEvent: "afterRender",
                 container: {
                     expander: {
@@ -120,11 +120,11 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             }
         },
         listeners: {
-            "onCreate.init": "fluid.metadata.audioPanel.init"
+            "onCreate.init": "gpii.metadata.audioPanel.init"
         },
         invokers: {
             getContainerForAttributes: {
-                funcName: "fluid.metadata.audioPanel.getContainerForAttributes",
+                funcName: "gpii.metadata.audioPanel.getContainerForAttributes",
                 args: ["{that}.container", "{that}.options.selectors.attributes"]
             }
         },
@@ -137,21 +137,21 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }]
     });
 
-    fluid.metadata.audioPanel.init = function (that) {
+    gpii.metadata.audioPanel.init = function (that) {
         fluid.fetchResources(that.options.resources, function () {
             that.refreshView();
         });
     };
 
-    fluid.metadata.audioPanel.getContainerForAttributes = function (container, attributesSelector) {
+    gpii.metadata.audioPanel.getContainerForAttributes = function (container, attributesSelector) {
         return container.find(attributesSelector + ":first");
     };
 
     /*******************************************************************************
-     * The subpanel of fluid.metadata.audioPanel. Used to populate audio attributes
+     * The subpanel of gpii.metadata.audioPanel. Used to populate audio attributes
      *******************************************************************************/
 
-    fluid.defaults("fluid.metadata.audioPanel.attributes", {
+    fluid.defaults("gpii.metadata.audioPanel.attributes", {
         gradeNames: ["fluid.rendererRelayComponent", "autoInit"],
         strings: {
             instruction: "Select all that apply",
@@ -169,7 +169,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             expander: {
                 "type": "fluid.renderer.condition",
                 "condition": {
-                    "funcName": "fluid.metadata.audioPanel.attributes.enableAttributes",
+                    "funcName": "gpii.metadata.audioPanel.attributes.enableAttributes",
                     "args": "${audio}"
                 },
                 "trueTree": {
@@ -194,18 +194,18 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         },
         listeners: {
             "onCreate.addAria": {
-                listener: "fluid.metadata.audioPanel.attributes.addAria",
+                listener: "gpii.metadata.audioPanel.attributes.addAria",
                 args: "{that}.container"
             }
         },
         renderOnInit: true
     });
 
-    fluid.metadata.audioPanel.attributes.enableAttributes = function (audioValue) {
+    gpii.metadata.audioPanel.attributes.enableAttributes = function (audioValue) {
         return audioValue === "available";
     };
 
-    fluid.metadata.audioPanel.attributes.addAria = function (container) {
+    gpii.metadata.audioPanel.attributes.addAria = function (container) {
         container.attr("role", "region");
         container.attr("aria-live", "polite");
         container.attr("aria-relevant", "additions removals");

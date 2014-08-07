@@ -12,13 +12,13 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 (function ($, fluid) {
     "use strict";
 
-    fluid.registerNamespace("fluid.metadata");
+    fluid.registerNamespace("gpii.metadata");
 
     /*******************************************************************************
      * The graphic indicator to show the availability of a metadata
      *******************************************************************************/
 
-    fluid.defaults("fluid.metadata.indicator", {
+    fluid.defaults("gpii.metadata.indicator", {
         gradeNames: ["fluid.viewRelayComponent", "autoInit"],
         members: {
             tooltip: {
@@ -26,7 +26,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     func: "fluid.tooltip",
                     args: ["{that}.container", {
                         expander: {
-                            func: "fluid.metadata.indicator.getTooltipOptions",
+                            func: "gpii.metadata.indicator.getTooltipOptions",
                             args: ["{that}.options.tooltipOptions", "{that}.options.strings.tooltipContent", "unknown"]
                         }
                     }]
@@ -56,7 +56,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         },
         invokers: {
             applyChange: {
-                funcName: "fluid.metadata.indicator.applyChange",
+                funcName: "gpii.metadata.indicator.applyChange",
                 args: ["{that}", "{arguments}.0"]
             }
         },
@@ -80,7 +80,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }
     });
 
-    fluid.metadata.indicator.applyChange = function (that, state) {
+    gpii.metadata.indicator.applyChange = function (that, state) {
         if (!state) {
             return;
         }
@@ -94,7 +94,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         that.tooltip.updateContent(that.options.strings.tooltipContent[state]);
     };
 
-    fluid.metadata.indicator.getTooltipOptions = function (tooltipOptions, tooltipContent, state) {
+    gpii.metadata.indicator.getTooltipOptions = function (tooltipOptions, tooltipContent, state) {
         return $.extend(true, {}, tooltipOptions, {content: tooltipContent[state]});
     };
 

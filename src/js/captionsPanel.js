@@ -16,8 +16,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
      * The panel to define captions related metadata *
      *************************************************/
 
-    fluid.defaults("fluid.metadata.captionsPanel", {
-        gradeNames: ["fluid.metadata.resourceInputPanel", "autoInit"],
+    fluid.defaults("gpii.metadata.captionsPanel", {
+        gradeNames: ["gpii.metadata.resourceInputPanel", "autoInit"],
         strings: {
             title: "Captions",
             description: "Captions provide a synchronized, equivalent text version of spoken word in a video.",

@@ -17,7 +17,7 @@ https://github.com/gpii/universal/LICENSE.txt
         gradeNames: ["fluid.test.testEnvironment", "autoInit"],
         components: {
             resourceInput: {
-                type: "fluid.metadata.resourceInput",
+                type: "gpii.metadata.resourceInput",
                 container: ".gpiic-resourceInput",
                 createOnEvent: "{resourceInputTester}.events.onTestCaseStart",
                 options: {
@@ -133,7 +133,7 @@ https://github.com/gpii/universal/LICENSE.txt
 
         var styleClass = "fl-test-style";
 
-        fluid.metadata.baseResourceInputPanel(".gpiic-baseResourceInputPanel", {
+        gpii.metadata.baseResourceInputPanel(".gpiic-baseResourceInputPanel", {
             styles: {
                 container: styleClass
             },
@@ -213,7 +213,7 @@ https://github.com/gpii/universal/LICENSE.txt
     };
 
     fluid.defaults("fluid.tests.resrouceInputPanelInitializationTest", {
-        gradeNames: ["fluid.metadata.resourceInputPanel", "autoInit"],
+        gradeNames: ["gpii.metadata.resourceInputPanel", "autoInit"],
         inputListeners: {
             afterRender: {
                 listener: "fluid.tests.verifyInput",
@@ -246,7 +246,7 @@ https://github.com/gpii/universal/LICENSE.txt
         fluid.tests.resrouceInputPanelInitializationTest(".gpiic-resourceInputPanel-init");
     });
 
-    fluid.tests.testResourceInputPanel(fluid.metadata.resourceInputPanel, ".gpiic-resourceInputPanel", "resourceInputPanel");
+    fluid.tests.testResourceInputPanel(gpii.metadata.resourceInputPanel, ".gpiic-resourceInputPanel", "resourceInputPanel");
 
     $(document).ready(function () {
         fluid.test.runTests([

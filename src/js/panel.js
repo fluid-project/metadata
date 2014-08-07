@@ -12,17 +12,17 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 (function ($, fluid) {
     "use strict";
 
-    fluid.registerNamespace("fluid.metadata");
+    fluid.registerNamespace("gpii.metadata");
 
     /*******************************************************************************
      * The base panel component for metadata panels
      *******************************************************************************/
 
-    fluid.defaults("fluid.metadata.basePanel", {
+    fluid.defaults("gpii.metadata.basePanel", {
         gradeNames: ["fluid.viewRelayComponent", "autoInit"],
         components: {
             indicator: {
-                type: "fluid.metadata.indicator",
+                type: "gpii.metadata.indicator",
                 container: "{basePanel}.dom.indicator"
             }
         },
@@ -47,8 +47,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
      * with auto-generating the indicator model by transforming the panel model.
      **********************************************************************************/
 
-    fluid.defaults("fluid.metadata.panel", {
-        gradeNames: ["fluid.metadata.basePanel", "autoInit"],
+    fluid.defaults("gpii.metadata.panel", {
+        gradeNames: ["gpii.metadata.basePanel", "autoInit"],
         components: {
             indicator: {
                 options: {

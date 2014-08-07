@@ -13,6 +13,6 @@ https://github.com/gpii/universal/LICENSE.txt
 
     fluid.registerNamespace("fluid.tests");
 
-    fluid.tests.testResourceInputPanel(fluid.metadata.transcriptsPanel, ".gpiic-transcriptsPanel", "transcriptsPanel");
+    fluid.tests.testResourceInputPanel(gpii.metadata.transcriptsPanel, ".gpiic-transcriptsPanel", "transcriptsPanel");
 
 })(jQuery, fluid);

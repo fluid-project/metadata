@@ -12,14 +12,14 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 (function ($, fluid) {
     "use strict";
 
-    fluid.registerNamespace("fluid.metadata");
+    fluid.registerNamespace("gpii.metadata");
 
     /*******************************************************************************
      * The panel to define video related metadata
      *******************************************************************************/
 
-    fluid.defaults("fluid.metadata.videoPanel", {
-        gradeNames: ["fluid.rendererRelayComponent", "fluid.metadata.basePanel", "autoInit"],
+    fluid.defaults("gpii.metadata.videoPanel", {
+        gradeNames: ["fluid.rendererRelayComponent", "gpii.metadata.basePanel", "autoInit"],
         components: {
             indicator: {
                 createOnEvent: "afterRender",
@@ -97,7 +97,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             }
         },
         listeners: {
-            "onCreate.init": "fluid.metadata.videoPanel.init"
+            "onCreate.init": "gpii.metadata.videoPanel.init"
         },
         distributeOptions: {
             source: "{that}.options.videoTemplate",
@@ -105,7 +105,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }
     });
 
-    fluid.metadata.videoPanel.init = function (that) {
+    gpii.metadata.videoPanel.init = function (that) {
         fluid.fetchResources(that.options.resources, function () {
             that.refreshView();
         });

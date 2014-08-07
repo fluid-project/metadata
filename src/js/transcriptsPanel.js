@@ -16,8 +16,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
      * The panel to define transcripts related metadata *
      ****************************************************/
 
-    fluid.defaults("fluid.metadata.transcriptsPanel", {
-        gradeNames: ["fluid.metadata.resourceInputPanel", "autoInit"],
+    fluid.defaults("gpii.metadata.transcriptsPanel", {
+        gradeNames: ["gpii.metadata.resourceInputPanel", "autoInit"],
         strings: {
             title: "Transcripts",
             description: "Transcripts provide a written version of all spoken words in a video, as well as additional descriptions, explanations or comments.",

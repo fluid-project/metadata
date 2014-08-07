@@ -12,13 +12,13 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 (function ($, fluid) {
     "use strict";
 
-    fluid.registerNamespace("fluid.metadata");
+    fluid.registerNamespace("gpii.metadata");
 
     /******************
      * Resource Input *
      ******************/
 
-    fluid.defaults("fluid.metadata.resourceInput", {
+    fluid.defaults("gpii.metadata.resourceInput", {
         gradeNames: ["fluid.rendererRelayComponent", "autoInit"],
         selectors: {
             srcLabel: ".gpiic-resourceInput-srcLabel",
@@ -54,7 +54,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             }
         },
         listeners: {
-            "onCreate.loadTemplate": "fluid.metadata.resourceInput.loadTemplate"
+            "onCreate.loadTemplate": "gpii.metadata.resourceInput.loadTemplate"
         },
         resources: {
             template: {
@@ -64,7 +64,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }
     });
 
-    fluid.metadata.resourceInput.loadTemplate = function (that) {
+    gpii.metadata.resourceInput.loadTemplate = function (that) {
         fluid.fetchResources(that.options.resources, function () {
             that.refreshView();
         });
@@ -141,8 +141,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
      * Resource input panel *
      ************************/
 
-    fluid.defaults("fluid.metadata.baseResourceInputPanel", {
-        gradeNames: ["fluid.metadata.panel", "autoInit"],
+    fluid.defaults("gpii.metadata.baseResourceInputPanel", {
+        gradeNames: ["gpii.metadata.panel", "autoInit"],
         selectors: {
             inputs: ".gpiic-resourceInputPanel-inputs",
             input: ".gpiic-resourceInputPanel-input"
@@ -162,7 +162,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             forward: "initOnly",
             singleTransform: {
                 type: "fluid.transforms.free",
-                func: "fluid.metadata.baseResourceInputPanel.setInitialResources",
+                func: "gpii.metadata.baseResourceInputPanel.setInitialResources",
                 args: {
                     "defaultInputModelElement": "{that}.defaultInputModelElement",
                     "resources": "{that}.model.resources"
@@ -179,7 +179,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         dynamicComponents: {
             input: {
                 createOnEvent: "onCreateInput",
-                type: "fluid.metadata.resourceInput",
+                type: "gpii.metadata.resourceInput",
                 container: "{arguments}.0",
                 options: {
                     source: "{arguments}",
@@ -206,10 +206,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                             "method": "push"
                         }],
                         afterRender: {
-                            listener: "fluid.metadata.baseResourceInputPanel.checkLastResourceInput",
+                            listener: "gpii.metadata.baseResourceInputPanel.checkLastResourceInput",
                             // {that}.options.source saves all the arguments fired for its createOnEvent "onCreateInput".
                             // {that}.options.source.3 is to retrieve the 4th argument "isLastInstance".
-                            // @See the calculation of "isLastInstance" in function fluid.metadata.baseResourceInputPanel.renderInputContainer().
+                            // @See the calculation of "isLastInstance" in function gpii.metadata.baseResourceInputPanel.renderInputContainer().
                             args: ["{that}.options.source.3", "{that}.events.onLastResourceInputRendered.fire"]
                         }
                     }
@@ -263,7 +263,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             onIndicatorUpdated: null
         },
         listeners: {
-            "onCreate.fetchTemplate": "fluid.metadata.baseResourceInputPanel.fetchTemplate",
+            "onCreate.fetchTemplate": "gpii.metadata.baseResourceInputPanel.fetchTemplate",
             "onCreate.applyContainerStyle": {
                 "this": "{that}.container",
                 "method": "addClass",
@@ -275,7 +275,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 "args": ["{that}.options.strings.title"]
             },
             "afterMarkupReady.getInputContainer": {
-                funcName: "fluid.metadata.baseResourceInputPanel.cloneInputContainer",
+                funcName: "gpii.metadata.baseResourceInputPanel.cloneInputContainer",
                 args: ["{that}", "{that}.dom.input"],
                 priority: "first"
             },
@@ -287,7 +287,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         },
         invokers: {
             updateModel: {
-                funcName: "fluid.metadata.baseResourceInputPanel.updateModel",
+                funcName: "gpii.metadata.baseResourceInputPanel.updateModel",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "resources"],
                 dynamic: true
             },
@@ -296,7 +296,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 args: ["{that}.model.resources", "{that}.events.onRenderInputContainer.fire"]
             },
             renderInputContainer: {
-                funcName: "fluid.metadata.baseResourceInputPanel.renderInputContainer",
+                funcName: "gpii.metadata.baseResourceInputPanel.renderInputContainer",
                 args: ["{that}.dom.inputs", "{that}.inputTemplate", "{arguments}.0", "{arguments}.1", "{that}.model.resources", "{that}.events.onCreateInput.fire"]
             }
         },
@@ -316,7 +316,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }]
     });
 
-    fluid.metadata.baseResourceInputPanel.setInitialResources = function (model) {
+    gpii.metadata.baseResourceInputPanel.setInitialResources = function (model) {
         var resources = fluid.makeArray(fluid.copy(model.resources));
 
         for (var i = resources.length; i < 2; i++) {
@@ -325,37 +325,37 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         return resources;
     };
 
-    fluid.metadata.baseResourceInputPanel.updateModel = function (that, value, path, index, root) {
+    gpii.metadata.baseResourceInputPanel.updateModel = function (that, value, path, index, root) {
         var changePath = [root, index, path].join(".");
         that.applier.change(changePath, value);
     };
 
-    fluid.metadata.baseResourceInputPanel.fetchTemplate = function (that) {
+    gpii.metadata.baseResourceInputPanel.fetchTemplate = function (that) {
         fluid.fetchResources(that.options.resources, function (resourceSpec) {
             that.container.append(resourceSpec.template.resourceText);
             that.events.afterMarkupReady.fire(that);
         });
     };
 
-    fluid.metadata.baseResourceInputPanel.cloneInputContainer = function (that, elm) {
+    gpii.metadata.baseResourceInputPanel.cloneInputContainer = function (that, elm) {
         that.inputTemplate = elm.remove();
     };
 
-    fluid.metadata.baseResourceInputPanel.renderInputContainer = function (container, elm, model, idx, resources, callback) {
+    gpii.metadata.baseResourceInputPanel.renderInputContainer = function (container, elm, model, idx, resources, callback) {
         var input = elm.clone();
         var isLastInstance = idx === resources.length - 1 ? true : false;
         container.append(input);
         callback(input, model, idx, isLastInstance);
     };
 
-    fluid.metadata.baseResourceInputPanel.checkLastResourceInput = function (isLastInstance, callback) {
+    gpii.metadata.baseResourceInputPanel.checkLastResourceInput = function (isLastInstance, callback) {
         if (isLastInstance) {
             callback();
         }
     };
 
-    fluid.defaults("fluid.metadata.resourceInputPanel", {
-        gradeNames: ["fluid.metadata.baseResourceInputPanel", "autoInit"],
+    fluid.defaults("gpii.metadata.resourceInputPanel", {
+        gradeNames: ["gpii.metadata.baseResourceInputPanel", "autoInit"],
         selectors: {
             description: ".gpiic-resourceInputPanel-description"
         },
