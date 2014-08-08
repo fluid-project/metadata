@@ -88,6 +88,12 @@ https://github.com/gpii/universal/LICENSE.txt
                 type: "test",
                 func: "gpii.tests.bindDialog.assertActiveState",
                 args: ["{bindDialog}.model.isActive", "{bindDialog}.container", "{bindDialog}.options.styles.active"]
+            }, {
+                expect: 1,
+                name: "tooltip created",
+                type: "test",
+                func: "jqUnit.assertTrue",
+                args: ["The tooltip component should be created", "{bindDialog}.tooltip"]
             }]
         }, {
             name: "Dialog State Changes",
