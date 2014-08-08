@@ -102,7 +102,7 @@ var demo = demo || {};
         },
         components: {
             simpleEditor: {
-                type: "fluid.simpleEditor",
+                type: "gpii.simpleEditor",
                 container: "{that}.dom.simpleEditor",
                 options: {
                     modelListeners: {
@@ -146,11 +146,11 @@ var demo = demo || {};
                 container: "{that}.container"
             },
             markupViewer: {
-                type: "fluid.markupViewer",
+                type: "gpii.markupViewer",
                 container: "{that}.dom.markupViewer"
             },
             preview: {
-                type: "fluid.viewer",
+                type: "gpii.viewer",
                 container: "{that}.dom.preview"
             },
             cookieStore: {
@@ -165,7 +165,7 @@ var demo = demo || {};
                 }
             },
             dataSource: {
-                type: "fluid.pouchdb.dataSource",
+                type: "gpii.pouchdb.dataSource",
                 options: {
                     databaseName: "{metadata}.databaseName",
                     listeners: {

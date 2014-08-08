@@ -11,9 +11,9 @@ https://github.com/gpii/universal/LICENSE.txt
 (function ($, fluid) {
     "use strict";
 
-    fluid.registerNamespace("fluid.tests");
+    fluid.registerNamespace("gpii.tests");
 
-    fluid.tests.createMetadataPanel = function (container, options) {
+    gpii.tests.createMetadataPanel = function (container, options) {
         var defaultOptions = {
             videoPanelTemplate: "../../../../src/components/metadata/html/video-template.html",
             audioPanelTemplate: "../../../../src/components/metadata/html/audio-template.html",
@@ -27,11 +27,11 @@ https://github.com/gpii/universal/LICENSE.txt
     };
 
     jqUnit.asyncTest("Test metadata panel - Init", function () {
-        fluid.tests.createMetadataPanel(".gpiic-metadataPanel-init", {
+        gpii.tests.createMetadataPanel(".gpiic-metadataPanel-init", {
             listeners: {
                 afterSubpanelsRendered: function (that) {
                     jqUnit.expect(4);
-                    fluid.tests.checkNotRenderedVideoMetadataPanel(that);
+                    gpii.tests.checkNotRenderedVideoMetadataPanel(that);
                     jqUnit.start();
                 }
             }
@@ -39,7 +39,7 @@ https://github.com/gpii/universal/LICENSE.txt
     });
 
     jqUnit.asyncTest("Test metadata panel - provide an video URL", function () {
-        fluid.tests.createMetadataPanel(".gpiic-metadataPanel-with-url", {
+        gpii.tests.createMetadataPanel(".gpiic-metadataPanel-with-url", {
             listeners: {
                 onCreate: {
                     listener: function (that) {
@@ -49,7 +49,7 @@ https://github.com/gpii/universal/LICENSE.txt
                 },
                 afterSubpanelsRendered: function (that) {
                     jqUnit.expect(4);
-                    fluid.tests.checkRenderedVideoMetadataPanel(that);
+                    gpii.tests.checkRenderedVideoMetadataPanel(that);
                     jqUnit.start();
                 }
             }

@@ -11,15 +11,15 @@ https://github.com/gpii/universal/LICENSE.txt
 (function ($, fluid) {
     "use strict";
 
-    fluid.registerNamespace("fluid.tests");
+    fluid.registerNamespace("gpii.tests");
 
-    fluid.tests.checkInitPanel = function (that) {
+    gpii.tests.checkInitPanel = function (that) {
         jqUnit.assertEquals("The title should have been rendered", that.options.strings.title, that.locate("title").text());
         jqUnit.assertEquals("The description should have been rendered", that.options.strings.description, that.locate("description").text());
         jqUnit.assertTrue("The indicator state has been set to 'unavailable'", that.locate("indicator").hasClass(that.indicator.options.styles.indicatorState.unavailable));
     };
 
-    fluid.tests.checkInitInput = function (that) {
+    gpii.tests.checkInitInput = function (that) {
         jqUnit.assertEquals("The placeholder for the input field has been set", that.options.strings.srcPlaceholder, that.locate("src").attr("placeholder"));
 
         $("select", that.locate("languages")).each(function (ignored, selectElm) {
@@ -29,24 +29,24 @@ https://github.com/gpii/universal/LICENSE.txt
         });
     };
 
-    fluid.tests.changeSrcByIndex = function (that, newSrcValue, index) {
+    gpii.tests.changeSrcByIndex = function (that, newSrcValue, index) {
         that.container.find("input").eq(index).val(newSrcValue).change();
     };
 
-    fluid.tests.changeLanguageByIndex = function (that, newLanguageValue, index) {
+    gpii.tests.changeLanguageByIndex = function (that, newLanguageValue, index) {
         that.container.find("select").eq(index).find("[value='" + newLanguageValue + "']").attr("selected", "selected").change();
     };
 
-    fluid.tests.testOptions = [
+    gpii.tests.testOptions = [
         {src: "http://weblink.com/one.mp4", language: "hi"},
         {src: "http://weblink.com/two.mp4", language: "zh"}
     ];
-    fluid.tests.testSequenceConfig = [
-        {check: "fluid.tests.changeSrcByIndex", path: "src"},
-        {check: "fluid.tests.changeLanguageByIndex", path: "language"}
+    gpii.tests.testSequenceConfig = [
+        {check: "gpii.tests.changeSrcByIndex", path: "src"},
+        {check: "gpii.tests.changeLanguageByIndex", path: "language"}
     ];
 
-    fluid.tests.resourceInputPanelChangesTests = function (that, testOpts, sequenceConfig) {
+    gpii.tests.resourceInputPanelChangesTests = function (that, testOpts, sequenceConfig) {
         fluid.each(testOpts, function (testOpt, index) {
             fluid.each(sequenceConfig, function (config) {
                 var testVal = testOpts[index][config.path];
@@ -66,7 +66,7 @@ https://github.com/gpii/universal/LICENSE.txt
         });
     };
 
-    fluid.tests.testResourceInputPanel = function (resourceInputPanelComponent, container, message) {
+    gpii.tests.testResourceInputPanel = function (resourceInputPanelComponent, container, message) {
         jqUnit.asyncTest("Test " + message, function () {
             jqUnit.expect(24);
 
@@ -82,9 +82,9 @@ https://github.com/gpii/universal/LICENSE.txt
                 listeners: {
                     onReady: {
                         listener: function (that) {
-                            fluid.tests.checkInitPanel(that);
-                            fluid.tests.checkInitInput(that);
-                            fluid.tests.resourceInputPanelChangesTests(that, fluid.tests.testOptions, fluid.tests.testSequenceConfig);
+                            gpii.tests.checkInitPanel(that);
+                            gpii.tests.checkInitInput(that);
+                            gpii.tests.resourceInputPanelChangesTests(that, gpii.tests.testOptions, gpii.tests.testSequenceConfig);
 
                             jqUnit.start();
                         },

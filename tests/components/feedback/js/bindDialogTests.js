@@ -11,13 +11,13 @@ https://github.com/gpii/universal/LICENSE.txt
 (function ($) {
     "use strict";
 
-    fluid.registerNamespace("fluid.tests.bindDialog");
+    fluid.registerNamespace("gpii.tests.bindDialog");
 
-    fluid.tests.bindDialog.clickButton = function (button) {
+    gpii.tests.bindDialog.clickButton = function (button) {
         button.click();
     };
 
-    fluid.tests.bindDialog.testDialog = function (that) {
+    gpii.tests.bindDialog.testDialog = function (that) {
         var nonDialogArea = $(".gpiic-nonDialog-area");
 
         jqUnit.assertTrue("The dialog is open", that.model.isDialogOpen);
@@ -35,7 +35,7 @@ https://github.com/gpii/universal/LICENSE.txt
         jqUnit.start();
     };
 
-    fluid.tests.bindDialog.verifyStyle = function (state, domElement, css, stateType) {
+    gpii.tests.bindDialog.verifyStyle = function (state, domElement, css, stateType) {
         if (state) {
             jqUnit.assertTrue("The " + stateType + " css is applied", domElement.hasClass(css));
         } else {
@@ -43,8 +43,8 @@ https://github.com/gpii/universal/LICENSE.txt
         }
     };
 
-    fluid.tests.bindDialog.verifyActiveState = function (isActive, buttonDom, activeCss) {
-        fluid.tests.bindDialog.verifyStyle(isActive, buttonDom, activeCss, "active");
+    gpii.tests.bindDialog.verifyActiveState = function (isActive, buttonDom, activeCss) {
+        gpii.tests.bindDialog.verifyStyle(isActive, buttonDom, activeCss, "active");
 
         if (isActive) {
             jqUnit.assertEquals("The aria-pressed is set to true", "true", buttonDom.attr("aria-pressed"));
@@ -66,7 +66,7 @@ https://github.com/gpii/universal/LICENSE.txt
                 },
                 listeners: {
                     "onCreate.clickButton": {
-                        listener: "fluid.tests.bindDialog.clickButton",
+                        listener: "gpii.tests.bindDialog.clickButton",
                         args: "{that}.container",
                         priority: "last"
                     },
@@ -83,19 +83,19 @@ https://github.com/gpii/universal/LICENSE.txt
                         args: ["Initialization - The dialog has been created and attached as a member option when onDialogReady fires", null, "{that}.dialog"]
                     },
                     "onDialogReady.start": {
-                        listener: "fluid.tests.bindDialog.testDialog",
+                        listener: "gpii.tests.bindDialog.testDialog",
                         args: ["{that}"],
                         priority: "last"
                     }
                 },
                 modelListeners: {
                     isActive: {
-                        listener: "fluid.tests.bindDialog.verifyActiveState",
+                        listener: "gpii.tests.bindDialog.verifyActiveState",
                         args: ["{change}.value", "{that}.container", "{that}.options.styles.active"],
                         priority: "last"
                     },
                     isDialogOpen: {
-                        listener: "fluid.tests.bindDialog.verifyStyle",
+                        listener: "gpii.tests.bindDialog.verifyStyle",
                         args: ["{change}.value", "{that}.container", "{that}.options.styles.dialogOpen", "dialogOpen"],
                         priority: "last"
                     }

@@ -11,9 +11,9 @@ https://github.com/gpii/universal/LICENSE.txt
 (function ($, fluid) {
     "use strict";
 
-    fluid.registerNamespace("fluid.tests");
+    fluid.registerNamespace("gpii.tests");
 
-    fluid.tests.checkAudioState = function (audioPanel, expectedRadiobuttons, expectedCheckboxes, state) {
+    gpii.tests.checkAudioState = function (audioPanel, expectedRadiobuttons, expectedCheckboxes, state) {
         var radiobuttons = audioPanel.container.find("[type='radio']");
         var checkboxes = audioPanel.locate("attributes").find("[type='checkbox']");
 
@@ -41,11 +41,11 @@ https://github.com/gpii/universal/LICENSE.txt
         }
     };
 
-    fluid.tests.clickAttribute = function (audioPanel, attribute) {
+    gpii.tests.clickAttribute = function (audioPanel, attribute) {
         audioPanel.locate("attributes").find("[value='" + attribute + "']").click();
     };
 
-    fluid.tests.checkAttributeModel = function (audioPanel, modelPath) {
+    gpii.tests.checkAttributeModel = function (audioPanel, modelPath) {
         audioPanel.applier.modelChanged.addListener({
             path: "",
             priority: fluid.event.mapPriority("last", 0)
@@ -56,18 +56,18 @@ https://github.com/gpii/universal/LICENSE.txt
         }, "checkAttributeModel");
     };
 
-    fluid.tests.clickAudioState = function (audioPanel, state) {
+    gpii.tests.clickAudioState = function (audioPanel, state) {
         audioPanel.container.find("[value='" + state + "']").click();
     };
 
-    fluid.tests.checkAudioStateChange = function (audioPanel, expectedRadiobuttons, expectedCheckboxes, state) {
+    gpii.tests.checkAudioStateChange = function (audioPanel, expectedRadiobuttons, expectedCheckboxes, state) {
         audioPanel.events.afterAttributesRendered.addListener(function () {
-            fluid.tests.checkAudioState(audioPanel, expectedRadiobuttons, expectedCheckboxes, state);
+            gpii.tests.checkAudioState(audioPanel, expectedRadiobuttons, expectedCheckboxes, state);
             audioPanel.events.afterAttributesRendered.removeListener("checkAudioStateChange");
         }, "checkAudioStateChange", null, "last");
     };
 
-    fluid.tests.createAudioPanel = function (container, options) {
+    gpii.tests.createAudioPanel = function (container, options) {
         var defaultOptions = {
             audioTemplate: "../../../../src/components/metadata/html/audio-template.html",
             audioAttributesTemplate: "../../../../src/components/metadata/html/audio-attributes-template.html"
@@ -82,13 +82,13 @@ https://github.com/gpii/universal/LICENSE.txt
         var options = {
             listeners: {
                 onReady: function (that) {
-                    fluid.tests.checkAudioState(that, 2, 3, "available");
+                    gpii.tests.checkAudioState(that, 2, 3, "available");
                     jqUnit.start();
                 }
             }
         };
 
-        fluid.tests.createAudioPanel(".gpiic-audio-test-init", options);
+        gpii.tests.createAudioPanel(".gpiic-audio-test-init", options);
     });
 
     jqUnit.asyncTest("Click on attribute checkboxes", function () {
@@ -97,21 +97,21 @@ https://github.com/gpii/universal/LICENSE.txt
         var options = {
             listeners: {
                 onReady: function (that) {
-                    fluid.tests.checkAttributeModel(that, "dialogue");
-                    fluid.tests.clickAttribute(that, "dialogue");
+                    gpii.tests.checkAttributeModel(that, "dialogue");
+                    gpii.tests.clickAttribute(that, "dialogue");
 
-                    fluid.tests.checkAttributeModel(that, "soundtrack");
-                    fluid.tests.clickAttribute(that, "soundtrack");
+                    gpii.tests.checkAttributeModel(that, "soundtrack");
+                    gpii.tests.clickAttribute(that, "soundtrack");
 
-                    fluid.tests.checkAttributeModel(that, "sound effect");
-                    fluid.tests.clickAttribute(that, "sound effect");
+                    gpii.tests.checkAttributeModel(that, "sound effect");
+                    gpii.tests.clickAttribute(that, "sound effect");
 
                     jqUnit.start();
                 }
             }
         };
 
-        fluid.tests.createAudioPanel(".gpiic-audio-test-attributes", options);
+        gpii.tests.createAudioPanel(".gpiic-audio-test-attributes", options);
     });
 
     jqUnit.asyncTest("Click and check the audio availability", function () {
@@ -120,18 +120,18 @@ https://github.com/gpii/universal/LICENSE.txt
         var options = {
             listeners: {
                 onReady: function (that) {
-                    fluid.tests.checkAudioStateChange(that, 2, 0, "unavailable");
-                    fluid.tests.clickAudioState(that, "unavailable");
+                    gpii.tests.checkAudioStateChange(that, 2, 0, "unavailable");
+                    gpii.tests.clickAudioState(that, "unavailable");
 
-                    fluid.tests.checkAudioStateChange(that, 2, 3, "available");
-                    fluid.tests.clickAudioState(that, "available");
+                    gpii.tests.checkAudioStateChange(that, 2, 3, "available");
+                    gpii.tests.clickAudioState(that, "available");
 
                     jqUnit.start();
                 }
             }
         };
 
-        fluid.tests.createAudioPanel(".gpiic-audio-test-audio-availability", options);
+        gpii.tests.createAudioPanel(".gpiic-audio-test-audio-availability", options);
     });
 
 })(jQuery, fluid);

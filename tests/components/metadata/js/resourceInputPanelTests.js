@@ -11,9 +11,9 @@ https://github.com/gpii/universal/LICENSE.txt
 (function ($, fluid) {
     "use strict";
 
-    fluid.registerNamespace("fluid.tests");
+    fluid.registerNamespace("gpii.tests");
 
-    fluid.defaults("fluid.tests.resourceInputTests", {
+    fluid.defaults("gpii.tests.resourceInputTests", {
         gradeNames: ["fluid.test.testEnvironment", "autoInit"],
         components: {
             resourceInput: {
@@ -29,32 +29,32 @@ https://github.com/gpii/universal/LICENSE.txt
                 }
             },
             resourceInputTester: {
-                type: "fluid.tests.resourceInputTester"
+                type: "gpii.tests.resourceInputTester"
             }
         }
     });
 
-    fluid.tests.checkInit = function (that) {
+    gpii.tests.checkInit = function (that) {
         jqUnit.assertEquals("The placeholder for the input field is set", that.options.strings.srcPlaceholder, that.locate("src").attr("placeholder"));
         jqUnit.assertEquals("All language options are rendered in a combo box", that.options.controlValues.length, that.locate("languages").find("option").length);
     };
 
-    fluid.tests.changeSrc = function (that, newSrcValue) {
+    gpii.tests.changeSrc = function (that, newSrcValue) {
         that.locate("src").val(newSrcValue).change();
     };
 
-    fluid.tests.changeLanguage = function (that, newLanguageValue) {
+    gpii.tests.changeLanguage = function (that, newLanguageValue) {
         that.locate("languages").find("[value='" + newLanguageValue + "']").attr("selected", "selected").change();
     };
 
-    fluid.tests.checkModelValue = function (newSrcValue) {
+    gpii.tests.checkModelValue = function (newSrcValue) {
         return function (newModel, oldModel, changeRequest) {
             var path = changeRequest[0];
             jqUnit.assertEquals("The model path '" + path + "' has been updated to the new value", newSrcValue, newModel);
         };
     };
 
-    fluid.defaults("fluid.tests.resourceInputTester", {
+    fluid.defaults("gpii.tests.resourceInputTester", {
         gradeNames: ["fluid.test.testCaseHolder", "autoInit"],
         testOptions: {
             newSrcValue: "http://weblink.com/one.mp4",
@@ -66,7 +66,7 @@ https://github.com/gpii/universal/LICENSE.txt
                 expect: 2,
                 name: "Init",
                 sequence: [{
-                    listener: "fluid.tests.checkInit",
+                    listener: "gpii.tests.checkInit",
                     event: "{resourceInputTests resourceInput}.events.afterRender"
                 }]
             }]
@@ -76,18 +76,18 @@ https://github.com/gpii/universal/LICENSE.txt
                 expect: 2,
                 name: "Click on resource input fields",
                 sequence: [{
-                    func: "fluid.tests.changeSrc",
+                    func: "gpii.tests.changeSrc",
                     args: ["{resourceInput}", "{that}.options.testOptions.newSrcValue"]
                 }, {
-                    listenerMaker: "fluid.tests.checkModelValue",
+                    listenerMaker: "gpii.tests.checkModelValue",
                     makerArgs: ["{that}.options.testOptions.newSrcValue"],
                     spec: {path: "src", priority: "last"},
                     changeEvent: "{resourceInput}.applier.modelChanged"
                 }, {
-                    func: "fluid.tests.changeLanguage",
+                    func: "gpii.tests.changeLanguage",
                     args: ["{resourceInput}", "{that}.options.testOptions.newLanguage"]
                 }, {
-                    listenerMaker: "fluid.tests.checkModelValue",
+                    listenerMaker: "gpii.tests.checkModelValue",
                     makerArgs: ["{that}.options.testOptions.newLanguage"],
                     spec: {path: "language", priority: "last"},
                     changeEvent: "{resourceInput}.applier.modelChanged"
@@ -202,21 +202,21 @@ https://github.com/gpii/universal/LICENSE.txt
 
     });
 
-    fluid.tests.inputCount = 0;
-    fluid.tests.verifyInput = function (input, resources) {
-        fluid.tests.checkInitInput(input);
-        fluid.tests.inputCount++;
-        if (fluid.tests.inputCount >= resources.length) {
-            fluid.tests.inputCount = 0;
+    gpii.tests.inputCount = 0;
+    gpii.tests.verifyInput = function (input, resources) {
+        gpii.tests.checkInitInput(input);
+        gpii.tests.inputCount++;
+        if (gpii.tests.inputCount >= resources.length) {
+            gpii.tests.inputCount = 0;
             jqUnit.start();
         }
     };
 
-    fluid.defaults("fluid.tests.resrouceInputPanelInitializationTest", {
+    fluid.defaults("gpii.tests.resrouceInputPanelInitializationTest", {
         gradeNames: ["gpii.metadata.resourceInputPanel", "autoInit"],
         inputListeners: {
             afterRender: {
-                listener: "fluid.tests.verifyInput",
+                listener: "gpii.tests.verifyInput",
                 args: ["{resourceInput}", "{resourceInputPanel}.model.resources"]
             }
         },
@@ -237,20 +237,20 @@ https://github.com/gpii/universal/LICENSE.txt
         }]
     });
 
-    // This test should have been included in fluid.tests.resourceInputPanelTester from
+    // This test should have been included in gpii.tests.resourceInputPanelTester from
     // resourceInputPanelTestUtils.js. However at the time it wasn't possible to declare
     // listeners for multiple events (onReady, afterRender) in a sequence. This is because
     // all of these events are triggered by the creation of the parent compnoent.
     // See: FLUID-5340
     jqUnit.asyncTest("resourceInputPanel initialization", function () {
-        fluid.tests.resrouceInputPanelInitializationTest(".gpiic-resourceInputPanel-init");
+        gpii.tests.resrouceInputPanelInitializationTest(".gpiic-resourceInputPanel-init");
     });
 
-    fluid.tests.testResourceInputPanel(gpii.metadata.resourceInputPanel, ".gpiic-resourceInputPanel", "resourceInputPanel");
+    gpii.tests.testResourceInputPanel(gpii.metadata.resourceInputPanel, ".gpiic-resourceInputPanel", "resourceInputPanel");
 
     $(document).ready(function () {
         fluid.test.runTests([
-            "fluid.tests.resourceInputTests"
+            "gpii.tests.resourceInputTests"
         ]);
     });
 

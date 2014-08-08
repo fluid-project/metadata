@@ -11,7 +11,7 @@ https://github.com/gpii/universal/LICENSE.txt
 (function ($) {
     "use strict";
 
-    fluid.registerNamespace("fluid.tests.matchConfirmation");
+    fluid.registerNamespace("gpii.tests.matchConfirmation");
 
     $(document).ready(function () {
         jqUnit.asyncTest("Test matchConfirmation", function () {

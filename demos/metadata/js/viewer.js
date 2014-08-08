@@ -13,8 +13,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 (function ($, fluid) {
     "use strict";
 
-    fluid.defaults("fluid.viewer", {
-        gradeNames: ["fluid.viewRelayComponent", "fluid.markup", "autoInit"],
+    fluid.defaults("gpii.viewer", {
+        gradeNames: ["fluid.viewRelayComponent", "gpii.markup", "autoInit"],
         invokers: {
             render: {
                 "this": "{that}.container",

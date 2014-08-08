@@ -15,14 +15,14 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 (function ($, fluid) {
     "use strict";
 
-    fluid.defaults("fluid.markupViewer", {
-        gradeNames: ["fluid.viewRelayComponent", "fluid.markup", "autoInit"],
+    fluid.defaults("gpii.markupViewer", {
+        gradeNames: ["fluid.viewRelayComponent", "gpii.markup", "autoInit"],
         selectors: {
             code: ".gpiic-metadataDemo-outputHTML-code"
         },
         invokers: {
             render: {
-                "funcName": "fluid.markupViewer.render",
+                "funcName": "gpii.markupViewer.render",
                 "args": ["{that}.dom.code", {
                     expander: {
                         func: "{that}.generateMarkup"
@@ -36,7 +36,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }
     });
 
-    fluid.markupViewer.render = function (elm, markup) {
+    gpii.markupViewer.render = function (elm, markup) {
         elm.text(markup);
         // TODO: Would switch to Prism.js for syntax highlighting.
         // but currently it causes the first line to indent.

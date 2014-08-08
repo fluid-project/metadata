@@ -11,13 +11,13 @@ https://github.com/gpii/universal/LICENSE.txt
 (function ($, fluid) {
     "use strict";
 
-    fluid.registerNamespace("fluid.tests");
+    fluid.registerNamespace("gpii.tests");
 
     var url = "http://a.test.url",
         defaultModel = {"default": "defaultValue"},
         inputModel = {"input": "inputValue"};
 
-    fluid.tests.checkMetadataPanel = function (that, expectedModel, message) {
+    gpii.tests.checkMetadataPanel = function (that, expectedModel, message) {
         jqUnit.assertDeepEq("The model is expected - " + message, expectedModel, that.model);
     };
 
@@ -26,12 +26,12 @@ https://github.com/gpii/universal/LICENSE.txt
 
         var that = gpii.metadata.metadataPanel(".gpiic-metadataPanel-standalone");
 
-        fluid.tests.checkMetadataPanel(that, {}, "Initializing a standalone");
+        gpii.tests.checkMetadataPanel(that, {}, "Initializing a standalone");
         that.applier.change("url", url);
-        fluid.tests.checkMetadataPanel(that, {url: url}, "Change URL in a standalone");
+        gpii.tests.checkMetadataPanel(that, {url: url}, "Change URL in a standalone");
     });
 
-    fluid.defaults("fluid.tests.metadataPanelAsGrade", {
+    fluid.defaults("gpii.tests.metadataPanelAsGrade", {
         gradeNames: ["gpii.metadata.metadataPanel", "autoInit"],
         members: {
             defaultModel: defaultModel
@@ -42,12 +42,12 @@ https://github.com/gpii/universal/LICENSE.txt
     jqUnit.test("Test metadata panel - Use as a grade", function () {
         jqUnit.expect(2);
 
-        var that = fluid.tests.metadataPanelAsGrade(".gpiic-metadataPanel-grade");
+        var that = gpii.tests.metadataPanelAsGrade(".gpiic-metadataPanel-grade");
         var expectedInitialModel = $.extend(true, null, defaultModel, inputModel);
 
-        fluid.tests.checkMetadataPanel(that, expectedInitialModel, "Initializing a component that has the metadataPanel as a grade");
+        gpii.tests.checkMetadataPanel(that, expectedInitialModel, "Initializing a component that has the metadataPanel as a grade");
         that.applier.change("url", url);
-        fluid.tests.checkMetadataPanel(that, $.extend(true, null, expectedInitialModel, {url: url}), "Change URL in a component that has the metadataPanel as a grade");
+        gpii.tests.checkMetadataPanel(that, $.extend(true, null, expectedInitialModel, {url: url}), "Change URL in a component that has the metadataPanel as a grade");
     });
 
 })(jQuery, fluid);

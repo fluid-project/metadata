@@ -11,9 +11,9 @@ https://github.com/gpii/universal/LICENSE.txt
 (function ($, fluid) {
     "use strict";
 
-    fluid.registerNamespace("fluid.tests");
+    fluid.registerNamespace("gpii.tests");
 
-    fluid.defaults("fluid.tests.feedback", {
+    fluid.defaults("gpii.tests.feedback", {
         gradeNames: ["gpii.metadata.feedback", "autoInit"],
         resources: {
             template: {
@@ -22,14 +22,14 @@ https://github.com/gpii/universal/LICENSE.txt
         }
     });
 
-    fluid.tests.assertMarkup = function (that) {
+    gpii.tests.assertMarkup = function (that) {
         jqUnit.assertNotNull("The template should be rendered into the markup", that.options.resources.template.resourceText, that.container.html());
         jqUnit.assertEquals("The aria role is set for match confirmation button", "button", that.locate("matchConfirmationButton").attr("role"));
         jqUnit.assertEquals("The aria label is set", that.options.strings.matchConfirmationLabel, that.locate("matchConfirmationButton").attr("aria-label"));
     };
 
-    fluid.defaults("fluid.tests.feedback.verifyInit", {
-        gradeNames: ["fluid.tests.feedback", "autoInit"],
+    fluid.defaults("gpii.tests.feedback.verifyInit", {
+        gradeNames: ["gpii.tests.feedback", "autoInit"],
         listeners: {
             "onCreate.verifyContainerClass": {
                 funcName: "jqUnit.assertTrue",
@@ -45,7 +45,7 @@ https://github.com/gpii/universal/LICENSE.txt
                 args: ["The resourceText should be returned by the event", "{arguments}.0.template.resourceText"]
             },
             "afterMarkupReady.verifyMarkup": {
-                funcName: "fluid.tests.assertMarkup",
+                funcName: "gpii.tests.assertMarkup",
                 args: ["{that}"]
             },
             "afterMarkupReady.verifyMatchConfirmation": {
@@ -63,7 +63,7 @@ https://github.com/gpii/universal/LICENSE.txt
     $(document).ready(function () {
         jqUnit.asyncTest("Initial settings", function () {
             jqUnit.expect(7);
-            fluid.tests.feedback.verifyInit(".gpiic-feedback");
+            gpii.tests.feedback.verifyInit(".gpiic-feedback");
         });
     });
 })(jQuery, fluid);

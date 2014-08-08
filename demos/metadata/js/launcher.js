@@ -18,7 +18,7 @@ var demo = demo || {};
     fluid.registerNamespace("demo.metadata");
 
     fluid.defaults("demo.metadata.setDb", {
-        gradeNames: ["fluid.pouchdb.dataSource", "autoInit"],
+        gradeNames: ["gpii.pouchdb.dataSource", "autoInit"],
         content: {
             markup: "",
             metadata: ""

@@ -11,7 +11,7 @@ https://github.com/gpii/universal/LICENSE.txt
 (function ($, fluid) {
     "use strict";
 
-    fluid.registerNamespace("fluid.tests");
+    fluid.registerNamespace("gpii.tests");
 
     jqUnit.test("Test panel with a defined model and defined rules", function () {
         var that = gpii.metadata.panel(".gpiic-panel", {

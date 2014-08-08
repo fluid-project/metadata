@@ -15,11 +15,11 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 (function ($, fluid) {
     "use strict";
 
-    fluid.defaults("fluid.markup", {
+    fluid.defaults("gpii.markup", {
         gradeNames: ["fluid.viewRelayComponent", "autoInit"],
         invokers: {
             generateMarkup: {
-                funcName: "fluid.markup.generate",
+                funcName: "gpii.markup.generate",
                 args: ["{that}.model", "{that}.options.markup"],
                 dynamic: true
             },
@@ -39,7 +39,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }
     });
 
-    fluid.markup.transformToVideoMetadata = function (metadata) {
+    gpii.markup.transformToVideoMetadata = function (metadata) {
         //TODO: Update to use model transformations framework
         var videoMetatdata = {
             contentUrl: [metadata.url]
@@ -64,7 +64,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         return videoMetatdata;
     };
 
-    fluid.markup.generateVideoElm = function (metadata, videoContainerMarkup, captionsContainerMarkup, videoElm) {
+    gpii.markup.generateVideoElm = function (metadata, videoContainerMarkup, captionsContainerMarkup, videoElm) {
         if (!videoElm) {
             videoElm = $("<video controls></video>");
             $("<source>").attr({
@@ -74,7 +74,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }
 
         var videoContainer = $(videoContainerMarkup);
-        gpii.metadata.writer(videoContainer, fluid.markup.transformToVideoMetadata(metadata), {
+        gpii.metadata.writer(videoContainer, gpii.markup.transformToVideoMetadata(metadata), {
             itemprop: "video",
             itemtype: gpii.metadata.itemtype.VIDEO_OBJECT
         });
@@ -92,22 +92,22 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         return videoContainer;
     };
 
-    fluid.markup.addVideoMetadata = function (content, placeholderID, metadata, replacementMarkup) {
+    gpii.markup.addVideoMetadata = function (content, placeholderID, metadata, replacementMarkup) {
         metadata = metadata || {url: ""};
         var placeholder = content.find(placeholderID);
         var existingVideo = content.find("video");
         if (placeholder.length) {
-            placeholder = placeholder.replaceWith(fluid.markup.generateVideoElm(metadata, replacementMarkup.videoContainer, replacementMarkup.captionsContainer));
+            placeholder = placeholder.replaceWith(gpii.markup.generateVideoElm(metadata, replacementMarkup.videoContainer, replacementMarkup.captionsContainer));
         } else if (existingVideo.length) {
-            existingVideo.replaceWith(fluid.markup.generateVideoElm(metadata, replacementMarkup.videoContainer, replacementMarkup.captionsContainer, existingVideo.clone()));
+            existingVideo.replaceWith(gpii.markup.generateVideoElm(metadata, replacementMarkup.videoContainer, replacementMarkup.captionsContainer, existingVideo.clone()));
         }
     };
 
-    fluid.markup.generate = function (model, replacementMarkup) {
+    gpii.markup.generate = function (model, replacementMarkup) {
         // Creating a jQuery element with the markup. The wrapping is to allow retrieving all of the relavent markup
         // later with a call to html()
         var content = $("<section>" + model.markup + "</section>");
-        fluid.markup.addVideoMetadata(content, "#videoPlaceHolder", model.metadata, replacementMarkup);
+        gpii.markup.addVideoMetadata(content, "#videoPlaceHolder", model.metadata, replacementMarkup);
         // the call to markup_beauty requires that textnodes be wrapped in a tag, or they will be stripped out.
         var markup = replacementMarkup.contentContainer ? fluid.stringTemplate(replacementMarkup.contentContainer, {content: content.html()}) : content.html();
         var formatted = markup_beauty({

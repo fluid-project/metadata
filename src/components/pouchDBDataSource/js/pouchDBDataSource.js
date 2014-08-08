@@ -15,7 +15,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 (function ($, fluid) {
     "use strict";
 
-    fluid.defaults("fluid.pouchdb.dataSource", {
+    fluid.defaults("gpii.pouchdb.dataSource", {
         gradeNames: ["fluid.eventedComponent", "autoInit"],
         databaseName: "",
         events: {
@@ -23,39 +23,39 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         },
         listeners: {
             "onCreate.bindChange": {
-                listener: "fluid.pouchdb.dataSource.bindChange",
+                listener: "gpii.pouchdb.dataSource.bindChange",
                 args: ["{that}.database", {since: "now"}, "{that}.events.afterChange.fire"]
             }
         },
         members: {
             database: {
                 expander: {
-                    funcName: "fluid.pouchdb.dataSource.create",
+                    funcName: "gpii.pouchdb.dataSource.create",
                     args: ["{that}.options.databaseName"]
                 }
             }
         },
         invokers: {
             get: {
-                funcName: "fluid.pouchdb.dataSource.get",
+                funcName: "gpii.pouchdb.dataSource.get",
                 args: ["{that}.database", "{arguments}.0", "{arguments}.1"]
             },
             set: {
-                funcName: "fluid.pouchdb.dataSource.set",
+                funcName: "gpii.pouchdb.dataSource.set",
                 args: ["{that}.database", "{arguments}.0", "{arguments}.1"]
             },
             "delete": {
-                funcName: "fluid.pouchdb.dataSource.delete",
+                funcName: "gpii.pouchdb.dataSource.delete",
                 args: ["{that}.database", "{arguments}.0", "{arguments}.1"]
             },
             createView: {
-                funcName: "fluid.pouchdb.dataSource.createView",
+                funcName: "gpii.pouchdb.dataSource.createView",
                 args: ["{that}.database", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
             }
         }
     });
 
-    fluid.pouchdb.dataSource.create = function (name) {
+    gpii.pouchdb.dataSource.create = function (name) {
         return new PouchDB(name);
     };
 
@@ -65,7 +65,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
      * and add a query property that contains an object with the necessary query parameters. If the query does
      * not require any parameters, simply provide and empty object.
      */
-    fluid.pouchdb.dataSource.get = function (database, directModel, callback) {
+    gpii.pouchdb.dataSource.get = function (database, directModel, callback) {
         var method = "get";
         var prop = "model";
         var opts = {};
@@ -83,11 +83,11 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         });
     };
 
-    fluid.pouchdb.dataSource.postImpl = function (database, doc, callback) {
+    gpii.pouchdb.dataSource.postImpl = function (database, doc, callback) {
         database.post(doc).then(callback);
     };
 
-    fluid.pouchdb.dataSource.putImpl = function (database, doc, callback) {
+    gpii.pouchdb.dataSource.putImpl = function (database, doc, callback) {
         database.get(doc._id).then(function (otherDoc) {
             doc._rev = otherDoc._rev;
             database.put(doc).then(callback);
@@ -98,7 +98,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         });
     };
 
-    fluid.pouchdb.dataSource.set = function (database, directModel, callback) {
+    gpii.pouchdb.dataSource.set = function (database, directModel, callback) {
         var method = "postImpl";
         var newDoc = {
             model: directModel.model
@@ -109,16 +109,16 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             method = "putImpl";
         }
 
-        fluid.pouchdb.dataSource[method](database, newDoc, callback);
+        gpii.pouchdb.dataSource[method](database, newDoc, callback);
     };
 
-    fluid.pouchdb.dataSource["delete"] = function (database, directModel, callback) {
+    gpii.pouchdb.dataSource["delete"] = function (database, directModel, callback) {
         database.get(directModel.id).then(function (doc) {
             database.remove(doc).then(callback);
         });
     };
 
-    fluid.pouchdb.dataSource.createView = function (database, name, map, reduce, callback) {
+    gpii.pouchdb.dataSource.createView = function (database, name, map, reduce, callback) {
         var designDoc = {
             _id: "_design/" + name,
             views: {}
@@ -132,10 +132,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             designDoc.views[name].reduce = reduce.toString();
         }
 
-        fluid.pouchdb.dataSource.putImpl(database, designDoc, callback);
+        gpii.pouchdb.dataSource.putImpl(database, designDoc, callback);
     };
 
-    fluid.pouchdb.dataSource.bindChange = function (database, options, callback) {
+    gpii.pouchdb.dataSource.bindChange = function (database, options, callback) {
         database.changes(options).on("change", callback);
     };
 

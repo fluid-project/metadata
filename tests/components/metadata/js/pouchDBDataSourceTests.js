@@ -13,27 +13,27 @@ https://github.com/gpii/universal/LICENSE.txt
 (function ($, fluid) {
     "use strict";
 
-    fluid.registerNamespace("fluid.tests");
+    fluid.registerNamespace("gpii.tests");
 
-    fluid.tests.cleanUp = function (dbname) {
+    gpii.tests.cleanUp = function (dbname) {
         PouchDB.destroy(dbname, jqUnit.start);
     };
 
     jqUnit.asyncTest("Creation", function () {
         var dbname = "test";
-        var ds = fluid.pouchdb.dataSource({
+        var ds = gpii.pouchdb.dataSource({
             databaseName: dbname
         });
 
         ds.database.info(function (err, result) {
             jqUnit.assertEquals("The database should have been created",  dbname, result.db_name);
-            fluid.tests.cleanUp (dbname);
+            gpii.tests.cleanUp (dbname);
         });
     });
 
     jqUnit.asyncTest("Set: create document - POST", function () {
         var dbname = "test";
-        var ds = fluid.pouchdb.dataSource({
+        var ds = gpii.pouchdb.dataSource({
             databaseName: dbname
         });
 
@@ -44,14 +44,14 @@ https://github.com/gpii/universal/LICENSE.txt
         ds.set(doc, function (createdDoc) {
             ds.database.get(createdDoc.id).then(function (getDoc) {
                 jqUnit.assertEquals("The document should be created", doc.model, getDoc.model);
-                fluid.tests.cleanUp (dbname);
+                gpii.tests.cleanUp (dbname);
             });
         });
     });
 
     jqUnit.asyncTest("Set: create document - PUT", function () {
         var dbname = "test";
-        var ds = fluid.pouchdb.dataSource({
+        var ds = gpii.pouchdb.dataSource({
             databaseName: dbname
         });
 
@@ -63,14 +63,14 @@ https://github.com/gpii/universal/LICENSE.txt
         ds.set(doc, function () {
             ds.database.get(doc.id).then(function (getDoc) {
                 jqUnit.assertEquals("The document should be created", doc.model, getDoc.model);
-                fluid.tests.cleanUp (dbname);
+                gpii.tests.cleanUp (dbname);
             });
         });
     });
 
     jqUnit.asyncTest("Set: update document", function () {
         var dbname = "test";
-        var ds = fluid.pouchdb.dataSource({
+        var ds = gpii.pouchdb.dataSource({
             databaseName: dbname
         });
 
@@ -86,7 +86,7 @@ https://github.com/gpii/universal/LICENSE.txt
             ds.set(doc, function () {
                 ds.database.get(doc.id).then(function (getDoc) {
                     jqUnit.assertEquals("The document should be updated", doc.model, getDoc.model);
-                    fluid.tests.cleanUp (dbname);
+                    gpii.tests.cleanUp (dbname);
                 });
             });
         });
@@ -94,7 +94,7 @@ https://github.com/gpii/universal/LICENSE.txt
 
     jqUnit.asyncTest("Get", function () {
         var dbname = "test";
-        var ds = fluid.pouchdb.dataSource({
+        var ds = gpii.pouchdb.dataSource({
             databaseName: dbname
         });
 
@@ -109,14 +109,14 @@ https://github.com/gpii/universal/LICENSE.txt
         }).then(function () {
             ds.get(doc, function (result) {
                 jqUnit.assertEquals("The model should have been returned", doc.model, result);
-                fluid.tests.cleanUp (dbname);
+                gpii.tests.cleanUp (dbname);
             });
         });
     });
 
     jqUnit.asyncTest("Get: query view", function () {
         var dbname = "test";
-        var ds = fluid.pouchdb.dataSource({
+        var ds = gpii.pouchdb.dataSource({
             databaseName: dbname
         });
 
@@ -137,14 +137,14 @@ https://github.com/gpii/universal/LICENSE.txt
         }).then(function () {
             ds.get({id: "nameView", query: {}}, function (doc) {
                 jqUnit.assertEquals("The correct value should be returned from the query.", newDocName, doc[0].key);
-                fluid.tests.cleanUp (dbname);
+                gpii.tests.cleanUp (dbname);
             });
         });
     });
 
     jqUnit.asyncTest("Delete", function () {
         var dbname = "test";
-        var ds = fluid.pouchdb.dataSource({
+        var ds = gpii.pouchdb.dataSource({
             databaseName: dbname
         });
 
@@ -160,7 +160,7 @@ https://github.com/gpii/universal/LICENSE.txt
             ds["delete"](doc, function () {
                 ds.database.get(doc.id)["catch"](function (err) {
                     jqUnit.assertTrue("The document should no longer exist", err);
-                    fluid.tests.cleanUp (dbname);
+                    gpii.tests.cleanUp (dbname);
                 });
             });
         });
@@ -168,14 +168,14 @@ https://github.com/gpii/universal/LICENSE.txt
 
     jqUnit.asyncTest("afterChange event", function () {
         var dbname = "test";
-        var ds = fluid.pouchdb.dataSource({
+        var ds = gpii.pouchdb.dataSource({
             databaseName: dbname,
             listeners: {
                 afterChange: [{
                     listener: "jqUnit.assert",
                     args: ["The afterChange event should have fired."]
                 }, {
-                    listener: "fluid.tests.cleanUp",
+                    listener: "gpii.tests.cleanUp",
                     args: [dbname],
                     priority: "last"
                 }]
@@ -195,7 +195,7 @@ https://github.com/gpii/universal/LICENSE.txt
 
     jqUnit.asyncTest("createView: view added", function () {
         var dbname = "test";
-        var ds = fluid.pouchdb.dataSource({
+        var ds = gpii.pouchdb.dataSource({
             databaseName: dbname
         });
 
@@ -211,14 +211,14 @@ https://github.com/gpii/universal/LICENSE.txt
             ds.database.get("_design/" + viewSetup.name).then(function (doc) {
                 jqUnit.assertEquals("The map function should be added", viewSetup.map, doc.views[viewSetup.name].map);
                 jqUnit.assertEquals("The reduce function should be added", viewSetup.reduce, doc.views[viewSetup.name].reduce);
-                fluid.tests.cleanUp (dbname);
+                gpii.tests.cleanUp (dbname);
             });
         });
     });
 
     jqUnit.asyncTest("createView: assert view", function () {
         var dbname = "test";
-        var ds = fluid.pouchdb.dataSource({
+        var ds = gpii.pouchdb.dataSource({
             databaseName: dbname
         });
 
@@ -244,7 +244,7 @@ https://github.com/gpii/universal/LICENSE.txt
             ds.database.post(owner).then(function () {
                 ds.get({id: viewSetup.name, query: {reduce: true}}, function (doc) {
                     jqUnit.assertEquals("Total number of pets should be calculated.", 5, doc[0].value);
-                    fluid.tests.cleanUp (dbname);
+                    gpii.tests.cleanUp (dbname);
                 });
             });
         });

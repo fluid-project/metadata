@@ -11,9 +11,9 @@ https://github.com/gpii/universal/LICENSE.txt
 (function ($, fluid) {
     "use strict";
 
-    fluid.registerNamespace("fluid.tests");
+    fluid.registerNamespace("gpii.tests");
 
-    fluid.defaults("fluid.tests.videoPanelTests", {
+    fluid.defaults("gpii.tests.videoPanelTests", {
         gradeNames: ["fluid.test.testEnvironment", "autoInit"],
         components: {
             videoPanel: {
@@ -29,12 +29,12 @@ https://github.com/gpii/universal/LICENSE.txt
                 }
             },
             videoPanelTester: {
-                type: "fluid.tests.videoPanelTester"
+                type: "gpii.tests.videoPanelTester"
             }
         }
     });
 
-    fluid.tests.checkInit = function ( expectedRadiobuttons, expectedCheckboxes) {
+    gpii.tests.checkInit = function ( expectedRadiobuttons, expectedCheckboxes) {
         return function (that) {
             var radiobuttons = that.locate("flashingRow");
             var checkboxes = that.container.find("[type='checkbox']");
@@ -52,17 +52,17 @@ https://github.com/gpii/universal/LICENSE.txt
         };
     };
 
-    fluid.tests.clickCheckbox = function (videoPanel, attribute) {
+    gpii.tests.clickCheckbox = function (videoPanel, attribute) {
         videoPanel.locate(attribute).click();
     };
 
-    fluid.tests.checkModel = function (attribute, value) {
+    gpii.tests.checkModel = function (attribute, value) {
         return function (newModelValue) {
             jqUnit.assertEquals("The model for " + attribute + " has been updated correctly", value, newModelValue);
         };
     };
 
-    fluid.defaults("fluid.tests.videoPanelTester", {
+    fluid.defaults("gpii.tests.videoPanelTester", {
         gradeNames: ["fluid.test.testCaseHolder", "autoInit"],
         modules: [{
             name: "Test video panel",
@@ -70,7 +70,7 @@ https://github.com/gpii/universal/LICENSE.txt
                 expect: 6,
                 name: "Init",
                 sequence: [{
-                    listenerMaker: "fluid.tests.checkInit",
+                    listenerMaker: "gpii.tests.checkInit",
                     makerArgs: [3, 2],
                     spec: {priority: "last"},
                     event: "{videoPanelTests videoPanel}.events.onReady"
@@ -82,18 +82,18 @@ https://github.com/gpii/universal/LICENSE.txt
                 expect: 2,
                 name: "Click on a video attribute",
                 sequence: [{
-                    func: "fluid.tests.clickCheckbox",
+                    func: "gpii.tests.clickCheckbox",
                     args: ["{videoPanel}", "highContrast"]
                 }, {
-                    listenerMaker: "fluid.tests.checkModel",
+                    listenerMaker: "gpii.tests.checkModel",
                     makerArgs: ["highContrast", true],
                     spec: {path: "highContrast", priority: "last"},
                     changeEvent: "{videoPanel}.applier.modelChanged"
                 }, {
-                    func: "fluid.tests.clickCheckbox",
+                    func: "gpii.tests.clickCheckbox",
                     args: ["{videoPanel}", "signLang"]
                 }, {
-                    listenerMaker: "fluid.tests.checkModel",
+                    listenerMaker: "gpii.tests.checkModel",
                     makerArgs: ["signLang", true],
                     spec: {path: "signLanguage", priority: "last"},
                     changeEvent: "{videoPanel}.applier.modelChanged"
@@ -104,15 +104,15 @@ https://github.com/gpii/universal/LICENSE.txt
 
     $(document).ready(function () {
         fluid.test.runTests([
-            "fluid.tests.videoPanelTests"
+            "gpii.tests.videoPanelTests"
         ]);
     });
 
-    fluid.tests.clickFlashing = function (videoPanel, flashingValue) {
+    gpii.tests.clickFlashing = function (videoPanel, flashingValue) {
         videoPanel.container.find("[value='" + flashingValue + "']").click();
     };
 
-    fluid.tests.addModelListenerForFlashing = function (that, expectedValue) {
+    gpii.tests.addModelListenerForFlashing = function (that, expectedValue) {
         that.applier.modelChanged.addListener("flashing", function (newModelValue) {
             jqUnit.assertEquals("The model for flashing attribute has been updated correctly - " + expectedValue, expectedValue, newModelValue);
             that.applier.modelChanged.removeListener("checkModel");
@@ -129,14 +129,14 @@ https://github.com/gpii/universal/LICENSE.txt
             },
             listeners: {
                 onReady: function (that) {
-                    fluid.tests.addModelListenerForFlashing(that, "flashing");
-                    fluid.tests.clickFlashing(that, "flashing");
+                    gpii.tests.addModelListenerForFlashing(that, "flashing");
+                    gpii.tests.clickFlashing(that, "flashing");
 
-                    fluid.tests.addModelListenerForFlashing(that, "noFlashing");
-                    fluid.tests.clickFlashing(that, "noFlashing");
+                    gpii.tests.addModelListenerForFlashing(that, "noFlashing");
+                    gpii.tests.clickFlashing(that, "noFlashing");
 
-                    fluid.tests.addModelListenerForFlashing(that, "unknown");
-                    fluid.tests.clickFlashing(that, "unknown");
+                    gpii.tests.addModelListenerForFlashing(that, "unknown");
+                    gpii.tests.clickFlashing(that, "unknown");
 
                     jqUnit.start();
                 }

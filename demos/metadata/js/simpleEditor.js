@@ -13,13 +13,13 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 (function ($, fluid) {
     "use strict";
 
-    fluid.registerNamespace("fluid.simpleEditor");
+    fluid.registerNamespace("gpii.simpleEditor");
 
-    fluid.simpleEditor.preventDefault = function (event) {
+    gpii.simpleEditor.preventDefault = function (event) {
         event.preventDefault();
     };
 
-    fluid.defaults("fluid.simpleEditor", {
+    fluid.defaults("gpii.simpleEditor", {
         gradeNames: ["fluid.viewRelayComponent", "autoInit"],
         selectors: {
             controls: ".gpiic-metadataDemo-resourceEditor-toolbar-button",
@@ -45,23 +45,23 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         },
         modelListeners: {
             "markup": {
-                func: "fluid.simpleEditor.saveMarkup",
+                func: "gpii.simpleEditor.saveMarkup",
                 args: ["{dataSource}.set", "{change}.value"]
             }
         },
         invokers: {
             setContent: {
-                funcName: "fluid.simpleEditor.setContent",
+                funcName: "gpii.simpleEditor.setContent",
                 args: ["{that}.dom.content", "{arguments}.0"]
             },
             updateModelMarkup: {
-                funcName: "fluid.simpleEditor.updateModelMarkup",
+                funcName: "gpii.simpleEditor.updateModelMarkup",
                 args: ["{that}"]
             }
         },
         components: {
             insertVideo: {
-                type: "fluid.simpleEditor.insertVideo",
+                type: "gpii.simpleEditor.insertVideo",
                 container: "{that}.container",
                 options: {
                     model: {
@@ -81,7 +81,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         dynamicComponents: {
             controls: {
                 sources: "{that}.dom.controls",
-                type: "fluid.simpleEditor.button",
+                type: "gpii.simpleEditor.button",
                 container: "{source}",
                 createOnEvent: "{simpleEditor}.events.onContentAreaReady",
                 options: {
@@ -127,25 +127,25 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }
     });
 
-    fluid.simpleEditor.saveMarkup = function (setFunc, newValue) {
+    gpii.simpleEditor.saveMarkup = function (setFunc, newValue) {
         if (newValue !== undefined) {
             setFunc({id: "markup", model: newValue});
         }
     };
 
-    fluid.simpleEditor.setContent = function (elm, content) {
+    gpii.simpleEditor.setContent = function (elm, content) {
         if (content || content === "") {
             elm.html(content);
         }
     };
 
-    fluid.simpleEditor.updateModelMarkup = function (that) {
+    gpii.simpleEditor.updateModelMarkup = function (that) {
         that.applier.change("markup", that.locate("content").html());
     };
 
-    fluid.registerNamespace("fluid.simpleEditor.button");
+    fluid.registerNamespace("gpii.simpleEditor.button");
 
-    fluid.simpleEditor.button.keyCodes = {
+    gpii.simpleEditor.button.keyCodes = {
         B: 66,
         I: 73,
         U: 85,
@@ -155,7 +155,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         COMMAND: "metaKey"
     };
 
-    fluid.simpleEditor.button.isMacOS = function () {
+    gpii.simpleEditor.button.isMacOS = function () {
         var MAC = "MAC";
         var os = navigator.platform;
 
@@ -163,23 +163,23 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     };
 
     fluid.enhance.check({
-        "fluid.macOS": "fluid.simpleEditor.button.isMacOS"
+        "fluid.macOS": "gpii.simpleEditor.button.isMacOS"
     });
 
-    fluid.defaults("fluid.simpleEditor.button.macOSModifier", {
+    fluid.defaults("gpii.simpleEditor.button.macOSModifier", {
         gradeNames: ["fluid.littleComponent", "autoInit"],
         members: {
             modifierKey: "META"
         }
     });
 
-    fluid.defaults("fluid.simpleEditor.button", {
+    fluid.defaults("gpii.simpleEditor.button", {
         gradeNames: ["fluid.viewRelayComponent", "fluid.progressiveCheckerForComponent", "autoInit"],
-        componentName: "fluid.simpleEditor.button",
+        componentName: "gpii.simpleEditor.button",
         progressiveCheckerOptions: {
             checks: [{
                 feature: "{fluid.macOS}",
-                contextName: "fluid.simpleEditor.button.macOSModifier"
+                contextName: "gpii.simpleEditor.button.macOSModifier"
             }]
         },
         members: {
@@ -233,49 +233,49 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         },
         invokers: {
             handleCommand: {
-                funcName: "fluid.simpleEditor.button.command",
+                funcName: "gpii.simpleEditor.button.command",
                 args: ["{arguments}.0", "{that}.controlType"]
             },
             attachKeyboardShortcut: {
-                funcName: "fluid.simpleEditor.button.attachKeyboardShortcut",
+                funcName: "gpii.simpleEditor.button.attachKeyboardShortcut",
                 args: ["{arguments}.0", "{arguments}.1", "{that}.shortCutKey", "{that}.modifierKey"]
             },
             updateActiveState: {
-                funcName: "fluid.simpleEditor.button.updateActiveState",
+                funcName: "gpii.simpleEditor.button.updateActiveState",
                 args: ["{that}.controlType", "{that}.container", "{that}.options.styles.active"]
             },
             updateActiveStateForKeys: {
-                funcName: "fluid.simpleEditor.button.filterKeys",
+                funcName: "gpii.simpleEditor.button.filterKeys",
                 args: ["{arguments}.0", [37, 38, 39, 40], "{that}.updateActiveState"]
             },
             addAria: {
-                funcName: "fluid.simpleEditor.button.addAria",
+                funcName: "gpii.simpleEditor.button.addAria",
                 args: ["{that}.container", "{that}.controlType", "{that}.options.ariaOptions.labelIdPrefix", "{that}.options.ariaOptions.editorToControl"]
             }
         }
     });
 
-    fluid.simpleEditor.button.command = function (event, command) {
+    gpii.simpleEditor.button.command = function (event, command) {
         document.execCommand(command, false, null);
         event.preventDefault();
     };
 
-    fluid.simpleEditor.button.updateActiveState = function (command, elm, activeStyle) {
+    gpii.simpleEditor.button.updateActiveState = function (command, elm, activeStyle) {
         var isActive = document.queryCommandState(command);
         elm.toggleClass(activeStyle, isActive);
         elm.attr("aria-pressed", isActive);
     };
 
-    fluid.simpleEditor.button.filterKeys = function (event, keys, handler) {
+    gpii.simpleEditor.button.filterKeys = function (event, keys, handler) {
         keys = fluid.makeArray(keys);
         if ($.inArray(event.keyCode, keys) >= 0 || $.inArray(event.which, keys) >= 0) {
             handler();
         }
     };
 
-    fluid.simpleEditor.button.attachKeyboardShortcut = function (elm, callback, shortCutKey, modifierKey) {
-        var key = fluid.simpleEditor.button.keyCodes[shortCutKey.toUpperCase()];
-        var modifier = modifierKey && fluid.simpleEditor.button.keyCodes[modifierKey.toUpperCase()];
+    gpii.simpleEditor.button.attachKeyboardShortcut = function (elm, callback, shortCutKey, modifierKey) {
+        var key = gpii.simpleEditor.button.keyCodes[shortCutKey.toUpperCase()];
+        var modifier = modifierKey && gpii.simpleEditor.button.keyCodes[modifierKey.toUpperCase()];
 
         // needed to use keydown instead of keyup to prevent browser default actions
         $(elm).keydown(function (event) {
@@ -287,7 +287,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
     };
 
-    fluid.simpleEditor.button.addAria = function (container, controlType, labelIdPrefix, editorToControl) {
+    gpii.simpleEditor.button.addAria = function (container, controlType, labelIdPrefix, editorToControl) {
         container.attr("role", "button");
         container.attr("aria-pressed", false);
         container.attr("aria-controls", editorToControl.replace("#", ""));
@@ -297,7 +297,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         container.attr("aria-labelledby", labelId);
     };
 
-    fluid.defaults("fluid.simpleEditor.insertVideo", {
+    fluid.defaults("gpii.simpleEditor.insertVideo", {
         gradeNames: ["fluid.viewRelayComponent", "autoInit"],
         disableVideoInput: false,    // boolean. Default value: false. At true, disable the input field and button for video url input.
         selectors: {
@@ -338,7 +338,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             },
             "onCreate.setInitialSubmitActiveState": "{that}.updateActiveState",
             "onCreate.applyVideoInputState": {
-                listener: "fluid.simpleEditor.insertVideo.applyVideoInputState",
+                listener: "gpii.simpleEditor.insertVideo.applyVideoInputState",
                 args: ["{that}.options.disableVideoInput", "{that}.disableVideoInputField", "{that}.disableSubmitButton"]
             },
             "onCreate.submit": {
@@ -349,7 +349,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             "onCreate.submitPreventDefault": {
                 "this": "{that}.dom.submit",
                 "method": "click",
-                "args": [fluid.simpleEditor.preventDefault]
+                "args": [gpii.simpleEditor.preventDefault]
             },
             "onCreate.updateSubmitActiveState": {
                 "this": "{that}.dom.url",
@@ -357,39 +357,39 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 "args": ["input", "{that}.updateActiveState"]
             },
             "onCreate.bindEnter": {
-                listener: "fluid.simpleEditor.insertVideo.bindEnter",
+                listener: "gpii.simpleEditor.insertVideo.bindEnter",
                 args: ["{that}.dom.url", "{that}.dom.submit"]
             },
             "afterInsert.updateModelUrl": "{that}.updateModelUrl"
         },
         invokers: {
             insertPlaceHolder: {
-                funcName: "fluid.simpleEditor.insertVideo.insertPlaceHolder",
+                funcName: "gpii.simpleEditor.insertVideo.insertPlaceHolder",
                 args: ["{that}.dom.content", "{that}.options.placeHolderID", "{that}.options.markup.placeHolder", "{that}.options.styles.placeHolder", "{that}.events.afterInsert.fire"]
             },
             updateModelUrl: {
-                funcName: "fluid.simpleEditor.insertVideo.updateModelUrl",
+                funcName: "gpii.simpleEditor.insertVideo.updateModelUrl",
                 args: ["{that}"]
             },
             updateActiveState: {
-                funcName: "fluid.simpleEditor.insertVideo.updateActiveState",
+                funcName: "gpii.simpleEditor.insertVideo.updateActiveState",
                 args: ["{that}.dom.url", "{that}.enableSubmitButton", "{that}.disableSubmitButton"]
             },
             setURLText: {
-                funcName: "fluid.simpleEditor.insertVideo.setURLText",
+                funcName: "gpii.simpleEditor.insertVideo.setURLText",
                 args: ["{that}.dom.url", "{that}.model.url"],
                 dynamic: true
             },
             disableVideoInputField: {
-                funcName: "fluid.simpleEditor.insertVideo.disableVideoInputField",
+                funcName: "gpii.simpleEditor.insertVideo.disableVideoInputField",
                 args: "{that}.dom.url"
             },
             disableSubmitButton: {
-                funcName: "fluid.simpleEditor.insertVideo.disableSubmitButton",
+                funcName: "gpii.simpleEditor.insertVideo.disableSubmitButton",
                 args: "{that}.dom.submit"
             },
             enableSubmitButton: {
-                funcName: "fluid.simpleEditor.insertVideo.enableSubmitButton",
+                funcName: "gpii.simpleEditor.insertVideo.enableSubmitButton",
                 args: "{that}.dom.submit"
             }
         },
@@ -399,7 +399,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
     });
 
-    fluid.simpleEditor.insertVideo.insertPlaceHolder = function (content, placeHolderID, markup, styles, callback) {
+    gpii.simpleEditor.insertVideo.insertPlaceHolder = function (content, placeHolderID, markup, styles, callback) {
         var placeHolder = content.find(placeHolderID);
         if (!placeHolder.length) {
             $(markup).attr({
@@ -412,15 +412,15 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }
     };
 
-    fluid.simpleEditor.insertVideo.updateModelUrl = function (that) {
+    gpii.simpleEditor.insertVideo.updateModelUrl = function (that) {
         that.applier.change("url", that.locate("url").val());
     };
 
-    fluid.simpleEditor.insertVideo.setURLText = function (urlElm, url) {
+    gpii.simpleEditor.insertVideo.setURLText = function (urlElm, url) {
         urlElm.val(url);
     };
 
-    fluid.simpleEditor.insertVideo.updateActiveState = function (urlField, enableButtonFunc, disableButtonFunc) {
+    gpii.simpleEditor.insertVideo.updateActiveState = function (urlField, enableButtonFunc, disableButtonFunc) {
         if (!urlField.val()) {
             disableButtonFunc();
         } else {
@@ -428,26 +428,26 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }
     };
 
-    fluid.simpleEditor.insertVideo.disableVideoInputField = function (urlElm) {
+    gpii.simpleEditor.insertVideo.disableVideoInputField = function (urlElm) {
         urlElm.attr("disabled", "disabled");
     };
 
-    fluid.simpleEditor.insertVideo.disableSubmitButton = function (buttonElm) {
+    gpii.simpleEditor.insertVideo.disableSubmitButton = function (buttonElm) {
         buttonElm.addClass("disabled");
     };
 
-    fluid.simpleEditor.insertVideo.enableSubmitButton = function (buttonElm) {
+    gpii.simpleEditor.insertVideo.enableSubmitButton = function (buttonElm) {
         buttonElm.removeClass("disabled");
     };
 
-    fluid.simpleEditor.insertVideo.applyVideoInputState = function (disableVideoInput, disableInputFieldFunc, disableButtonFunc) {
+    gpii.simpleEditor.insertVideo.applyVideoInputState = function (disableVideoInput, disableInputFieldFunc, disableButtonFunc) {
         if (disableVideoInput) {
             disableInputFieldFunc();
             disableButtonFunc();
         }
     };
 
-    fluid.simpleEditor.insertVideo.bindEnter = function (urlElm, submitElm) {
+    gpii.simpleEditor.insertVideo.bindEnter = function (urlElm, submitElm) {
         fluid.activatable(urlElm, null, {
             additionalBindings: {
                 key: $.ui.keyCode.ENTER,
