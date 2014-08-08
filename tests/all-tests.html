@@ -11,7 +11,7 @@
 <!-- Stupid bloody escaping rules:
     find . -name "*-Test.html" | awk '{print "\""$1"\","}' -->
     <script>
-    QUnit.testSuites([
+    QUnit.testSuites("Metadata Authoring", [
         "./html/audioPanel-Test.html",
         "./html/captionsPanel-Test.html",
         "./html/indicator-Test.html",
@@ -22,7 +22,9 @@
         "./html/resourceInputPanel-Test.html",
         "./html/transcriptsPanel-Test.html",
         "./html/videoMetadataPanel-Test.html",
-        "./html/videoPanel-Test.html",
+        "./html/videoPanel-Test.html"
+    ]);
+    QUnit.testSuites("Metadata Feedback Tool", [
         "./components/feedback/html/bindDialog-Test.html",
         "./components/feedback/html/feedback-Test.html",
         "./components/feedback/html/matchConfirmation-Test.html"

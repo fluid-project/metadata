@@ -128,6 +128,10 @@ var gpii = gpii || {};
                 method: "click",
                 args: "{that}.bindButton"
             },
+            "onCreate.bindKeyboard": {
+                listener: "fluid.activatable",
+                args: ["{that}.container", "{that}.bindButton"]
+            },
             "onCreate.bindFocusin": {
                 "this": "{that}.container",
                 method: "focusin",
@@ -162,7 +166,8 @@ var gpii = gpii || {};
         },
         modelListeners: {
             "isActive": "gpii.metadata.feedback.handleActiveState({change}.value, {that}.container, {that}.options.styles.active)",
-            "isDialogOpen": "gpii.metadata.feedback.handleDialogState({that}, {change}.value, {that}.container, {that}.dialog, {that}.options.styles.dialogOpen, {that}.closeDialog, {that}.bindIframeClick, {that}.unbindIframeClick)"
+            // passing in invokers directly to ensure they are resolved at the correct time.
+            "isDialogOpen": "gpii.metadata.feedback.handleDialogState({that}, {change}.value, {that}.closeDialog, {that}.bindIframeClick, {that}.unbindIframeClick)"
         },
         invokers: {
             bindButton: {
@@ -216,7 +221,7 @@ var gpii = gpii || {};
                 open: function () {
                     that.applier.change("isDialogOpen", true);
                 },
-                close: function (event) {
+                close: function () {
                     that.applier.change("isDialogOpen", false);
                 }
             };
@@ -238,17 +243,28 @@ var gpii = gpii || {};
         buttonDom.attr("aria-pressed", isActive);
     };
 
-    gpii.metadata.feedback.handleDialogState = function (that, isDialogOpen, buttonDom, dialog, dialogOpenCss, closeDialogFunc, bindIframeClickFunc, unbindIframeClickFunc) {
+    gpii.metadata.feedback.handleDialogState = function (that, isDialogOpen, closeDialogFn, bindIframeClickFn, unbindIframeClickFn) {
+        var button = that.container;
+        var dialogStyle = that.options.styles.dialogOpen;
+        var dialog = that.dialog;
+
         if (isDialogOpen) {
-            buttonDom.addClass(dialogOpenCss);
-            bindIframeClickFunc();
+            button.addClass(dialogStyle);
+            bindIframeClickFn();
             fluid.globalDismissal({
-                button: buttonDom,
+                button: button,
                 dialog: dialog
-            }, closeDialogFunc);
+            }, closeDialogFn);
         } else {
-            buttonDom.removeClass(dialogOpenCss);
-            unbindIframeClickFunc();
+            // manually unbind fluid.globalDismissal; particularly for cases where the dialog is closed without a click outside the component.
+            if (dialog) {
+                fluid.globalDismissal({
+                    button: that.container,
+                    dialog: dialog
+                }, null);
+            }
+            button.removeClass(dialogStyle);
+            unbindIframeClickFn();
         }
     };
 
@@ -273,15 +289,14 @@ var gpii = gpii || {};
     // which should trigger the tooltip to reappear.
     gpii.metadata.feedback.reopenTooltip = function (tooltip, isDialogOpen) {
         if (!isDialogOpen) {
-            tooltip.open();
+            tooltip.container.tooltip("open");
         }
     };
 
     gpii.metadata.feedback.unbindESC = function (elm) {
         var elms = elm.contents().addBack(); // self plus decendants
         elms.keyup(function (e) {
-            // ESC keycode === 27
-            if (e.keyCode === 27) {
+            if (e.keyCode === $.ui.keyCode.ESCAPE) {
                 e.stopImmediatePropagation();
             }
         });
