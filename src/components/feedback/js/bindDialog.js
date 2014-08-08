@@ -44,7 +44,7 @@ var gpii = gpii || {};
             },
             tooltip: {
                 type: "fluid.tooltip",
-                container: "{bindDialog}.container",
+                container: "{bindDialog}.dom.icon",
                 options: {
                     content: "{bindDialog}.options.strings.buttonLabel",
                     styles: {
@@ -80,13 +80,17 @@ var gpii = gpii || {};
             dialog: null,
             dialogContainer: null
         },
+        selectors: {
+            icon: ".gpiic-icon"
+        },
         strings: {
             buttonLabel: null
         },
         styles: {
             active: "gpii-icon-active",
             dialogOpen: "gpii-icon-arrow",
-            focus: "gpii-feedback-buttonFocus"
+            focus: "gpii-feedback-buttonFocus",
+            hover: "gpii-feedback-buttonHover"
         },
         markup: {
             dialog: "<section>&nbsp;</section>"
@@ -109,8 +113,10 @@ var gpii = gpii || {};
             onDialogContentReady: null,
             onBindDialogHandlers: null,
             onDialogReady: null,
-            focusin: null,
-            focusout: null
+            onFocusIcon: null,
+            onBlurIcon: null,
+            onHoverIcon: null,
+            onHoverOffIcon: null
         },
         listeners: {
             "onCreate.addAriaRole": {
@@ -132,16 +138,27 @@ var gpii = gpii || {};
                 listener: "fluid.activatable",
                 args: ["{that}.container", "{that}.bindButton"]
             },
-            "onCreate.bindFocusin": {
-                "this": "{that}.container",
-                method: "focusin",
-                args: ["{that}.events.focusin.fire"]
+            "onCreate.bindFocus": {
+                "this": "{that}.dom.icon",
+                method: "focus",
+                args: ["{that}.events.onFocusIcon.fire"]
 
             },
-            "onCreate.bindFocusout": {
-                "this": "{that}.container",
-                method: "focusout",
-                args: ["{that}.events.focusout.fire"]
+            "onCreate.bindBlur": {
+                "this": "{that}.dom.icon",
+                method: "blur",
+                args: ["{that}.events.onBlurIcon.fire"]
+            },
+            "onCreate.bindHover": {
+                "this": "{that}.dom.icon",
+                method: "mouseover",
+                args: ["{that}.events.onHoverIcon.fire"]
+
+            },
+            "onCreate.bindHoverOff": {
+                "this": "{that}.dom.icon",
+                method: "mouseleave",
+                args: ["{that}.events.onHoverOffIcon.fire"]
             },
             "onDialogContentReady.instantiateDialog": "{that}.instantiateDialog",
             "onDialogReady.openDialog": {
@@ -149,15 +166,25 @@ var gpii = gpii || {};
                 method: "dialog",
                 args: "open"
             },
-            "focusin.addFocusClass": {
+            "onFocusIcon.addFocusClass": {
                 "this": "{that}.container",
                 method: "addClass",
                 args: ["{that}.options.styles.focus"]
             },
-            "focusout.removeFocusClass": {
+            "onBlurIcon.removeFocusClass": {
                 "this": "{that}.container",
                 method: "removeClass",
                 args: ["{that}.options.styles.focus"]
+            },
+            "onHoverIcon.addFocusClass": {
+                "this": "{that}.container",
+                method: "addClass",
+                args: ["{that}.options.styles.hover"]
+            },
+            "onHoverOffIcon.removeFocusClass": {
+                "this": "{that}.container",
+                method: "removeClass",
+                args: ["{that}.options.styles.hover"]
             }
         },
         model: {

@@ -128,7 +128,7 @@ _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
 }
 
 .gpii-feedback .gpii-icon-arrow,
-.gpii-feedback-button:hover,
+.gpii-feedback .gpii-feedback-buttonHover,
 .gpii-feedback .gpii-feedback-buttonFocus {
     margin-right: -2.21875rem;
     margin-top: -1.88rem;
@@ -140,7 +140,7 @@ _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
 }
 
 .gpii-feedback .gpii-icon-arrow:after,
-.gpii-feedback-button:hover:after,
+.gpii-feedback-buttonHover:after,
 .gpii-feedback-buttonFocus:after {
     bottom: -2rem;
     left: -2.5rem;
@@ -152,7 +152,7 @@ _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
     display: inline-block;
 }
 
-.gpii-feedback-button:hover:before {
+.gpii-feedback-buttonHover:before {
     border-top: 0.313rem solid #F6D962;
     content: "";
     width: 2.625rem;
@@ -244,7 +244,7 @@ _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
 }
 
 .fl-theme-bw .gpii-icon:before,
-.fl-theme-bw .gpii-feedback-button:hover:before,
+.fl-theme-bw .gpii-feedback-buttonHover:before,
 .fl-theme-bw .gpii-feedback-buttonFocus:before,
 .fl-theme-bw .gpii-feedback-buttonFocus .gpii-icon:before,
 .fl-theme-wb .gpii-icon:after,
@@ -258,7 +258,7 @@ _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
 }
 
 .fl-theme-wb .gpii-icon:before,
-.fl-theme-wb .gpii-feedback-button:hover:before,
+.fl-theme-wb .gpii-feedback-buttonHover:before,
 .fl-theme-wb .gpii-feedback-buttonFocus:before,
 .fl-theme-wb .gpii-feedback-buttonFocus .gpii-icon:before,
 .fl-theme-bw .gpii-icon:after,
@@ -272,7 +272,7 @@ _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
 }
 
 .fl-theme-yb .gpii-icon:before,
-.fl-theme-yb .gpii-feedback-button:hover:before,
+.fl-theme-yb .gpii-feedback-buttonHover:before,
 .fl-theme-yb .gpii-feedback-buttonFocus:before,
 .fl-theme-yb .gpii-feedback-buttonFocus .gpii-icon:before,
 .fl-theme-by .gpii-icon:after,
@@ -286,7 +286,7 @@ _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
 }
 
 .fl-theme-by .gpii-icon:before,
-.fl-theme-by .gpii-feedback-button:hover:before,
+.fl-theme-by .gpii-feedback-buttonHover:before,
 .fl-theme-by .gpii-feedback-buttonFocus:before,
 .fl-theme-by .gpii-feedback-buttonFocus .gpii-icon:before,
 .fl-theme-yb .gpii-icon:after,
@@ -300,7 +300,7 @@ _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
 }
 
 .fl-theme-lgdg .gpii-icon:before,
-.fl-theme-lgdg .gpii-feedback-button:hover:before,
+.fl-theme-lgdg .gpii-feedback-buttonHover:before,
 .fl-theme-lgdg .gpii-feedback-buttonFocus:before,
 .fl-theme-lgdg .gpii-feedback-buttonFocus .gpii-icon:before {
     color: #bdbdbb !important;
@@ -344,28 +344,28 @@ _:-ms-fullscreen, .gpii-icon.gpii-icon-unavailable:after {
 }
 
 .fl-theme-bw .gpii-icon-arrow:after,
-.fl-theme-bw .gpii-feedback-button:hover:after,
+.fl-theme-bw .gpii-feedback-buttonHover:after,
 .fl-theme-by .gpii-icon-arrow:after,
-.fl-theme-by .gpii-feedback-button:hover:after,
+.fl-theme-by .gpii-feedback-buttonHover:after,
 .fl-theme-yb .gpii-feedback-buttonFocus:after,
 .fl-theme-wb .gpii-feedback-buttonFocus:after {
     border-bottom-color: #000 !important;
 }
 
 .fl-theme-wb .gpii-icon-arrow:after,
-.fl-theme-wb .gpii-feedback-button:hover:after,
+.fl-theme-wb .gpii-feedback-buttonHover:after,
 .fl-theme-bw .gpii-feedback-buttonFocus:after {
     border-bottom-color: #fff !important;
 }
 
 .fl-theme-yb .gpii-icon-arrow:after,
-.fl-theme-yb .gpii-feedback-button:hover:after,
+.fl-theme-yb .gpii-feedback-buttonHover:after,
 .fl-theme-by .gpii-feedback-buttonFocus:after {
     border-bottom-color: #ff0 !important;
 }
 
 .fl-theme-lgdg .gpii-icon-arrow:after,
-.fl-theme-lgdg .gpii-feedback-button:hover:after {
+.fl-theme-lgdg .gpii-feedback-buttonHover:after {
     border-bottom-color: #bdbdbb !important;
 }
 

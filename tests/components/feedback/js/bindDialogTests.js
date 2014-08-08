@@ -16,10 +16,15 @@ https://github.com/gpii/universal/LICENSE.txt
     gpii.tests.bindDialog.assertInit = function (that) {
         jqUnit.assertEquals("The aria button role is set", "button", that.container.attr("role"));
         jqUnit.assertEquals("The aria label is set", that.options.strings.buttonLabel, that.container.attr("aria-label"));
-        var events = ["click", "focusin", "focusout"];
-        var boundEvents = $._data(that.container[0], "events"); // retrieve the set of events bound to the container element.
-        fluid.each(events, function (eventName) {
-            jqUnit.assertTrue("The " + eventName + " event should be bound on the container", boundEvents[eventName]);
+        var containerEvents = ["click"];
+        var iconEvents = ["focus", "blur", "mouseover", "mouseout" /* jQuery records mouseleave as mouseout */];
+        var boundContainerEvents = $._data(that.container[0], "events"); // retrieve the set of events bound to the container element.
+        var boundIconEvents = $._data(that.locate("icon")[0], "events"); // retrieve the set of events bound to the container element.
+        fluid.each(containerEvents, function (eventName) {
+            jqUnit.assertTrue("The " + eventName + " event should be bound on the container", boundContainerEvents[eventName]);
+        });
+        fluid.each(iconEvents, function (eventName) {
+            jqUnit.assertTrue("The " + eventName + " event should be bound on the icon", boundIconEvents[eventName]);
         });
     };
 
@@ -77,7 +82,7 @@ https://github.com/gpii/universal/LICENSE.txt
         modules: [{
             name: "Initialization",
             tests: [{
-                expect: 5,
+                expect: 7,
                 name: "onCreate set values",
                 type: "test",
                 func: "gpii.tests.bindDialog.assertInit",
