@@ -71,6 +71,14 @@ var gpii = gpii || {};
                         "onCreate.unbindESC": {
                             listener: "gpii.metadata.feedback.unbindESC",
                             args: ["{that}.container"]
+                        },
+                        "afterOpen.updateModel": {
+                            func: "{bindDialog}.applier.change",
+                            args: ["isTooltipOpen", true]
+                        },
+                        "afterClose.updateModel": {
+                            func: "{bindDialog}.applier.change",
+                            args: ["isTooltipOpen", false]
                         }
                     }
                 }
@@ -88,7 +96,7 @@ var gpii = gpii || {};
         },
         styles: {
             active: "gpii-icon-active",
-            dialogOpen: "gpii-icon-arrow",
+            openIndicator: "gpii-icon-arrow",
             focus: "gpii-feedback-buttonFocus",
             hover: "gpii-feedback-buttonHover"
         },
@@ -189,12 +197,17 @@ var gpii = gpii || {};
         },
         model: {
             isActive: false,    // Keep track of the active state of the button
-            isDialogOpen: false
+            isDialogOpen: false,
+            isTooltipOpen: false
         },
         modelListeners: {
             "isActive": "gpii.metadata.feedback.handleActiveState({change}.value, {that}.container, {that}.options.styles.active)",
             // passing in invokers directly to ensure they are resolved at the correct time.
-            "isDialogOpen": "gpii.metadata.feedback.handleDialogState({that}, {change}.value, {that}.closeDialog, {that}.bindIframeClick, {that}.unbindIframeClick)"
+            "isDialogOpen": [
+                "gpii.metadata.feedback.handleDialogState({that}, {change}.value, {that}.closeDialog, {that}.bindIframeClick, {that}.unbindIframeClick)",
+                "gpii.metadata.feedback.handleIndicatorState({that}.container, {that}.model, {that}.options.styles.openIndicator)"
+            ],
+            "isTooltipOpen": "gpii.metadata.feedback.handleIndicatorState({that}.container, {that}.model, {that}.options.styles.openIndicator)"
         },
         invokers: {
             bindButton: {
@@ -272,11 +285,9 @@ var gpii = gpii || {};
 
     gpii.metadata.feedback.handleDialogState = function (that, isDialogOpen, closeDialogFn, bindIframeClickFn, unbindIframeClickFn) {
         var button = that.container;
-        var dialogStyle = that.options.styles.dialogOpen;
         var dialog = that.dialog;
 
         if (isDialogOpen) {
-            button.addClass(dialogStyle);
             bindIframeClickFn();
             fluid.globalDismissal({
                 button: button,
@@ -286,13 +297,16 @@ var gpii = gpii || {};
             // manually unbind fluid.globalDismissal; particularly for cases where the dialog is closed without a click outside the component.
             if (dialog) {
                 fluid.globalDismissal({
-                    button: that.container,
+                    button: button,
                     dialog: dialog
                 }, null);
             }
-            button.removeClass(dialogStyle);
             unbindIframeClickFn();
         }
+    };
+
+    gpii.metadata.feedback.handleIndicatorState= function (elm, model, style) {
+        elm.toggleClass(style, model.isDialogOpen || model.isTooltipOpen);
     };
 
     gpii.metadata.feedback.getIframes = function () {
