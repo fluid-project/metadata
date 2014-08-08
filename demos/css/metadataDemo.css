@@ -24,7 +24,7 @@
 .gpii-metadataDemo-demo {
     font-family: "OpenSans","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
     background-color: #F4F4E9;
-    min-width:38rem;
+    min-width: 38rem;
 }
 
 .gpii-metadataDemo-body {
@@ -297,7 +297,7 @@
     font-weight: bold;
 }
 
-.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar-button-italics a{
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar-button-italics a {
     font-style:italic;
 }
 
@@ -368,7 +368,7 @@
     background-color: #92d7e1;
 }
 
-.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-metadataPanel-header h3{
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-metadataPanel-header h3 {
     font-family: "RobotoSlab";
     color: ##161616;
     padding-top: 1.6rem;
@@ -420,7 +420,7 @@
     line-height: 1.6rem;
 }
 
-.gpii-metadataDemo-demo .fl-overviewPanel h1{
+.gpii-metadataDemo-demo .fl-overviewPanel h1 {
     color: #ccc;
     font-family: 'RobotoSlab';
 }

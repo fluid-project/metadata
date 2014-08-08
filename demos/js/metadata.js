@@ -16,7 +16,7 @@ var demo = demo || {};
     "use strict";
 
     fluid.defaults("demo.metadata", {
-        gradeNames: ["fluid.viewComponent", "autoInit"],
+        gradeNames: ["fluid.viewRelayComponent", "autoInit"],
         members: {
             databaseName: {
                 expander: {
@@ -29,7 +29,8 @@ var demo = demo || {};
                     funcName: "demo.metadata.disallowVideoInput",
                     args: ["{that}.databaseName", "{that}.options.defaultDbName"]
                 }
-            }
+            },
+            metadataPanelModel: null
         },
         defaultDbName: "Create_new_resource",
         disableVideoInput: "{that}.disableVideoInput",
@@ -53,13 +54,18 @@ var demo = demo || {};
         },
         events: {
             onReset: null,
+            onCreateMetadataPanel: null,
             onMarkupFetched: null,
             onMetadataModelFetched: null,
             afterVideoInserted: null
         },
         listeners: {
             onMarkupFetched: ["{simpleEditor}.setContent", "{markupViewer}.updateModelMarkup", "{preview}.updateModelMarkup"],
-            onMetadataModelFetched: ["{metadataPanel}.setModel", "{markupViewer}.updateModelMetadata", "{preview}.updateModelMetadata"],
+            onMetadataModelFetched: ["{markupViewer}.updateModelMetadata", "{preview}.updateModelMetadata", "{that}.updateMetadataPanel",
+            {
+                listener: "{simpleEditor}.applier.change",
+                args: ["url", "{arguments}.0.url"]
+            }],
             "onCreate.setTitle": {
                 "this": "{that}.dom.title",
                 "method": "text",
@@ -81,6 +87,17 @@ var demo = demo || {};
             },
             "onReset.resetCookie": {
                 listener: "{cookieStore}.resetCookie"
+            },
+            "onReset.destroyMetadataPanel": "{that}.doDestroy"
+        },
+        invokers: {
+            "doDestroy": {
+                funcName: "demo.metadata.doDestroy",
+                args: "{that}"
+            },
+            "updateMetadataPanel": {
+                funcName: "demo.metadata.updateMetadataPanel",
+                args: ["{that}", "{arguments}.0"]
             }
         },
         components: {
@@ -88,10 +105,6 @@ var demo = demo || {};
                 type: "fluid.simpleEditor",
                 container: "{that}.dom.simpleEditor",
                 options: {
-                    members: {
-                        applier: "{metadata}.applier"
-                    },
-                    model: "{metadata}.model",
                     modelListeners: {
                         "markup": [{
                             listener: "{markupViewer}.updateModelMarkup",
@@ -99,7 +112,11 @@ var demo = demo || {};
                         }, {
                             listener: "{preview}.updateModelMarkup",
                             args: "{change}.value"
-                        }]
+                        }],
+                        "url": {
+                            listener: "{metadata}.updateMetadataPanel",
+                            args: "{change}.value"
+                        }
                     },
                     listeners: {
                         "afterVideoInserted.escalateEvent": "{metadata}.events.afterVideoInserted"
@@ -107,14 +124,12 @@ var demo = demo || {};
                 }
             },
             metadataPanel: {
-                type: "fluid.metadata.metadataPanel",
+                type: "fluid.metadata.videoMetadataPanel",
                 container: "{that}.dom.metadataPanel",
+                createOnEvent: "onCreateMetadataPanel",
                 options: {
-                    gradeNames: ["fluid.prefs.modelRelay", "fluid.metadata.videoMetadataPanel", "fluid.metadata.saveVideoMetadata"],
-                    sourceApplier: "{metadata}.applier",
-                    rules: {
-                        url: "url"
-                    },
+                    gradeNames: ["fluid.metadata.saveVideoMetadata"],
+                    inputModel: "{metadata}.metadataPanelModel",
                     modelListeners: {
                         "*": [{
                             listener: "{markupViewer}.updateModelMetadata",
@@ -168,23 +183,18 @@ var demo = demo || {};
         },
         distributeOptions: [{
             source: "{that}.options.videoPanelTemplate",
-            removeSource: true,
             target: "{that > metadataPanel}.options.videoPanelTemplate"
         }, {
             source: "{that}.options.audioPanelTemplate",
-            removeSource: true,
             target: "{that > metadataPanel}.options.audioPanelTemplate"
         }, {
             source: "{that}.options.audioAttributesTemplate",
-            removeSource: true,
             target: "{that > metadataPanel}.options.audioAttributesTemplate"
         }, {
             source: "{that}.options.captionsPanelTemplate",
-            removeSource: true,
             target: "{that > metadataPanel}.options.captionsPanelTemplate"
         }, {
             source: "{that}.options.captionsInputTemplate",
-            removeSource: true,
             target: "{that > metadataPanel}.options.captionsInputTemplate"
         }, {
             source: "{that}.options.disableVideoInput",
@@ -192,6 +202,32 @@ var demo = demo || {};
         }]
     });
 
+    // Create the metadataPanel if it hasn't been. Otherwise, update the metadataPanel model
+    demo.metadata.updateMetadataPanel = function (that, metadataModel) {
+        // The argument "metadataModel" could be in two forms:
+        // 1. an object containing the entire metadata model including URL. This is triggered by the initial fetch from the database;
+        // 2. a url string. This is triggered by the url change from the simple editor.
+        var url = fluid.isPrimitive(metadataModel) ? metadataModel : metadataModel.url;
+        var metadataPanelModel = fluid.isPrimitive(metadataModel) ? {"url": url} : metadataModel;
+
+        if (that.metadataPanel) {
+            that.metadataPanel.applier.change("url", url);
+        } else if (url && url.trim() !== "") {
+            that.doDestroy();
+            that.metadataPanelModel = metadataPanelModel;
+            that.events.onCreateMetadataPanel.fire();
+        }
+    };
+
+    demo.metadata.doDestroy = function (that) {
+        var metadataPanel = that.metadataPanel;
+        if (metadataPanel) {
+            metadataPanel.audioPanel.container.html("");
+            metadataPanel.videoPanel.container.html("");
+            metadataPanel.captionsPanel.container.html("");
+            metadataPanel.destroy();
+        }
+    };
     demo.metadata.getDbName = function (defaultDbName) {
         var lookfor = "name";
         var decodedName = decodeURI(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURI(lookfor).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
@@ -215,7 +251,7 @@ var demo = demo || {};
     };
 
     fluid.defaults("fluid.metadata.saveVideoMetadata", {
-        gradeNames: ["fluid.modelComponent", "autoInit"],
+        gradeNames: ["fluid.standardRelayComponent", "autoInit"],
         modelListeners: {
             "": {
                 func: "{dataSource}.set",

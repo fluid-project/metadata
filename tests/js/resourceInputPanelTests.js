@@ -49,8 +49,8 @@ https://github.com/gpii/universal/LICENSE.txt
 
     fluid.tests.checkModelValue = function (newSrcValue) {
         return function (newModel, oldModel, changeRequest) {
-            var path = changeRequest[0].path;
-            jqUnit.assertEquals("The model path '" + path + "' has been updated to the new value", newSrcValue, fluid.get(newModel, path));
+            var path = changeRequest[0];
+            jqUnit.assertEquals("The model path '" + path + "' has been updated to the new value", newSrcValue, newModel);
         };
     };
 
@@ -246,10 +246,11 @@ https://github.com/gpii/universal/LICENSE.txt
         fluid.tests.resrouceInputPanelInitializationTest(".gpiic-resourceInputPanel-init");
     });
 
+    fluid.tests.testResourceInputPanel(fluid.metadata.resourceInputPanel, ".gpiic-resourceInputPanel", "resourceInputPanel");
+
     $(document).ready(function () {
         fluid.test.runTests([
-            "fluid.tests.resourceInputTests",
-            "fluid.tests.resourceInputPanelTests"
+            "fluid.tests.resourceInputTests"
         ]);
     });
 

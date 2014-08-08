@@ -16,7 +16,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     "use strict";
 
     fluid.defaults("fluid.markup", {
-        gradeNames: ["fluid.viewComponent", "autoInit"],
+        gradeNames: ["fluid.viewRelayComponent", "autoInit"],
         invokers: {
             generateMarkup: {
                 funcName: "fluid.markup.generate",
@@ -42,27 +42,23 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     fluid.markup.transformToVideoMetadata = function (metadata) {
         //TODO: Update to use model transformations framework
         var videoMetatdata = {
-            accessMode: ["visual"],
-            accessibilityHazard: [],
-            accessibilityFeature: [],
-            contentUrl: [metadata.url],
-            keywords: metadata.audioKeywords
+            contentUrl: [metadata.url]
         };
 
-        if (metadata.audio && metadata.audio !== "unavailable") {
-            videoMetatdata.accessMode.push("audio");
+        if (metadata.metadata) {
+            videoMetatdata = $.extend(true, null, fluid.copy(metadata.metadata), videoMetatdata);
+
+            if ($.inArray("visual", videoMetatdata.accessMode) === -1) {
+                videoMetatdata.accessMode.push("visual");
+            }
+
+            if ($.inArray("audio", videoMetatdata.accessMode) === -1) {
+                delete videoMetatdata.keywords;
+            }
         }
-        if (metadata.highContrast) {
-            videoMetatdata.accessibilityFeature.push("highContrast");
-        }
-        if (metadata.signLanguage) {
-            videoMetatdata.accessibilityFeature.push("signLanguage");
-        }
+
         if (metadata.captions && metadata.captions.length) {
             videoMetatdata.accessibilityFeature.push("captions");
-        }
-        if (metadata.flashing && metadata.flashing !== "unknown") {
-            videoMetatdata.accessibilityHazard.push(metadata.flashing);
         }
 
         return videoMetatdata;

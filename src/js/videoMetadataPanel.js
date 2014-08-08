@@ -21,84 +21,128 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
      ****************************************************************/
 
     fluid.defaults("fluid.metadata.videoMetadataPanel", {
-        gradeNames: ["fluid.rendererComponent", "fluid.metadata.defaultVideoModel", "autoInit"],
+        gradeNames: ["fluid.metadata.metadataPanel", "fluid.metadata.defaultVideoModel", "autoInit"],
         selectors: {
             videoPanel: ".gpiic-videoPanel",
             audioPanel: ".gpiic-audioPanel",
             captionsPanel: ".gpiic-captionsPanel"
         },
-        // These sub components are managed through the renderer
-        // to work around issues of creation/destruction.
-        // When using these as subcomponents directly,
-        // the components would be recreated with old model
-        // values after being destroyed.
-        protoTree: {
-            expander: {
-                type: "fluid.renderer.condition",
-                condition: "${url}",
-                trueTree: {
-                    videoPanel: {
-                        decorators: {
-                            type: "fluid",
-                            func: "fluid.metadata.videoPanel",
-                            options: {
-                                gradeNames: ["fluid.prefs.modelRelay"],
-                                sourceApplier: "{videoMetadataPanel}.applier",
-                                model: {
-                                    highContrast: "{videoMetadataPanel}.model.highContrast",
-                                    signLanguage: "{videoMetadataPanel}.model.signLanguage",
-                                    flashing: "{videoMetadataPanel}.model.flashing"
+        modelRelay: [{
+            source: "{videoMetadataPanel}.model.metadata.accessibilityFeature",
+            target: "{videoMetadataPanel}.model.modelInTransit",
+            backward: "liveOnly",
+            singleTransform: {
+                type: "fluid.transforms.arrayToSetMembership",
+                options: {
+                    "highContrast": "highContrast",
+                    "signLanguage": "signLanguage"
+                }
+            }
+        }, {
+            source: "{videoMetadataPanel}.model.metadata.accessibilityHazard",
+            target: "{videoMetadataPanel}.model.modelInTransit",
+            backward: "liveOnly",
+            singleTransform: {
+                type: "fluid.transforms.arrayToSetMembership",
+                options: {
+                    "flashing": "flashing",
+                    "noFlashing": "noFlashing",
+                    "sound": "sound",
+                    "nosoundHazard": "nosoundHazard"
+                }
+            }
+        }, {
+            source: "{videoMetadataPanel}.model.metadata.accessMode",
+            target: "{videoMetadataPanel}.model.modelInTransit",
+            backward: "liveOnly",
+            singleTransform: {
+                type: "fluid.transforms.arrayToSetMembership",
+                options: {
+                    "audio": "audio"
+                }
+            }
+        }],
+        components: {
+            videoPanel: {
+                type: "fluid.metadata.videoPanel",
+                container: "{videoMetadataPanel}.dom.videoPanel",
+                options: {
+                    model: {
+                        highContrast: "{videoMetadataPanel}.model.modelInTransit.highContrast",
+                        signLanguage: "{videoMetadataPanel}.model.modelInTransit.signLanguage"
+                    },
+                    modelRelay: {
+                        source: "{videoMetadataPanel}.model.modelInTransit",
+                        target: "{that}.model.flashing",
+                        backward: "liveOnly",
+                        singleTransform: {
+                            type: "fluid.transforms.valueMapper",
+                            inputPath: "",
+                            options: [{
+                                inputValue: {
+                                    "flashing": true,
+                                    "noFlashing": false
                                 },
-                                rules: {
-                                    highContrast: "highContrast",
-                                    signLanguage: "signLanguage",
-                                    flashing: "flashing"
+                                outputValue: "flashing"
+                            }, {
+                                inputValue: {
+                                    "flashing": false,
+                                    "noFlashing": true
                                 },
-                                listeners: {
-                                    afterRender: "{videoMetadataPanel}.events.videoPanelRendered.fire"
-                                }
-                            }
+                                outputValue: "noFlashing"
+                            }, {
+                                inputValue: {
+                                    "flashing": false,
+                                    "noFlashing": false
+                                },
+                                outputValue: "unknown"
+                            }]
                         }
                     },
-                    audioPanel: {
-                        decorators: {
-                            type: "fluid",
-                            func: "fluid.metadata.audioPanel",
-                            options: {
-                                gradeNames: ["fluid.prefs.modelRelay"],
-                                sourceApplier: "{videoMetadataPanel}.applier",
-                                model: {
-                                    audio: "{videoMetadataPanel}.model.audio",
-                                    keywords: "{videoMetadataPanel}.model.keywords"
-                                },
-                                rules: {
-                                    audio: "audio",
-                                    keywords: "keywords"
-                                },
-                                listeners: {
-                                    afterRender: "{videoMetadataPanel}.events.audioPanelRendered.fire"
-                                }
-                            }
+                    listeners: {
+                        afterRender: "{videoMetadataPanel}.events.videoPanelRendered.fire"
+                    }
+                }
+            },
+            audioPanel: {
+                type: "fluid.metadata.audioPanel",
+                container: "{videoMetadataPanel}.dom.audioPanel",
+                options: {
+                    model: {
+                        keywords: "{videoMetadataPanel}.model.metadata.keywords"
+                    },
+                    modelRelay: {
+                        source: "{videoMetadataPanel}.model.modelInTransit",
+                        target: "{that}.model",
+                        backward: "liveOnly",
+                        singleTransform: {
+                            type: "fluid.transforms.valueMapper",
+                            inputPath: "audio",
+                            options: [{
+                                "inputValue": true,
+                                "outputPath": "audio",
+                                "outputValue": "available"
+                            }, {
+                                "inputValue": false,
+                                "outputPath": "audio",
+                                "outputValue": "unavailable"
+                            }]
                         }
                     },
-                    captionsPanel: {
-                        decorators: {
-                            type: "fluid",
-                            func: "fluid.metadata.captionsPanel",
-                            options: {
-                                gradeNames: ["fluid.prefs.modelRelay"],
-                                sourceApplier: "{videoMetadataPanel}.applier",
-                                model: {
-                                    resources: "{videoMetadataPanel}.model.captions"
-                                },
-                                rules: {
-                                    captions: "resources"
-                                },
-                                listeners: {
-                                    afterMarkupReady: "{videoMetadataPanel}.events.captionsPanelRendered.fire"
-                                }
-                            }
-                        }
+                    listeners: {
+                        afterRender: "{videoMetadataPanel}.events.audioPanelRendered.fire"
+                    }
+                }
+            },
+            captionsPanel: {
+                type: "fluid.metadata.captionsPanel",
+                container: "{videoMetadataPanel}.dom.captionsPanel",
+                options: {
+                    model: {
+                        resources: "{videoMetadataPanel}.model.captions"
+                    },
+                    listeners: {
+                        onReady: "{videoMetadataPanel}.events.captionsPanelRendered.fire"
                     }
                 }
             }
@@ -118,37 +162,33 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         },
         distributeOptions: [{
             source: "{that}.options.videoPanelTemplate",
-            removeSource: true,
             target: "{that > videoPanel}.options.resources.template.url"
         }, {
             source: "{that}.options.audioPanelTemplate",
-            removeSource: true,
             target: "{that > audioPanel}.options.audioTemplate"
         }, {
             source: "{that}.options.audioAttributesTemplate",
-            removeSource: true,
             target: "{that > audioPanel}.options.audioAttributesTemplate"
         }, {
             source: "{that}.options.captionsPanelTemplate",
-            removeSource: true,
             target: "{that > captionsPanel}.options.resources.template.url"
         }, {
             source: "{that}.options.captionsInputTemplate",
-            removeSource: true,
             target: "{that > captionsPanel}.options.resources.resourceInput.url"
         }]
     });
 
     fluid.defaults("fluid.metadata.defaultVideoModel", {
-        gradeNames: ["fluid.littleComponent", "autoInit"],
+        gradeNames: ["fluid.standardRelayComponent", "autoInit"],
         members: {
             defaultModel: {
                 url: "",
-                highContrast: false,
-                signLanguage: false,
-                flashing: "unknown",
-                audio: "available",
-                keywords: [],
+                metadata: {
+                    accessibilityFeature: [],
+                    accessibilityHazard: [],
+                    accessMode: ["audio"],
+                    keywords: []
+                },
                 captions: []
             }
         }
