@@ -47,6 +47,12 @@ https://github.com/gpii/universal/LICENSE.txt
         jqUnit.assertTrue("The dialog should be open", dialog.dialog("isOpen"));
     };
 
+    gpii.tests.bindDialog.makeIndicatorChecker = function (elm, style, expectedValue) {
+        return function () {
+            gpii.tests.bindDialog.assertState("The indiator css should be set correctly", expectedValue, elm.hasClass(style));
+        };
+    };
+
     gpii.tests.bindDialog.makeChangeChecker = function (that, modelPath, expectedValue) {
         return function () {
             jqUnit.assertEquals("The model path '" + modelPath + "'' is updated correctly.", expectedValue, fluid.get(that.model, modelPath));
@@ -181,6 +187,45 @@ https://github.com/gpii/universal/LICENSE.txt
                     listenerMaker: "gpii.tests.bindDialog.makeChangeChecker",
                     makerArgs: ["{bindDialog}", "isActive", false],
                     spec: {path: "isActive", priority: "last"},
+                    changeEvent: "{bindDialog}.applier.modelChanged"
+                }]
+            }]
+        }, {
+            name: "Indicator State Changes",
+            tests: [{
+                name: "Add/Remove Indicator",
+                expect: 4,
+                sequence: [{
+                    func: "{bindDialog}.applier.change",
+                    args: ["isDialogOpen", true]
+                }, {
+                    listenerMaker: "gpii.tests.bindDialog.makeIndicatorChecker",
+                    makerArgs: ["{bindDialog}.container", "{bindDialog}.options.styles.openIndicator", true],
+                    spec: {path: "isDialogOpen", priority: "last"},
+                    changeEvent: "{bindDialog}.applier.modelChanged"
+                }, {
+                    func: "{bindDialog}.applier.change",
+                    args: ["isTooltipOpen", true]
+                }, {
+                    listenerMaker: "gpii.tests.bindDialog.makeIndicatorChecker",
+                    makerArgs: ["{bindDialog}.container", "{bindDialog}.options.styles.openIndicator", true],
+                    spec: {path: "isTooltipOpen", priority: "last"},
+                    changeEvent: "{bindDialog}.applier.modelChanged"
+                }, {
+                    func: "{bindDialog}.applier.change",
+                    args: ["isDialogOpen", false]
+                }, {
+                    listenerMaker: "gpii.tests.bindDialog.makeIndicatorChecker",
+                    makerArgs: ["{bindDialog}.container", "{bindDialog}.options.styles.openIndicator", true],
+                    spec: {path: "isDialogOpen", priority: "last"},
+                    changeEvent: "{bindDialog}.applier.modelChanged"
+                }, {
+                    func: "{bindDialog}.applier.change",
+                    args: ["isTooltipOpen", false]
+                }, {
+                    listenerMaker: "gpii.tests.bindDialog.makeIndicatorChecker",
+                    makerArgs: ["{bindDialog}.container", "{bindDialog}.options.styles.openIndicator", false],
+                    spec: {path: "isTooltipOpen", priority: "last"},
                     changeEvent: "{bindDialog}.applier.modelChanged"
                 }]
             }]
