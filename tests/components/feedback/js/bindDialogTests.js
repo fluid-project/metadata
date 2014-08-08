@@ -29,7 +29,7 @@ https://github.com/gpii/universal/LICENSE.txt
         jqUnit.assertTrue("Cicking on the dialog does not close itself", that.model.isDialogOpen);
 
         // Clicking outside the dialog closes it
-        nonDialogArea.click();
+        $("body").click();
         jqUnit.assertFalse("Cicking anywhere outside of the dialog closes the dialog", that.model.isDialogOpen);
 
         jqUnit.start();

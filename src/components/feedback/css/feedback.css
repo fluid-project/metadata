@@ -1,8 +1,8 @@
 @font-face {
     font-family: 'FloeMetadataIcons';
-    src:url('../../../css/fonts/floe-metadata.eot?#iefix') format('embedded-opentype'),
-         url('../../../css/fonts/floe-metadata.eot'),
-         url('../../../css/fonts/floe-metadata.ttf');
+    src:url('../../../fonts/floe-metadata.eot?#iefix') format('embedded-opentype'),
+         url('../../../fonts/floe-metadata.eot'),
+         url('../../../fonts/floe-metadata.ttf');
 }
 
 .gpii-feedback {

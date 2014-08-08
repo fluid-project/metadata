@@ -1,0 +1,430 @@
+@font-face {
+    font-family: 'RobotoSlab';
+    src: url('../../shared/fonts/RobotoSlab-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'OpenSans';
+    src: url('../../shared/fonts/OpenSans-Regular.ttf');
+}
+
+@font-face {
+    font-family: "OpenSans";
+    src: url('../../shared/fonts/OpenSans-Bold.ttf');
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'MetadataDemoIcons';
+    src:url('../../shared/fonts/gpii-metadataDemo.eot?#iefix') format('embedded-opentype'),
+         url('../../shared/fonts/gpii-metadataDemo.eot'),
+         url('../../shared/fonts/gpii-metadataDemo.ttf');
+}
+
+.gpii-metadataDemo-demo {
+    font-family: "OpenSans","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
+    background-color: #F4F4E9;
+    min-width: 38rem;
+}
+
+.gpii-metadataDemo-body {
+    margin-bottom: 4rem;
+    padding: 0 2rem;
+}
+
+.gpii-metadataDemo-demo a {
+    color: #2C6FB7;
+}
+
+.gpii-metadataDemo-demo a.disabled {
+    pointer-events: none;
+    cursor: default;
+}
+
+.gpii-metadataDemo-demo .button {
+    color: #fff;
+    background-color: #2C6FB7;
+}
+
+.gpii-metadataDemo-demo .button:hover {
+    background-color: #3F8FD8;
+}
+
+/* Header area */
+
+.gpii-metadataDemo-header {
+    background-color: #fff;
+}
+
+.gpii-metadataDemo-header-logo {
+    margin: 0.5rem 0.5rem 0 0;
+}
+
+.gpii-metadataDemo-header-logo img {
+    width: 7rem;
+}
+
+.gpii-metadataDemo-header-title {
+    padding-top: 1rem;
+    margin-left: 1rem;
+}
+
+.gpii-metadataDemo-header-title h1 {
+    text-transform: uppercase;
+    font-size: 2.3rem;
+}
+
+.gpii-metadataDemo-header-title .gpii-metadataDemo-header-tagline {
+    text-transform: uppercase;
+}
+
+.gpii-metadataDemo-header-restart {
+    margin: 0.5rem 0;
+}
+
+.gpii-metadataDemo-header-restart a {
+    padding: 1rem;
+    margin-bottom: 0.5rem 0;
+    display:block;
+    transition: all 0.2s ease;
+    text-decoration:underline;
+}
+
+.gpii-metadataDemo-header-restart a:hover {
+    background: #2C6FB7;
+    border-radius: 0.3rem;
+    color: #fff;
+}
+
+.gpii-metadataDemo-page-title {
+    font-family: 'RobotoSlab';
+    font-size: 2rem;
+    margin: 4rem 0 1rem 0;
+}
+
+/* icons */
+
+.gpii-metadataDemo-icon {
+    font-family: 'MetadataDemoIcons';
+    -webkit-font-smoothing: antialiased;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+    color: #2C6FB7;
+}
+
+.gpii-metadataDemo-icon-restart {
+    display: inline-block;
+    transition: all 0.2s linear;
+}
+
+.gpii-metadataDemo-icon-restart:before {
+    content:"\e600";
+}
+
+.gpii-metadataDemo-header-restart a:hover .gpii-metadataDemo-icon-restart  {
+    color: #fff;
+}
+
+
+/* Landing Page */
+
+.gpii-metadataDemo-landingPage-resource {
+    background-color: #fff;
+    border-top: 0.1rem solid #81D0EC;
+    height: 12rem;
+    transition:background 0.2s ease;
+}
+
+.gpii-metadataDemo-landingPage-resource:hover {
+    background: #EAF2F4;
+}
+
+.gpii-metadataDemo-landingPage-resource-thumbnail-column {
+    height: 100%;
+}
+
+.gpii-metadataDemo-verticalHelper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.gpii-metadataDemo-landingPage-contentThumb {
+    border: 0.1rem solid #afafaf;
+    margin: 1rem 0;
+    transition: margin 0.1s linear;
+    width: 90%;
+    height: auto;
+    vertical-align: middle;
+}
+
+.gpii-metadataDemo-landingPage-contentThumb.gpii-metadataDemo-landingPage-contentThumb-createNew {
+    /*display:block;*/
+    border: 0.3rem dashed #afafaf;
+}
+
+.gpii-metadataDemo-landingPage-resource:hover .gpii-metadataDemo-landingPage-contentThumb {
+    margin-left: 0.5rem;
+}
+
+
+.gpii-metadataDemo-landingPage-resource-first {
+    border-top: 0.3rem solid #81D0EC;
+}
+
+.gpii-metadataDemo-landingPage-resource-last {
+    border-bottom: 0.3rem solid #81D0EC;
+}
+
+.gpii-metadataDemo-landingPage-resource-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding-top: 3rem;
+    color: #2C6FB7;
+}
+
+
+.gpii-metadataDemo-landingPage-edit-climateChange {
+    width:100%;
+    height: 100%;
+}
+
+/* Tabs */
+.gpii-metadataDemo-tab-list {
+    margin-bottom: 0;
+    width: 34rem;
+    padding-right: 2rem;
+    overflow: none;
+}
+
+.gpii-metadataDemo-tab-list li {
+    margin-left: 0.5rem;
+}
+
+.gpii-metadataDemo-tab-list a {
+    text-transform: lowercase;
+    height: 2.9rem;
+    padding: 0.7rem;
+    color: #000;
+    background-color: #B4C7CC;
+    min-width: 10rem;
+    transition: background-color 0.2s ease;
+}
+
+.gpii-metadataDemo-tab-list a:hover {
+    background-color: #C1DEE5;
+}
+
+
+/* Active Tab  */
+.gpii-metadataDemo-demo .ui-state-active a { /* Active Tab Styling */
+    background-color: #81D0EC;
+    height: 3rem;
+    font-weight: bold;
+    cursor: default;
+}
+
+/* Main Containers */
+
+.gpii-metadataDemo-previewContent,
+.gpii-metadataDemo-outputHTML,
+.gpii-metadataDemo-resourceEditor-textEditor {
+    background-color: #fff;
+    box-shadow: 0.08rem 0.08rem 0 #dfdfdf;
+}
+
+.gpii-metadataDemo-resourceEditor-metadataPanel,
+.gpii-metadataDemo-resourceEditor-textEditor {
+    height: 29rem;
+    overflow-y: auto;
+    transition: height 0.3s ease;
+}
+
+.gpii-metadataDemo-expand .gpii-metadataDemo-resourceEditor-metadataPanel,
+.gpii-metadataDemo-expand .gpii-metadataDemo-resourceEditor-textEditor {
+    height: 80rem;
+    overflow-y: auto;
+}
+
+.gpii-metadataDemo-resourceEditor-textEditor {
+    box-shadow: inset 0 0 0.2rem #acacac;
+}
+
+.gpii-metadataDemo-previewContent,
+.gpii-metadataDemo-outputHTML {
+    min-height: 35rem;
+}
+
+.gpii-metadataDemo-resourceEditor-textEditor,
+.gpii-metadataDemo-outputHTML,
+.gpii-metadataDemo-previewContent,
+.gpii-metadataDemo-resourceEditor-metadataPanel  {
+    padding: 1.5rem;
+}
+
+.gpii-metadataDemo-outputHTML pre {
+    overflow: auto;
+}
+
+/* Resource Editor Toolbar */
+
+.gpii-metadataDemo-previewContent,
+.gpii-metadataDemo-outputHTML {
+    border-top: 0.2rem solid #81D0EC;
+}
+
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar,
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-metadataPanel-header {
+    height: 6rem;
+}
+
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar {
+    background-color: #81D0EC;
+    padding: 0.8rem 0.8rem 0 0.8rem;
+}
+
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar ul {
+    margin: 0.7rem 1rem 0 0;
+}
+
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar-button a {
+    font-size: 1rem;
+    width: 3.2rem;
+    height: 2.8rem;
+    padding: 0.8rem;
+}
+
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar-button-bold a {
+    font-weight: bold;
+}
+
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar-button-italics a {
+    font-style:italic;
+}
+
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar-button-underline a {
+    text-decoration:underline;
+}
+
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar .gpii-metadataDemo-resourceEditor-toolbar-url {
+    display: inline-block;
+    width: 50%;
+}
+
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar .gpii-metadataDemo-resourceEditor-toolbar-url-submit.disabled {
+    opacity: 0.4;
+}
+
+/* Metadata panel sidebar */
+.gpii-metadataDemo-resourceEditor-metadataPanel-column {
+    box-shadow: 0.08rem 0.08rem 0 #dfdfdf;
+}
+
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-toolbar-url input {
+    min-width: 10em;
+}
+
+/* Placeholder for Video */
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-insertVideo-placeHolder {
+    background: #C0C0C0;
+    width: 50%;
+    padding: 10% 0 10% 0;
+}
+
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-insertVideo-placeHolder-playCircle {
+    border: solid 5px #000000;
+    height: 5em;
+    width: 5em;
+    border-radius: 50%;
+    padding: 0.8em 0 0 1.3em;
+    margin: 0 auto;
+}
+
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-insertVideo-placeHolder-playTriangle {
+    width: 0;
+    height: 0;
+
+    border-style: solid;
+    border-width: 1.5em 0 1.5em 2.3em;
+    border-color: transparent transparent transparent #000000;
+}
+
+.gpii-metadataDemo-resourceEditor video {
+    width: 100%;
+}
+
+/* Metadata panel styling tweaks */
+
+.gpii-metadataDemo-resourceEditor-metadataPanel {
+    color: #4D4D4D;
+    font-family: "OpenSans";
+}
+
+.gpii-metadataDemo-resourceEditor-metadataPanel p {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-metadataPanel-header {
+    background-color: #92d7e1;
+}
+
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-metadataPanel-header h3 {
+    font-family: "RobotoSlab";
+    color: ##161616;
+    padding-top: 1.6rem;
+}
+
+.gpii-metadataDemo-resourceEditor .show-for-small-only .gpii-metadataDemo-resourceEditor-metadataPanel-header h3 {
+    padding-bottom: 1rem;
+    margin: 0;
+}
+
+.gpii-metadataDemo-resourceEditor .gpii-metadataDemo-resourceEditor-metadataPanel {
+    background-color: #b8e6e6;
+}
+
+.gpii-metadataDemo-resourceEditor .gpii-metadata-panel {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #fff;
+}
+
+.gpii-metadataDemo-demo .gpii-videoPanel .gpii-flashing-row{
+     margin-top: 0.5em;
+}
+
+.gpii-metadataDemo-demo .gpii-captionsPanel .gpii-resourceInputPanel-list {
+    margin:0;
+    padding: 0;
+}
+
+.gpii-metadataDemo-demo .gpii-captionsPanel .gpii-resourceInputPanel-list li {
+    background-color: #D3E8EA;
+    padding: 0.5rem;
+    margin-top: 1rem;
+
+}
+
+.gpii-metadataDemo-demo .gpii-captionsPanel .gpii-resourceInputPanel-list li input {
+    margin-bottom: 0.5em;
+    display: block;
+    height: 2.5em;
+    width: 100%;
+    font-size: 1em;
+}
+
+
+/* Overview Panel tweaks - Needed due to FLUID-5464 */
+
+.gpii-metadataDemo-demo .fl-overviewPanel-container {
+    z-index: 1;
+    line-height: 1.6rem;
+}
+
+.gpii-metadataDemo-demo .fl-overviewPanel h1 {
+    color: #ccc;
+    font-family: 'RobotoSlab';
+}
+
+.gpii-metadataDemo-demo .fl-overviewPanel-instructions h2 {
+    color: #fff;
+}

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>NOAA Education Resources | Floe Metadata Authoring Demo</title>
+
+        <!-- Custom build of Foundation -->
+        <link rel="stylesheet" href="../../../src/lib/normalize/normalize.css" />
+        <link rel="stylesheet" href="../../lib/foundation/css/foundation.min.css" />
+        <link rel="stylesheet" href="../../../src/lib/infusion/src/components/overviewPanel/css/OverviewPanel.css" />
+        <link rel="stylesheet" href="../css/metadataDemo.css" />
+
+        <script type="text/javascript" src="../../../src/lib/infusion/infusion-custom.js"></script>
+        <script type="text/javascript" src="../../../src/lib/pouchDB/pouchdb.js"></script>
+        <script type="text/javascript" src="../../../src/components/pouchDBDataSource/js/pouchDBDataSource.js"></script>
+        <script type="text/javascript" src="../js/utility.js"></script>
+        <script type="text/javascript" src="../js/cookieStore.js"></script>
+        <script type="text/javascript" src="../js/overview.js"></script>
+        <script type="text/javascript" src="../js/launcher.js"></script>
+
+    </head>
+    <body class="gpii-metadataDemo-demo">
+        <div class="gpiic-overviewPanel fl-overviewPanel-container"></div>
+
+        <header class="gpii-metadataDemo-header">
+            <div class="row">
+                <div class="small-12 columns clearfix">
+
+                    <div class="left gpii-metadataDemo-header-logo">
+                        <img src="../../shared/images/noaa_logo.gif"  alt="The National Oceanic and Atmospheric Administration (or NOAA) logo."/>
+                    </div>
+                    <div class="gpii-metadataDemo-header-title ">
+                        <h1>Education Resources</h1>
+                        <span class="gpii-metadataDemo-header-tagline">National Oceanic and Atmospheric Administration</span>
+                    </div>
+
+                    <div class="right gpii-metadataDemo-header-restart">
+                        <a class="gpiic-metadataDemo-restart" href="#">
+                            <span class="gpii-metadataDemo-icon gpii-metadataDemo-icon-restart"></span>
+                            restart demo
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section class="gpii-metadataDemo-body" role="application">
+            <div class="row">
+                <div class="small-12 columns">
+                    <h2 class="gpii-metadataDemo-page-title">Choose a learning resource to edit</h2>
+                    <a class="gpiic-metadata-edit-climateChange gpii-metadataDemo-landingPage-edit-climateChange" href="resource.html?name=climateChange">
+                        <div class="row gpii-metadataDemo-landingPage-resource gpii-metadataDemo-landingPage-resource-first">
+                            <div class="small-3 columns gpii-metadataDemo-landingPage-resource-thumbnail-column">
+                                <span class="gpii-metadataDemo-verticalHelper"></span><img src="../../shared/images/content-thumbnail.jpg" class="gpii-metadataDemo-landingPage-contentThumb" alt="An image of a farmer's field."/>
+                            </div>
+                            <div class="small-9 columns">
+                                <h3 class="gpii-metadataDemo-landingPage-resource-title">"Climate Change Impacts"</h3>
+                                <span class="gpii-metadataDemo-landingPage-resource-description">As global temperature rises, how does this affect your world?</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a class="gpiic-metadata-create" href="resource.html?name=new">
+                        <div class="row gpii-metadataDemo-landingPage-resource gpii-metadataDemo-landingPage-resource-last">
+                            <div class="small-3 columns gpii-metadataDemo-landingPage-resource-thumbnail-column">
+                                <span class="gpii-metadataDemo-verticalHelper"></span>
+                                <img src="../../shared/images/blank-thumbnail.png" class="gpii-metadataDemo-landingPage-contentThumb gpii-metadataDemo-landingPage-contentThumb-createNew" alt="A blank image with no content."/>
+                            </div>
+                            <div class="small-9 columns">
+                                <h3 class="gpii-metadataDemo-landingPage-resource-title">Create new resource</h3>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <script type="text/javascript">
+        var launchDemo = function (extraOptions) {
+            var defaultOptions = {
+                url: "resource.html?name=%dbName"
+            };
+            var options = $.extend(true, {}, defaultOptions, extraOptions);
+
+            var that = demo.metadata.launcher(options);
+        };
+
+        // Create a new resource
+        $(".gpiic-metadata-create").click(function (e) {
+            launchDemo({
+                dbName: "Create_new_resource",
+                content: {
+                    markup: "./newOERContent.html"
+                }
+            });
+            e.preventDefault();
+        });
+
+        // Edit an existing resource
+        $(".gpiic-metadata-edit-climateChange").click(function (e) {
+            launchDemo({
+                dbName: "Climate_Change_Impacts",
+                content: {
+                    markup: "./predefinedOERContent.html",
+                    metadata: {
+                        url: "https://archive.org/details/gov.ntis.ava11754vnb1",
+                        metadata: {
+                            accessibilityHazard: ["noFlashing"],
+                            accessMode: ["audio"],
+                            keywords: ["dialogue"]
+                        }
+                    }
+                }
+            });
+            e.preventDefault();
+        });
+
+        $(".gpiic-metadataDemo-restart").click(function (e) {
+            var cookieStore = demo.metadata.cookieStore();
+            cookieStore.resetCookie();
+            window.location = "index.html";
+            e.preventDefault();
+        });
+        </script>
+    </body>
+</html>
