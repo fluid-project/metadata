@@ -14,8 +14,6 @@ https://github.com/gpii/universal/LICENSE.txt
     fluid.registerNamespace("fluid.tests");
 
     fluid.tests.checkAudioState = function (audioPanel, expectedRadiobuttons, expectedCheckboxes, state) {
-        audioPanel = audioPanel.typeName === "gpii.metadata.audioPanel" ? audioPanel : audioPanel;
-
         var radiobuttons = audioPanel.container.find("[type='radio']");
         var checkboxes = audioPanel.locate("attributes").find("[type='checkbox']");
 
