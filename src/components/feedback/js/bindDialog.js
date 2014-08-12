@@ -145,7 +145,8 @@ var gpii = gpii || {};
             that.closeDialog();
         } else if (!that.model.isActive) {
             if (!that.dialogContainer) {
-                that.dialogContainer = $(that.options.markup.dialog);
+                that.dialogContainer = $(that.options.markup.dialog).hide();
+                that.container.append(that.dialogContainer);
             }
             that.events.onRenderDialogContent.fire();
         }

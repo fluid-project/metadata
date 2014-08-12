@@ -26,27 +26,113 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
      */
     fluid.defaults("gpii.metadata.feedback.mismatchDetails", {
         gradeNames: ["fluid.rendererRelayComponent", "autoInit"],
+        model: {
+            notInteresting: false,
+            text: false,
+            transcripts: false,
+            audio: false,
+            audioDesc: false,
+            other: false,
+            otherFeedback: ""
+        },
         selectors: {
             header: ".gpiic-mismatchDetails-header",
             notInteresting: ".gpiic-notInteresting",
             notInterestingLabel: ".gpiic-notInteresting-label",
+            prefsTitle: ".gpiic-mismatchDetails-prefs-title",
+            text: ".gpiic-text",
+            textLabel: ".gpiic-text-label",
+            transcripts: ".gpiic-transcripts",
+            transcriptsLabel: ".gpiic-transcripts-label",
+            audio: ".gpiic-audio",
+            audioLabel: ".gpiic-audio-label",
+            audioDesc: ".gpiic-audioDesc",
+            audioDescLabel: ".gpiic-audioDesc-label",
+            other: ".gpiic-other",
+            otherLabel: ".gpiic-other-label",
+            otherFeedback: ".gpiic-other-feedback",
             skip: ".gpiic-mismatchDetails-skip",
             submit: ".gpiic-mismatchDetails-submit"
         },
+        selectorsToIgnore: ["submit"],
         strings: {
             header: "Feedback",
+            prefsTitle: "Content didn’t meet my preferences",
             notInterestingLabel: "Not interesting",
-            specify: "Please specify"
+            textLabel: "Needs text",
+            transcriptsLabel: "Needs transcripts",
+            audioLabel: "Needs audio",
+            audioDescLabel: "Needs audio descriptions",
+            otherLabel: "Other",
+            specify: "Please specify",
+            skip: "Skip",
+            submit: "Submit"
         },
         protoTree: {
             header: {messagekey: "header"},
-            notInteresting: "${notInteresting}"
+            prefsTitle: {messagekey: "prefsTitle"},
+            notInteresting: "${notInteresting}",
             notInterestingLabel: {messagekey: "notInterestingLabel"},
+            text: "${text}",
+            textLabel: {messagekey: "textLabel"},
+            transcripts: "${transcripts}",
+            transcriptsLabel: {messagekey: "transcriptsLabel"},
+            audio: "${audio}",
+            audioLabel: {messagekey: "audioLabel"},
+            audioDesc: "${audioDesc}",
+            audioDescLabel: {messagekey: "audioDescLabel"},
+            other: "${other}",
+            otherLabel: {messagekey: "otherLabel"},
+            otherFeedback: {
+                value: "${otherFeedback}",
+                decorators: {
+                    type: "attrs",
+                    attributes: {placeholder: "${{that}.options.strings.specify}"}
+                }
+            },
+            skip: {messagekey: "skip"}
+        },
+        events: {
+            afterTemplateFetched: null,
+            onSkip: null,
+            onSubmit: null,
+            onReady: null
         },
         listeners: {
             "onCreate.fetchResources": {
                 listener: "fluid.fetchResources",
-                args: ["{that}.options.resources", "{that}.refreshView"]
+                args: ["{that}.options.resources", "{that}.events.afterTemplateFetched.fire"]
+            },
+            "afterTemplateFetched.refreshView": "{that}.refreshView",
+            "afterTemplateFetched.setButtonText": {
+                "this": "{that}.dom.submit",
+                method: "text",
+                args: "{that}.options.strings.submit"
+            },
+            "afterTemplateFetched.attachSkipHandler": {
+                "this": "{that}.dom.skip",
+                method: "on",
+                args: ["click", "{that}.events.onSkip.fire"]
+            },
+            "afterTemplateFetched.attachSubmitHandler": {
+                "this": "{that}.dom.submit",
+                method: "on",
+                args: ["click", "{that}.onSubmitFired"]
+            },
+            "afterTemplateFetched.fireOnReady": {
+                listener: "{that}.events.onReady.fire",
+                priority: "last",
+                args: "{that}"
+            },
+            "onSkip.preventDefault": {
+                listener: "gpii.metadata.feedback.mismatchDetails.preventDefault",
+                args: "{arguments}.0"
+            }
+        },
+        invokers: {
+            onSubmitFired: {
+                funcName: "gpii.metadata.feedback.mismatchDetails.onSubmitFired",
+                args: ["{that}", "{arguments}.0"]
             }
         },
         resources: {
@@ -57,15 +143,24 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }
     });
 
+    gpii.metadata.feedback.mismatchDetails.preventDefault = function (e) {
+        e.preventDefault();
+    };
+
+    gpii.metadata.feedback.mismatchDetails.onSubmitFired = function (that, evt) {
+        that.events.onSubmit.fire(that.model, evt);
+    };
+
     /*
-     * Attaches match confirmation panel with "bindDialog" component
+     * Attaches mismatch details panel with "bindDialog" component
      */
     fluid.defaults("gpii.metadata.feedback.bindMismatchDetails", {
         gradeNames: ["gpii.metadata.feedback.bindDialog", "autoInit"],
         panelType: "gpii.metadata.feedback.mismatchDetails",
         renderDialogContentOptions: {
             listeners: {
-                "afterRender.fireContentReadyEvent": "{bindMismatchDetails}.events.onDialogContentReady"
+                "afterRender.fireContentReadyEvent": "{bindMismatchDetails}.events.onDialogContentReady",
+                "onSkip.closeDialog": "{bindMismatchDetails}.closeDialog"
             }
         }
     });
