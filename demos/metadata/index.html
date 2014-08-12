@@ -6,18 +6,18 @@
         <title>NOAA Education Resources | Floe Metadata Authoring Demo</title>
 
         <!-- Custom build of Foundation -->
-        <link rel="stylesheet" href="../../../src/lib/normalize/normalize.css" />
-        <link rel="stylesheet" href="../../lib/foundation/css/foundation.min.css" />
-        <link rel="stylesheet" href="../../../src/lib/infusion/src/components/overviewPanel/css/OverviewPanel.css" />
-        <link rel="stylesheet" href="../css/metadataDemo.css" />
+        <link rel="stylesheet" href="../../src/lib/normalize/normalize.css" />
+        <link rel="stylesheet" href="../lib/foundation/css/foundation.min.css" />
+        <link rel="stylesheet" href="../../src/lib/infusion/src/components/overviewPanel/css/OverviewPanel.css" />
+        <link rel="stylesheet" href="css/metadataDemo.css" />
 
-        <script type="text/javascript" src="../../../src/lib/infusion/infusion-custom.js"></script>
-        <script type="text/javascript" src="../../../src/lib/pouchDB/pouchdb.js"></script>
-        <script type="text/javascript" src="../../../src/components/pouchDBDataSource/js/pouchDBDataSource.js"></script>
-        <script type="text/javascript" src="../js/utility.js"></script>
-        <script type="text/javascript" src="../js/cookieStore.js"></script>
-        <script type="text/javascript" src="../js/overview.js"></script>
-        <script type="text/javascript" src="../js/launcher.js"></script>
+        <script type="text/javascript" src="../../src/lib/infusion/infusion-custom.js"></script>
+        <script type="text/javascript" src="../../src/lib/pouchDB/pouchdb.js"></script>
+        <script type="text/javascript" src="../../src/components/pouchDBDataSource/js/pouchDBDataSource.js"></script>
+        <script type="text/javascript" src="js/utility.js"></script>
+        <script type="text/javascript" src="js/cookieStore.js"></script>
+        <script type="text/javascript" src="js/overview.js"></script>
+        <script type="text/javascript" src="js/launcher.js"></script>
 
     </head>
     <body class="gpii-metadataDemo-demo">
@@ -28,7 +28,7 @@
                 <div class="small-12 columns clearfix">
 
                     <div class="left gpii-metadataDemo-header-logo">
-                        <img src="../../shared/images/noaa_logo.gif"  alt="The National Oceanic and Atmospheric Administration (or NOAA) logo."/>
+                        <img src="../shared/images/noaa_logo.gif"  alt="The National Oceanic and Atmospheric Administration (or NOAA) logo."/>
                     </div>
                     <div class="gpii-metadataDemo-header-title ">
                         <h1>Education Resources</h1>
@@ -52,7 +52,7 @@
                     <a class="gpiic-metadata-edit-climateChange gpii-metadataDemo-landingPage-edit-climateChange" href="resource.html?name=climateChange">
                         <div class="row gpii-metadataDemo-landingPage-resource gpii-metadataDemo-landingPage-resource-first">
                             <div class="small-3 columns gpii-metadataDemo-landingPage-resource-thumbnail-column">
-                                <span class="gpii-metadataDemo-verticalHelper"></span><img src="../../shared/images/content-thumbnail.jpg" class="gpii-metadataDemo-landingPage-contentThumb" alt="An image of a farmer's field."/>
+                                <span class="gpii-metadataDemo-verticalHelper"></span><img src="../shared/images/content-thumbnail.jpg" class="gpii-metadataDemo-landingPage-contentThumb" alt="An image of a farmer's field."/>
                             </div>
                             <div class="small-9 columns">
                                 <h3 class="gpii-metadataDemo-landingPage-resource-title">"Climate Change Impacts"</h3>
@@ -91,7 +91,7 @@
             launchDemo({
                 dbName: "Create_new_resource",
                 content: {
-                    markup: "./newOERContent.html"
+                    markup: "html/newOERContent.html"
                 }
             });
             e.preventDefault();
@@ -102,7 +102,7 @@
             launchDemo({
                 dbName: "Climate_Change_Impacts",
                 content: {
-                    markup: "./predefinedOERContent.html",
+                    markup: "html/predefinedOERContent.html",
                     metadata: {
                         url: "https://archive.org/details/gov.ntis.ava11754vnb1",
                         metadata: {

@@ -69,7 +69,7 @@ var demo = demo || {};
 
     $(document).ready(function () {
         demo.metadata.overview(".gpiic-overviewPanel", {
-            overviewPanelTemplate: "../../../src/lib/infusion/src/components/overviewPanel/html/overviewPanelTemplate.html",
+            overviewPanelTemplate: "../../src/lib/infusion/src/components/overviewPanel/html/overviewPanelTemplate.html",
             strings: {
                 "componentName": "FLOE Metadata Authoring",
                 "feedbackText": "Found a bug? Have a question?",
