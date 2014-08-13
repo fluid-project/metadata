@@ -31,8 +31,46 @@ var gpii = gpii || {};
 
     fluid.registerNamespace("gpii.metadata.feedback");
 
+    fluid.defaults("gpii.metadata.feedback.trackFocus", {
+        gradeNames: ["fluid.viewComponent", "autoInit"],
+        model: {
+            isFocused: {}
+        },
+        listeners: {
+            "onCreate.trackFocus": {
+                listener: "gpii.metadata.feedback.bindUIState",
+                args: ["{that}", "isFocused", "focus", "blur"]
+            }
+        }
+    });
+
+    fluid.defaults("gpii.metadata.feedback.trackBlur", {
+        gradeNames: ["fluid.viewComponent", "autoInit"],
+        model: {
+            isHovered: {}
+        },
+        listeners: {
+            "onCreate.trackBlur": {
+                listener: "gpii.metadata.feedback.bindUIState",
+                args: ["{that}", "isHovered", "mouseover", "mouseleave"]
+            }
+        }
+    });
+
+    gpii.metadata.feedback.bindUIState = function (that, modelPath, onEvent, offEvent) {
+        fluid.each(fluid.get(that.model, modelPath), function (state, selector) {
+            var elm = selector === "container" ? that.container : that.locate(selector);
+            elm.on(onEvent, function () {
+                that.applier.change([modelPath, selector], true);
+            });
+            elm.on(offEvent, function () {
+                that.applier.change([modelPath, selector], false);
+            });
+        });
+    };
+
     fluid.defaults("gpii.metadata.feedback.bindDialog", {
-        gradeNames: ["fluid.viewRelayComponent", "autoInit"],
+        gradeNames: ["fluid.viewRelayComponent", "gpii.metadata.feedback.trackFocus", "gpii.metadata.feedback.trackBlur", "autoInit"],
         components: {
             renderDialogContent: {
                 type: "fluid.rendererRelayComponent",
@@ -146,59 +184,23 @@ var gpii = gpii || {};
                 listener: "fluid.activatable",
                 args: ["{that}.container", "{that}.bindButton"]
             },
-            "onCreate.bindFocus": {
-                "this": "{that}.dom.icon",
-                method: "focus",
-                args: ["{that}.events.onFocusIcon.fire"]
-
-            },
-            "onCreate.bindBlur": {
-                "this": "{that}.dom.icon",
-                method: "blur",
-                args: ["{that}.events.onBlurIcon.fire"]
-            },
-            "onCreate.bindHover": {
-                "this": "{that}.dom.icon",
-                method: "mouseover",
-                args: ["{that}.events.onHoverIcon.fire"]
-
-            },
-            "onCreate.bindHoverOff": {
-                "this": "{that}.dom.icon",
-                method: "mouseleave",
-                args: ["{that}.events.onHoverOffIcon.fire"]
-            },
             "onDialogContentReady.instantiateDialog": "{that}.instantiateDialog",
             "onDialogReady.openDialog": {
                 "this": "{that}.dialog",
                 method: "dialog",
                 args: "open"
-            },
-            "onFocusIcon.addFocusClass": {
-                "this": "{that}.container",
-                method: "addClass",
-                args: ["{that}.options.styles.focus"]
-            },
-            "onBlurIcon.removeFocusClass": {
-                "this": "{that}.container",
-                method: "removeClass",
-                args: ["{that}.options.styles.focus"]
-            },
-            "onHoverIcon.addHoverClass": {
-                "this": "{that}.container",
-                method: "addClass",
-                args: ["{that}.options.styles.hover"]
-            },
-            "onHoverOffIcon.removeHoverClass": {
-                "this": "{that}.container",
-                method: "removeClass",
-                args: ["{that}.options.styles.hover"]
             }
         },
         model: {
             isActive: false,    // Keep track of the active state of the button
             isDialogOpen: false,
-            isTooltipOpen: false
+            isTooltipOpen: false,
+            isFocused: {
+                icon: false
+            },
+            isHovered: {
+                icon: false
+            }
         },
         modelListeners: {
             "isActive": "gpii.metadata.feedback.handleActiveState({change}.value, {that}.container, {that}.options.styles.active)",
@@ -207,7 +209,17 @@ var gpii = gpii || {};
                 "gpii.metadata.feedback.handleDialogState({that}, {change}.value, {that}.closeDialog, {that}.bindIframeClick, {that}.unbindIframeClick)",
                 "gpii.metadata.feedback.handleIndicatorState({that}.container, {that}.model, {that}.options.styles.openIndicator)"
             ],
-            "isTooltipOpen": "gpii.metadata.feedback.handleIndicatorState({that}.container, {that}.model, {that}.options.styles.openIndicator)"
+            "isTooltipOpen": "gpii.metadata.feedback.handleIndicatorState({that}.container, {that}.model, {that}.options.styles.openIndicator)",
+            "isFocused.icon": {
+                "this": "{that}.container",
+                method: "toggleClass",
+                args: ["{that}.options.styles.focus", "{change}.value"]
+            },
+            "isHovered.icon": {
+                "this": "{that}.container",
+                method: "toggleClass",
+                args: ["{that}.options.styles.hover", "{change}.value"]
+            }
         },
         invokers: {
             bindButton: {
