@@ -184,12 +184,12 @@ var gpii = gpii || {};
                 method: "removeClass",
                 args: ["{that}.options.styles.focus"]
             },
-            "onHoverIcon.addFocusClass": {
+            "onHoverIcon.addHoverClass": {
                 "this": "{that}.container",
                 method: "addClass",
                 args: ["{that}.options.styles.hover"]
             },
-            "onHoverOffIcon.removeFocusClass": {
+            "onHoverOffIcon.removeHoverClass": {
                 "this": "{that}.container",
                 method: "removeClass",
                 args: ["{that}.options.styles.hover"]
