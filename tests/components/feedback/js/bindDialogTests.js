@@ -18,8 +18,6 @@ https://github.com/gpii/universal/LICENSE.txt
     };
 
     gpii.tests.bindDialog.testDialog = function (that) {
-        var nonDialogArea = $(".gpiic-nonDialog-area");
-
         jqUnit.assertTrue("The dialog is open", that.model.isDialogOpen);
         jqUnit.assertEquals("The aria role is set", "button", that.container.attr("role"));
         jqUnit.assertEquals("The aria label is set", that.options.strings.buttonLabel, that.container.attr("aria-label"));
