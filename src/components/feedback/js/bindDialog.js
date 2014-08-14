@@ -31,8 +31,27 @@ var gpii = gpii || {};
 
     fluid.registerNamespace("gpii.metadata.feedback");
 
-    fluid.defaults("gpii.metadata.feedback.trackFocus", {
+    fluid.defaults("gpii.metadata.feedback.modelToClass", {
         gradeNames: ["fluid.viewComponent", "autoInit"],
+        modelToClass: {},
+        listeners: {
+            "onCreate.setModelListeners": {
+                listener: "gpii.metadata.feedback.modelToClass.bind",
+                args: ["{that}"]
+            }
+        }
+    });
+
+    gpii.metadata.feedback.modelToClass.bind = function (that) {
+        fluid.each(that.options.modelToClass, function (style, modelPath) {
+            that.applier.modelChanged.addListener(modelPath, function (value) {
+                that.container.toggleClass(fluid.get(that.options.styles, style), value);
+            });
+        });
+    };
+
+    fluid.defaults("gpii.metadata.feedback.trackFocus", {
+        gradeNames: ["gpii.metadata.feedback.modelToClass", "autoInit"],
         model: {
             isFocused: {}
         },
@@ -45,7 +64,7 @@ var gpii = gpii || {};
     });
 
     fluid.defaults("gpii.metadata.feedback.trackBlur", {
-        gradeNames: ["fluid.viewComponent", "autoInit"],
+        gradeNames: ["gpii.metadata.feedback.modelToClass", "autoInit"],
         model: {
             isHovered: {}
         },
@@ -202,6 +221,10 @@ var gpii = gpii || {};
                 icon: false
             }
         },
+        modelToClass: {
+            "isFocused.icon": "focus",
+            "isHovered.icon": "hover"
+        },
         modelListeners: {
             "isActive": "gpii.metadata.feedback.handleActiveState({change}.value, {that}.container, {that}.options.styles.active)",
             // passing in invokers directly to ensure they are resolved at the correct time.
@@ -209,17 +232,7 @@ var gpii = gpii || {};
                 "gpii.metadata.feedback.handleDialogState({that}, {change}.value, {that}.closeDialog, {that}.bindIframeClick, {that}.unbindIframeClick)",
                 "gpii.metadata.feedback.handleIndicatorState({that}.container, {that}.model, {that}.options.styles.openIndicator)"
             ],
-            "isTooltipOpen": "gpii.metadata.feedback.handleIndicatorState({that}.container, {that}.model, {that}.options.styles.openIndicator)",
-            "isFocused.icon": {
-                "this": "{that}.container",
-                method: "toggleClass",
-                args: ["{that}.options.styles.focus", "{change}.value"]
-            },
-            "isHovered.icon": {
-                "this": "{that}.container",
-                method: "toggleClass",
-                args: ["{that}.options.styles.hover", "{change}.value"]
-            }
+            "isTooltipOpen": "gpii.metadata.feedback.handleIndicatorState({that}.container, {that}.model, {that}.options.styles.openIndicator)"
         },
         invokers: {
             bindButton: {
