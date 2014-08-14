@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>Metadata complete tests runner</title>
+    <title>Metadata and feedback complete tests runner</title>
 
     <link rel="stylesheet" href="lib/infusion/lib/qunit/css/qunit.css" type="text/css" media="screen">
     <link rel="stylesheet" href="lib/infusion/lib/qunit/addons/composite/qunit-composite.css">
@@ -10,9 +10,14 @@
     <script src="lib/infusion/lib/qunit/addons/composite/qunit-composite.js"></script>
 
     <script>
-    QUnit.testSuites([
-        "./components/metadata/all-tests.html",
+    QUnit.testSuites("Metadata Tool Tests", [
+        "./components/metadata/all-tests.html"
+    ]);
+    QUnit.testSuites("Feedback Tool Tests", [
         "./components/feedback/all-tests.html"
+    ]);
+    QUnit.testSuites("Pouch DB Data Source Tests", [
+        "./components/pouchDBDataSource/all-tests.html"
     ]);
     </script>
 </head>
