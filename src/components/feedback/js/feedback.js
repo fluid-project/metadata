@@ -40,9 +40,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     },
                     styles: {
                         activeCss: "{feedback}.options.styles.activeCss"
-                    },
-                    listeners: {
-                        "onCreate.debug": "console.log"
                     }
                 }
             }

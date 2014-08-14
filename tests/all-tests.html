@@ -2,30 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>Metadata complete tests runner</title>
+    <title>Metadata and feedback complete tests runner</title>
 
     <link rel="stylesheet" href="lib/infusion/lib/qunit/css/qunit.css" type="text/css" media="screen">
     <link rel="stylesheet" href="lib/infusion/lib/qunit/addons/composite/qunit-composite.css">
     <script src="lib/infusion/lib/qunit/js/qunit.js"></script>
     <script src="lib/infusion/lib/qunit/addons/composite/qunit-composite.js"></script>
-<!-- Stupid bloody escaping rules:
-    find . -name "*-Test.html" | awk '{print "\""$1"\","}' -->
+
     <script>
-    QUnit.testSuites([
-        "./html/audioPanel-Test.html",
-        "./html/captionsPanel-Test.html",
-        "./html/indicator-Test.html",
-        "./html/metadataPanel-Test.html",
-        "./html/metadataUtils-Test.html",
-        "./html/panel-Test.html",
-        "./html/pouchDBDataSource-Test.html",
-        "./html/resourceInputPanel-Test.html",
-        "./html/transcriptsPanel-Test.html",
-        "./html/videoMetadataPanel-Test.html",
-        "./html/videoPanel-Test.html",
-        "./components/feedback/html/bindDialog-Test.html",
-        "./components/feedback/html/feedback-Test.html",
-        "./components/feedback/html/matchConfirmation-Test.html"
+    QUnit.testSuites("Metadata Tool Tests", [
+        "./components/metadata/all-tests.html"
+    ]);
+    QUnit.testSuites("Feedback Tool Tests", [
+        "./components/feedback/all-tests.html"
+    ]);
+    QUnit.testSuites("Pouch DB Data Source Tests", [
+        "./components/pouchDBDataSource/all-tests.html"
     ]);
     </script>
 </head>

@@ -1,0 +1,205 @@
+@font-face {
+    font-family: 'RobotoSlab';
+    src: url('../../shared/fonts/RobotoSlab-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'OpenSans';
+    src: url('../../shared/fonts/OpenSans-Regular.ttf');
+}
+
+@font-face {
+    font-family: "OpenSans";
+    src: url("../../shared/fonts/OpenSans-Bold.ttf");
+    font-weight: bold;
+}
+
+/***********
+ * NOTE: This is mobile first styling - styled for mobile layout first, with media queries for larger screens.
+ ***********/
+
+body {
+    background-color: #e8f3f5;
+    font-family: 'OpenSans';
+}
+
+.fl-demo header {
+    font-size: 1.8em;
+    margin-bottom: 0;
+    background-color: #006598;
+}
+
+.fl-demo .fl-logo-text1 {
+    color: #fff;
+}
+
+.fl-demo .fl-logo-text2 {
+    background-color: #ed5a24;
+    color: #fff;
+    font-size: 0.8em;
+    padding: 0 0.2em;
+}
+
+#restart {
+    margin-top: 0.2em;
+}
+
+.fl-demo .fl-metadata {
+    background-color: #C1DCE0;
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
+    border: 1px solid #4d4d4d;
+    margin: 0.5em;
+}
+
+.fl-demo .fl-metadata .col-sm-8 {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+
+.fl-demo .fl-simpleEditor-greeting .fl-simpleEditor-greeting-title  {
+    font-family: 'RobotoSlab';
+    font-size: 1.6em;
+}
+
+.fl-demo .fl-simpleEditor-greeting .fl-simpleEditor-greeting-text  {
+    font-family: 'OpenSans';
+    font-size: 1.2em;
+    background-color: #d1ebda;
+    border-radius: 0.2em;
+    padding: 0.5em 0.2em;
+    margin: 0.5em;
+}
+
+.fl-demo .fl-simpleEditor-toolbar {
+    padding-top: 0.3em;
+    padding-left: 0.3em;
+    border-top-left-radius: 0.5em; /* At this resolution, just round these corners. */
+    border-top-right-radius: 0.5em;
+    background-color: #e2e2e2;
+}
+
+.fl-demo .fl-simpleEditor-toolbar-buttonGroup {
+    padding-top: 0.5em;
+}
+
+.fl-demo .fl-simpleEditor-insertVideo-urlLabel {
+    font-size: 0.8em;
+    display:block;
+}
+
+.fl-demo .fl-simpleEditor-insertVideo-url {
+    min-width: 9em;
+    width: 70%;
+    max-width: 20em;
+
+    /* copy some styling of Bootstrap .form-control so it matches the button */
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    color: #555555;
+    font-size: 0.8em;
+    height: 30px;
+    line-height: 1.42857;
+    padding: 6px 12px;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    vertical-align: middle;
+}
+
+.fl-demo .fl-simpleEditor-content {
+    height: 20em;
+    box-shadow: 0 1px 1px #9f9f9f inset;
+    background-color: #fff;
+    padding: 0.5em;
+    overflow-y: auto;
+}
+
+.fl-demo .fl-metadataPanelContainer {
+    margin-left: 1em;
+}
+
+.fl-demo .fl-metadataPanelContainer hr {
+    background: #fff;
+    width: 50%;
+    height: 1px;
+}
+
+.fl-demo .fl-metadataPanelContainer h2 {
+    font-family: 'RobotoSlab';
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+/* Bootstrap small width and larger*/
+@media screen and (min-width: 768px) {
+     .fl-demo .fl-logo-text1 {
+        font-size: 1.2em;
+    }
+
+    #restart {
+        margin-top: 0.7em;
+    }
+
+    .fl-demo .fl-simpleEditor-content {
+        height: 30em;
+    }
+
+    .fl-demo .fl-metadata {
+        border-radius: 0.5em;
+    }
+
+    .fl-demo .fl-simpleEditor-toolbar {
+        border-top-right-radius: 0; /* At this resolution, this corner is not rounded. */
+    }
+
+    .fl-demo .fl-simpleEditor-content {
+        border-bottom-left-radius: 0.5em; /* At this resolution, round just this corner. */
+        height: 30em;
+    }
+
+    .fl-demo .fl-metadataPanelContainer {
+        height: 33em;
+        margin-top: 0.2em;
+        padding-right: 2.3em;
+        overflow:auto;
+        margin-left: 0;
+    }
+
+    .fl-demo .fl-metadataPanelContainer hr {
+        width: 100%;
+    }
+}
+
+/* Placeholder for Video */
+.fl-demo .fl-simpleEditor-insertVideo-placeHolder {
+    background: #C0C0C0;
+    width: 50%;
+    padding: 10% 0 10% 0;
+}
+
+.fl-demo .fl-simpleEditor-insertVideo-placeHolder-playCircle {
+    border: solid 5px #000000;
+    height: 5em;
+    width: 5em;
+    border-radius: 50%;
+    padding: 0.8em 0 0 1.3em;
+    margin: 0 auto;
+}
+
+.fl-demo .fl-simpleEditor-insertVideo-placeHolder-playTriangle {
+    width: 0;
+    height: 0;
+
+    border-style: solid;
+    border-width: 1.5em 0 1.5em 2.3em;
+    border-color: transparent transparent transparent #000000;
+}
+
+/*
+ * Bootstrap overrides
+ */
+
+label {
+    font-weight: normal;
+}
