@@ -136,7 +136,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     };
 
     gpii.pouchdb.dataSource.bindChange = function (database, options, callback) {
-        database.changes(options).on("change", callback);
+        database.changes(options).on("complete", callback);
     };
 
 })(jQuery, fluid);
