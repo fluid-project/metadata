@@ -1,4 +1,4 @@
-Foundation built using custom settings. The following was excluded from the package:
+Foundation v5.2.1 built using custom settings. The following was excluded from the package:
 * All Javascript components with the exception of Top Bar and Tabs
 * Pricing Tables
 
