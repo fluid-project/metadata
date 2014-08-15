@@ -130,12 +130,12 @@ var gpii = gpii || {};
                             args: ["{that}.container"]
                         },
                         "afterOpen.updateModel": {
-                            func: "{bindDialog}.applier.change",
-                            args: ["isTooltipOpen", true]
+                            changePath: "{bindDialog}.model.isTooltipOpen",
+                            value: true
                         },
                         "afterClose.updateModel": {
-                            func: "{bindDialog}.applier.change",
-                            args: ["isTooltipOpen", false]
+                            changePath: "{bindDialog}.model.isTooltipOpen",
+                            value: false
                         }
                     }
                 }
