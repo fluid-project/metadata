@@ -22,11 +22,17 @@ https://github.com/gpii/universal/LICENSE.txt
     gpii.tests.checkInitInput = function (that) {
         jqUnit.assertEquals("The placeholder for the input field has been set", that.options.strings.srcPlaceholder, that.locate("src").attr("placeholder"));
 
-        $("select", that.locate("languages")).each(function (ignored, selectElm) {
+        $("select", that.locate("languages")).each(function (selectIdx, selectElm) {
             $(selectElm).find("option").each(function(idx, optElm){
-                jqUnit.assertEquals("All language option should have been rendered in a combo box", that.input.options.controlValues[idx], $(optElm).val());
+                var actualVal = $(optElm).val();
+                jqUnit.assertEquals("The language option '" + actualVal + "' should have been rendered in select element #" + selectIdx, that.input.options.controlValues[idx], actualVal);
             });
         });
+    };
+
+    gpii.tests.checkResourcePanelInit = function (that) {
+        gpii.tests.checkInitPanel(that);
+        gpii.tests.checkInitInput(that);
     };
 
     gpii.tests.changeSrcByIndex = function (that, newSrcValue, index) {
@@ -34,66 +40,94 @@ https://github.com/gpii/universal/LICENSE.txt
     };
 
     gpii.tests.changeLanguageByIndex = function (that, newLanguageValue, index) {
-        that.container.find("select").eq(index).find("[value='" + newLanguageValue + "']").attr("selected", "selected").change();
+        that.container.find("select").eq(index).find("[value='" + newLanguageValue + "']").prop("selected", "selected").change();
     };
 
-    gpii.tests.testOptions = [
-        {src: "http://weblink.com/one.mp4", language: "hi"},
-        {src: "http://weblink.com/two.mp4", language: "zh"}
-    ];
-    gpii.tests.testSequenceConfig = [
-        {check: "gpii.tests.changeSrcByIndex", path: "src"},
-        {check: "gpii.tests.changeLanguageByIndex", path: "language"}
-    ];
-
-    gpii.tests.resourceInputPanelChangesTests = function (that, testOpts, sequenceConfig) {
-        fluid.each(testOpts, function (testOpt, index) {
-            fluid.each(sequenceConfig, function (config) {
-                var testVal = testOpts[index][config.path];
-
-                that.applier.modelChanged.addListener({
-                    path: "resources",
-                    transactional: true,
-                    priority: fluid.event.mapPriority("last", 0)
-                }, function (newModel) {
-                    jqUnit.assertEquals("The model path '" + config.path + "' has been updated to the new value", testVal, fluid.get(newModel[index], config.path));
-                    jqUnit.assertTrue("The indicator state has been set to 'available'", that.locate("indicator").hasClass(that.indicator.options.styles.indicatorState.available));
-                    that.applier.modelChanged.removeListener("checkModel");
-                }, "checkModel");
-
-                fluid.invokeGlobalFunction(config.check, [that, testVal, index]);
-            });
-        });
+    gpii.tests.makeAssertModelChanges = function (that, path, expected) {
+        return function (newModel) {
+            jqUnit.assertEquals("The model path '" + path + "' has been updated to the new value", expected, fluid.get(newModel, path));
+            jqUnit.assertTrue("The indicator state has been set to 'available'", that.locate("indicator").hasClass(that.indicator.options.styles.indicatorState.available));
+        };
     };
 
-    gpii.tests.testResourceInputPanel = function (resourceInputPanelComponent, container, message) {
-        jqUnit.asyncTest("Test " + message, function () {
-            jqUnit.expect(24);
-
-            resourceInputPanelComponent(container, {
-                resources: {
-                    template: {
-                        url: "../../../../src/components/metadata/html/resourceInputPanel-template.html"
-                    },
-                    resourceInput: {
-                        url: "../../../../src/components/metadata/html/resourceInput-template.html"
-                    }
-                },
-                listeners: {
-                    onReady: {
-                        listener: function (that) {
-                            gpii.tests.checkInitPanel(that);
-                            gpii.tests.checkInitInput(that);
-                            gpii.tests.resourceInputPanelChangesTests(that, gpii.tests.testOptions, gpii.tests.testSequenceConfig);
-
-                            jqUnit.start();
+    fluid.defaults("gpii.tests.resourceInputPanelTests", {
+        gradeNames: ["fluid.test.testEnvironment", "autoInit"],
+        components: {
+            resourceInputPanel: {
+                type: "gpii.metadata.resourceInputPanel",
+                container: ".gpiic-resourceInputPanel",
+                createOnEvent: "{resourceInputPanelTester}.events.onTestCaseStart",
+                options: {
+                    resources: {
+                        template: {
+                            url: "../../../../src/components/metadata/html/resourceInputPanel-template.html"
                         },
-                        priority: "last"
+                        resourceInput: {
+                            url: "../../../../src/components/metadata/html/resourceInput-template.html"
+                        }
                     }
                 }
-            });
-        });
-    };
+            },
+            resourceInputPanelTester: {
+                type: "gpii.tests.resourceInputPanelTester"
+            }
+        }
+    });
 
+    fluid.defaults("gpii.tests.resourceInputPanelTester", {
+        gradeNames: ["fluid.test.testCaseHolder", "autoInit"],
+        testOpts: [
+            {src: "http://weblink.com/one.mp4", language: "hi"},
+            {src: "http://weblink.com/two.mp4", language: "zh"}
+        ],
+        modules: [{
+            name: "Test resourceInputPanel",
+            tests: [{
+                expect: 16,
+                name: "Initialization",
+                sequence: [{
+                    listener: "gpii.tests.checkResourcePanelInit",
+                    event: "{resourceInputPanelTests resourceInputPanel}.events.onReady"
+                }]
+            }, {
+                expected: 2,
+                name: "Model Changes",
+                sequence: [{
+                    func: "gpii.tests.changeSrcByIndex",
+                    args: ["{resourceInputPanel}", "{that}.options.testOpts.0.src", 0]
+                }, {
+                    listenerMaker: "gpii.tests.makeAssertModelChanges",
+                    makerArgs: ["{resourceInputPanel}", "resources.0.src", "{that}.options.testOpts.0.src"],
+                    spec: {path: "", priority: "last"},
+                    changeEvent: "{resourceInputPanel}.applier.modelChanged"
+                }, {
+                    func: "gpii.tests.changeLanguageByIndex",
+                    args: ["{resourceInputPanel}", "{that}.options.testOpts.0.language", 0]
+                }, {
+                    listenerMaker: "gpii.tests.makeAssertModelChanges",
+                    makerArgs: ["{resourceInputPanel}", "resources.0.language", "{that}.options.testOpts.0.language"],
+                    spec: {path: "", priority: "last"},
+                    changeEvent: "{resourceInputPanel}.applier.modelChanged"
+                }, {
+                    func: "gpii.tests.changeSrcByIndex",
+                    args: ["{resourceInputPanel}", "{that}.options.testOpts.1.src", 1]
+                }, {
+                    listenerMaker: "gpii.tests.makeAssertModelChanges",
+                    makerArgs: ["{resourceInputPanel}", "resources.1.src", "{that}.options.testOpts.1.src"],
+                    spec: {path: "", priority: "last"},
+                    changeEvent: "{resourceInputPanel}.applier.modelChanged"
+                }, {
+                    func: "gpii.tests.changeLanguageByIndex",
+                    args: ["{resourceInputPanel}", "{that}.options.testOpts.1.language", 1]
+                }, {
+                    listenerMaker: "gpii.tests.makeAssertModelChanges",
+                    makerArgs: ["{resourceInputPanel}", "resources.1.language", "{that}.options.testOpts.1.language"],
+                    spec: {path: "", priority: "last"},
+                    changeEvent: "{resourceInputPanel}.applier.modelChanged"
+                }]
+            }]
+
+        }]
+    });
 
 })(jQuery, fluid);

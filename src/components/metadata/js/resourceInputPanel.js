@@ -192,7 +192,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     },
                     modelListeners: {
                         // could be changed to "" when updated to the new model relay system
-                        "*": {
+                        "": {
                             func: "{baseResourceInputPanel}.updateModel",
                             args: ["{change}.value", "{change}.path", "{that}.options.source.2"]
                         }
@@ -326,7 +326,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     };
 
     gpii.metadata.baseResourceInputPanel.updateModel = function (that, value, path, index, root) {
-        var changePath = [root, index, path].join(".");
+        path = that.applier.parseEL() || [];
+        var changePath = [root, index].concat(path);
         that.applier.change(changePath, value);
     };
 
