@@ -95,9 +95,10 @@ var gpii = gpii || {};
     fluid.defaults("gpii.metadata.feedback.tooltipHolder");
 
     /*
-     * This is stricktly to be used as a subcomponent.
-     * Expects the "gpii.metadata.feedback.tooltipHolder" grade to be supplied
-     * to the parent component.
+     * The gpii.metadata.feedback.dialogTooltip grade requires the following:
+     * - A parent component resolvable with the context {tooltipHolder}
+     *   - Which has the model field "isTooltipOpen" with a boolean value
+     *   - Which is a viewComponent
      */
     fluid.defaults("gpii.metadata.feedback.dialogTooltip", {
         gradeNames: ["fluid.tooltip", "autoInit"],
