@@ -221,6 +221,10 @@ var gpii = gpii || {};
                 icon: false
             }
         },
+        /* 
+         * Used by the gpii.metadata.feedback.modelToClass to add/remove the
+         * style on the rhs based on the value of the model path from the lhs
+         */
         modelToClass: {
             "isFocused.icon": "focus",
             "isHovered.icon": "hover"
