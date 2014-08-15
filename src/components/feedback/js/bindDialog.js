@@ -177,11 +177,7 @@ var gpii = gpii || {};
             onRenderDialogContent: null,
             onDialogContentReady: null,
             onBindDialogHandlers: null,
-            onDialogReady: null,
-            onFocusIcon: null,
-            onBlurIcon: null,
-            onHoverIcon: null,
-            onHoverOffIcon: null
+            onDialogReady: null
         },
         listeners: {
             "onCreate.addAriaRole": {
@@ -221,7 +217,7 @@ var gpii = gpii || {};
                 icon: false
             }
         },
-        /* 
+        /*
          * Used by the gpii.metadata.feedback.modelToClass to add/remove the
          * style on the rhs based on the value of the model path from the lhs
          */
