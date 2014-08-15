@@ -88,8 +88,58 @@ var gpii = gpii || {};
         });
     };
 
+    /*
+     * Empty component whose grade is used to identify the parent component of
+     * gpii.metadata.feedback.dialogTooltip
+     */
+    fluid.defaults("gpii.metadata.feedback.tooltipHolder");
+
+    /*
+     * This is stricktly to be used as a subcomponent.
+     * Expects the "gpii.metadata.feedback.tooltipHolder" grade to be supplied
+     * to the parent component.
+     */
+    fluid.defaults("gpii.metadata.feedback.dialogTooltip", {
+        gradeNames: ["fluid.tooltip", "autoInit"],
+        content: "",
+        styles: {
+            tooltip: "gpii-feedback-tooltip"
+        },
+        position: {
+            my: "center top",
+            at: "center-10% bottom+42%",
+            of: "{tooltipHolder}.container"
+        },
+        delay: 0,
+        duration: 0,
+        modelListeners: {
+            "{tooltipHolder}.model.isDialogOpen": [{
+                "this": "{that}.container",
+                method: "tooltip",
+                args: ["option", "disabled", "{change}.value"]
+            }, {
+                "funcName": "gpii.metadata.feedback.reopenTooltip",
+                args: ["{that}", "{change}.value"]
+            }]
+        },
+        listeners: {
+            "onCreate.unbindESC": {
+                listener: "gpii.metadata.feedback.unbindESC",
+                args: ["{that}.container"]
+            },
+            "afterOpen.updateModel": {
+                changePath: "{tooltipHolder}.model.isTooltipOpen",
+                value: true
+            },
+            "afterClose.updateModel": {
+                changePath: "{tooltipHolder}.model.isTooltipOpen",
+                value: false
+            }
+        }
+    });
+
     fluid.defaults("gpii.metadata.feedback.bindDialog", {
-        gradeNames: ["fluid.viewRelayComponent", "gpii.metadata.feedback.trackFocus", "gpii.metadata.feedback.trackBlur", "autoInit"],
+        gradeNames: ["fluid.viewRelayComponent", "gpii.metadata.feedback.trackFocus", "gpii.metadata.feedback.trackBlur", "gpii.metadata.feedback.tooltipHolder", "autoInit"],
         components: {
             renderDialogContent: {
                 type: "fluid.rendererRelayComponent",
@@ -100,44 +150,10 @@ var gpii = gpii || {};
                 }
             },
             tooltip: {
-                type: "fluid.tooltip",
+                type: "gpii.metadata.feedback.dialogTooltip",
                 container: "{bindDialog}.dom.icon",
                 options: {
-                    content: "{bindDialog}.options.strings.buttonLabel",
-                    styles: {
-                        tooltip: "gpii-feedback-tooltip"
-                    },
-                    position: {
-                        my: "center top",
-                        at: "center-10% bottom+42%",
-                        of: "{bindDialog}.container"
-                    },
-                    delay: 0,
-                    duration: 0,
-                    modelListeners: {
-                        "{bindDialog}.model.isDialogOpen": [{
-                            "this": "{that}.container",
-                            method: "tooltip",
-                            args: ["option", "disabled", "{change}.value"]
-                        }, {
-                            "funcName": "gpii.metadata.feedback.reopenTooltip",
-                            args: ["{that}", "{change}.value"]
-                        }]
-                    },
-                    listeners: {
-                        "onCreate.unbindESC": {
-                            listener: "gpii.metadata.feedback.unbindESC",
-                            args: ["{that}.container"]
-                        },
-                        "afterOpen.updateModel": {
-                            changePath: "{bindDialog}.model.isTooltipOpen",
-                            value: true
-                        },
-                        "afterClose.updateModel": {
-                            changePath: "{bindDialog}.model.isTooltipOpen",
-                            value: false
-                        }
-                    }
+                    content: "{bindDialog}.options.strings.buttonLabel"
                 }
             }
         },
