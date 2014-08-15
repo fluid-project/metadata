@@ -355,7 +355,7 @@ var gpii = gpii || {};
     // which should trigger the tooltip to reappear.
     gpii.metadata.feedback.reopenTooltip = function (tooltip, isDialogOpen) {
         if (!isDialogOpen) {
-            tooltip.container.tooltip("open");
+            tooltip.open();
         }
     };
 
