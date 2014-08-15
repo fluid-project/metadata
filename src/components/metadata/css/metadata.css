@@ -1,0 +1,100 @@
+@font-face {
+    font-family: 'FloeMetadataIcons';
+    src:url('../../../fonts/floe-metadata.eot?#iefix') format('embedded-opentype'),
+         url('../../../fonts/floe-metadata.eot'),
+         url('../../../fonts/floe-metadata.ttf');
+}
+
+.gpii-metadata-panel h2 {
+    font-size: 1.2em;
+    font-weight: bold;
+
+}
+
+.gpii-metadata-panel .gpii-metadata-list-unstyled {
+    list-style: none;
+}
+
+.gpii-metadata-panel .gpii-metadata-list-unstyled label {
+    display: inline;
+}
+
+.gpii-metadata-panel .gpii-metadata-list-unstyled input {
+    margin: 0;
+}
+
+.gpii-metadata-panel fieldset {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+.gpii-metadata-panel legend {
+    background: none;
+    font-weight: normal;
+}
+
+
+/*
+    Metadata indicators
+*/
+
+.gpii-circle {
+    -webkit-border-radius: 999px;
+    -moz-border-radius: 999px;
+    border-radius: 999px;
+    behavior: url(PIE.htc);
+    width: 2.4em;
+    height: 2.4em;
+    display: inline-block;
+    background: #249681;
+    box-shadow: 0.03em 0.03em 0 #fff;
+    font-weight: normal;
+}
+
+.gpii-circle:before {
+    font-family: 'FloeMetadataIcons';
+    color: #fff;
+    font-size: 1.7em;
+    padding-left: 0.24em;
+    line-height:1.5em;
+}
+
+.gpii-metadata-panel-title {
+    text-shadow: 0.03em 0.03em 0 #fff;
+}
+
+.gpii-audioPanel .gpii-circle:before  {
+    content: "\e607";
+}
+
+.gpii-videoPanel .gpii-circle:before  {
+    content: "\e606";
+}
+
+.gpii-captionsPanel .gpii-circle:before  {
+    content: "\e602";
+}
+
+.gpii-tooltip {
+    position: absolute;
+    background: #FFFABB;
+    border: 1px solid #C9B857;
+    padding: 3px 5px;
+    font-family: 'OpenSans-Light';
+}
+.gpii-available {
+    background: #249681;
+}
+.gpii-unavailable, .gpii-unknown {
+    background: #959595;
+}
+
+.gpii-videoPanel .gpii-flashing-row{
+    display: inline-block;
+    margin-left: 1em;
+}
+
+.gpii-audio-attributes {
+    margin-left: 2.8em;
+}

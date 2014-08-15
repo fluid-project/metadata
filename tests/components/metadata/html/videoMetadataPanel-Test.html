@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Video metadata panel tests</title>
+
+        <link rel="stylesheet" media="screen" href="../../../lib/infusion/lib/qunit/css/qunit.css" />
+        <link rel="stylesheet" media="screen" href="../../../../src/components/metadata/css/metadata.css" />
+
+        <script src="../../../lib/infusion/lib/qunit/js/qunit.js"></script>
+        <script src="../../../../src/lib/infusion/infusion-custom.js"></script>
+        <script src="../../../lib/infusion/test-core/jqUnit/js/jqUnit.js"></script>
+        <script src="../../../lib/infusion/test-core/utils/js/IoCTestUtils.js"></script>
+
+        <script type="text/javascript" src="../../../../src/components/metadata/js/indicator.js"></script>
+        <script type="text/javascript" src="../../../../src/components/metadata/js/panel.js"></script>
+        <script type="text/javascript" src="../../../../src/components/metadata/js/resourceInputPanel.js"></script>
+        <script type="text/javascript" src="../../../../src/components/metadata/js/videoPanel.js"></script>
+        <script type="text/javascript" src="../../../../src/components/metadata/js/audioPanel.js"></script>
+        <script type="text/javascript" src="../../../../src/components/metadata/js/captionsPanel.js"></script>
+        <script type="text/javascript" src="../../../../src/components/metadata/js/metadataPanel.js"></script>
+        <script type="text/javascript" src="../../../../src/components/metadata/js/videoMetadataPanel.js"></script>
+
+        <script src="../js/metadataTestsCommon.js"></script>
+        <script src="../js/videoMetadataPanelTests.js"></script>
+    </head>
+
+    <body id="body">
+        <h1 id="qunit-header">Video metadata panel tests</h1>
+        <h2 id="qunit-banner"></h2>
+        <div id="qunit-testrunner-toolbar"></div>
+        <h2 id="qunit-userAgent"></h2>
+        <ol id="qunit-tests"></ol>
+
+        <!-- Test HTML -->
+        <div class="gpiic-metadataPanel-init">
+            <div class="gpiic-videoPanel"></div>
+            <div class="gpiic-audioPanel"></div>
+            <div class="gpiic-captionsPanel"></div>
+        </div>
+
+        <div class="gpiic-metadataPanel-with-url">
+            <div class="gpiic-videoPanel"></div>
+            <div class="gpiic-audioPanel"></div>
+            <div class="gpiic-captionsPanel"></div>
+        </div>
+    </body>
+</html>
