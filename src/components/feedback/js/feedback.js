@@ -17,11 +17,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     fluid.defaults("gpii.metadata.feedback", {
         gradeNames: ["fluid.viewRelayComponent", "autoInit"],
         members: {
-            userId: {
-                expander: {
-                    funcName: "fluid.allocateGuid"
-                }
-            },
             databaseName: {
                 expander: {
                     funcName: "gpii.metadata.feedback.getDbName",
@@ -30,11 +25,18 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             },
             dataId: "feedback"
         },
+        model: {
+            _id: {
+                expander: {
+                    funcName: "fluid.allocateGuid"
+                }
+            }
+        },
         components: {
             bindMatchConfirmation: {
                 type: "gpii.metadata.feedback.bindMatchConfirmation",
                 container: "{feedback}.dom.matchConfirmationButton",
-                createOnEvent: "onPrepReady",
+                createOnEvent: "afterMarkupReady",
                 options: {
                     strings: {
                         buttonLabel: "{feedback}.options.strings.matchConfirmationLabel"
@@ -43,28 +45,41 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                         activeCss: "{feedback}.options.styles.activeCss"
                     },
                     modelListeners: {
-                        "isActive": {
-                            listener: "{feedback}.save",
-                            args: [{
-                                expander: {
-                                    func: "gpii.metadata.feedback.getMatchDataObject",
-                                    args: ["{change}.value"]
-                                }
-                            }]
-                        }
+                        "isActive": [{
+                            listener: "{feedback}.applier.change",
+                            args: ["match", "{change}.value"]
+                        }, {
+                            listener: "gpii.metadata.feedback.updatePartner",
+                            args: ["{change}.value", "{bindMismatchDetails}.applier"],
+                            excludeSource: "init"
+                        }, {
+                            listener: "{feedback}.save"
+                        }]
                     }
                 }
             },
             bindMismatchDetails: {
                 type: "gpii.metadata.feedback.bindMismatchDetails",
                 container: "{feedback}.dom.mismatchDetailsButton",
-                createOnEvent: "onPrepReady",
+                createOnEvent: "afterMarkupReady",
                 options: {
                     strings: {
                         buttonLabel: "{feedback}.options.strings.mismatchDetailsLabel"
                     },
                     styles: {
                         activeCss: "{feedback}.options.styles.activeCss"
+                    },
+                    modelListeners: {
+                        "isActive": [{
+                            listener: "{feedback}.applier.change",
+                            args: ["mismatch", "{change}.value"]
+                        }, {
+                            listener: "gpii.metadata.feedback.updatePartner",
+                            args: ["{change}.value", "{bindMatchConfirmation}.applier"],
+                            excludeSource: "init"
+                        }, {
+                            listener: "{feedback}.save"
+                        }]
                     },
                     renderDialogContentOptions: {
                         model: {
@@ -76,9 +91,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                             audioDesc: "{feedback}.model.requests.audioDesc"
                         },
                         listeners: {
-                            "onSubmit.save": {
+                            "onSubmit.save": "{feedback}.save",
+                            "onReset.save": {
                                 listener: "{feedback}.save",
-                                args: "{feedback}.model"
+                                priority: "last"
                             }
                         }
                     }
@@ -87,13 +103,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             dataSource: {
                 type: "gpii.pouchdb.dataSource",
                 options: {
-                    databaseName: "{feedback}.databaseName",
-                    listeners: {
-                        "onCreate.initDb": {
-                            listener: "{that}.set",
-                            args: [{expander: {funcName: "{feedback}.getInitDataModel"}}, "{feedback}.events.afterDatabaseInited.fire"]
-                        }
-                    }
+                    databaseName: "{feedback}.databaseName"
                 }
             }
         },
@@ -113,14 +123,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         },
         events: {
             afterTemplateFetched: null,
-            afterMarkupReady: null,
-            afterDatabaseInited: null,
-            onPrepReady: {
-                events: {
-                    "afterMarkupReady": "afterMarkupReady",
-                    "afterDatabaseInited": "afterDatabaseInited"
-                }
-            }
+            afterMarkupReady: null
         },
         listeners: {
             "onCreate.addContainerClass": {
@@ -147,11 +150,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         invokers: {
             save: {
                 funcName: "gpii.metadata.feedback.save",
-                args: ["{arguments}.0", "{dataSource}", "{that}.dataId"]
-            },
-            getInitDataModel: {
-                funcName: "gpii.metadata.feedback.getInitDataModel",
-                args: ["{that}.dataId", "{that}.userId"]
+                args: ["{that}.model", "{dataSource}", "{that}.dataId"],
+                dynamic: true
             }
         },
         resources: {
@@ -174,26 +174,16 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         return databaseName ? databaseName : "feedback";
     };
 
-    gpii.metadata.feedback.getInitDataModel = function (dataId, userId) {
-        return {
+    gpii.metadata.feedback.updatePartner = function (isActive, partnerApplier) {
+        if (isActive) {
+            partnerApplier.change("isActive", false);
+        }
+    };
+
+    gpii.metadata.feedback.save = function (newModel, dataSource, dataId) {
+        dataSource.set({
             id: dataId,
-            model: {
-                _id: userId
-            }
-        };
-    };
-
-    gpii.metadata.feedback.getMatchDataObject = function (value) {
-        return {"match": value};
-    };
-
-    gpii.metadata.feedback.save = function (value, dataSource, dataId) {
-        dataSource.get({id: dataId}, function (doc) {
-            var newValue = $.extend(true, {}, doc, value);
-            dataSource.set({
-                id: dataId,
-                model: newValue
-            });
+            model: newModel
         });
     };
 

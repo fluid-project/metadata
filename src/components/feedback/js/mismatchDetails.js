@@ -26,14 +26,22 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
      */
     fluid.defaults("gpii.metadata.feedback.mismatchDetails", {
         gradeNames: ["fluid.rendererRelayComponent", "autoInit"],
+        members: {
+            defaultModel: {
+                notInteresting: false,
+                text: false,
+                transcripts: false,
+                audio: false,
+                audioDesc: false,
+                other: false,
+                otherFeedback: ""
+            }
+        },
         model: {
-            notInteresting: false,
-            text: false,
-            transcripts: false,
-            audio: false,
-            audioDesc: false,
-            other: false,
-            otherFeedback: ""
+            expander: {
+                funcName: "fluid.copy",
+                args: ["{that}.defaultModel"]
+            }
         },
         selectors: {
             header: ".gpiic-mismatchDetails-header",
@@ -96,6 +104,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             afterTemplateFetched: null,
             onSkip: null,
             onSubmit: null,
+            onReset: null,
             onReady: null
         },
         listeners: {
@@ -109,15 +118,20 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 method: "text",
                 args: "{that}.options.strings.submit"
             },
-            "afterTemplateFetched.attachSkipHandler": {
+            "afterTemplateFetched.bindSkipHandler": {
                 "this": "{that}.dom.skip",
                 method: "on",
                 args: ["click", "{that}.events.onSkip.fire"]
             },
-            "afterTemplateFetched.attachSubmitHandler": {
+            "afterTemplateFetched.bindSubmitHandler": {
                 "this": "{that}.dom.submit",
                 method: "on",
-                args: ["click", "{that}.onSubmitFired"]
+                args: ["click", "{that}.events.onSubmit.fire"]
+            },
+            "afterTemplateFetched.bindTextareaKeyup": {
+                "this": "{that}.dom.otherFeedback",
+                method: "on",
+                args: ["keyup", "{that}.bindTextareaKeyup"]
             },
             "afterTemplateFetched.fireOnReady": {
                 listener: "{that}.events.onReady.fire",
@@ -127,11 +141,16 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             "onSkip.preventDefault": {
                 listener: "gpii.metadata.feedback.mismatchDetails.preventDefault",
                 args: "{arguments}.0"
+            },
+            "onReset.resetModel": {
+                listener: "{that}.applier.change",
+                args: ["", "{that}.defaultModel"],
+                priority: "first"
             }
         },
         invokers: {
-            onSubmitFired: {
-                funcName: "gpii.metadata.feedback.mismatchDetails.onSubmitFired",
+            bindTextareaKeyup: {
+                funcName: "gpii.metadata.feedback.mismatchDetails.bindTextareaKeyup",
                 args: ["{that}", "{arguments}.0"]
             }
         },
@@ -143,12 +162,17 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }
     });
 
-    gpii.metadata.feedback.mismatchDetails.preventDefault = function (e) {
-        e.preventDefault();
+    gpii.metadata.feedback.mismatchDetails.preventDefault = function (evt) {
+        evt.preventDefault();
     };
 
-    gpii.metadata.feedback.mismatchDetails.onSubmitFired = function (that, evt) {
-        that.events.onSubmit.fire(that.model, evt);
+    gpii.metadata.feedback.mismatchDetails.bindTextareaKeyup = function (that, evt) {
+        var checkboxOther = that.locate("other");
+        if (evt.target.value.length) {
+            checkboxOther.attr("checked", "checked");
+        } else {
+            checkboxOther.removeAttr("checked");
+        }
     };
 
     /*
@@ -163,7 +187,19 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 "onSkip.closeDialog": "{bindMismatchDetails}.closeDialog",
                 "onSubmit.closeDialog": "{bindMismatchDetails}.closeDialog"
             }
+        },
+        modelListeners: {
+            "isActive": {
+                listener: "gpii.metadata.feedback.bindMismatchDetails.resetDialogModel",
+                args: ["{change}.value", "{that}"]
+            }
         }
     });
+
+    gpii.metadata.feedback.bindMismatchDetails.resetDialogModel = function (isActive, that) {
+        if (!isActive && that.renderDialogContent) {
+            that.renderDialogContent.events.onReset.fire();
+        }
+    };
 
 })(jQuery, fluid);
