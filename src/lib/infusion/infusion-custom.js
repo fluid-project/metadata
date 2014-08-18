@@ -1,4 +1,4 @@
-/*! infusion - v2.0.0-SNAPSHOT Friday, July 25th, 2014, 2:52:09 PM*/
+/*! infusion - v2.0.0-SNAPSHOT Friday, August 15th, 2014, 11:21:02 AM*/
 /*!
  * jQuery JavaScript Library v1.11.0
  * http://jquery.com/
@@ -19858,6 +19858,11 @@ var fluid = fluid || fluid_2_0;
 (function ($, fluid) {
     "use strict";
 
+    /** Render a timestamp from a Date object into a helpful fixed format for debug logs to millisecond accuracy
+     * @param date {Date} The date to be rendered
+     * @return {String} A string format consisting of hours:minutes:seconds.millis for the datestamp padded to fixed with 
+     */
+
     fluid.renderTimestamp = function (date) {
         var zeropad = function (num, width) {
             if (!width) { width = 2; }
@@ -19886,10 +19891,10 @@ var fluid = fluid || fluid_2_0;
             }
         }
         var toReallyGo = [];
-        fluid.each(togo, function(el, path) {
+        fluid.each(togo, function (el, path) {
             toReallyGo.push({path: path, count: el});
         });
-        toReallyGo.sort(function(a, b) {return b.count - a.count;});
+        toReallyGo.sort(function (a, b) {return b.count - a.count;});
         return toReallyGo;
     };
 
@@ -19900,7 +19905,7 @@ var fluid = fluid || fluid_2_0;
             prefixCount[prefix] = 0;
         });
         var togo = [];
-        fluid.each(pathCount, function(el) {
+        fluid.each(pathCount, function (el) {
             var path = el.path;
             if (!fluid.find(prefixes, function(prefix) {
                 if (path.indexOf(prefix) === 0) {
@@ -19940,7 +19945,7 @@ var fluid = fluid || fluid_2_0;
         return stackStyle;
     };
 
-    fluid.obtainException = function() {
+    fluid.obtainException = function () {
         try {
             throw new Error("Trace exception");
         }
@@ -19953,7 +19958,7 @@ var fluid = fluid || fluid_2_0;
 
     fluid.registerNamespace("fluid.exceptionDecoders");
 
-    fluid.decodeStack = function() {
+    fluid.decodeStack = function () {
         if (stackStyle.style !== "firefox") {
             return null;
         }
@@ -19961,61 +19966,84 @@ var fluid = fluid || fluid_2_0;
         return fluid.exceptionDecoders[stackStyle.style](e);
     };
 
-    fluid.exceptionDecoders.firefox = function(e) {
+    fluid.exceptionDecoders.firefox = function (e) {
         var lines = e.stack.replace(/(?:\n@:0)?\s+$/m, "").replace(/^\(/gm, "{anonymous}(").split("\n");
-        return fluid.transform(lines, function(line) {
+        return fluid.transform(lines, function (line) {
             var atind = line.indexOf("@");
             return atind === -1? [line] : [line.substring(atind + 1), line.substring(0, atind)];
         });
     };
 
-    fluid.getCallerInfo = function(atDepth) {
+    // Main entry point for callers. 
+    // TODO: This infrastructure is several years old and probably still only works on Firefox if there
+    fluid.getCallerInfo = function (atDepth) {
         atDepth = (atDepth || 3) - stackStyle.offset;
         var stack = fluid.decodeStack();
         return stack? stack[atDepth][0] : null;
     };
 
-    function generate(c, count) {
+    /** Generates a string for padding purposes by replicating a character a given number of times
+     * @param c {Character} A character to be used for padding
+     * @param count {Integer} The number of times to repeat the character
+     * @return A string of length <code>count</code> consisting of repetitions of the supplied character
+     */
+    // UNOPTIMISED 
+    fluid.generatePadding = function (c, count) {
         var togo = "";
         for (var i = 0; i < count; ++ i) {
             togo += c;
         }
         return togo;
-    }
+    };
 
-    function printImpl(obj, small, options) {
-        var big = small + options.indentChars;
+    function printImpl (obj, small, options) {
+        var big = small + options.indentChars, togo, isFunction = typeof(obj) === "function";
         if (obj === null) {
-            return "null";
-        }
-        else if (fluid.isPrimitive(obj)) {
-            return JSON.stringify(obj);
+            togo = "null";
+        } else if (obj === undefined) {
+            togo = "undefined"; // NB - object invalid for JSON interchange
+        } else if (fluid.isPrimitive(obj) && !isFunction) {
+            togo = JSON.stringify(obj);
         }
         else {
+            if ($.inArray(obj, options.stack) !== -1) {
+                return "(CIRCULAR)"; // NB - object invalid for JSON interchange
+            }
+            options.stack.push(obj);
             var j = [];
             var i;
             if (fluid.isArrayable(obj)) {
                 if (obj.length === 0) {
-                    return "[]";
+                    togo = "[]";
+                } else {
+                    for (i = 0; i < obj.length; ++ i) {
+                        j[i] = printImpl(obj[i], big, options);
+                    }
+                    togo = "[\n" + big + j.join(",\n" + big) + "\n" + small + "]";
                 }
-                for (i = 0; i < obj.length; ++ i) {
-                    j[i] = printImpl(obj[i], big, options);
-                }
-                return "[\n" + big + j.join(",\n" + big) + "\n" + small + "]";
             }
             else {
                 i = 0;
-                fluid.each(obj, function(value, key) {
+                togo = "{" + (isFunction ? " Function" : "") + "\n"; // NB - Function object invalid for JSON interchange
+                fluid.each(obj, function (value, key) {
                     j[i++] = JSON.stringify(key) + ": " + printImpl(value, big, options);
                 });
-                return "{\n" + big + j.join(",\n" + big) + "\n" + small + "}";
+                togo += big + j.join(",\n" + big) + "\n" + small + "}";
             }
+            options.stack.pop();
         }
+        return togo;
     }
 
-    fluid.prettyPrintJSON = function(obj, options) {
-        options = $.extend({indent: 4}, options);
-        options.indentChars = generate(" ", options.indent);
+    /** Render a complex JSON object into a nicely indented format suitable for human readability.
+     * @param obj {Object} The object to be rendered
+     * @param options {Object} An options structure governing the rendering process. The only option which
+     * is currently supported is <code>indent</code> holding the number of space characters to be used to
+     * indent each level of containment.
+     */
+    fluid.prettyPrintJSON = function (obj, options) {
+        options = $.extend({indent: 4, stack: []}, options);
+        options.indentChars = fluid.generatePadding(" ", options.indent);
         return printImpl(obj, "", options);
     };
 
@@ -22537,7 +22565,7 @@ var fluid_2_0 = fluid_2_0 || {};
     /** Escapes a single path segment by replacing any character ".", "\" or "}" with
      * itself prepended by \
      */
-     // supported, PUBLIC API function
+    // supported, PUBLIC API function
     fluid.pathUtil.escapeSegment = function (segment) {
         return fluid.pathUtil.composeSegment("", segment);
     };
@@ -22660,7 +22688,7 @@ var fluid_2_0 = fluid_2_0 || {};
         var transRec = fluid.getModelTransactionRec(instantiator, transId);
         var transac;
         var transacs = fluid.transform(mrec, function (recel) {
-            transac = recel.that.applier.initiate(transId);
+            transac = recel.that.applier.initiate("init", transId);
             transRec[recel.that.applier.applierId] = {transaction: transac};
             return transac;
         });
@@ -22811,10 +22839,13 @@ var fluid_2_0 = fluid_2_0 || {};
             if (relay) {
                 ++transRec[linkId];
                 if (!existing) {
-                    var newTrans = targetApplier.initiate(transId, true); // non-top-level transaction will defeat postCommit
+                    var newTrans = targetApplier.initiate("relay", transId); // non-top-level transaction will defeat postCommit
                     existing = transRec[applierId] = {transaction: newTrans, options: options};
                 }
                 if (transducer && !options.targetApplier) {
+                    // TODO: This is just for safety but is still unusual and now abused. The transducer doesn't need the "newValue" since all the transform information
+                    // has been baked into the transform document itself. However, we now rely on this special signalling value to make sure we regenerate transforms in 
+                    // the "forwardAdapter"
                     transducer(existing.transaction, options.sourceApplier ? undefined : newValue, sourceSegs, targetSegs);
                 } else if (newValue !== undefined) {
                     existing.transaction.fireChangeRequest({type: "ADD", segs: targetSegs, value: newValue});
@@ -22860,6 +22891,7 @@ var fluid_2_0 = fluid_2_0 || {};
             if (options.targetApplier) {
                 // register changes from the model onto changes to the model relay document
                 fluid.registerDirectChangeRelay(source, sourceSegs, target, targetSegs, linkId, null, {
+                    transactional: false,
                     targetApplier: options.targetApplier,
                     relayCount: options.relayCount,
                     update: options.update
@@ -22870,9 +22902,9 @@ var fluid_2_0 = fluid_2_0 || {};
                 fluid.registerDirectChangeRelay(target, targetSegs, source, [], linkId+"-transform", options.forwardAdapter, {transactional: true, sourceApplier: options.forwardApplier});
             }
         } else { // more efficient branch where relay is uncontextualised
-            fluid.registerDirectChangeRelay(target, targetSegs, source, sourceSegs, linkId, options.forwardAdapter, {});
+            fluid.registerDirectChangeRelay(target, targetSegs, source, sourceSegs, linkId, options.forwardAdapter, {transactional: false});
             if (sourceSegs) {
-                fluid.registerDirectChangeRelay(source, sourceSegs, target, targetSegs, linkId, options.backwardAdapter, {});
+                fluid.registerDirectChangeRelay(source, sourceSegs, target, targetSegs, linkId, options.backwardAdapter, {transactional: false});
             }
         }
     };
@@ -23191,15 +23223,23 @@ var fluid_2_0 = fluid_2_0 || {};
                     listenerIndex: listenerCount,
                     segs: parsed.modelSegs,
                     path: parsed.path,
-                    priority: fluid.event.mapPriority(record.priority, listenerCount),
+                    includeSource: record.includeSource,
+                    excludeSource: record.excludeSource,
+                    priority: record.priority,
+                    guardSource: record.guardSource, // compatibility for obsolete system - will remove with old applier
                     transactional: true
                 };
                 ++listenerCount;
-                fluid.addSourceGuardedListener(parsed.applier, spec, record.guardSource, func, "modelChanged", record.namespace, record.softNamespace);
+                if (record.guardSource) {
+                    fluid.addSourceGuardedListener(parsed.applier, spec, record.guardSource, func, "modelChanged", record.namespace, record.softNamespace);
+                } else {
+                    parsed.applier.modelChanged.addListener(spec, func, record.namespace, record.softNamespace);
+                }
+
                 fluid.recordChangeListener(that, parsed.applier, func);
                 function initModelEvent() {
                     if (isNewApplier && fluid.isModelComplete(parsed.that)) {
-                        var trans = parsed.applier.initiate();
+                        var trans = parsed.applier.initiate("init");
                         fluid.initModelEvent(that, trans, [spec]);
                         trans.commit();
                     }
@@ -23353,7 +23393,7 @@ var fluid_2_0 = fluid_2_0 || {};
         if (changedValue !== fluid.NO_VALUE) {
             target[name] = changedValue;
             if (options.changeMap) {
-                fluid.model.setChangedPath(options, segs, "ADD");
+                fluid.model.setChangedPath(options, segs, options.inverse ? "DELETE" : "ADD");
             }
         }
         if (sourceCode !== "primitive") {
@@ -23395,7 +23435,7 @@ var fluid_2_0 = fluid_2_0 || {};
         } else {
             if (!holder.model) {
                 holder.model = {};
-                fluid.model.setChangedPath(options, [], "ADD");
+                fluid.model.setChangedPath(options, [], options.inverse ? "DELETE" : "ADD");
             }
             pen = fluid.model.stepTargetAccess(holder.model, request.type, request.segs, 0, length - 1, options);
         }
@@ -23414,6 +23454,50 @@ var fluid_2_0 = fluid_2_0 || {};
             fluid.fail("Unrecognised change type of " + request.type);
         }
         return options.deltas ? options.deltaMap : null;
+    };
+    
+    /** Compare two models for equality using a deep algorithm. It is assumed that both models are JSON-equivalent and do
+     * not contain circular links.
+     * @param modela The first model to be compared
+     * @param modelb The second model to be compared
+     * @param options If supplied, will receive a map and summary of the change content between the objects. It should hold 
+     * {changeMap (Object/String), changes (int)} summarising the number and location of the differences
+     * between the structures. The <code>changeMap</code> is an isomorphic map of the object structures to values "ADD" or "DELETE" indicating
+     * that values have been added/removed at that location. <code>changes</code> counts the number of such changes. The two objects are
+     * identical iff <code>changes === 0</code>. Note that in the case the object structure differs at the root, <code>changeMap</code> will hold
+     * the plain String value "ADD" or "DELETE"
+     * @return <code>true</code> if the models are identical
+     */
+    // TODO: This algorithm is quite inefficient in that both models will be copied once each
+    // supported, PUBLIC API function
+    fluid.model.diff = function (modela, modelb, options) {
+        options = options || {changeMap: {}, changes: 0}; // current algorithm can't avoid the expense of changeMap
+        var typea = fluid.typeCode(modela);
+        var typeb = fluid.typeCode(modelb);
+        var togo;
+        if (typea === "primitive" && typeb === "primitive") {
+            togo = fluid.model.isSameValue(modela, modelb);
+        } else if (typea === "primitive" ^ typeb === "primitive") {
+            togo = false;
+        } else {
+            // Apply both forward and reverse changes - if no changes either way, models are identical
+            // "ADD" reported in the reverse direction must be accounted as a "DELETE"
+            var holdera = {
+                model: fluid.copy(modela)
+            };
+            fluid.model.applyHolderChangeRequest(holdera, {value: modelb, segs: [], type: "ADD"}, options);
+            var holderb = {
+                model: fluid.copy(modelb)
+            };
+            options.inverse = true;
+            fluid.model.applyHolderChangeRequest(holderb, {value: modela, segs: [], type: "ADD"}, options);
+            togo = options.changes === 0;
+        }
+        if (togo === false && options.changes === 0) { // catch all primitive cases
+            options.changes = 1;
+            options.changeMap = modelb === undefined ? "DELETE" : "ADD";
+        }
+        return togo;
     };
 
     // Here we only support for now very simple expressions which have at most one
@@ -23457,6 +23541,22 @@ var fluid_2_0 = fluid_2_0 || {};
         // These are unbottled in fluid.concludeTransaction
         transRec.externalChanges[keyString] = {listener: spec.listener, priority: spec.priority, args: args};
     };
+    
+    fluid.isExcludedChangeSource = function (transaction, spec) {
+        if (!spec.excludeSource) { // mergeModelListeners initModelEvent fabricates a fake spec that bypasses processing
+            return false;
+        }
+        var excluded = spec.excludeSource["*"];
+        for (var source in transaction.sources) {
+            if (spec.excludeSource[source]) {
+                excluded = true;
+            }
+            if (spec.includeSource[source]) {
+                excluded = false;
+            }
+        }
+        return excluded;
+    };
 
     fluid.notifyModelChanges = function (listeners, changeMap, newHolder, oldHolder, changeRequest, transaction, applier, that) {
         var instantiator = fluid.getInstantiator(that);
@@ -23469,6 +23569,21 @@ var fluid_2_0 = fluid_2_0 || {};
                 spec.listener = fluid.event.resolveListener(spec.listener);
                 // TODO: process namespace and softNamespace rules, and propagate "sources" in 4th argument
                 var args = [fluid.model.getSimple(newHolder, invalidPath), fluid.model.getSimple(oldHolder, invalidPath), invalidPath.slice(1), changeRequest, transaction, applier];
+                // FLUID-5489: Do not notify of null changes which were reported as a result of invalidating a higher path
+                // TODO: We can improve greatly on efficiency by i) reporting a special code from fluid.matchChanges which signals the difference between invalidating a higher and lower path,
+                // ii) improving fluid.model.diff to create fewer intermediate structures and no copies
+                // TODO: The relay invalidation system is broken and must always be notified (branch 1) - since our old/new value detection is based on the wrong (global) timepoints in the transaction here,
+                // rather than the "last received model" by the holder of the transform document
+                if (!spec.isRelay) {
+                    var isNull = fluid.model.diff(args[0], args[1]);
+                    if (isNull) {
+                        continue;
+                    }
+                    var sourceExcluded = fluid.isExcludedChangeSource(transaction, spec);
+                    if (sourceExcluded) {
+                        continue;
+                    }
+                }
                 if (transRec && !spec.isRelay && spec.transactional) { // bottle up genuine external changes so we can sort and dedupe them later
                     fluid.storeExternalChange(transRec, applier, invalidPath, spec, args);
                 } else {
@@ -23527,10 +23642,15 @@ var fluid_2_0 = fluid_2_0 || {};
                 listener = {globalName: listener};
             }
             spec.listener = listener;
-            var transactional = spec.transactional;
+            if (spec.transactional !== false) {
+                spec.transactional = true;
+            }
             spec.segs = spec.segs || that.parseEL(spec.path);
-            var collection = transactional ? "transListeners" : "listeners";
-            that.changeListeners[collection].push(spec);
+            var collection = that.changeListeners[spec.transactional ? "transListeners" : "listeners"];
+            spec.excludeSource = fluid.arrayToHash(fluid.makeArray(spec.excludeSource || (spec.includeSource ? "*" : undefined)));
+            spec.includeSource = fluid.arrayToHash(fluid.makeArray(spec.includeSource));
+            spec.priority = fluid.event.mapPriority(spec.priority, collection.length);
+            collection.push(spec);
         };
         that.modelChanged.removeListener = function (listener) {
             var id = fluid.event.identifyListener(listener);
@@ -23548,10 +23668,13 @@ var fluid_2_0 = fluid_2_0 || {};
             ation.commit();
         };
 
-        that.initiate = function (transactionId, defeatPost) { // defeatPost is supplied for all non-top-level transactions
+        that.initiate = function (source, transactionId) {
+            source = source || "local";
+            var defeatPost = source === "relay"; // defeatPost is supplied for all non-top-level transactions
             var trans = {
                 instanceId: fluid.allocateGuid(), // for debugging only
                 id: transactionId || fluid.allocateGuid(),
+                sources: {},
                 changeRecord: {
                     resolverSetConfig: options.resolverSetConfig, // here to act as "options" in applyHolderChangeRequest
                     resolverGetConfig: options.resolverGetConfig
@@ -23580,6 +23703,7 @@ var fluid_2_0 = fluid_2_0 || {};
                     fluid.notifyModelChanges(that.changeListeners.listeners, deltaMap, trans.newHolder, holder, changeRequest, trans, that, holder);
                 }
             };
+            trans.sources[source] = true;
             trans.reset();
             fluid.bindRequestChange(trans);
             return trans;
