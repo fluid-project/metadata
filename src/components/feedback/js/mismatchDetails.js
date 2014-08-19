@@ -133,6 +133,11 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 method: "on",
                 args: ["keyup", "{that}.bindTextareaKeyup"]
             },
+            "afterTemplateFetched.bindCheckboxOther": {
+                "this": "{that}.dom.other",
+                method: "on",
+                args: ["click", "{that}.bindCheckboxOther"]
+            },
             "afterTemplateFetched.fireOnReady": {
                 listener: "{that}.events.onReady.fire",
                 priority: "last",
@@ -151,7 +156,11 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         invokers: {
             bindTextareaKeyup: {
                 funcName: "gpii.metadata.feedback.mismatchDetails.bindTextareaKeyup",
-                args: ["{that}", "{arguments}.0"]
+                args: ["{that}.dom.other", "{arguments}.0"]
+            },
+            bindCheckboxOther: {
+                funcName: "gpii.metadata.feedback.mismatchDetails.bindCheckboxOther",
+                args: ["{that}.dom.otherFeedback", "{arguments}.0"]
             }
         },
         resources: {
@@ -166,12 +175,15 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         evt.preventDefault();
     };
 
-    gpii.metadata.feedback.mismatchDetails.bindTextareaKeyup = function (that, evt) {
-        var checkboxOther = that.locate("other");
+    gpii.metadata.feedback.mismatchDetails.bindTextareaKeyup = function (otherDom, evt) {
         if (evt.target.value.length) {
-            checkboxOther.attr("checked", "checked");
-        } else {
-            checkboxOther.removeAttr("checked");
+            otherDom.attr("checked", "checked");
+        }
+    };
+
+    gpii.metadata.feedback.mismatchDetails.bindCheckboxOther = function (otherFeedbackDom, evt) {
+        if (!evt.target.checked) {
+            otherFeedbackDom.val("");
         }
     };
 
