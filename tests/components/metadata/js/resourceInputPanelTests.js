@@ -44,7 +44,7 @@ https://github.com/gpii/universal/LICENSE.txt
     };
 
     gpii.tests.changeLanguage = function (that, newLanguageValue) {
-        that.locate("languages").find("[value='" + newLanguageValue + "']").attr("selected", "selected").change();
+        that.locate("languages").find("[value='" + newLanguageValue + "']").prop("selected", "selected").change();
     };
 
     gpii.tests.checkModelValue = function (newSrcValue) {
@@ -246,11 +246,10 @@ https://github.com/gpii/universal/LICENSE.txt
         gpii.tests.resrouceInputPanelInitializationTest(".gpiic-resourceInputPanel-init");
     });
 
-    gpii.tests.testResourceInputPanel(gpii.metadata.resourceInputPanel, ".gpiic-resourceInputPanel", "resourceInputPanel");
-
     $(document).ready(function () {
         fluid.test.runTests([
-            "gpii.tests.resourceInputTests"
+            "gpii.tests.resourceInputTests",
+            "gpii.tests.resourceInputPanelTests"
         ]);
     });
 
