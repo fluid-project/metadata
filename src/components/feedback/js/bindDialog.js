@@ -31,8 +31,116 @@ var gpii = gpii || {};
 
     fluid.registerNamespace("gpii.metadata.feedback");
 
+    fluid.defaults("gpii.metadata.feedback.modelToClass", {
+        gradeNames: ["fluid.viewComponent", "autoInit"],
+        modelToClass: {},
+        listeners: {
+            "onCreate.setModelListeners": {
+                listener: "gpii.metadata.feedback.modelToClass.bind",
+                args: ["{that}"]
+            }
+        }
+    });
+
+    gpii.metadata.feedback.modelToClass.bind = function (that) {
+        fluid.each(that.options.modelToClass, function (style, modelPath) {
+            that.applier.modelChanged.addListener(modelPath, function (value) {
+                that.container.toggleClass(fluid.get(that.options.styles, style), value);
+            });
+        });
+    };
+
+    fluid.defaults("gpii.metadata.feedback.trackFocus", {
+        gradeNames: ["gpii.metadata.feedback.modelToClass", "autoInit"],
+        model: {
+            isFocused: {}
+        },
+        listeners: {
+            "onCreate.trackFocus": {
+                listener: "gpii.metadata.feedback.bindUIState",
+                args: ["{that}", "isFocused", "focus", "blur"]
+            }
+        }
+    });
+
+    fluid.defaults("gpii.metadata.feedback.trackBlur", {
+        gradeNames: ["gpii.metadata.feedback.modelToClass", "autoInit"],
+        model: {
+            isHovered: {}
+        },
+        listeners: {
+            "onCreate.trackBlur": {
+                listener: "gpii.metadata.feedback.bindUIState",
+                args: ["{that}", "isHovered", "mouseover", "mouseleave"]
+            }
+        }
+    });
+
+    gpii.metadata.feedback.bindUIState = function (that, modelPath, onEvent, offEvent) {
+        fluid.each(fluid.get(that.model, modelPath), function (state, selector) {
+            var elm = selector === "container" ? that.container : that.locate(selector);
+            elm.on(onEvent, function () {
+                that.applier.change([modelPath, selector], true);
+            });
+            elm.on(offEvent, function () {
+                that.applier.change([modelPath, selector], false);
+            });
+        });
+    };
+
+    /*
+     * Empty component whose grade is used to identify the parent component of
+     * gpii.metadata.feedback.dialogTooltip
+     */
+    fluid.defaults("gpii.metadata.feedback.tooltipHolder");
+
+    /*
+     * The gpii.metadata.feedback.dialogTooltip grade requires the following:
+     * - A parent component resolvable with the context {tooltipHolder}
+     *   - Which has the model field "isTooltipOpen" with a boolean value
+     *   - Which is a viewComponent
+     */
+    fluid.defaults("gpii.metadata.feedback.dialogTooltip", {
+        gradeNames: ["fluid.tooltip", "autoInit"],
+        content: "",
+        styles: {
+            tooltip: "gpii-feedback-tooltip"
+        },
+        position: {
+            my: "center top",
+            at: "center-10% bottom+42%",
+            of: "{tooltipHolder}.container"
+        },
+        delay: 0,
+        duration: 0,
+        modelListeners: {
+            "{tooltipHolder}.model.isDialogOpen": [{
+                "this": "{that}.container",
+                method: "tooltip",
+                args: ["option", "disabled", "{change}.value"]
+            }, {
+                "funcName": "gpii.metadata.feedback.reopenTooltip",
+                args: ["{that}", "{change}.value"]
+            }]
+        },
+        listeners: {
+            "onCreate.unbindESC": {
+                listener: "gpii.metadata.feedback.unbindESC",
+                args: ["{that}.container"]
+            },
+            "afterOpen.updateModel": {
+                changePath: "{tooltipHolder}.model.isTooltipOpen",
+                value: true
+            },
+            "afterClose.updateModel": {
+                changePath: "{tooltipHolder}.model.isTooltipOpen",
+                value: false
+            }
+        }
+    });
+
     fluid.defaults("gpii.metadata.feedback.bindDialog", {
-        gradeNames: ["fluid.viewRelayComponent", "autoInit"],
+        gradeNames: ["fluid.viewRelayComponent", "gpii.metadata.feedback.trackFocus", "gpii.metadata.feedback.trackBlur", "gpii.metadata.feedback.tooltipHolder", "autoInit"],
         components: {
             renderDialogContent: {
                 type: "fluid.rendererRelayComponent",
@@ -41,18 +149,30 @@ var gpii = gpii || {};
                 options: {
                     gradeNames: ["{that}.options.panelType"]
                 }
+            },
+            tooltip: {
+                type: "gpii.metadata.feedback.dialogTooltip",
+                container: "{bindDialog}.dom.icon",
+                options: {
+                    content: "{bindDialog}.options.strings.buttonLabel"
+                }
             }
         },
         members: {
             dialog: null,
             dialogContainer: null
         },
+        selectors: {
+            icon: ".gpiic-icon"
+        },
         strings: {
             buttonLabel: null
         },
         styles: {
             active: "gpii-icon-active",
-            dialogOpen: "gpii-icon-arrow"
+            openIndicator: "gpii-icon-arrow",
+            focus: "gpii-feedback-buttonFocus",
+            hover: "gpii-feedback-buttonHover"
         },
         markup: {
             dialog: "<section>&nbsp;</section>"
@@ -92,6 +212,10 @@ var gpii = gpii || {};
                 method: "click",
                 args: "{that}.bindButton"
             },
+            "onCreate.bindKeyboard": {
+                listener: "fluid.activatable",
+                args: ["{that}.container", "{that}.bindButton"]
+            },
             "onDialogContentReady.instantiateDialog": "{that}.instantiateDialog",
             "onDialogReady.openDialog": {
                 "this": "{that}.dialog",
@@ -101,11 +225,31 @@ var gpii = gpii || {};
         },
         model: {
             isActive: false,    // Keep track of the active state of the button
-            isDialogOpen: false
+            isDialogOpen: false,
+            isTooltipOpen: false,
+            isFocused: {
+                icon: false
+            },
+            isHovered: {
+                icon: false
+            }
+        },
+        /*
+         * Used by the gpii.metadata.feedback.modelToClass to add/remove the
+         * style on the rhs based on the value of the model path from the lhs
+         */
+        modelToClass: {
+            "isFocused.icon": "focus",
+            "isHovered.icon": "hover"
         },
         modelListeners: {
             "isActive": "gpii.metadata.feedback.handleActiveState({change}.value, {that}.container, {that}.options.styles.active)",
-            "isDialogOpen": "gpii.metadata.feedback.handleDialogState({that}, {change}.value, {that}.container, {that}.dialog, {that}.options.styles.dialogOpen, {that}.closeDialog, {that}.bindIframeClick, {that}.unbindIframeClick)"
+            // passing in invokers directly to ensure they are resolved at the correct time.
+            "isDialogOpen": [
+                "gpii.metadata.feedback.handleDialogState({that}, {change}.value, {that}.closeDialog, {that}.bindIframeClick, {that}.unbindIframeClick)",
+                "gpii.metadata.feedback.handleIndicatorState({that}.container, {that}.model, {that}.options.styles.openIndicator)"
+            ],
+            "isTooltipOpen": "gpii.metadata.feedback.handleIndicatorState({that}.container, {that}.model, {that}.options.styles.openIndicator)"
         },
         invokers: {
             bindButton: {
@@ -182,18 +326,30 @@ var gpii = gpii || {};
         buttonDom.attr("aria-pressed", isActive);
     };
 
-    gpii.metadata.feedback.handleDialogState = function (that, isDialogOpen, buttonDom, dialog, dialogOpenCss, closeDialogFunc, bindIframeClickFunc, unbindIframeClickFunc) {
+    gpii.metadata.feedback.handleDialogState = function (that, isDialogOpen, closeDialogFn, bindIframeClickFn, unbindIframeClickFn) {
+        var button = that.container;
+        var dialog = that.dialog;
+
         if (isDialogOpen) {
-            buttonDom.addClass(dialogOpenCss);
-            bindIframeClickFunc();
+            bindIframeClickFn();
             fluid.globalDismissal({
-                button: buttonDom,
+                button: button,
                 dialog: dialog
-            }, closeDialogFunc);
+            }, closeDialogFn);
         } else {
-            buttonDom.removeClass(dialogOpenCss);
-            unbindIframeClickFunc();
+            // manually unbind fluid.globalDismissal; particularly for cases where the dialog is closed without a click outside the component.
+            if (dialog) {
+                fluid.globalDismissal({
+                    button: button,
+                    dialog: dialog
+                }, null);
+            }
+            unbindIframeClickFn();
         }
+    };
+
+    gpii.metadata.feedback.handleIndicatorState= function (elm, model, style) {
+        elm.toggleClass(style, model.isDialogOpen || model.isTooltipOpen);
     };
 
     gpii.metadata.feedback.getIframes = function () {
@@ -210,6 +366,24 @@ var gpii = gpii || {};
     gpii.metadata.feedback.unbindIframeClick = function () {
         var iframes = gpii.metadata.feedback.getIframes();
         iframes.off("click.closeDialog");
+    };
+
+    // This is meant to be used as a model listener for isDialogOpen
+    // If the dialog is closed, focus is pushed back onto the button,
+    // which should trigger the tooltip to reappear.
+    gpii.metadata.feedback.reopenTooltip = function (tooltip, isDialogOpen) {
+        if (!isDialogOpen) {
+            tooltip.open();
+        }
+    };
+
+    gpii.metadata.feedback.unbindESC = function (elm) {
+        var elms = elm.contents().addBack(); // self plus decendants
+        elms.keyup(function (e) {
+            if (e.keyCode === $.ui.keyCode.ESCAPE) {
+                e.stopImmediatePropagation();
+            }
+        });
     };
 
 })(jQuery, fluid);
