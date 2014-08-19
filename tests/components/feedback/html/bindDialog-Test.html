@@ -6,9 +6,11 @@
 
         <link rel="stylesheet" media="screen" href="../../../lib/infusion/lib/qunit/css/qunit.css" />
 
-        <script src="../../../lib/infusion/lib/qunit/js/qunit.js"></script>
         <script src="../../../../src/lib/infusion/infusion-custom.js"></script>
+        <script src="../../../lib/infusion/lib/qunit/js/qunit.js"></script>
+        <script src="../../../lib/infusion/lib/jquery-ui/js/jquery.simulate.js"></script>
         <script src="../../../lib/infusion/test-core/jqUnit/js/jqUnit.js"></script>
+        <script src="../../../lib/infusion/test-core/jqUnit/js/jqUnit-browser.js"></script>
         <script src="../../../lib/infusion/test-core/utils/js/IoCTestUtils.js"></script>
 
         <script src="../../../../src/components/feedback/js/bindDialog.js"></script>
@@ -23,6 +25,11 @@
         <ol id="qunit-tests"></ol>
 
         <!-- Test HTML -->
-        <p class="gpiic-button"></p>
+        <div class="gpiic-bindDialog-testFixture">
+            <p class="gpiic-button">
+                <a href="#_" class="gpiic-icon"></a>
+            </p>
+        </div>
+
     </body>
 </html>
