@@ -182,7 +182,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     };
 
     gpii.metadata.feedback.mismatchDetails.bindCheckboxOther = function (otherFeedbackDom, evt) {
-        if (!evt.target.checked) {
+        var feedbackValue = otherFeedbackDom.val();
+        if (!evt.target.checked && feedbackValue.length) {
             otherFeedbackDom.val("");
         }
     };

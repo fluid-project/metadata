@@ -19,6 +19,7 @@ https://github.com/gpii/universal/LICENSE.txt
             mismatchDetails: {
                 type: "gpii.metadata.feedback.mismatchDetails",
                 container: ".gpiic-mismatchDetails",
+                createOnEvent: "{mismatchDetailsTester}.events.onTestCaseStart",
                 options: {
                     resources: {
                         template: {
@@ -52,9 +53,8 @@ https://github.com/gpii/universal/LICENSE.txt
     };
 
     gpii.tests.mismatchDetails.assertInitOnSubmit = function (that) {
-        return function (model, evt) {
-            jqUnit.assertDeepEq("onSubmit event is fired with the correct model as the first argument", that.model, model);
-            jqUnit.assertDeepEq("onSubmit event is fired with the event as the second argument", "click", evt.type);
+        return function (evt) {
+            jqUnit.assertDeepEq("onSubmit event is fired", "click", evt.type);
         };
     };
 
@@ -62,6 +62,10 @@ https://github.com/gpii/universal/LICENSE.txt
         return function (newValue) {
             jqUnit.assertEquals("The model path '" + modelPath + "'' is updated correctly.", expectedValue, newValue);
         };
+    };
+
+    gpii.tests.mismatchDetails.checkOther = function (otherElm) {
+        otherElm.attr("checked", "checked").change();
     };
 
     gpii.tests.mismatchDetails.changeOtherFeedback = function (otherFeedbackElm, newText) {
@@ -76,12 +80,12 @@ https://github.com/gpii/universal/LICENSE.txt
         modules: [{
             name: "Initialization",
             tests: [{
-                expect: 8,
+                expect: 7,
                 name: "Initial checks",
                 sequence: [{
                     listener: "gpii.tests.mismatchDetails.assertInit",
                     spec: {priority: "last"},
-                    event: "{mismatchDetails}.events.onReady"
+                    event: "{mismatchDetailsTests mismatchDetails}.events.onReady"
                 }, {
                     jQueryTrigger: "click",
                     element: "{mismatchDetails}.dom.skip"
@@ -143,15 +147,15 @@ https://github.com/gpii/universal/LICENSE.txt
                     spec: {path: "audioDesc"},
                     changeEvent: "{mismatchDetails}.applier.modelChanged"
                 }, {
-                    jQueryTrigger: "click",
-                    element: "{mismatchDetails}.dom.other"
+                    func: "gpii.tests.mismatchDetails.checkOther",
+                    args: ["{mismatchDetails}.dom.other"]
                 }, {
                     listenerMaker: "gpii.tests.mismatchDetails.modelChangedChecker",
                     makerArgs: ["other", true],
                     spec: {path: "other"},
                     changeEvent: "{mismatchDetails}.applier.modelChanged"
                 }, {
-                    funcName: "gpii.tests.mismatchDetails.changeOtherFeedback",
+                    func: "gpii.tests.mismatchDetails.changeOtherFeedback",
                     args: ["{mismatchDetails}.dom.otherFeedback", "{that}.options.testOptions.newText"]
                 }, {
                     listenerMaker: "gpii.tests.mismatchDetails.modelChangedChecker",
@@ -163,9 +167,58 @@ https://github.com/gpii/universal/LICENSE.txt
         }]
     });
 
+    fluid.defaults("gpii.tests.feedbackInteractionTests", {
+        gradeNames: ["fluid.test.testEnvironment", "autoInit"],
+        components: {
+            mismatchDetails: {
+                type: "gpii.metadata.feedback.mismatchDetails",
+                container: ".gpiic-mismatchDetails-feedbackInteraction",
+                createOnEvent: "{feedbackInteractionTester}.events.onTestCaseStart",
+                options: {
+                    resources: {
+                        template: {
+                            url: "../../../../src/components/feedback/html/mismatchDetailsTemplate.html"
+                        }
+                    }
+                }
+            },
+            feedbackInteractionTester: {
+                type: "gpii.tests.feedbackInteractionTester"
+            }
+        }
+    });
+
+    gpii.tests.mismatchDetails.verifyInteraction = function (that) {
+        var character = "a";
+        that.locate("otherFeedback").val(character).change();
+        that.locate("otherFeedback").simulate("keyup", {keyCode: character.charCodeAt(0)});
+        jqUnit.assertTrue("The checkbox is auto-checked when the feedback textarea has input text", that.locate("other").is(":checked"));
+
+        that.locate("other").click();
+        jqUnit.assertFalse("The checkbox is unchecked", that.locate("other").is(":checked"));
+        jqUnit.assertEquals("The text in the feedback textarea is cleared", "", that.locate("otherFeedback").val());
+    };
+
+    fluid.defaults("gpii.tests.feedbackInteractionTester", {
+        gradeNames: ["fluid.test.testCaseHolder", "autoInit"],
+        modules: [{
+            name: "Other feedback - The Checkbox and textarea interaction",
+            tests: [{
+                expect: 3,
+                name: "The checkbox and textarea interaction",
+                sequence: [{
+                    listener: "gpii.tests.mismatchDetails.verifyInteraction",
+                    spec: {priority: "last"},
+                    event: "{feedbackInteractionTests mismatchDetails}.events.onReady"
+                }]
+            }]
+        }]
+    });
+
     $(document).ready(function () {
         fluid.test.runTests([
-            "gpii.tests.mismatchDetailsTests"
+            "gpii.tests.mismatchDetailsTests",
+            "gpii.tests.feedbackInteractionTests"
         ]);
     });
 })(jQuery);
