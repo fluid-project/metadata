@@ -32,7 +32,7 @@ var gpii = gpii || {};
     fluid.registerNamespace("gpii.metadata.feedback");
 
     fluid.defaults("gpii.metadata.feedback.modelToClass", {
-        gradeNames: ["fluid.viewComponent", "autoInit"],
+        gradeNames: ["fluid.viewRelayComponent", "autoInit"],
         modelToClass: {},
         listeners: {
             "onCreate.setModelListeners": {
