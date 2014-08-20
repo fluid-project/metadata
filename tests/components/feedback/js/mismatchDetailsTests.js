@@ -52,7 +52,7 @@ https://github.com/gpii/universal/LICENSE.txt
         };
     };
 
-    gpii.tests.mismatchDetails.assertInitOnSubmit = function (that) {
+    gpii.tests.mismatchDetails.assertInitOnSubmit = function () {
         return function (evt) {
             jqUnit.assertDeepEq("onSubmit event is fired", "click", evt.type);
         };
