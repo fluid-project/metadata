@@ -11,8 +11,11 @@
         <script src="../../../lib/infusion/test-core/jqUnit/js/jqUnit.js"></script>
         <script src="../../../lib/infusion/test-core/utils/js/IoCTestUtils.js"></script>
 
+        <script src="../../../../src/lib/pouchDB/pouchdb.js"></script>
+        <script src="../../../../src/components/pouchDBDataSource/js/pouchDBDataSource.js"></script>
         <script src="../../../../src/components/feedback/js/bindDialog.js"></script>
         <script src="../../../../src/components/feedback/js/matchConfirmation.js"></script>
+        <script src="../../../../src/components/feedback/js/mismatchDetails.js"></script>
         <script src="../../../../src/components/feedback/js/feedback.js"></script>
         <script src="../js/feedbackTests.js"></script>
     </head>
@@ -25,7 +28,7 @@
         <ol id="qunit-tests"></ol>
 
         <!-- Test HTML -->
-        <section class="gpiic-feedback" style="display:none;"></section>
+        <section class="gpiic-feedback-init" style="display:none;"></section>
 
     </body>
 </html>

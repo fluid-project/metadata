@@ -63,7 +63,7 @@ https://github.com/gpii/universal/LICENSE.txt
     $(document).ready(function () {
         jqUnit.asyncTest("Initial settings", function () {
             jqUnit.expect(7);
-            gpii.tests.feedback.verifyInit(".gpiic-feedback");
+            gpii.tests.feedback.verifyInit(".gpiic-feedback-init");
         });
     });
 })(jQuery, fluid);
