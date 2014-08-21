@@ -1,4 +1,4 @@
-/*! infusion - v2.0.0-SNAPSHOT Friday, August 15th, 2014, 11:21:02 AM*/
+/*! infusion - v2.0.0-SNAPSHOT Thursday, August 21st, 2014, 10:58:31 AM*/
 /*!
  * jQuery JavaScript Library v1.11.0
  * http://jquery.com/
@@ -20813,7 +20813,7 @@ var fluid_2_0 = fluid_2_0 || {};
     fluid.makeStackFetcher = function (parentThat, localRecord) {
         var fetcher = function (parsed) {
             if (parentThat && parentThat.destroy === fluid.destroyedMarker) {
-                fluid.fail("Cannot resolve reference ", parsed, " from component " + fluid.dumpThat(parentThat) + " which has been destroyed");
+                fluid.fail("Cannot resolve reference " + fluid.renderContextReference(parsed) + " from component " + fluid.dumpThat(parentThat) + " which has been destroyed");
             }
             var context = parsed.context;
             if (localRecord && localRecordExpected.test(context)) {
@@ -22115,7 +22115,7 @@ outer:  for (var i = 0; i < exist.length; ++i) {
     };
 
     fluid.renderContextReference = function (parsed) {
-        return "{" + parsed.context + "}." + parsed.path;
+        return "{" + parsed.context + "}" + (parsed.path ? "." + parsed.path : "");
     };
 
     // unsupported, non-API function
