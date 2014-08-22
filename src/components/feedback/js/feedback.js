@@ -50,10 +50,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                             args: ["match", "{change}.value"]
                         }, {
                             listener: "gpii.metadata.feedback.updatePartner",
-                            args: ["{change}.value", "{bindMismatchDetails}.applier"],
+                            args: ["{change}.value", "{bindMismatchDetails}", "{feedback}.save"],
                             excludeSource: "init"
-                        }, {
-                            listener: "{feedback}.save"
                         }]
                     }
                 }
@@ -75,10 +73,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                             args: ["mismatch", "{change}.value"]
                         }, {
                             listener: "gpii.metadata.feedback.updatePartner",
-                            args: ["{change}.value", "{bindMatchConfirmation}.applier"],
+                            args: ["{change}.value", "{bindMatchConfirmation}", "{feedback}.save"],
                             excludeSource: "init"
-                        }, {
-                            listener: "{feedback}.save"
                         }]
                     },
                     renderDialogContentOptions: {
@@ -91,11 +87,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                             audioDesc: "{feedback}.model.requests.audioDesc"
                         },
                         listeners: {
-                            "onSubmit.save": "{feedback}.save",
-                            "onReset.save": {
-                                listener: "{feedback}.save",
-                                priority: "last"
-                            }
+                            "onSubmit.save": "{feedback}.save"
                         }
                     }
                 }
@@ -123,7 +115,9 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         },
         events: {
             afterTemplateFetched: null,
-            afterMarkupReady: null
+            afterMarkupReady: null,
+            onSave: null,
+            afterSave: null
         },
         listeners: {
             "onCreate.addContainerClass": {
@@ -150,13 +144,13 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         invokers: {
             save: {
                 funcName: "gpii.metadata.feedback.save",
-                args: ["{that}.model", "{dataSource}", "{that}.dataId"],
-                dynamic: true
+                args: ["{that}", "{dataSource}"]
             }
         },
         resources: {
             template: {
-                url: "../html/feedbackTemplate.html"
+                url: "../html/feedbackTemplate.html",
+                forceCache: true
             }
         },
         distributeOptions: [{
@@ -174,16 +168,25 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         return databaseName ? databaseName : "feedback";
     };
 
-    gpii.metadata.feedback.updatePartner = function (isActive, partnerApplier) {
-        if (isActive) {
-            partnerApplier.change("isActive", false);
+    gpii.metadata.feedback.updatePartner = function (isActive, partner, saveFunc) {
+        if (isActive && partner.model.isActive) {
+            partner.applier.change("isActive", false);
+        } else {
+            saveFunc();
         }
     };
 
-    gpii.metadata.feedback.save = function (newModel, dataSource, dataId) {
-        dataSource.set({
-            id: dataId,
-            model: newModel
+    gpii.metadata.feedback.save = function (that, dataSource) {
+        var model = {
+            id: that.dataId,
+            model: that.model
+        };
+
+        that.events.onSave.fire(model);
+
+        dataSource.set(model, function () {
+            console.log("afterSave fired", model);
+            that.events.afterSave.fire(model);
         });
     };
 
