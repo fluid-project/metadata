@@ -44,15 +44,31 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     styles: {
                         activeCss: "{feedback}.options.styles.activeCss"
                     },
+                    modelRelay: {
+                        source: "{that}.model.isActive",
+                        target: "{bindMismatchDetails}.model.isActive",
+                        backward: "never",
+                        forward: "liveOnly",
+                        singleTransform: {
+                            type: "fluid.transforms.valueMapper",
+                            inputPath: "",
+                            options: [{
+                                inputValue: true,
+                                outputValue: false
+                            }]
+                        }
+                    },
                     modelListeners: {
                         "isActive": [{
                             listener: "{feedback}.applier.change",
                             args: ["match", "{change}.value"]
                         }, {
+                            listener: "{feedback}.save"
+                        }/*, {
                             listener: "gpii.metadata.feedback.updatePartner",
                             args: ["{change}.value", "{bindMismatchDetails}", "{feedback}.save"],
                             excludeSource: "init"
-                        }]
+                        }*/]
                     }
                 }
             },
@@ -67,15 +83,31 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     styles: {
                         activeCss: "{feedback}.options.styles.activeCss"
                     },
+                    modelRelay: {
+                        source: "{that}.model.isActive",
+                        target: "{bindMatchConfirmation}.model.isActive",
+                        backward: "never",
+                        forward: "liveOnly",
+                        singleTransform: {
+                            type: "fluid.transforms.valueMapper",
+                            inputPath: "",
+                            options: [{
+                                inputValue: true,
+                                outputValue: false
+                            }]
+                        }
+                    },
                     modelListeners: {
                         "isActive": [{
                             listener: "{feedback}.applier.change",
                             args: ["mismatch", "{change}.value"]
                         }, {
+                            listener: "{feedback}.save"
+                        }/*, {
                             listener: "gpii.metadata.feedback.updatePartner",
                             args: ["{change}.value", "{bindMatchConfirmation}", "{feedback}.save"],
                             excludeSource: "init"
-                        }]
+                        }*/]
                     },
                     renderDialogContentOptions: {
                         model: {

@@ -72,7 +72,6 @@ https://github.com/gpii/universal/LICENSE.txt
 
     fluid.defaults("gpii.tests.feedback.verifyDialogs", {
         gradeNames: ["fluid.test.testEnvironment", "autoInit"],
-        // markupFixture: ".gpiic-feedback-markupFixture",
         components: {
             feedback: {
                 type: "gpii.metadata.feedback",
@@ -95,20 +94,14 @@ https://github.com/gpii/universal/LICENSE.txt
     });
 
     gpii.tests.feedback.checkInitModel = function (model) {
-        return function (that) {
-            jqUnit.assertFalse("The match indicator is set to false", model.match);
-            jqUnit.assertFalse("The mismatch indicator is set to false", model.mismatch);
-        };
+        jqUnit.assertFalse("The match indicator is set to false", model.match);
+        jqUnit.assertFalse("The mismatch indicator is set to false", model.mismatch);
     };
 
-    gpii.tests.feedback.checkSavedModel = function (expectedModelValues) {
-        console.log("expectedModelValues", expectedModelValues);
-        return function (savedModel) {
-            console.log("in", savedModel);
-            fluid.each(expectedModelValues, function (expectedValue, key) {
-                jqUnit.assertEquals("The value " + expectedValue + " on the path " + key + " is correct", expectedValue, fluid.get(savedModel.model, key));
-            });
-        };
+    gpii.tests.feedback.checkSavedModel = function (savedModel, expectedModelValues) {
+        fluid.each(expectedModelValues, function (expectedValue, key) {
+            jqUnit.assertEquals("The value " + expectedValue + " on the path " + key + " is correct", expectedValue, fluid.get(savedModel.model, key));
+        });
     };
 
     fluid.defaults("gpii.tests.feedback.verifyDialogsTester", {
@@ -116,23 +109,60 @@ https://github.com/gpii/universal/LICENSE.txt
         modules: [{
             name: "Test dialogs",
             tests: [{
-                name: "Interaction between Match confirmation and mismatch details dialogs",
-                // expect: 6,
+                name: "Interaction between Match confirmation and mismatch details icons",
+                expect: 8,
                 sequence: [{
-                    listenerMaker: "gpii.tests.feedback.checkInitModel",
-                    makerArgs: ["{feedback}.model"],
-                    spec: {priority: "last"},
+                    listener: "gpii.tests.feedback.checkInitModel",
+                    args: ["{feedback}.model"],
+                    priority: "last",
                     event: "{verifyDialogs feedback}.events.afterMarkupReady"
                 }, {
                     jQueryTrigger: "click",
                     element: "{feedback}.dom.matchConfirmationButton"
                 }, {
-                    listenerMaker: "gpii.tests.feedback.checkSavedModel",
-                    makerArgs: [{
+                    listener: "gpii.tests.feedback.checkSavedModel",
+                    args: ["{arguments}.0", {
                         match: true,
                         mismatch: false
                     }],
-                    spec: {priority: "last"},
+                    priority: "last",
+                    event: "{feedback}.events.afterSave"
+                }, {
+                    jQueryTrigger: "click",
+                    element: "{feedback}.dom.mismatchDetailsButton"
+                }, {
+                    listener: "gpii.tests.feedback.checkSavedModel",
+                    args: ["{arguments}.0", {
+                        match: false,
+                        mismatch: true
+                    }],
+                    priority: "last",
+                    event: "{feedback}.events.afterSave"
+                }, {
+                    jQueryTrigger: "click",
+                    element: "{feedback}.dom.matchConfirmationButton"
+                }, {
+                    listener: "gpii.tests.feedback.checkSavedModel",
+                    args: ["{arguments}.0", {
+                        match: true,
+                        mismatch: false
+                    }],
+                    priority: "last",
+                    event: "{feedback}.events.afterSave"
+                }]
+            }, {
+                name: "Mismatch details dialog",
+                expect: 8,
+                sequence: [{
+                    jQueryTrigger: "click",
+                    element: "{feedback}.dom.mismatchDetailsButton"
+                }, {
+                    listener: "gpii.tests.feedback.checkSavedModel",
+                    args: ["{arguments}.0", {
+                        match: false,
+                        mismatch: true
+                    }],
+                    priority: "last",
                     event: "{feedback}.events.afterSave"
                 }]
             }]
