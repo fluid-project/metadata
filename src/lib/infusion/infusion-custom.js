@@ -1,4 +1,4 @@
-/*! infusion - v2.0.0-SNAPSHOT Thursday, August 21st, 2014, 10:58:31 AM*/
+/*! infusion - v2.0.0-SNAPSHOT Friday, August 22nd, 2014, 11:47:40 AM*/
 /*!
  * jQuery JavaScript Library v1.11.0
  * http://jquery.com/
@@ -16970,8 +16970,8 @@ var fluid = fluid || fluid_2_0;
     fluid.environment = {
         fluid: fluid
     };
-
-    var globalObject = window || {};
+    
+    fluid.global = fluid.global || window || {};
 
     // The following flag defeats all logging/tracing activities in the most performance-critical parts of the framework.
     // This should really be performed by a build-time step which eliminates calls to pushActivity/popActivity and fluid.log.
@@ -17842,7 +17842,7 @@ var fluid = fluid || fluid_2_0;
     fluid.getGlobalValue = function (path, env) {
         if (path) {
             env = env || fluid.environment;
-            return fluid.get(globalObject, path, {type: "environment", value: env});
+            return fluid.get(fluid.global, path, {type: "environment", value: env});
         }
     };
 
@@ -17872,18 +17872,18 @@ var fluid = fluid || fluid_2_0;
         }
     };
 
-    /** Registers a new global function at a given path (currently assumes that
-     * it lies within the fluid namespace)
+    /** Registers a new global function at a given path
      */
 
     fluid.registerGlobalFunction = function (functionPath, func, env) {
         env = env || fluid.environment;
-        fluid.set(globalObject, functionPath, func, {type: "environment", value: env});
+        fluid.set(fluid.global, functionPath, func, {type: "environment", value: env});
     };
 
     fluid.setGlobalValue = fluid.registerGlobalFunction;
 
-    /** Ensures that an entry in the global namespace exists **/
+    /** Ensures that an entry in the global namespace exists. If it does not, a new entry is created as {} and returned. If an existing
+     * value is found, it is returned instead **/
     fluid.registerNamespace = function (naimspace, env) {
         env = env || fluid.environment;
         var existing = fluid.getGlobalValue(naimspace, env);
@@ -19995,6 +19995,15 @@ var fluid = fluid || fluid_2_0;
         }
         return togo;
     };
+     
+    // Marker so that we can render a custom string for properties which are not direct and concrete
+    fluid.SYNTHETIC_PROPERTY = {};
+
+    // utility to avoid triggering custom getter code which could throw an exception - e.g. express 3.x's request object 
+    fluid.getSafeProperty = function (obj, key) {
+        var desc = Object.getOwnPropertyDescriptor(obj, key); // supported on all of our environments - is broken on IE8
+        return desc && !desc.get ? obj[key] : fluid.SYNTHETIC_PROPERTY;
+    };
 
     function printImpl (obj, small, options) {
         var big = small + options.indentChars, togo, isFunction = typeof(obj) === "function";
@@ -20002,6 +20011,8 @@ var fluid = fluid || fluid_2_0;
             togo = "null";
         } else if (obj === undefined) {
             togo = "undefined"; // NB - object invalid for JSON interchange
+        } else if (obj === fluid.SYNTHETIC_PROPERTY) {
+            togo = "[Synthetic property]";
         } else if (fluid.isPrimitive(obj) && !isFunction) {
             togo = JSON.stringify(obj);
         }
@@ -20025,9 +20036,10 @@ var fluid = fluid || fluid_2_0;
             else {
                 i = 0;
                 togo = "{" + (isFunction ? " Function" : "") + "\n"; // NB - Function object invalid for JSON interchange
-                fluid.each(obj, function (value, key) {
+                for (var key in obj) {
+                    var value = fluid.getSafeProperty(obj, key);
                     j[i++] = JSON.stringify(key) + ": " + printImpl(value, big, options);
-                });
+                }
                 togo += big + j.join(",\n" + big) + "\n" + small + "}";
             }
             options.stack.pop();
@@ -21399,6 +21411,10 @@ var fluid_2_0 = fluid_2_0 || {};
         var events = fluid.makeArray(component.createOnEvent);
         fluid.each(events, function(eventName) {
             var event = eventName.charAt(0) === "{" ? fluid.expandOptions(eventName, that) : that.events[eventName];
+            if (!event || !event.addListener) {
+                fluid.fail("Error instantiating createOnEvent component with name " + componentName + " of parent ", that, " since event specification " +
+                    eventName + " could not be expanded to an event - got ", event);
+            }
             event.addListener(function () {
                 fluid.pushActivity("initDeferred", "instantiating deferred component %componentName of parent %that due to event %eventName",
                  {componentName: componentName, that: that, eventName: eventName});

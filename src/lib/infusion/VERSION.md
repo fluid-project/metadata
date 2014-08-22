@@ -1,8 +1,8 @@
 The version of Infusion included in this folder was created using a custom build from Antranig's branch:
 
-https://github.com/amb26/infusion/tree/FLUID-5497
+https://github.com/amb26/infusion/tree/FLUID-5475
 
-commit#: c063d22426d07b242df8d8aa26e5ed722d1e6e0c
+commit#: 6bee80224e92d2b076737e3d7fd1828d2b08636a
 
 ```
     grunt custom --source=true --include="tooltip, uiOptions, tabs, overviewPanel"
@@ -42,7 +42,7 @@ The following directories were stripped out since they contain code that is not 
 * all-tests.html
 * component-tests/
 * framework-tests/
-* lib/jquery-ui/
 * lib/mockjax/
 * manual-tests/
+* node-tests/
 * test-core/testTests/
