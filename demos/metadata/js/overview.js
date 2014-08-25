@@ -71,7 +71,10 @@ var demo = demo || {};
         demo.metadata.overview(".gpiic-overviewPanel", {
             overviewPanelTemplate: "../../src/lib/infusion/src/components/overviewPanel/html/overviewPanelTemplate.html",
             strings: {
+                "titleBegin": "A",
+                "titleLinkText": "Metadata",
                 "componentName": "FLOE Metadata Authoring",
+                "infusionCodeLinkText": "get Metadata",
                 "feedbackText": "Found a bug? Have a question?",
                 "feedbackLinkText": "Let us know!"
             },
@@ -90,7 +93,8 @@ var demo = demo || {};
 
             },
             links: {
-                "demoCodeLink": "https://github.com/fluid-project/metadata/tree/master/demos",
+                "titleLink": "http://wiki.fluidproject.org/display/fluid/%28Floe%29+Metadata+Authoring+and+Feedback+Tools",
+                "demoCodeLink": "https://github.com/fluid-project/metadata/tree/master/demos/metadata",
                 "infusionCodeLink": "https://github.com/fluid-project/metadata",
                 "apiLink": "http://wiki.fluidproject.org/display/fluid/Metadata+API",
                 "designLink": "http://wiki.fluidproject.org/display/fluid/FLOE+Metadata+Authoring+Design",
