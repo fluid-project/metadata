@@ -1,0 +1,42 @@
+@font-face {
+    font-family: 'RobotoSlab';
+    src: url('fonts/RobotoSlab-Bold.ttf');
+}
+
+/* Overview Panel tweaks - Needed due to FLUID-5464 */
+
+.gpii-demo .fl-overviewPanel h1 {
+    font-weight: bold;
+    color: #ccc;
+    font-family: 'RobotoSlab';
+}
+
+.gpii-demo .fl-overviewPanel-instructions h2 {
+    color: #fff;
+}
+
+.gpii-demo .fl-overviewPanel-instructions .gpii-icon:before {
+    font-size: 1rem;
+    border-color: #fff;
+    padding: 0.25rem;
+}
+
+.gpii-demo .fl-overviewPanel-instructions ul {
+    line-height: inherit;
+}
+
+.gpii-feedbackDemo .fl-overviewPanel .fl-overviewPanel-icon-fluidStar a {
+    background-color: transparent;
+    outline: none;
+}
+
+/* adjust the size of the `*` icon to fit inside the feedback bar */
+.gpii-feedbackDemo .fl-overviewPanel-hidden .fl-overviewPanel-icon-fluidStar a {
+    padding: 0.52rem 0.3rem;
+    background-color: rgba(51, 51, 51, 0.96);
+    outline: 0.2em solid rgba(51, 51, 51, 0.96);
+}
+
+.gpii-feedbackDemo .fl-overviewPanel-hidden .fl-overviewPanel-icon-fluidStar a.fl-link-enhanced {
+    padding: 0.15rem 0.3rem;
+}
