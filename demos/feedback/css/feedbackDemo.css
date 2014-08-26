@@ -38,7 +38,7 @@ video {
 /* Shift the preference status icons to the right to prevent overlap from overview panel icon */
 
 .gpii-feedbackDemo .gpii-feedback-preferencesStatus {
-    padding: 0px 0px 0px 3.5rem;
+    padding: 0px 0px 0px 5rem;
 }
 
 /* Header area */

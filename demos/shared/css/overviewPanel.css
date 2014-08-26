@@ -20,3 +20,8 @@
     border-color: #fff;
     padding: 0.25rem;
 }
+
+/* adjust the size of the `*` icon to fit inside the feedback bar */
+.gpii-feedbackDemo .fl-overviewPanel-hidden .fl-overviewPanel-icon-fluidStar a {
+    padding: 0.52rem 0.3rem;
+}
