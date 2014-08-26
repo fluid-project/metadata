@@ -14,6 +14,61 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
     fluid.registerNamespace("gpii.metadata");
 
+    /*
+     * templateLoader: Define the template urls for rendering each dialog content
+     */
+
+    fluid.defaults("gpii.metadata.templateLoader", {
+        gradeNames: ["fluid.prefs.resourceLoader", "autoInit"],
+        templates: {
+            feedback: "%prefix/feedbackTemplate.html",
+            matchConfirmation: "%prefix/matchConfirmationTemplate.html",
+            mismatchDetails: "%prefix/mismatchDetailsTemplate.html"
+        }
+    });
+
+    /*
+     * feedbackLoader: The component to instantiate the feedback tool.
+     * This component has two sub-components: the feedback component that implements the
+     * feedback tool; the templateLoader that loads in all the templates, from where on,
+     * operations would be synchronous.
+     */
+
+    fluid.defaults("gpii.metadata.feedbackLoader", {
+        gradeNames: ["fluid.viewRelayComponent", "autoInit"],
+        components: {
+            feedback: {
+                type: "gpii.metadata.feedback",
+                createOnEvent: "onTemplatesLoaded",
+                container: "{feedbackLoader}.container",
+                options: {
+                    resources: {
+                        template: "{templateLoader}.resources.feedback"
+                    }
+                }
+            },
+            templateLoader: {
+                type: "gpii.metadata.templateLoader",
+                options: {
+                    events: {
+                        onResourcesLoaded: "{feedbackLoader}.events.onTemplatesLoaded"
+                    }
+                }
+            }
+        },
+        events: {
+            onTemplatesLoaded: null
+        },
+        distributeOptions: [{
+            source: "{that}.options.templatePrefix",
+            target: "{that > templateLoader > resourcePath}.options.value"
+        }]
+    });
+
+    /*
+     * feedback: The actual implementation of the feedback tool
+     */
+
     fluid.defaults("gpii.metadata.feedback", {
         gradeNames: ["fluid.viewRelayComponent", "autoInit"],
         members: {
@@ -25,18 +80,11 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             },
             dataId: "feedback"
         },
-        model: {
-            _id: {
-                expander: {
-                    funcName: "fluid.allocateGuid"
-                }
-            }
-        },
         components: {
             bindMatchConfirmation: {
                 type: "gpii.metadata.feedback.bindMatchConfirmation",
                 container: "{feedback}.dom.matchConfirmationButton",
-                createOnEvent: "afterMarkupReady",
+                createOnEvent: "onFeedbackMarkupReady",
                 options: {
                     strings: {
                         buttonLabel: "{feedback}.options.strings.matchConfirmationLabel"
@@ -44,38 +92,24 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     styles: {
                         activeCss: "{feedback}.options.styles.activeCss"
                     },
-                    modelRelay: {
-                        source: "{that}.model.isActive",
-                        target: "{bindMismatchDetails}.model.isActive",
-                        backward: "never",
-                        forward: "liveOnly",
-                        singleTransform: {
-                            type: "fluid.transforms.valueMapper",
-                            inputPath: "",
-                            options: [{
-                                inputValue: true,
-                                outputValue: false
-                            }]
+                    modelListeners: {
+                        "isActive": {
+                            listener: "gpii.metadata.feedback.updateFeedbackModel",
+                            args: ["{change}.value", "like", "{bindMismatchDetails}", "{feedback}"],
+                            excludeSource: "init"
                         }
                     },
-                    modelListeners: {
-                        "isActive": [{
-                            listener: "{feedback}.applier.change",
-                            args: ["match", "{change}.value"]
-                        }, {
-                            listener: "{feedback}.save"
-                        }/*, {
-                            listener: "gpii.metadata.feedback.updatePartner",
-                            args: ["{change}.value", "{bindMismatchDetails}", "{feedback}.save"],
-                            excludeSource: "init"
-                        }*/]
+                    renderDialogContentOptions: {
+                        resources: {
+                            template: "{templateLoader}.resources.matchConfirmation"
+                        }
                     }
                 }
             },
             bindMismatchDetails: {
                 type: "gpii.metadata.feedback.bindMismatchDetails",
                 container: "{feedback}.dom.mismatchDetailsButton",
-                createOnEvent: "afterMarkupReady",
+                createOnEvent: "onFeedbackMarkupReady",
                 options: {
                     strings: {
                         buttonLabel: "{feedback}.options.strings.mismatchDetailsLabel"
@@ -83,43 +117,27 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     styles: {
                         activeCss: "{feedback}.options.styles.activeCss"
                     },
-                    modelRelay: {
-                        source: "{that}.model.isActive",
-                        target: "{bindMatchConfirmation}.model.isActive",
-                        backward: "never",
-                        forward: "liveOnly",
-                        singleTransform: {
-                            type: "fluid.transforms.valueMapper",
-                            inputPath: "",
-                            options: [{
-                                inputValue: true,
-                                outputValue: false
-                            }]
-                        }
-                    },
                     modelListeners: {
-                        "isActive": [{
-                            listener: "{feedback}.applier.change",
-                            args: ["mismatch", "{change}.value"]
-                        }, {
-                            listener: "{feedback}.save"
-                        }/*, {
-                            listener: "gpii.metadata.feedback.updatePartner",
-                            args: ["{change}.value", "{bindMatchConfirmation}", "{feedback}.save"],
+                        "isActive": {
+                            listener: "gpii.metadata.feedback.updateFeedbackModel",
+                            args: ["{change}.value", "dislike", "{bindMatchConfirmation}", "{feedback}"],
                             excludeSource: "init"
-                        }*/]
+                        }
                     },
                     renderDialogContentOptions: {
                         model: {
-                            notInteresting: "{feedback}.model.notInteresting",
-                            otherFeedback: "{feedback}.model.other",
-                            text: "{feedback}.model.requests.text",
-                            transcripts: "{feedback}.model.requests.transcripts",
-                            audio: "{feedback}.model.requests.audio",
-                            audioDesc: "{feedback}.model.requests.audioDesc"
+                            notInteresting: "{feedback}.model.userData.notInteresting",
+                            otherFeedback: "{feedback}.model.userData.other",
+                            text: "{feedback}.model.userData.requests.text",
+                            transcripts: "{feedback}.model.userData.requests.transcripts",
+                            audio: "{feedback}.model.userData.requests.audio",
+                            audioDesc: "{feedback}.model.userData.requests.audioDesc"
                         },
                         listeners: {
                             "onSubmit.save": "{feedback}.save"
+                        },
+                        resources: {
+                            template: "{templateLoader}.resources.mismatchDetails"
                         }
                     }
                 }
@@ -145,9 +163,34 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             matchConfirmationButton: ".gpiic-matchConfirmation-button",
             mismatchDetailsButton: ".gpiic-mismatchDetails-button"
         },
+        model: {
+            userData: {
+                _id: {
+                    expander: {
+                        funcName: "fluid.allocateGuid"
+                    }
+                }
+            },
+            inTransit: {
+                opinion: ["none"]   // Possible values: like, dislike, none
+            }
+        },
+        modelRelay: [{
+            source: "{that}.model.inTransit.opinion",
+            target: "{that}.model",
+            forward: "liveOnly",
+            backward: "never",
+            singleTransform: {
+                type: "fluid.transforms.arrayToSetMembership",
+                options: {
+                    "like": "userData.match",
+                    "dislike": "userData.mismatch",
+                    "none": "inTransit.none"
+                }
+            }
+        }],
         events: {
-            afterTemplateFetched: null,
-            afterMarkupReady: null,
+            onFeedbackMarkupReady: null,
             onSave: null,
             afterSave: null
         },
@@ -157,18 +200,14 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 "method": "addClass",
                 "args": "{that}.options.styles.container"
             },
-            "onCreate.fetchResources": {
-                "funcName": "fluid.fetchResources",
-                "args": ["{that}.options.resources", "{that}.events.afterTemplateFetched.fire"]
-            },
-            "afterTemplateFetched.appendMarkup": {
+            "onCreate.appendMarkup": {
                 "this": "{that}.container",
                 "method": "append",
-                "args": "{arguments}.0.template.resourceText",
+                "args": "{that}.options.resources.template.resourceText",
                 "priority": "first"
             },
-            "afterTemplateFetched.afterMarkupReady": {
-                "func": "{that}.events.afterMarkupReady",
+            "onCreate.onFeedbackMarkupReady": {
+                "func": "{that}.events.onFeedbackMarkupReady",
                 "args": "{that}",
                 "priority": "last"
             }
@@ -178,46 +217,34 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 funcName: "gpii.metadata.feedback.save",
                 args: ["{that}", "{dataSource}"]
             }
-        },
-        resources: {
-            template: {
-                url: "../html/feedbackTemplate.html",
-                forceCache: true
-            }
-        },
-        distributeOptions: [{
-            source: "{that}.options.matchConfirmationTemplate",
-            remove: true,
-            target: "{that matchConfirmation}.options.resources.template.url"
-        }, {
-            source: "{that}.options.mismatchDetailsTemplate",
-            remove: true,
-            target: "{that mismatchDetails}.options.resources.template.url"
-        }]
+        }
     });
 
     gpii.metadata.feedback.getDbName = function (databaseName) {
         return databaseName ? databaseName : "feedback";
     };
 
-    gpii.metadata.feedback.updatePartner = function (isActive, partner, saveFunc) {
-        if (isActive && partner.model.isActive) {
-            partner.applier.change("isActive", false);
-        } else {
-            saveFunc();
+    gpii.metadata.feedback.updateFeedbackModel = function (isActive, mappedToActiveValue, partner, feedback) {
+        if (isActive) {
+            feedback.applier.change("inTransit.opinion.0", mappedToActiveValue);
+            if (partner.model.isActive) {
+                partner.applier.change("isActive", false);
+            }
+            feedback.save();
+        } else if (!partner.model.isActive) {
+            feedback.applier.change("inTransit.opinion.0", "none");
         }
     };
 
     gpii.metadata.feedback.save = function (that, dataSource) {
         var model = {
             id: that.dataId,
-            model: that.model
+            model: that.model.userData
         };
 
         that.events.onSave.fire(model);
 
         dataSource.set(model, function () {
-            console.log("afterSave fired", model);
             that.events.afterSave.fire(model);
         });
     };

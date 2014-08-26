@@ -283,19 +283,29 @@ var gpii = gpii || {};
     });
 
     gpii.metadata.feedback.bindButton = function (that, event) {
-        event.preventDefault();
+        // setTimeout() is a work-around for the issue that clicking on the button opens up
+        // the corresponding dialog that is closed immediately by fluid.globalDismissal()
+        // [see gpii.metadata.feedback.handleDialogState()]. This issue is because globalDismissal()
+        // relies on a global document click handler. Given the "bubble up" architecture of
+        // these events, it is the case that the global dismissal handler will always be notified
+        // strictly after any click handler which is used to arm it. Using setTimeout() is to
+        // ensure the previous dialog is closed by the globalDismissal() before binding the
+        // click event handler for the next button.
+        setTimeout(function () {
+            event.preventDefault();
 
-        if (that.dialog && that.model.isDialogOpen && that.model.isActive) {
-            that.closeDialog();
-        } else if (!that.model.isActive) {
-            if (!that.dialogContainer) {
-                that.dialogContainer = $(that.options.markup.dialog).hide();
-                that.container.append(that.dialogContainer);
+            if (that.dialog && that.model.isDialogOpen && that.model.isActive) {
+                that.closeDialog();
+            } else if (!that.model.isActive) {
+                if (!that.dialogContainer) {
+                    that.dialogContainer = $(that.options.markup.dialog).hide();
+                    that.container.append(that.dialogContainer);
+                }
+                that.events.onRenderDialogContent.fire();
             }
-            that.events.onRenderDialogContent.fire();
-        }
 
-        that.applier.change("isActive", !that.model.isActive);
+            that.applier.change("isActive", !that.model.isActive);
+        }, 1);
     };
 
     gpii.metadata.feedback.instantiateDialog = function (that) {
@@ -333,14 +343,12 @@ var gpii = gpii || {};
         if (isDialogOpen) {
             bindIframeClickFn();
             fluid.globalDismissal({
-                button: button,
                 dialog: dialog
             }, closeDialogFn);
         } else {
             // manually unbind fluid.globalDismissal; particularly for cases where the dialog is closed without a click outside the component.
             if (dialog) {
                 fluid.globalDismissal({
-                    button: button,
                     dialog: dialog
                 }, null);
             }

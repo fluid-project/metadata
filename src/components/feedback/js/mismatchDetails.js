@@ -10,11 +10,6 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-/*global jQuery, fluid*/
-
-// JSLint options
-/*jslint white: true, funcinvoke: true, undef: true, newcap: true, nomen: true, regexp: true, bitwise: true, browser: true, forin: true, maxerr: 100, indent: 4 */
-
 (function ($, fluid) {
 
     "use strict";
@@ -25,7 +20,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
      * Renders match confirmation
      */
     fluid.defaults("gpii.metadata.feedback.mismatchDetails", {
-        gradeNames: ["fluid.rendererRelayComponent", "autoInit"],
+        gradeNames: ["gpii.metadata.feedback.baseDialogContent", "autoInit"],
         members: {
             defaultModel: {
                 notInteresting: false,
@@ -101,47 +96,36 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             skip: {messagekey: "skip"}
         },
         events: {
-            afterTemplateFetched: null,
             onSkip: null,
             onSubmit: null,
-            onReset: null,
-            onReady: null
+            onReset: null
         },
         listeners: {
-            "onCreate.fetchResources": {
-                listener: "fluid.fetchResources",
-                args: ["{that}.options.resources", "{that}.events.afterTemplateFetched.fire"]
-            },
-            "afterTemplateFetched.refreshView": "{that}.refreshView",
-            "afterTemplateFetched.setButtonText": {
+            "onCreate.refreshView": "{that}.refreshView",
+            "onCreate.setButtonText": {
                 "this": "{that}.dom.submit",
                 method: "text",
                 args: "{that}.options.strings.submit"
             },
-            "afterTemplateFetched.bindSkipHandler": {
+            "onCreate.bindSkipHandler": {
                 "this": "{that}.dom.skip",
                 method: "on",
                 args: ["click", "{that}.events.onSkip.fire"]
             },
-            "afterTemplateFetched.bindSubmitHandler": {
+            "onCreate.bindSubmitHandler": {
                 "this": "{that}.dom.submit",
                 method: "on",
                 args: ["click", "{that}.events.onSubmit.fire"]
             },
-            "afterTemplateFetched.bindTextareaKeyup": {
+            "onCreate.bindTextareaKeyup": {
                 "this": "{that}.dom.otherFeedback",
                 method: "on",
                 args: ["keyup", "{that}.bindTextareaKeyup"]
             },
-            "afterTemplateFetched.bindCheckboxOther": {
+            "onCreate.bindCheckboxOther": {
                 "this": "{that}.dom.other",
                 method: "on",
                 args: ["click", "{that}.bindCheckboxOther"]
-            },
-            "afterTemplateFetched.fireOnReady": {
-                listener: "{that}.events.onReady.fire",
-                priority: "last",
-                args: "{that}"
             },
             "onSkip.preventDefault": {
                 listener: "gpii.metadata.feedback.mismatchDetails.preventDefault",
@@ -161,12 +145,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             bindCheckboxOther: {
                 funcName: "gpii.metadata.feedback.mismatchDetails.bindCheckboxOther",
                 args: ["{that}.dom.otherFeedback", "{arguments}.0"]
-            }
-        },
-        resources: {
-            template: {
-                url: "../html/mismatchDetailsTemplate.html",
-                forceCache: true
             }
         }
     });
@@ -198,6 +176,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             listeners: {
                 "afterRender.fireContentReadyEvent": "{bindMismatchDetails}.events.onDialogContentReady",
                 "onSkip.closeDialog": "{bindMismatchDetails}.closeDialog",
+                "onSkip.resetSelections": "{that}.events.onReset.fire",
                 "onSubmit.closeDialog": "{bindMismatchDetails}.closeDialog"
             }
         },

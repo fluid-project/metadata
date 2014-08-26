@@ -37,6 +37,7 @@
         <script type="text/javascript" src="../../src/components/pouchDBDataSource/js/pouchDBDataSource.js"></script>
 
         <script type="text/javascript" src="../../src/components/feedback/js/bindDialog.js"></script>
+        <script type="text/javascript" src="../../src/components/feedback/js/baseDialogContent.js"></script>
         <script type="text/javascript" src="../../src/components/feedback/js/matchConfirmation.js"></script>
         <script type="text/javascript" src="../../src/components/feedback/js/mismatchDetails.js"></script>
         <script type="text/javascript" src="../../src/components/feedback/js/feedback.js"></script>
@@ -143,14 +144,8 @@
                     }
                 });
 
-                gpii.metadata.feedback(".gpiic-feedback", {
-                    resources: {
-                        template: {
-                            url: "../../src/components/feedback/html/feedbackTemplate.html"
-                        }
-                    },
-                    matchConfirmationTemplate: "../../src/components/feedback/html/matchConfirmationTemplate.html",
-                    mismatchDetailsTemplate: "../../src/components/feedback/html/mismatchDetailsTemplate.html"
+                gpii.metadata.feedbackLoader(".gpiic-feedback", {
+                    templatePrefix: "../../src/components/feedback/html/"
                 });
             });
         </script>

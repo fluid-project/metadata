@@ -10,11 +10,6 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-/*global jQuery, fluid*/
-
-// JSLint options
-/*jslint white: true, funcinvoke: true, undef: true, newcap: true, nomen: true, regexp: true, bitwise: true, browser: true, forin: true, maxerr: 100, indent: 4 */
-
 (function ($, fluid) {
 
     "use strict";
@@ -25,7 +20,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
      * Renders match confirmation
      */
     fluid.defaults("gpii.metadata.feedback.matchConfirmation", {
-        gradeNames: ["fluid.rendererRelayComponent", "autoInit"],
+        gradeNames: ["gpii.metadata.feedback.baseDialogContent", "autoInit"],
         selectors: {
             content: ".gpiic-matchConfirmation-content",
             header: ".gpiic-matchConfirmation-header"
@@ -39,16 +34,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             header: {messagekey: "header"}
         },
         listeners: {
-            "onCreate.fetchResources": {
-                listener: "fluid.fetchResources",
-                args: ["{that}.options.resources", "{that}.refreshView"]
-            }
-        },
-        resources: {
-            template: {
-                url: "../html/matchConfirmationTemplate.html",
-                forceCache: true
-            }
+            "onCreate.refreshView": "{that}.refreshView"
         }
     });
 

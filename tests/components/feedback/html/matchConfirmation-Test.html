@@ -12,6 +12,7 @@
         <script src="../../../lib/infusion/test-core/utils/js/IoCTestUtils.js"></script>
 
         <script src="../../../../src/components/feedback/js/bindDialog.js"></script>
+        <script src="../../../../src/components/feedback/js/baseDialogContent.js"></script>
         <script src="../../../../src/components/feedback/js/matchConfirmation.js"></script>
         <script src="../js/matchConfirmationTests.js"></script>
     </head>
@@ -24,7 +25,10 @@
         <ol id="qunit-tests"></ol>
 
         <!-- Test HTML -->
-        <p class="gpiic-panel" style="display:none"></p>
+        <div class="gpiic-panel" style="display:none">
+            <h2 class="gpiic-matchConfirmation-header"></h2>
+            <p class="gpiic-matchConfirmation-content"></p>
+        </div>
 
     </body>
 </html>
