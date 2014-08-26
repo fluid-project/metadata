@@ -18,3 +18,9 @@
 .gpii-demo .fl-overviewPanel-instructions h2 {
     color: #fff;
 }
+
+.gpii-demo .fl-overviewPanel-instructions .gpii-icon:before {
+    font-size: 1rem;
+    border-color: #fff;
+    padding: 0.25rem;
+}
