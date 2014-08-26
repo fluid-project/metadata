@@ -21,9 +21,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
      */
     fluid.defaults("gpii.metadata.feedback.baseDialogContent", {
         gradeNames: ["fluid.rendererRelayComponent", "autoInit"],
-        listeners: {
-            "onCreate.refreshView": "{that}.refreshView"
-        }
+        renderOnInit: true
     });
 
 })(jQuery, fluid);

@@ -19,14 +19,7 @@ https://github.com/gpii/universal/LICENSE.txt
             mismatchDetails: {
                 type: "gpii.metadata.feedback.mismatchDetails",
                 container: ".gpiic-mismatchDetails",
-                createOnEvent: "{mismatchDetailsTester}.events.onTestCaseStart",
-                options: {
-                    resources: {
-                        template: {
-                            url: "../../../../src/components/feedback/html/mismatchDetailsTemplate.html"
-                        }
-                    }
-                }
+                createOnEvent: "{mismatchDetailsTester}.events.onTestCaseStart"
             },
             mismatchDetailsTester: {
                 type: "gpii.tests.mismatchDetailsTester"
@@ -46,24 +39,6 @@ https://github.com/gpii/universal/LICENSE.txt
         jqUnit.assertEquals("The submit button is rendered with the correct label", that.options.strings.submit, that.container.find("button").text());
     };
 
-    gpii.tests.mismatchDetails.assertInitOnSkip = function () {
-        return function () {
-            jqUnit.assertTrue("Clicking the skip button fires onSkip event", true);
-        };
-    };
-
-    gpii.tests.mismatchDetails.assertInitOnSubmit = function () {
-        return function (evt) {
-            jqUnit.assertDeepEq("onSubmit event is fired", "click", evt.type);
-        };
-    };
-
-    gpii.tests.mismatchDetails.modelChangedChecker = function (modelPath, expectedValue) {
-        return function (newValue) {
-            jqUnit.assertEquals("The model path '" + modelPath + "'' is updated correctly.", expectedValue, newValue);
-        };
-    };
-
     gpii.tests.mismatchDetails.checkOther = function (otherElm) {
         otherElm.attr("checked", "checked").change();
     };
@@ -80,24 +55,32 @@ https://github.com/gpii/universal/LICENSE.txt
         modules: [{
             name: "Initialization",
             tests: [{
-                expect: 7,
+                expect: 5,
                 name: "Initial checks",
                 sequence: [{
                     listener: "gpii.tests.mismatchDetails.assertInit",
-                    spec: {priority: "last"},
-                    event: "{mismatchDetailsTests mismatchDetails}.events.onReady"
-                }, {
+                    priority: "last",
+                    event: "{mismatchDetailsTests mismatchDetails}.events.afterRender"
+                }]
+            }]
+        }, {
+            name: "Button events",
+            tests: [{
+                expect: 2,
+                name: "Button events",
+                sequence: [{
                     jQueryTrigger: "click",
                     element: "{mismatchDetails}.dom.skip"
                 }, {
-                    listenerMaker: "gpii.tests.mismatchDetails.assertInitOnSkip",
+                    listener: "jqUnit.assertTrue",
+                    args: ["Clicking the skip button fires onSkip event", true],
                     event: "{mismatchDetails}.events.onSkip"
                 }, {
                     jQueryTrigger: "click",
                     element: "{mismatchDetails}.dom.submit"
                 }, {
-                    listenerMaker: "gpii.tests.mismatchDetails.assertInitOnSubmit",
-                    makerArgs: ["{mismatchDetails}"],
+                    listener: "jqUnit.assertDeepEq",
+                    makerArgs: ["onSubmit event is fired", "click", "{arguments}.0.type"],
                     event: "{mismatchDetails}.events.onSubmit"
                 }]
             }]
@@ -110,56 +93,56 @@ https://github.com/gpii/universal/LICENSE.txt
                     jQueryTrigger: "click",
                     element: "{mismatchDetails}.dom.notInteresting"
                 }, {
-                    listenerMaker: "gpii.tests.mismatchDetails.modelChangedChecker",
-                    makerArgs: ["notInteresting", true],
+                    listener: "jqUnit.assertEquals",
+                    args: ["The model path 'notInteresting' is updated correctly.", true, "{arguments}.0"],
                     spec: {path: "notInteresting"},
                     changeEvent: "{mismatchDetails}.applier.modelChanged"
                 }, {
                     jQueryTrigger: "click",
                     element: "{mismatchDetails}.dom.text"
                 }, {
-                    listenerMaker: "gpii.tests.mismatchDetails.modelChangedChecker",
-                    makerArgs: ["text", true],
+                    listener: "jqUnit.assertEquals",
+                    args: ["The model path 'text' is updated correctly.", true, "{arguments}.0"],
                     spec: {path: "text"},
                     changeEvent: "{mismatchDetails}.applier.modelChanged"
                 }, {
                     jQueryTrigger: "click",
                     element: "{mismatchDetails}.dom.transcripts"
                 }, {
-                    listenerMaker: "gpii.tests.mismatchDetails.modelChangedChecker",
-                    makerArgs: ["transcripts", true],
+                    listener: "jqUnit.assertEquals",
+                    args: ["The model path 'transcripts' is updated correctly.", true, "{arguments}.0"],
                     spec: {path: "transcripts"},
                     changeEvent: "{mismatchDetails}.applier.modelChanged"
                 }, {
                     jQueryTrigger: "click",
                     element: "{mismatchDetails}.dom.audio"
                 }, {
-                    listenerMaker: "gpii.tests.mismatchDetails.modelChangedChecker",
-                    makerArgs: ["audio", true],
+                    listener: "jqUnit.assertEquals",
+                    args: ["The model path 'audio' is updated correctly.", true, "{arguments}.0"],
                     spec: {path: "audio"},
                     changeEvent: "{mismatchDetails}.applier.modelChanged"
                 }, {
                     jQueryTrigger: "click",
                     element: "{mismatchDetails}.dom.audioDesc"
                 }, {
-                    listenerMaker: "gpii.tests.mismatchDetails.modelChangedChecker",
-                    makerArgs: ["audioDesc", true],
+                    listener: "jqUnit.assertEquals",
+                    args: ["The model path 'audioDesc' is updated correctly.", true, "{arguments}.0"],
                     spec: {path: "audioDesc"},
                     changeEvent: "{mismatchDetails}.applier.modelChanged"
                 }, {
                     func: "gpii.tests.mismatchDetails.checkOther",
                     args: ["{mismatchDetails}.dom.other"]
                 }, {
-                    listenerMaker: "gpii.tests.mismatchDetails.modelChangedChecker",
-                    makerArgs: ["other", true],
+                    listener: "jqUnit.assertEquals",
+                    args: ["The model path 'other' is updated correctly.", true, "{arguments}.0"],
                     spec: {path: "other"},
                     changeEvent: "{mismatchDetails}.applier.modelChanged"
                 }, {
                     func: "gpii.tests.mismatchDetails.changeOtherFeedback",
                     args: ["{mismatchDetails}.dom.otherFeedback", "{that}.options.testOptions.newText"]
                 }, {
-                    listenerMaker: "gpii.tests.mismatchDetails.modelChangedChecker",
-                    makerArgs: ["otherFeedback", "{that}.options.testOptions.newText"],
+                    listener: "jqUnit.assertEquals",
+                    args: ["The model path 'otherFeedback' is updated correctly.", "{that}.options.testOptions.newText", "{arguments}.0"],
                     spec: {path: "otherFeedback", priority: "last"},
                     changeEvent: "{mismatchDetails}.applier.modelChanged"
                 }]
@@ -172,15 +155,8 @@ https://github.com/gpii/universal/LICENSE.txt
         components: {
             mismatchDetails: {
                 type: "gpii.metadata.feedback.mismatchDetails",
-                container: ".gpiic-mismatchDetails-feedbackInteraction",
-                createOnEvent: "{feedbackInteractionTester}.events.onTestCaseStart",
-                options: {
-                    resources: {
-                        template: {
-                            url: "../../../../src/components/feedback/html/mismatchDetailsTemplate.html"
-                        }
-                    }
-                }
+                container: ".gpiic-mismatchDetails",
+                createOnEvent: "{feedbackInteractionTester}.events.onTestCaseStart"
             },
             feedbackInteractionTester: {
                 type: "gpii.tests.feedbackInteractionTester"
@@ -208,8 +184,8 @@ https://github.com/gpii/universal/LICENSE.txt
                 name: "The checkbox and textarea interaction",
                 sequence: [{
                     listener: "gpii.tests.mismatchDetails.verifyInteraction",
-                    spec: {priority: "last"},
-                    event: "{feedbackInteractionTests mismatchDetails}.events.onReady"
+                    priority: "last",
+                    event: "{feedbackInteractionTests mismatchDetails}.events.afterRender"
                 }]
             }]
         }]

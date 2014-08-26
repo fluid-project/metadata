@@ -32,9 +32,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         protoTree: {
             content: {messagekey: "content"},
             header: {messagekey: "header"}
-        },
-        listeners: {
-            "onCreate.refreshView": "{that}.refreshView"
         }
     });
 

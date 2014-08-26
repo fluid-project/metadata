@@ -101,28 +101,27 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             onReset: null
         },
         listeners: {
-            "onCreate.refreshView": "{that}.refreshView",
-            "onCreate.setButtonText": {
+            "afterRender.setButtonText": {
                 "this": "{that}.dom.submit",
                 method: "text",
                 args: "{that}.options.strings.submit"
             },
-            "onCreate.bindSkipHandler": {
+            "afterRender.bindSkipHandler": {
                 "this": "{that}.dom.skip",
                 method: "on",
                 args: ["click", "{that}.events.onSkip.fire"]
             },
-            "onCreate.bindSubmitHandler": {
+            "afterRender.bindSubmitHandler": {
                 "this": "{that}.dom.submit",
                 method: "on",
                 args: ["click", "{that}.events.onSubmit.fire"]
             },
-            "onCreate.bindTextareaKeyup": {
+            "afterRender.bindTextareaKeyup": {
                 "this": "{that}.dom.otherFeedback",
                 method: "on",
                 args: ["keyup", "{that}.bindTextareaKeyup"]
             },
-            "onCreate.bindCheckboxOther": {
+            "afterRender.bindCheckboxOther": {
                 "this": "{that}.dom.other",
                 method: "on",
                 args: ["click", "{that}.bindCheckboxOther"]

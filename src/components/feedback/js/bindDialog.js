@@ -337,7 +337,6 @@ var gpii = gpii || {};
     };
 
     gpii.metadata.feedback.handleDialogState = function (that, isDialogOpen, closeDialogFn, bindIframeClickFn, unbindIframeClickFn) {
-        var button = that.container;
         var dialog = that.dialog;
 
         if (isDialogOpen) {
