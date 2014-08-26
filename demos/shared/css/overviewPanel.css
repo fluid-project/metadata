@@ -25,7 +25,18 @@
     line-height: inherit;
 }
 
+.gpii-feedbackDemo .fl-overviewPanel .fl-overviewPanel-icon-fluidStar a {
+    background-color: transparent;
+    outline: none;
+}
+
 /* adjust the size of the `*` icon to fit inside the feedback bar */
 .gpii-feedbackDemo .fl-overviewPanel-hidden .fl-overviewPanel-icon-fluidStar a {
     padding: 0.52rem 0.3rem;
+    background-color: rgba(51, 51, 51, 0.96);
+    outline: 0.2em solid rgba(51, 51, 51, 0.96);
+}
+
+.gpii-feedbackDemo .fl-overviewPanel-hidden .fl-overviewPanel-icon-fluidStar a.fl-link-enhanced {
+    padding: 0.15rem 0.3rem;
 }
