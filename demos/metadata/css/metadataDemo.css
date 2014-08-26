@@ -21,6 +21,10 @@
          url('../../shared/fonts/gpii-metadataDemo.ttf');
 }
 
+body {
+    line-height: 1.6;
+}
+
 .gpii-metadataDemo-demo {
     font-family: "OpenSans","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
     background-color: #F4F4E9;
@@ -417,21 +421,4 @@
     height: 2.5em;
     width: 100%;
     font-size: 1em;
-}
-
-
-/* Overview Panel tweaks - Needed due to FLUID-5464 */
-
-.gpii-metadataDemo-demo .fl-overviewPanel-container {
-    z-index: 1;
-    line-height: 1.6rem;
-}
-
-.gpii-metadataDemo-demo .fl-overviewPanel h1 {
-    color: #ccc;
-    font-family: 'RobotoSlab';
-}
-
-.gpii-metadataDemo-demo .fl-overviewPanel-instructions h2 {
-    color: #fff;
 }

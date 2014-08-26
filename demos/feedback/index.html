@@ -11,6 +11,7 @@
 
         <link rel="stylesheet" href="../../src/lib/infusion/src/components/overviewPanel/css/OverviewPanel.css" />
         <link rel="stylesheet" href="../../src/components/feedback/css/feedback.css" />
+        <link rel="stylesheet" href="../shared/css/overviewPanel.css" />
         <link rel="stylesheet" href="css/feedbackDemo.css" />
 
         <!-- Required CSS files for UI Options -->
@@ -31,6 +32,7 @@
         <link rel="stylesheet" type="text/css" href="../../src/lib/infusion/src/lib/jquery/ui/css/fl-theme-dglg/dglg.css" />
         <link rel="stylesheet" type="text/css" href="../../src/lib/infusion/src/framework/preferences/css/PrefsEditor.css" />
         <link rel="stylesheet" type="text/css" href="../../src/lib/infusion/src/framework/preferences/css/SeparatedPanelPrefsEditor.css" />
+        <link rel="stylesheet" href="../../src/lib/infusion/src/components/overviewPanel/css/OverviewPanel.css" />
 
         <script type="text/javascript" src="../../src/lib/infusion/infusion-custom.js"></script>
         <script type="text/javascript" src="../../src/lib/pouchDB/pouchdb.js"></script>
@@ -41,8 +43,11 @@
         <script type="text/javascript" src="../../src/components/feedback/js/matchConfirmation.js"></script>
         <script type="text/javascript" src="../../src/components/feedback/js/mismatchDetails.js"></script>
         <script type="text/javascript" src="../../src/components/feedback/js/feedback.js"></script>
+        <script type="text/javascript" src="js/feedbackDemo.js"></script>
     </head>
-    <body class="gpii-feedbackDemo">
+    <body class="gpii-feedbackDemo gpii-demo">
+        <div class="flc-overviewPanel fl-overviewPanel-container"></div>
+
         <!-- BEGIN markup for feedback tool -->
 
         <section class="gpiic-feedback">
@@ -124,30 +129,5 @@
                 emissions the impacts are expected to become increasingly worse.</p>
             </div>
         </main>
-
-        <script type="text/javascript">
-            $(document).ready(function () {
-                fluid.uiOptions.prefsEditor(".flc-prefsEditor-separatedPanel", {
-                    tocTemplate: "../../src/lib/infusion/src/components/tableOfContents/html/TableOfContents.html",
-                    templatePrefix: "../../src/lib/infusion/src/framework/preferences/html/",
-                    messagePrefix: "../../src/lib/infusion/src/framework/preferences/messages/",
-                    components: {
-                        prefsEditorLoader: {
-                            options: {
-                                iframeRenderer: {
-                                    markupProps: {
-                                        src: "html/SeparatedPanelPrefsEditorFrame.html"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-
-                gpii.metadata.feedbackLoader(".gpiic-feedback", {
-                    templatePrefix: "../../src/components/feedback/html/"
-                });
-            });
-        </script>
     </body>
 </html>

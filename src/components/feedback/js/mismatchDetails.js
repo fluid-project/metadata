@@ -17,7 +17,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     fluid.registerNamespace("gpii.metadata.feedback");
 
     /*
-     * Renders match confirmation
+     * Renders mismatch details
      */
     fluid.defaults("gpii.metadata.feedback.mismatchDetails", {
         gradeNames: ["gpii.metadata.feedback.baseDialogContent", "autoInit"],
