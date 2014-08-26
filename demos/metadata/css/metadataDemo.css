@@ -21,6 +21,10 @@
          url('../../shared/fonts/gpii-metadataDemo.ttf');
 }
 
+body {
+    line-height: 1.6;
+}
+
 .gpii-metadataDemo-demo {
     font-family: "OpenSans","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
     background-color: #F4F4E9;

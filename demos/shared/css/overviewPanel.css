@@ -5,10 +5,6 @@
 
 /* Overview Panel tweaks - Needed due to FLUID-5464 */
 
-.gpii-demo .fl-overviewPanel-container {
-    line-height: 1.6rem;
-}
-
 .gpii-demo .fl-overviewPanel h1 {
     font-weight: bold;
     color: #ccc;
