@@ -194,7 +194,8 @@ var gpii = gpii || {};
             onRenderDialogContent: null,
             onDialogContentReady: null,
             onBindDialogHandlers: null,
-            onDialogReady: null
+            onDialogReady: null,
+            afterButtonClicked: null
         },
         listeners: {
             "onCreate.addAriaRole": {
@@ -305,6 +306,7 @@ var gpii = gpii || {};
             }
 
             that.applier.change("isActive", !that.model.isActive);
+            that.events.afterButtonClicked.fire();
         }, 1);
     };
 

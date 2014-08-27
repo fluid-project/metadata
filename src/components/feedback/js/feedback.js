@@ -42,6 +42,44 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 createOnEvent: "onTemplatesLoaded",
                 container: "{feedbackLoader}.container",
                 options: {
+                    components: {
+                        bindMatchConfirmation: {
+                            options: {
+                                listeners: {
+                                    "afterButtonClicked.escalateToTopParent": {
+                                        listener: "{feedbackLoader}.events.afterMatchConfirmationButtonClicked.fire",
+                                        priority: "last"
+                                    }
+                                }
+                            }
+                        },
+                        bindMismatchDetails: {
+                            options: {
+                                listeners: {
+                                    "afterButtonClicked.escalateToTopParent": {
+                                        listener: "{feedbackLoader}.events.afterMismatchDetailsButtonClicked.fire",
+                                        priority: "last"
+                                    }
+                                },
+                                renderDialogContentOptions: {
+                                    listeners: {
+                                        "onSkip.escalateToTopParent": {
+                                            listener: "{feedbackLoader}.events.onSkipAtMismatchDetails.fire",
+                                            priority: "last"
+                                        },
+                                        "onSubmit.escalateToTopParent": {
+                                            listener: "{feedbackLoader}.events.onSubmitAtMismatchDetails.fire",
+                                            priority: "last"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    events: {
+                        onSave: "{feedbackLoader}.events.onSave",
+                        afterSave: "{feedbackLoader}.events.afterSave"
+                    },
                     resources: {
                         template: "{templateLoader}.resources.feedback"
                     }
@@ -57,11 +95,25 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             }
         },
         events: {
-            onTemplatesLoaded: null
+            onTemplatesLoaded: null,
+            onSave: null,
+            afterSave: null,
+            afterMatchConfirmationButtonClicked: null,
+            afterMismatchDetailsButtonClicked: null,
+            onSkipAtMismatchDetails: null,
+            onSubmitAtMismatchDetails: null
         },
         distributeOptions: [{
             source: "{that}.options.templatePrefix",
-            target: "{that > templateLoader > resourcePath}.options.value"
+            target: "{that > templateLoader > resourcePath}.options.value",
+            removeSource: true
+        }, {
+            source: "{that}.options.templates",
+            target: "{that > templateLoader}.options.templates",
+            removeSource: true
+        }, {
+            source: "{that}.options.feedback",
+            target: "{that > feedback}.options"
         }]
     });
 
@@ -127,7 +179,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     renderDialogContentOptions: {
                         model: {
                             notInteresting: "{feedback}.model.userData.notInteresting",
-                            otherFeedback: "{feedback}.model.userData.other",
+                            other: "{feedback}.model.userData.other",
+                            otherFeedback: "{feedback}.model.userData.otherFeedback",
                             text: "{feedback}.model.userData.requests.text",
                             transcripts: "{feedback}.model.userData.requests.transcripts",
                             audio: "{feedback}.model.userData.requests.audio",

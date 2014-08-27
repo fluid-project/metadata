@@ -13,170 +13,236 @@ https://github.com/gpii/universal/LICENSE.txt
 
     fluid.registerNamespace("gpii.tests");
 
-    fluid.defaults("gpii.tests.feedback", {
-        gradeNames: ["gpii.metadata.feedback", "autoInit"],
-        resources: {
-            template: {
-                url: "../../../../src/components/feedback/html/feedbackTemplate.html"
+    fluid.defaults("gpii.tests.feedbackLoader.feedbackLoaderTests", {
+        gradeNames: ["fluid.test.testEnvironment", "autoInit"],
+        components: {
+            feedbackLoader: {
+                type: "gpii.metadata.feedbackLoader",
+                container: ".gpiic-feedbackLoader",
+                createOnEvent: "{feedbackLoaderTester}.events.onTestCaseStart",
+                options: {
+                    templatePrefix: "../../../../src/components/feedback/html/"
+                }
+            },
+            feedbackLoaderTester: {
+                type: "gpii.tests.feedbackLoader.feedbackLoaderTester"
             }
         }
     });
 
-    gpii.tests.assertMarkup = function (that) {
+    gpii.tests.feedbackLoader.verifyInit = function (feedbackLoader) {
+        var resources = feedbackLoader.templateLoader.resources;
+        jqUnit.assertNotNull("The feedback template is loaded", resources.feedback.resourceText);
+        jqUnit.assertNotNull("The matchConfirmation template is loaded", resources.matchConfirmation.resourceText);
+        jqUnit.assertNotNull("The mismatchDetails template is loaded", resources.mismatchDetails.resourceText);
+
+        var that = feedbackLoader.feedback;
         jqUnit.assertNotNull("The template should be rendered into the markup", that.options.resources.template.resourceText, that.container.html());
         jqUnit.assertEquals("The aria role is set for match confirmation button", "button", that.locate("matchConfirmationButton").attr("role"));
         jqUnit.assertEquals("The aria label is set", that.options.strings.matchConfirmationLabel, that.locate("matchConfirmationButton").attr("aria-label"));
+
+        jqUnit.assertNotNull("The subcomponent dataSource has been created", that.dataSource);
+        jqUnit.assertNotNull("The subcomponent matchConfirmation has been created", that.matchConfirmation);
+        jqUnit.assertNotNull("The subcomponent mismatchDetails has been created", that.mismatchDetails);
+
+        jqUnit.assertNotNull("The user id has been generated", that.model.userData._id);
     };
 
-    fluid.defaults("gpii.tests.feedback.verifyInit", {
-        gradeNames: ["gpii.tests.feedback", "autoInit"],
-        listeners: {
-            "onCreate.verifyContainerClass": {
-                funcName: "jqUnit.assertTrue",
-                args: ["The container should have the styling class added", "{that}.options.styles.container"],
-                priority: "last"
-            },
-            "afterTemplateFetched.verifyResourceTextReturned": {
-                funcName: "jqUnit.assertTrue",
-                args: ["The resourceText property should be set", "{that}.options.resources.template.resourceText"]
-            },
-            "afterTemplateFetched.verifyResourceTextSet": {
-                funcName: "jqUnit.assertTrue",
-                args: ["The resourceText should be returned by the event", "{arguments}.0.template.resourceText"]
-            },
-            "afterMarkupReady.verifyMarkup": {
-                funcName: "gpii.tests.assertMarkup",
-                args: ["{that}"]
-            },
-            "afterMarkupReady.verifyDataSource": {
-                funcName: "jqUnit.assertNotNull",
-                args: ["The subcomponent dataSource should be created", "{that}.dataSource"],
-                priority: 1
-            },
-            "afterMarkupReady.verifyMatchConfirmation": {
-                funcName: "jqUnit.assertNotNull",
-                args: ["The subcomponent bindMatchConfirmation should be created", "{that}.bindMatchConfirmation"],
-                priority: 1
-            },
-            "afterMarkupReady.verifyMismatchDetails": {
-                funcName: "jqUnit.assertNotNull",
-                args: ["The subcomponent bindMismatchDetails should be created", "{that}.bindMismatchDetails"],
-                priority: 1
-            },
-            "afterMarkupReady.start": {
-                funcName: "jqUnit.start",
-                priority: "last"
-            }
-        }
-    });
-
-    fluid.defaults("gpii.tests.feedback.verifyDialogs", {
-        gradeNames: ["fluid.test.testEnvironment", "autoInit"],
-        components: {
-            feedback: {
-                type: "gpii.metadata.feedback",
-                container: ".gpiic-feedback-dialogs",
-                createOnEvent: "{verifyDialogsTester}.events.onTestCaseStart",
-                options: {
-                    resources: {
-                        template: {
-                            url: "../../../../src/components/feedback/html/feedbackTemplate.html"
-                        }
-                    },
-                    matchConfirmationTemplate: "../../../../src/components/feedback/html/matchConfirmationTemplate.html",
-                    mismatchDetailsTemplate: "../../../../src/components/feedback/html/mismatchDetailsTemplate.html"
-                }
-            },
-            verifyDialogsTester: {
-                type: "gpii.tests.feedback.verifyDialogsTester"
-            }
-        }
-    });
-
-    gpii.tests.feedback.checkInitModel = function (model) {
-        jqUnit.assertFalse("The match indicator is set to false", model.match);
-        jqUnit.assertFalse("The mismatch indicator is set to false", model.mismatch);
+    gpii.tests.feedbackLoader.clickButton = function (feedbackLoader, buttonSelector) {
+        feedbackLoader.feedback.locate(buttonSelector).click();
     };
 
-    gpii.tests.feedback.checkSavedModel = function (savedModel, expectedModelValues) {
+    gpii.tests.feedbackLoader.checkSavedModel = function (savedModel, expectedModelValues) {
         fluid.each(expectedModelValues, function (expectedValue, key) {
             jqUnit.assertEquals("The value " + expectedValue + " on the path " + key + " is correct", expectedValue, fluid.get(savedModel.model, key));
         });
     };
 
-    fluid.defaults("gpii.tests.feedback.verifyDialogsTester", {
+    gpii.tests.feedbackLoader.verifyDialog = function (feedbackLoader, dialogComponentName, expectedIsDialogOpen, expectedIsActive) {
+        var dialogComponent = feedbackLoader.feedback[dialogComponentName];
+
+        jqUnit.assertNotNull("Button click triggers the creation of the dialog", dialogComponent.dialog);
+        jqUnit.assertEquals("The dialog is open", expectedIsDialogOpen, dialogComponent.model.isDialogOpen);
+        jqUnit.assertEquals("The state is active", expectedIsActive, dialogComponent.model.isActive);
+    };
+
+    gpii.tests.feedbackLoader.clickMismatchDetailsLinks = function (feedbackLoader, linkSelector) {
+        var mismatchDetailsComponent = feedbackLoader.feedback.bindMismatchDetails.renderDialogContent;
+        mismatchDetailsComponent.locate(linkSelector).click();
+    };
+
+    gpii.tests.feedbackLoader.verifyDialogOnSkip = function (feedbackLoader) {
+        var bindMismatchDetails = feedbackLoader.feedback.bindMismatchDetails;
+        jqUnit.assertFalse("The dialog is closed", bindMismatchDetails.model.isDialogOpen);
+    };
+
+    gpii.tests.feedbackLoader.setMismatchDetailsFields = function (feedbackLoader, newText) {
+        var mismatchDetailsComponent = feedbackLoader.feedback.bindMismatchDetails.renderDialogContent;
+
+        mismatchDetailsComponent.locate("notInteresting").click();
+        mismatchDetailsComponent.locate("text").click();
+        mismatchDetailsComponent.locate("transcripts").click();
+        mismatchDetailsComponent.locate("audio").click();
+        mismatchDetailsComponent.locate("audioDesc").click();
+        mismatchDetailsComponent.locate("other").click();
+        mismatchDetailsComponent.locate("otherFeedback").text(newText).change();
+    };
+
+    gpii.tests.feedbackLoader.verifyDialogOnSubmit = function (feedbackLoader) {
+        var bindMismatchDetails = feedbackLoader.feedback.bindMismatchDetails;
+        jqUnit.assertFalse("The dialog is closed", bindMismatchDetails.model.isDialogOpen);
+    };
+
+    fluid.defaults("gpii.tests.feedbackLoader.feedbackLoaderTester", {
         gradeNames: ["fluid.test.testCaseHolder", "autoInit"],
+        testOptions: {
+            newText: "some text"
+        },
         modules: [{
-            name: "Test dialogs",
+            name: "Initialization",
             tests: [{
-                name: "Interaction between Match confirmation and mismatch details icons",
-                expect: 8,
+                name: "Init",
+                expect: 10,
                 sequence: [{
-                    listener: "gpii.tests.feedback.checkInitModel",
-                    args: ["{feedback}.model"],
+                    listener: "gpii.tests.feedbackLoader.verifyInit",
+                    args: ["{feedbackLoader}", "{arguments}.0"],
                     priority: "last",
-                    event: "{verifyDialogs feedback}.events.afterMarkupReady"
+                    event: "{feedbackLoaderTests feedbackLoader}.events.onTemplatesLoaded"
+                }]
+            }, {
+                name: "Match confirmation dialog",
+                expect: 5,
+                sequence: [{
+                    func: "gpii.tests.feedbackLoader.clickButton",
+                    args: ["{feedbackLoader}", "matchConfirmationButton"]
                 }, {
-                    jQueryTrigger: "click",
-                    element: "{feedback}.dom.matchConfirmationButton"
+                    listener: "gpii.tests.feedbackLoader.verifyDialog",
+                    args: ["{feedbackLoader}", "bindMatchConfirmation", true, true],
+                    priority: "last",
+                    event: "{feedbackLoader}.events.afterMatchConfirmationButtonClicked"
                 }, {
-                    listener: "gpii.tests.feedback.checkSavedModel",
+                    listener: "gpii.tests.feedbackLoader.checkSavedModel",
                     args: ["{arguments}.0", {
                         match: true,
                         mismatch: false
                     }],
                     priority: "last",
-                    event: "{feedback}.events.afterSave"
-                }, {
-                    jQueryTrigger: "click",
-                    element: "{feedback}.dom.mismatchDetailsButton"
-                }, {
-                    listener: "gpii.tests.feedback.checkSavedModel",
-                    args: ["{arguments}.0", {
-                        match: false,
-                        mismatch: true
-                    }],
-                    priority: "last",
-                    event: "{feedback}.events.afterSave"
-                }, {
-                    jQueryTrigger: "click",
-                    element: "{feedback}.dom.matchConfirmationButton"
-                }, {
-                    listener: "gpii.tests.feedback.checkSavedModel",
-                    args: ["{arguments}.0", {
-                        match: true,
-                        mismatch: false
-                    }],
-                    priority: "last",
-                    event: "{feedback}.events.afterSave"
+                    event: "{feedbackLoader}.events.afterSave"
                 }]
             }, {
                 name: "Mismatch details dialog",
-                expect: 8,
+                expect: 22,
                 sequence: [{
-                    jQueryTrigger: "click",
-                    element: "{feedback}.dom.mismatchDetailsButton"
+                    func: "gpii.tests.feedbackLoader.clickButton",
+                    args: ["{feedbackLoader}", "mismatchDetailsButton"]
                 }, {
-                    listener: "gpii.tests.feedback.checkSavedModel",
+                    listener: "gpii.tests.feedbackLoader.verifyDialog",
+                    args: ["{feedbackLoader}", "bindMismatchDetails", true, true],
+                    priority: "last",
+                    event: "{feedbackLoader}.events.afterMismatchDetailsButtonClicked"
+                }, {
+                    func: "gpii.tests.feedbackLoader.clickMismatchDetailsLinks",
+                    args: ["{feedbackLoader}", "skip"]
+                }, {
+                    listener: "gpii.tests.feedbackLoader.verifyDialogOnSkip",
+                    args: ["{feedbackLoader}"],
+                    priority: "last",
+                    event: "{feedbackLoader}.events.onSkipAtMismatchDetails"
+                }, {
+                    func: "gpii.tests.feedbackLoader.clickButton",
+                    args: ["{feedbackLoader}", "mismatchDetailsButton"]
+                }, {
+                    listener: "gpii.tests.feedbackLoader.verifyDialog",
+                    args: ["{feedbackLoader}", "bindMismatchDetails", false, false],
+                    priority: "last",
+                    event: "{feedbackLoader}.events.afterMismatchDetailsButtonClicked"
+                }, {
+                    func: "gpii.tests.feedbackLoader.clickButton",
+                    args: ["{feedbackLoader}", "mismatchDetailsButton"]
+                }, {
+                    listener: "gpii.tests.feedbackLoader.verifyDialog",
+                    args: ["{feedbackLoader}", "bindMismatchDetails", true, true],
+                    priority: "last",
+                    event: "{feedbackLoader}.events.afterMismatchDetailsButtonClicked"
+                }, {
+                    listener: "gpii.tests.feedbackLoader.checkSavedModel",
                     args: ["{arguments}.0", {
                         match: false,
                         mismatch: true
                     }],
                     priority: "last",
-                    event: "{feedback}.events.afterSave"
+                    event: "{feedbackLoader}.events.afterSave"
+                }, {
+                    func: "gpii.tests.feedbackLoader.setMismatchDetailsFields",
+                    args: ["{feedbackLoader}", "{that}.options.testOptions.newText"]
+                }, {
+                    func: "gpii.tests.feedbackLoader.clickMismatchDetailsLinks",
+                    args: ["{feedbackLoader}", "submit"]
+                }, {
+                    listener: "gpii.tests.feedbackLoader.verifyDialogOnSubmit",
+                    args: ["{feedbackLoader}"],
+                    priority: "last",
+                    event: "{feedbackLoader}.events.onSubmitAtMismatchDetails"
+                }, {
+                    listener: "gpii.tests.feedbackLoader.checkSavedModel",
+                    args: ["{arguments}.0", {
+                        match: false,
+                        mismatch: true,
+                        notInteresting: true,
+                        other: true,
+                        otherFeedback: "{that}.options.testOptions.newText",
+                        "requests.text": true,
+                        "requests.transcripts": true,
+                        "requests.audio": true,
+                        "requests.audioDesc": true
+                    }],
+                    priority: "last",
+                    event: "{feedbackLoader}.events.afterSave"
+                }]
+            }, {
+                name: "Interaction between Match confirmation and mismatch details icons",
+                expect: 6,
+                sequence: [{
+                    func: "gpii.tests.feedbackLoader.clickButton",
+                    args: ["{feedbackLoader}", "matchConfirmationButton"]
+                }, {
+                    listener: "gpii.tests.feedbackLoader.checkSavedModel",
+                    args: ["{arguments}.0", {
+                        match: true,
+                        mismatch: false
+                    }],
+                    priority: "last",
+                    event: "{feedbackLoader}.events.afterSave"
+                }, {
+                    func: "gpii.tests.feedbackLoader.clickButton",
+                    args: ["{feedbackLoader}", "mismatchDetailsButton"]
+                }, {
+                    listener: "gpii.tests.feedbackLoader.checkSavedModel",
+                    args: ["{arguments}.0", {
+                        match: false,
+                        mismatch: true
+                    }],
+                    priority: "last",
+                    event: "{feedbackLoader}.events.afterSave"
+                }, {
+                    func: "gpii.tests.feedbackLoader.clickButton",
+                    args: ["{feedbackLoader}", "matchConfirmationButton"]
+                }, {
+                    listener: "gpii.tests.feedbackLoader.checkSavedModel",
+                    args: ["{arguments}.0", {
+                        match: true,
+                        mismatch: false
+                    }],
+                    priority: "last",
+                    event: "{feedbackLoader}.events.afterSave"
                 }]
             }]
         }]
     });
 
     $(document).ready(function () {
-        jqUnit.asyncTest("Initial settings", function () {
-            jqUnit.expect(9);
-            gpii.tests.feedback.verifyInit(".gpiic-feedback-init");
-        });
-
         fluid.test.runTests([
-            "gpii.tests.feedback.verifyDialogs"
+            "gpii.tests.feedbackLoader.feedbackLoaderTests"
         ]);
     });
 })(jQuery, fluid);
