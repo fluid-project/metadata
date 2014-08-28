@@ -45,7 +45,7 @@ https://github.com/gpii/universal/LICENSE.txt
         jqUnit.assertNotNull("The subcomponent matchConfirmation has been created", that.matchConfirmation);
         jqUnit.assertNotNull("The subcomponent mismatchDetails has been created", that.mismatchDetails);
 
-        jqUnit.assertNotNull("The user id has been generated", that.model.userData._id);
+        jqUnit.assertNotNull("The user id has been generated", that._id);
     };
 
     gpii.tests.feedbackLoader.clickButton = function (feedbackLoader, buttonSelector) {
@@ -131,7 +131,7 @@ https://github.com/gpii/universal/LICENSE.txt
                 }]
             }, {
                 name: "Mismatch details dialog",
-                expect: 22,
+                expect: 24,
                 sequence: [{
                     func: "gpii.tests.feedbackLoader.clickButton",
                     args: ["{feedbackLoader}", "mismatchDetailsButton"]
@@ -140,6 +140,14 @@ https://github.com/gpii/universal/LICENSE.txt
                     args: ["{feedbackLoader}", "bindMismatchDetails", true, true],
                     priority: "last",
                     event: "{feedbackLoader}.events.afterMismatchDetailsButtonClicked"
+                }, {
+                    listener: "gpii.tests.feedbackLoader.checkSavedModel",
+                    args: ["{arguments}.0", {
+                        match: false,
+                        mismatch: true
+                    }],
+                    priority: "last",
+                    event: "{feedbackLoader}.events.afterSave"
                 }, {
                     func: "gpii.tests.feedbackLoader.clickMismatchDetailsLinks",
                     args: ["{feedbackLoader}", "skip"]
@@ -235,6 +243,9 @@ https://github.com/gpii/universal/LICENSE.txt
                     }],
                     priority: "last",
                     event: "{feedbackLoader}.events.afterSave"
+                }, {
+                    func: "gpii.tests.feedbackLoader.clickButton",
+                    args: ["{feedbackLoader}", "matchConfirmationButton"]
                 }]
             }]
         }]
