@@ -15,31 +15,20 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     fluid.registerNamespace("gpii.metadata");
 
     /*
-     * templateLoader: Define the template urls for rendering each dialog content
+     * feedbackLoader: The component to load in templates and instantiate the feedback tool.
      */
 
-    fluid.defaults("gpii.metadata.templateLoader", {
-        gradeNames: ["fluid.prefs.resourceLoader", "autoInit"],
+    fluid.defaults("gpii.metadata.feedbackLoader", {
+        gradeNames: ["fluid.viewRelayComponent", "fluid.prefs.resourceLoader", "autoInit"],
         templates: {
             feedback: "%prefix/feedbackTemplate.html",
             matchConfirmation: "%prefix/matchConfirmationTemplate.html",
             mismatchDetails: "%prefix/mismatchDetailsTemplate.html"
-        }
-    });
-
-    /*
-     * feedbackLoader: The component to instantiate the feedback tool.
-     * This component has two sub-components: the feedback component that implements the
-     * feedback tool; the templateLoader that loads in all the templates, from where on,
-     * operations would be synchronous.
-     */
-
-    fluid.defaults("gpii.metadata.feedbackLoader", {
-        gradeNames: ["fluid.viewRelayComponent", "autoInit"],
+        },
         components: {
             feedback: {
                 type: "gpii.metadata.feedback",
-                createOnEvent: "onTemplatesLoaded",
+                createOnEvent: "onResourcesLoaded",
                 container: "{feedbackLoader}.container",
                 options: {
                     components: {
@@ -47,7 +36,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                             options: {
                                 renderDialogContentOptions: {
                                     resources: {
-                                        template: "{templateLoader}.resources.matchConfirmation"
+                                        template: "{feedbackLoader}.resources.matchConfirmation"
                                     }
                                 }
                             }
@@ -56,36 +45,21 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                             options: {
                                 renderDialogContentOptions: {
                                     resources: {
-                                        template: "{templateLoader}.resources.mismatchDetails"
+                                        template: "{feedbackLoader}.resources.mismatchDetails"
                                     }
                                 }
                             }
                         }
                     },
                     resources: {
-                        template: "{templateLoader}.resources.feedback"
-                    }
-                }
-            },
-            templateLoader: {
-                type: "gpii.metadata.templateLoader",
-                options: {
-                    events: {
-                        onResourcesLoaded: "{feedbackLoader}.events.onTemplatesLoaded"
+                        template: "{feedbackLoader}.resources.feedback"
                     }
                 }
             }
         },
-        events: {
-            onTemplatesLoaded: null
-        },
         distributeOptions: [{
             source: "{that}.options.templatePrefix",
-            target: "{that > templateLoader > resourcePath}.options.value",
-            removeSource: true
-        }, {
-            source: "{that}.options.templates",
-            target: "{that > templateLoader}.options.templates",
+            target: "{that > resourcePath}.options.value",
             removeSource: true
         }, {
             source: "{that}.options.feedback",

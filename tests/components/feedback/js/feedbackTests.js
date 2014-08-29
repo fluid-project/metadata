@@ -58,6 +58,10 @@ https://github.com/gpii/universal/LICENSE.txt
     });
 
     gpii.tests.verifyInit = function (that) {
+        jqUnit.assertNotNull("The subcomponent dataSource has been created", that.dataSource);
+        jqUnit.assertNotNull("The subcomponent matchConfirmation has been created", that.matchConfirmation);
+        jqUnit.assertNotNull("The subcomponent mismatchDetails has been created", that.mismatchDetails);
+
         jqUnit.assertEquals("The aria role is set for match confirmation button", "button", that.locate("matchConfirmationButton").attr("role"));
         jqUnit.assertEquals("The aria label is set", that.options.strings.matchConfirmationLabel, that.locate("matchConfirmationButton").attr("aria-label"));
         jqUnit.assertNotNull("The user id has been generated", that.userID);
@@ -113,7 +117,7 @@ https://github.com/gpii/universal/LICENSE.txt
             name: "Initialization",
             tests: [{
                 name: "Init",
-                expect: 3,
+                expect: 6,
                 sequence: [{
                     listener: "gpii.tests.verifyInit",
                     args: ["{feedback}"],

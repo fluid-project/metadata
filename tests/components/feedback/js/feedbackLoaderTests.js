@@ -31,15 +31,10 @@ https://github.com/gpii/universal/LICENSE.txt
     });
 
     gpii.tests.verifyLoader = function (feedbackLoader) {
-        var resources = feedbackLoader.templateLoader.resources;
+        var resources = feedbackLoader.resources;
         jqUnit.assertNotNull("The feedback template is loaded", resources.feedback.resourceText);
         jqUnit.assertNotNull("The matchConfirmation template is loaded", resources.matchConfirmation.resourceText);
         jqUnit.assertNotNull("The mismatchDetails template is loaded", resources.mismatchDetails.resourceText);
-
-        var that = feedbackLoader.feedback;
-        jqUnit.assertNotNull("The subcomponent dataSource has been created", that.dataSource);
-        jqUnit.assertNotNull("The subcomponent matchConfirmation has been created", that.matchConfirmation);
-        jqUnit.assertNotNull("The subcomponent mismatchDetails has been created", that.mismatchDetails);
     };
 
     fluid.defaults("gpii.tests.feedbackLoaderTester", {
@@ -48,12 +43,12 @@ https://github.com/gpii/universal/LICENSE.txt
             name: "Feedback loader tests",
             tests: [{
                 name: "feedbackLoader",
-                expect: 6,
+                expect: 3,
                 sequence: [{
                     listener: "gpii.tests.verifyLoader",
-                    args: ["{feedbackLoader}", "{arguments}.0"],
+                    args: ["{feedbackLoader}"],
                     priority: "last",
-                    event: "{feedbackLoaderTests feedbackLoader}.events.onTemplatesLoaded"
+                    event: "{feedbackLoaderTests feedbackLoader}.events.onResourcesLoaded"
                 }]
             }]
         }]
