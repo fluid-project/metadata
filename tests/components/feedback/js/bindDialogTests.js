@@ -37,10 +37,6 @@ https://github.com/gpii/universal/LICENSE.txt
         gpii.tests.bindDialog.assertState("aria-pressed is set correctly", isActive, buttonDom.attr("aria-pressed") === "true");
     };
 
-    gpii.tests.bindDialog.makeOnRenderDialogContentChecker = function (bindDialog) {
-        jqUnit.assertTrue("The container for rendering the dialog content should have been created", bindDialog.dialogContainer);
-    };
-
     gpii.tests.bindDialog.onDialogReadyChecker = function (dialog) {
         jqUnit.assertTrue("The dialog should be open", dialog.dialog("isOpen"));
     };
@@ -53,6 +49,7 @@ https://github.com/gpii/universal/LICENSE.txt
 
     gpii.tests.bindDialog.makeChangeChecker = function (that, modelPath, expectedValue) {
         return function () {
+            jqUnit.assertTrue("The container for rendering the dialog content should have been created", that.dialogContainer);
             jqUnit.assertEquals("The model path '" + modelPath + "'' is updated correctly.", expectedValue, fluid.get(that.model, modelPath));
         };
     };
@@ -106,15 +103,10 @@ https://github.com/gpii/universal/LICENSE.txt
             name: "Dialog State Changes",
             tests: [{
                 name: "Mouse Interaction",
-                expect: 6,
+                expect: 8,
                 sequence: [{
                     jQueryTrigger: "click",
                     element: "{bindDialog}.container"
-                }, {
-                    listener: "gpii.tests.bindDialog.makeOnRenderDialogContentChecker",
-                    args: ["{bindDialog}"],
-                    priority: "last",
-                    event: "{bindDialog}.events.onRenderDialogContent"
                 }, {
                     listenerMaker: "gpii.tests.bindDialog.makeChangeChecker",
                     makerArgs: ["{bindDialog}", "isActive", true],
@@ -149,15 +141,10 @@ https://github.com/gpii/universal/LICENSE.txt
                 }]
             }, {
                 name: "Keyboard Interaction",
-                expect: 5,
+                expect: 7,
                 sequence: [{
                     func: "gpii.tests.bindDialog.simulateKeyEvent",
                     args: ["{bindDialog}.container", "keydown", $.ui.keyCode.ENTER]
-                }, {
-                    listener: "gpii.tests.bindDialog.makeOnRenderDialogContentChecker",
-                    args: ["{bindDialog}"],
-                    priority: "last",
-                    event: "{bindDialog}.events.onRenderDialogContent"
                 }, {
                     listenerMaker: "gpii.tests.bindDialog.makeChangeChecker",
                     makerArgs: ["{bindDialog}", "isActive", true],
