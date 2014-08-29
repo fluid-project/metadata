@@ -38,9 +38,7 @@ https://github.com/gpii/universal/LICENSE.txt
     };
 
     gpii.tests.bindDialog.makeOnRenderDialogContentChecker = function (bindDialog) {
-        return function () {
-            jqUnit.assertTrue("The container for rendering the dialog content should have been created", bindDialog.dialogContainer);
-        };
+        jqUnit.assertTrue("The container for rendering the dialog content should have been created", bindDialog.dialogContainer);
     };
 
     gpii.tests.bindDialog.onDialogReadyChecker = function (dialog) {
@@ -60,9 +58,7 @@ https://github.com/gpii/universal/LICENSE.txt
     };
 
     gpii.tests.bindDialog.makeEventChecker = function (eventName) {
-        return function () {
-            jqUnit.assert("The " + eventName + " event was fired.");
-        };
+        jqUnit.assert("The " + eventName + " event was fired.");
     };
 
     gpii.tests.bindDialog.simulateKeyEvent = function (elm, eventType, keyCode) {
@@ -115,9 +111,9 @@ https://github.com/gpii/universal/LICENSE.txt
                     jQueryTrigger: "click",
                     element: "{bindDialog}.container"
                 }, {
-                    listenerMaker: "gpii.tests.bindDialog.makeOnRenderDialogContentChecker",
-                    makerArgs: ["{bindDialog}"],
-                    spec: {priority: "last"},
+                    listener: "gpii.tests.bindDialog.makeOnRenderDialogContentChecker",
+                    args: ["{bindDialog}"],
+                    priority: "last",
                     event: "{bindDialog}.events.onRenderDialogContent"
                 }, {
                     listenerMaker: "gpii.tests.bindDialog.makeChangeChecker",
@@ -127,9 +123,9 @@ https://github.com/gpii/universal/LICENSE.txt
                 }, {
                     func: "{bindDialog}.events.onDialogContentReady.fire"
                 }, {
-                    listenerMaker: "gpii.tests.bindDialog.makeEventChecker",
-                    makerArgs: ["onBindDialogHandlers"],
-                    spec: {priority: "last"},
+                    listener: "gpii.tests.bindDialog.makeEventChecker",
+                    args: ["onBindDialogHandlers"],
+                    priority: "last",
                     event: "{bindDialog}.events.onBindDialogHandlers"
                 }, {
                     listener: "gpii.tests.bindDialog.onDialogReadyChecker",
@@ -158,9 +154,9 @@ https://github.com/gpii/universal/LICENSE.txt
                     func: "gpii.tests.bindDialog.simulateKeyEvent",
                     args: ["{bindDialog}.container", "keydown", $.ui.keyCode.ENTER]
                 }, {
-                    listenerMaker: "gpii.tests.bindDialog.makeOnRenderDialogContentChecker",
-                    makerArgs: ["{bindDialog}"],
-                    spec: {priority: "last"},
+                    listener: "gpii.tests.bindDialog.makeOnRenderDialogContentChecker",
+                    args: ["{bindDialog}"],
+                    priority: "last",
                     event: "{bindDialog}.events.onRenderDialogContent"
                 }, {
                     listenerMaker: "gpii.tests.bindDialog.makeChangeChecker",
