@@ -262,9 +262,12 @@ var gpii = gpii || {};
                 args: ["{that}"]
             },
             closeDialog: {
-                "this": "{that}.dialog",
-                method: "dialog",
-                args: "close"
+                funcName: "gpii.metadata.feedback.closeDialog",
+                args: ["{that}.dialog"]
+            },
+            renderDialog: {
+                funcName: "gpii.metadata.feedback.renderDialog",
+                args: ["{that}"]
             },
             bindIframeClick: {
                 funcName: "gpii.metadata.feedback.bindIframeClick",
@@ -283,8 +286,14 @@ var gpii = gpii || {};
         }]
     });
 
+    fluid.invokeLater = function (callback) {
+        return setTimeout(callback, 1);
+    };
+
     gpii.metadata.feedback.bindButton = function (that, event) {
-        // setTimeout() is a work-around for the issue that clicking on the button opens up
+        event.preventDefault();
+
+        // fluid.invokeLater() is a work-around for the issue that clicking on the button opens up
         // the corresponding dialog that is closed immediately by fluid.globalDismissal()
         // [see gpii.metadata.feedback.handleDialogState()]. This issue is because globalDismissal()
         // relies on a global document click handler. Given the "bubble up" architecture of
@@ -292,22 +301,24 @@ var gpii = gpii || {};
         // strictly after any click handler which is used to arm it. Using setTimeout() is to
         // ensure the previous dialog is closed by the globalDismissal() before binding the
         // click event handler for the next button.
-        setTimeout(function () {
-            event.preventDefault();
-
-            if (that.dialog && that.model.isDialogOpen && that.model.isActive) {
+        fluid.invokeLater(function () {
+            if (that.model.isDialogOpen && that.model.isActive) {
                 that.closeDialog();
             } else if (!that.model.isActive) {
-                if (!that.dialogContainer) {
-                    that.dialogContainer = $(that.options.markup.dialog).hide();
-                    that.container.append(that.dialogContainer);
-                }
-                that.events.onRenderDialogContent.fire();
+                that.renderDialog();
             }
 
             that.applier.change("isActive", !that.model.isActive);
             that.events.afterButtonClicked.fire();
-        }, 1);
+        });
+    };
+
+    gpii.metadata.feedback.renderDialog = function (that) {
+        if (!that.dialogContainer) {
+            that.dialogContainer = $(that.options.markup.dialog).hide();
+            that.container.append(that.dialogContainer);
+        }
+        that.events.onRenderDialogContent.fire();
     };
 
     gpii.metadata.feedback.instantiateDialog = function (that) {
@@ -331,6 +342,12 @@ var gpii = gpii || {};
         }
 
         that.events.onDialogReady.fire(that.dialog);
+    };
+
+    gpii.metadata.feedback.closeDialog = function (dialog) {
+        if (dialog) {
+            dialog.dialog("close");
+        }
     };
 
     gpii.metadata.feedback.handleActiveState = function (isActive, buttonDom, activeCss) {

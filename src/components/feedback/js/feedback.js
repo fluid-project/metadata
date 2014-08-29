@@ -130,7 +130,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                     args: "{that}.options.databaseName"
                 }
             },
-            _id: {
+            userID: {
                 expander: {
                     funcName: "fluid.allocateGuid"
                 }
@@ -230,7 +230,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             source: "{that}.model.inTransit.opinion",
             target: "{that}.model",
             forward: "liveOnly",
-            backward: "never",
             singleTransform: {
                 type: "fluid.transforms.arrayToSetMembership",
                 options: {
@@ -289,7 +288,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
     gpii.metadata.feedback.save = function (that, dataSource) {
         var model = {
-            id: that._id,
+            id: that.userID,
             model: that.model.userData
         };
 
