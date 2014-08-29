@@ -244,7 +244,10 @@ var gpii = gpii || {};
             "isHovered.icon": "hover"
         },
         modelListeners: {
-            "isActive": "gpii.metadata.feedback.handleActiveState({change}.value, {that}.container, {that}.options.styles.active)",
+            "isActive": [
+                "gpii.metadata.feedback.handleActiveState({change}.value, {that}.container, {that}.options.styles.active)",
+                "gpii.metadata.feedback.controlDialogState({change}.value, {that})"
+            ],
             // passing in invokers directly to ensure they are resolved at the correct time.
             "isDialogOpen": [
                 "gpii.metadata.feedback.handleDialogState({that}, {change}.value, {that}.closeDialog, {that}.bindIframeClick, {that}.unbindIframeClick)",
@@ -302,15 +305,17 @@ var gpii = gpii || {};
         // ensure the previous dialog is closed by the globalDismissal() before binding the
         // click event handler for the next button.
         fluid.invokeLater(function () {
-            if (that.model.isDialogOpen && that.model.isActive) {
-                that.closeDialog();
-            } else if (!that.model.isActive) {
-                that.renderDialog();
-            }
-
             that.applier.change("isActive", !that.model.isActive);
             that.events.afterButtonClicked.fire();
         });
+    };
+
+    gpii.metadata.feedback.controlDialogState = function (isActive, that) {
+        if (isActive) {
+            that.renderDialog();
+        } else if (that.model.isDialogOpen) {
+            that.closeDialog();
+        }
     };
 
     gpii.metadata.feedback.renderDialog = function (that) {
