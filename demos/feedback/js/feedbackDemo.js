@@ -39,7 +39,7 @@ var demo = demo || {};
         fluid.overviewPanel(".flc-overviewPanel", {
             resources: {
                 template: {
-                    href: "html/overviewPanelTemplate.html"
+                    href: "../../src/lib/infusion/src/components/overviewPanel/html/overviewPanelTemplate.html"
                 }
             },
             strings: {
@@ -58,6 +58,7 @@ var demo = demo || {};
                 "titleLink": "http://wiki.fluidproject.org/display/fluid/%28Floe%29+Metadata+Authoring+and+Feedback+Tools",
                 "demoCodeLink": "https://github.com/fluid-project/metadata/tree/master/demos/feedback",
                 "infusionCodeLink": "https://github.com/fluid-project/metadata",
+                "apiLink": "http://wiki.fluidproject.org/display/fluid/Metadata+Feedback+Tool+API",
                 "designLink": "http://wiki.fluidproject.org/display/fluid/Metadata+Feedback+Tool+Design",
                 "feedbackLink": "mailto:infusion-users@fluidproject.org?subject=FLOE Metadata Feedback Tool feedback"
             }
