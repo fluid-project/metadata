@@ -171,8 +171,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     };
 
     gpii.metadata.feedback.mismatchDetails.setInitModelValues = function (that) {
-        that.applier.change("isOtherChecked", that.locate("other").prop("checked"));
-        that.applier.change("isFeedbackHasContent", !!that.locate("otherFeedback").val());
+        that.applier.change("isOtherChecked", that.model.other);
+        that.applier.change("isFeedbackHasContent", !!that.model.otherFeedback);
     };
 
     // Check the length of the value in the text area to update the model value "isFeedbackHasContent".
