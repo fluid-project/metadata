@@ -175,15 +175,15 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         that.applier.change("isFeedbackHasContent", !!that.locate("otherFeedback").val());
     };
 
+    // Check the length of the value in the text area to update the model value "isFeedbackHasContent".
+    // When an input value is detectd, the corresponding checkbox, "other", should be checked.
     gpii.metadata.feedback.mismatchDetails.bindTextareaKeyup = function (evt, that) {
         that.applier.change("isFeedbackHasContent", evt.target.value.length ? true : false);
     };
 
     gpii.metadata.feedback.handleFeedbackState = function (isFeedbackHasContent, that) {
-        var otherDom = that.locate("other");
         var otherFeedbackDom = that.locate("otherFeedback");
 
-        var isChecked = otherDom.prop("checked");
         if (isFeedbackHasContent) {
             that.applier.change("isOtherChecked", true);
         } else {
@@ -191,6 +191,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         }
     };
 
+    // Detect the "checked" state of the checkbox "other". When the checkbox is unchecked,
+    // the content in the "feedback" text area should be removed.
     gpii.metadata.feedback.mismatchDetails.bindCheckboxOther = function (evt, that) {
         that.applier.change("isOtherChecked", evt.target.checked);
     };
