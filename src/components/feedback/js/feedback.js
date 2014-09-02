@@ -200,15 +200,15 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
     };
 
     gpii.metadata.feedback.save = function (that, dataSource) {
-        var model = {
+        var dataToSave = {
             id: that.userID,
             model: that.model.userData
         };
 
-        that.events.onSave.fire(model);
+        that.events.onSave.fire(dataToSave);
 
-        dataSource.set(model, function () {
-            that.events.afterSave.fire(model);
+        dataSource.set(dataToSave, function () {
+            that.events.afterSave.fire(dataToSave);
         });
     };
 

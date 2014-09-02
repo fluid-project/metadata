@@ -59,11 +59,11 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
         },
         distributeOptions: [{
             source: "{that}.options.templatePrefix",
-            target: "{that > resourcePath}.options.value",
+            target: "{that fluid.prefs.resourcePath}.options.value",
             removeSource: true
         }, {
             source: "{that}.options.feedback",
-            target: "{that > feedback}.options"
+            target: "{that feedback}.options"
         }]
     });
 
