@@ -194,8 +194,11 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 partner.applier.change("isActive", false);
             }
             feedback.save();
-        } else if (!partner.model.isActive) {
-            feedback.applier.change("inTransit.opinion.0", "none");
+        } else {
+            if (!partner.model.isActive) {
+                feedback.applier.change("inTransit.opinion.0", "none");
+            }
+            feedback.save();
         }
     };
 

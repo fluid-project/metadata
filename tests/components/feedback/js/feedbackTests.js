@@ -126,7 +126,7 @@ https://github.com/gpii/universal/LICENSE.txt
                 }]
             }, {
                 name: "Match confirmation dialog",
-                expect: 5,
+                expect: 7,
                 sequence: [{
                     jQueryTrigger: "click",
                     element: "{feedback}.dom.matchConfirmationButton"
@@ -143,10 +143,21 @@ https://github.com/gpii/universal/LICENSE.txt
                     }],
                     priority: "last",
                     event: "{feedback}.events.afterSave"
+                }, {
+                    jQueryTrigger: "click",
+                    element: "{feedback}.dom.matchConfirmationButton"
+                }, {
+                    listener: "gpii.tests.checkSavedModel",
+                    args: ["{arguments}.0", {
+                        match: false,
+                        mismatch: false
+                    }],
+                    priority: "last",
+                    event: "{feedback}.events.afterSave"
                 }]
             }, {
                 name: "Mismatch details dialog",
-                expect: 24,
+                expect: 33,
                 sequence: [{
                     jQueryTrigger: "click",
                     element: "{feedback}.dom.mismatchDetailsButton"
@@ -179,6 +190,21 @@ https://github.com/gpii/universal/LICENSE.txt
                     args: ["{feedback}", "bindMismatchDetails", false, false],
                     priority: "last",
                     event: "{feedback}.events.afterMismatchDetailsButtonClicked"
+                }, {
+                    listener: "gpii.tests.checkSavedModel",
+                    args: ["{arguments}.0", {
+                        match: false,
+                        mismatch: false,
+                        notInteresting: false,
+                        other: false,
+                        otherFeedback: "",
+                        "requests.text": false,
+                        "requests.transcripts": false,
+                        "requests.audio": false,
+                        "requests.audioDesc": false
+                    }],
+                    priority: "last",
+                    event: "{feedback}.events.afterSave"
                 }, {
                     jQueryTrigger: "click",
                     element: "{feedback}.dom.mismatchDetailsButton"
