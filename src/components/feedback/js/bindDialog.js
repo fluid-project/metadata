@@ -32,7 +32,7 @@ var gpii = gpii || {};
     fluid.registerNamespace("gpii.metadata.feedback");
 
     fluid.defaults("gpii.metadata.feedback.modelToClass", {
-        gradeNames: ["fluid.viewComponent", "autoInit"],
+        gradeNames: ["fluid.viewRelayComponent", "autoInit"],
         modelToClass: {},
         listeners: {
             "onCreate.setModelListeners": {
@@ -194,7 +194,8 @@ var gpii = gpii || {};
             onRenderDialogContent: null,
             onDialogContentReady: null,
             onBindDialogHandlers: null,
-            onDialogReady: null
+            onDialogReady: null,
+            afterButtonClicked: null
         },
         listeners: {
             "onCreate.addAriaRole": {
@@ -243,7 +244,10 @@ var gpii = gpii || {};
             "isHovered.icon": "hover"
         },
         modelListeners: {
-            "isActive": "gpii.metadata.feedback.handleActiveState({change}.value, {that}.container, {that}.options.styles.active)",
+            "isActive": [
+                "gpii.metadata.feedback.handleActiveState({change}.value, {that}.container, {that}.options.styles.active)",
+                "gpii.metadata.feedback.controlDialogState({change}.value, {that})"
+            ],
             // passing in invokers directly to ensure they are resolved at the correct time.
             "isDialogOpen": [
                 "gpii.metadata.feedback.handleDialogState({that}, {change}.value, {that}.closeDialog, {that}.bindIframeClick, {that}.unbindIframeClick)",
@@ -261,9 +265,12 @@ var gpii = gpii || {};
                 args: ["{that}"]
             },
             closeDialog: {
-                "this": "{that}.dialog",
-                method: "dialog",
-                args: "close"
+                funcName: "gpii.metadata.feedback.closeDialog",
+                args: ["{that}.dialog"]
+            },
+            renderDialog: {
+                funcName: "gpii.metadata.feedback.renderDialog",
+                args: ["{that}"]
             },
             bindIframeClick: {
                 funcName: "gpii.metadata.feedback.bindIframeClick",
@@ -282,19 +289,41 @@ var gpii = gpii || {};
         }]
     });
 
+    fluid.invokeLater = function (callback) {
+        return setTimeout(callback, 1);
+    };
+
     gpii.metadata.feedback.bindButton = function (that, event) {
         event.preventDefault();
 
-        if (that.dialog && that.model.isDialogOpen && that.model.isActive) {
-            that.closeDialog();
-        } else if (!that.model.isActive) {
-            if (!that.dialogContainer) {
-                that.dialogContainer = $(that.options.markup.dialog);
-            }
-            that.events.onRenderDialogContent.fire();
-        }
+        // fluid.invokeLater() is a work-around for the issue that clicking on the button opens up
+        // the corresponding dialog that is closed immediately by fluid.globalDismissal()
+        // [see gpii.metadata.feedback.handleDialogState()]. This issue is because globalDismissal()
+        // relies on a global document click handler. Given the "bubble up" architecture of
+        // these events, it is the case that the global dismissal handler will always be notified
+        // strictly after any click handler which is used to arm it. Using setTimeout() is to
+        // ensure the previous dialog is closed by the globalDismissal() before binding the
+        // click event handler for the next button.
+        fluid.invokeLater(function () {
+            that.applier.change("isActive", !that.model.isActive);
+            that.events.afterButtonClicked.fire();
+        });
+    };
 
-        that.applier.change("isActive", !that.model.isActive);
+    gpii.metadata.feedback.controlDialogState = function (isActive, that) {
+        if (isActive) {
+            that.renderDialog();
+        } else if (that.model.isDialogOpen) {
+            that.closeDialog();
+        }
+    };
+
+    gpii.metadata.feedback.renderDialog = function (that) {
+        if (!that.dialogContainer) {
+            that.dialogContainer = $(that.options.markup.dialog).hide();
+            that.container.append(that.dialogContainer);
+        }
+        that.events.onRenderDialogContent.fire();
     };
 
     gpii.metadata.feedback.instantiateDialog = function (that) {
@@ -320,26 +349,29 @@ var gpii = gpii || {};
         that.events.onDialogReady.fire(that.dialog);
     };
 
+    gpii.metadata.feedback.closeDialog = function (dialog) {
+        if (dialog) {
+            dialog.dialog("close");
+        }
+    };
+
     gpii.metadata.feedback.handleActiveState = function (isActive, buttonDom, activeCss) {
         buttonDom.toggleClass(activeCss, isActive);
         buttonDom.attr("aria-pressed", isActive);
     };
 
     gpii.metadata.feedback.handleDialogState = function (that, isDialogOpen, closeDialogFn, bindIframeClickFn, unbindIframeClickFn) {
-        var button = that.container;
         var dialog = that.dialog;
 
         if (isDialogOpen) {
             bindIframeClickFn();
             fluid.globalDismissal({
-                button: button,
                 dialog: dialog
             }, closeDialogFn);
         } else {
             // manually unbind fluid.globalDismissal; particularly for cases where the dialog is closed without a click outside the component.
             if (dialog) {
                 fluid.globalDismissal({
-                    button: button,
                     dialog: dialog
                 }, null);
             }

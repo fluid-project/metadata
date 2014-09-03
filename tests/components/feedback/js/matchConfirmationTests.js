@@ -18,11 +18,6 @@ https://github.com/gpii/universal/LICENSE.txt
             jqUnit.expect(2);
 
             gpii.metadata.feedback.matchConfirmation(".gpiic-panel", {
-                resources: {
-                    template: {
-                        url: "../../../../src/components/feedback/html/matchConfirmationTemplate.html"
-                    }
-                },
                 listeners: {
                     afterRender: function (that) {
                         jqUnit.assertEquals("The correct content is rendered", that.options.strings.header, that.locate("header").text());

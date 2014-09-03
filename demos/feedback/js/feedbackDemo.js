@@ -52,7 +52,7 @@ var demo = demo || {};
             },
             markup: {
                 description: "The FLOE metadata feedback tool can be integrated into existing sites to allow users to provide feedback about how a resource matched their preferences and to request alternatives or modifications to improve it. For the purposes of this demo, the feedback tool is shown within a simple OER.",
-                instructions: "<p>The feedback tool is located along the top of the page</p><ul><li>Use the <span class='gpii-icon gpii-icon-matchConfirmation'></span> to confirm that the resource matches your preferences.</li><li>Use the <span class='gpii-icon gpii-icon-sad'></span> to indicated that the resource does not match your preferences and indicate the issue you are encountering.</li><li>Use the <span class='gpii-icon gpii-icon-request'></span> to view the set of requests made against the resource and to vote for the requests that you are also interested in.</li></ul>"
+                instructions: "<p>The feedback tool is located along the top of the page</p><ul><li>Use the <span class='gpii-icon gpii-icon-matchConfirmation'></span> to confirm that the resource matches your preferences.</li><li>Use the <span class='gpii-icon gpii-icon-mismatchDetails'></span> to indicated that the resource does not match your preferences and indicate the issue you are encountering.</li><li>Use the <span class='gpii-icon gpii-icon-request'></span> to view the set of requests made against the resource and to vote for the requests that you are also interested in.</li></ul>"
             },
             links: {
                 "titleLink": "http://wiki.fluidproject.org/display/fluid/%28Floe%29+Metadata+Authoring+and+Feedback+Tools",
@@ -65,13 +65,8 @@ var demo = demo || {};
         });
 
         // Feedback Tool
-        gpii.metadata.feedback(".gpiic-feedback", {
-            resources: {
-                template: {
-                    url: "../../src/components/feedback/html/feedbackTemplate.html"
-                }
-            },
-            matchConfirmationTemplate: "../../src/components/feedback/html/matchConfirmationTemplate.html"
+        gpii.metadata.feedbackLoader(".gpiic-feedback", {
+            templatePrefix: "../../src/components/feedback/html/"
         });
     });
 

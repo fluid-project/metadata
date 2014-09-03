@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Mismatch details tests</title>
+
+        <link rel="stylesheet" media="screen" href="../../../lib/infusion/lib/qunit/css/qunit.css" />
+
+        <script src="../../../../src/lib/infusion/infusion-custom.js"></script>
+        <script src="../../../lib/infusion/lib/qunit/js/qunit.js"></script>
+        <script src="../../../lib/infusion/lib/jquery-ui/js/jquery.simulate.js"></script>
+        <script src="../../../lib/infusion/test-core/jqUnit/js/jqUnit.js"></script>
+        <script src="../../../lib/infusion/test-core/jqUnit/js/jqUnit-browser.js"></script>
+        <script src="../../../lib/infusion/test-core/utils/js/IoCTestUtils.js"></script>
+
+        <script src="../../../../src/components/feedback/js/bindDialog.js"></script>
+        <script src="../../../../src/components/feedback/js/baseDialogContent.js"></script>
+        <script src="../../../../src/components/feedback/js/mismatchDetails.js"></script>
+        <script src="../js/mismatchDetailsTests.js"></script>
+    </head>
+
+    <body id="body">
+        <h1 id="qunit-header">Mismatch details tests</h1>
+        <h2 id="qunit-banner"></h2>
+        <div id="qunit-testrunner-toolbar"></div>
+        <h2 id="qunit-userAgent"></h2>
+        <ol id="qunit-tests"></ol>
+
+        <!-- Test HTML -->
+        <div class="gpiic-mismatchDetails">
+            <h2 class="gpiic-mismatchDetails-header"></h2>
+            <div>
+                <input type="checkbox" class="gpiic-notInteresting" />
+                <label for="notInteresting" class="gpiic-notInteresting-label"></label>
+            </div>
+
+            <div class="gpiic-mismatchDetails-prefs-title"></div>
+
+            <ul class="gpii-list-unstyled">
+                <li>
+                    <input type="checkbox" id="text" class="gpiic-text" />
+                    <label for="text" class="gpiic-text-label"></label>
+                </li>
+
+                <li>
+                    <input type="checkbox" id="transcripts" class="gpiic-transcripts" />
+                    <label for="transcripts" class="gpiic-transcripts-label"></label>
+                </li>
+
+                <li>
+                    <input type="checkbox" id="audio" class="gpiic-audio" />
+                    <label for="audio" class="gpiic-audio-label"></label>
+                </li>
+
+                <li>
+                    <input type="checkbox" id="audioDesc" class="gpiic-audioDesc" />
+                    <label for="audioDesc" class="gpiic-audioDesc-label"></label>
+                </li>
+
+                <li>
+                    <input type="checkbox" id="other" class="gpiic-other" />
+                    <label for="other" class="gpiic-other-label"></label>
+                </li>
+
+                <li>
+                    <textarea class="gpiic-other-feedback gpii-other-feedback" row="5" cols="50"></textarea>
+                </li>
+            </ul>
+
+            <div class="gpii-mismatchDetails-buttons">
+                <a href="#" class="gpiic-mismatchDetails-skip"></a>
+                <button name="submit" class="gpiic-mismatchDetails-submit gpii-mismatchDetails-submit"></button>
+            </div>
+        </div>
+
+    </body>
+</html>
