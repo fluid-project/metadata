@@ -21,17 +21,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
      */
     fluid.defaults("gpii.metadata.feedback.mismatchDetails", {
         gradeNames: ["gpii.metadata.feedback.baseDialogContent", "autoInit"],
-        members: {
-            defaultModel: {
-                notInteresting: false,
-                text: false,
-                transcripts: false,
-                audio: false,
-                audioDesc: false,
-                other: false,
-                otherFeedback: ""
-            }
-        },
         selectors: {
             header: ".gpiic-mismatchDetails-header",
             notInteresting: ".gpiic-notInteresting",
@@ -121,16 +110,20 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             },
             "onReset.resetModel": {
                 listener: "{that}.applier.change",
-                args: ["", "{that}.defaultModel"],
+                args: ["", "{that}.options.defaultModel"],
                 priority: "first"
             }
         },
-        model: {
-            expander: {
-                funcName: "fluid.copy",
-                args: ["{that}.defaultModel"]
-            }
+        defaultModel: {
+            notInteresting: false,
+            text: false,
+            transcripts: false,
+            audio: false,
+            audioDesc: false,
+            other: false,
+            otherFeedback: ""
         },
+        model: "{that}.options.defaultModel",
         modelListeners: {
             other: {
                 listener: "gpii.metadata.feedback.handleCheckboxOtherState",
