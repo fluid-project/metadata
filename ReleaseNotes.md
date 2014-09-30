@@ -3,7 +3,7 @@
 This is a list of publicly available software that is redistributed, categorized by license:
 
 ### Apache 2.0 ###
-* [PouchDB v2.2.3](http://pouchdb.com)
+* [PouchDB v3.0.6](http://pouchdb.com)
 
 ### BSD License ###
 * [Fluid Infusion v1.5 (pre-release)](http://fluidproject.org)

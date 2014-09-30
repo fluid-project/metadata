@@ -1,2 +1,2 @@
 
-The minified version of pouchdb v2.2.3 is contained within this folder.
+The minified version of pouchdb v3.0.6 is contained within this folder.
