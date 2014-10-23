@@ -18,21 +18,27 @@ var demo = demo || {};
     fluid.defaults("demo.metadata", {
         gradeNames: ["fluid.viewRelayComponent", "autoInit"],
         members: {
-            databaseName: {
+            operationName: {
                 expander: {
-                    funcName: "demo.metadata.getDbName",
-                    args: "{that}.options.defaultDbName"
+                    funcName: "demo.metadata.getOperationName",
+                    args: "{that}.options.defaultOperation"
+                }
+            },
+            config: {
+                expander: {
+                    funcName: "fluid.get",
+                    args: ["{that}.options.config", "{that}.operationName"]
                 }
             },
             disableVideoInput: {
                 expander: {
                     funcName: "demo.metadata.disallowVideoInput",
-                    args: ["{that}.databaseName", "{that}.options.defaultDbName"]
+                    args: ["{that}.operationName", "{that}.options.defaultOperation"]
                 }
             },
             metadataPanelModel: null
         },
-        defaultDbName: "Create_new_resource",
+        defaultOperation: "Create_new_resource",
         disableVideoInput: "{that}.disableVideoInput",
         expandCss: "gpii-metadataDemo-expand",
         selectors: {
@@ -48,8 +54,14 @@ var demo = demo || {};
             title: {
                 expander: {
                     funcName: "demo.metadata.getTitle",
-                    args: "{that}.databaseName"
+                    args: "{that}.operationName"
                 }
+            }
+        },
+        resources: {
+            markup: {
+                forceCache: true,
+                url: "{that}.config.markup"
             }
         },
         events: {
@@ -61,11 +73,6 @@ var demo = demo || {};
         },
         listeners: {
             onMarkupFetched: ["{simpleEditor}.setContent", "{markupViewer}.updateModelMarkup", "{preview}.updateModelMarkup"],
-            onMetadataModelFetched: ["{markupViewer}.updateModelMetadata", "{preview}.updateModelMetadata", "{that}.updateMetadataPanel",
-            {
-                listener: "{simpleEditor}.applier.change",
-                args: ["url", "{arguments}.0.url"]
-            }],
             "onCreate.setTitle": {
                 "this": "{that}.dom.title",
                 "method": "text",
@@ -76,9 +83,29 @@ var demo = demo || {};
                 "method": "click",
                 "args": "{that}.events.onReset.fire"
             },
+            "onCreate.fetchMarkup": {
+                listener: "demo.metadata.fetchMarkup",
+                args: ["{that}"]
+            },
+            "onCreate.updateModel": {
+                listener: "{that}.updateMetadataPanel",
+                args: ["{that}.config.metadata"]
+            },
+            "onCreate.updateViewerModel": {
+                listener: "{markupViewer}.updateModelMetadata",
+                args: ["{that}.config.metadata"]
+            },
+            "onCreate.updatePreviewModel": {
+                listener: "{preview}.updateModelMetadata",
+                args: ["{that}.config.metadata"]
+            },
+            "onCreate.updateSimpleEditorModel": {
+                listener: "{simpleEditor}.applier.change",
+                args: ["url", "{arguments}.0.url"]
+            },
             "onMarkupFetched.setDemoBodyCss": {
                 listener: "demo.metadata.setDemoBodyCss",
-                args: ["{that}.dom.demoBody", "{that}.options.expandCss", "{that}.databaseName", "{that}.options.defaultDbName", "{arguments}.0"]
+                args: ["{that}.dom.demoBody", "{that}.options.expandCss", "{that}.operationName", "{that}.options.defaultOperation", "{arguments}.0"]
             },
             "afterVideoInserted.expandDemoBody": {
                 "this": "{that}.dom.demoBody",
@@ -88,7 +115,11 @@ var demo = demo || {};
             "onReset.resetCookie": {
                 listener: "{cookieStore}.resetCookie"
             },
-            "onReset.destroyMetadataPanel": "{that}.doDestroy"
+            "onReset.destroyMetadataPanel": "{that}.doDestroy",
+            "onReset.redirectToIndex": {
+                listener: "demo.metadata.redirectURL",
+                args: "index.html"
+            }
         },
         invokers: {
             "doDestroy": {
@@ -128,7 +159,6 @@ var demo = demo || {};
                 container: "{that}.dom.metadataPanel",
                 createOnEvent: "onCreateMetadataPanel",
                 options: {
-                    gradeNames: ["gpii.metadata.saveVideoMetadata"],
                     inputModel: "{metadata}.metadataPanelModel",
                     modelListeners: {
                         "*": [{
@@ -155,30 +185,6 @@ var demo = demo || {};
             },
             cookieStore: {
                 type: "demo.metadata.cookieStore"
-            },
-            launcher: {
-                type: "demo.metadata.launcher",
-                createOnEvent: "onReset",
-                options: {
-                    dbName: "{metadata}.databaseName",
-                    url: "index.html"
-                }
-            },
-            dataSource: {
-                type: "gpii.pouchdb.dataSource",
-                options: {
-                    databaseName: "{metadata}.databaseName",
-                    listeners: {
-                        "onCreate.fetchMarkup": {
-                            listener: "{that}.get",
-                            args: [{id: "markup"}, "{metadata}.events.onMarkupFetched.fire"]
-                        },
-                        "onCreate.fetchMetadata": {
-                            listener: "{that}.get",
-                            args: [{id: "videoMetadata"}, "{metadata}.events.onMetadataModelFetched.fire"]
-                        }
-                    }
-                }
             }
         },
         distributeOptions: [{
@@ -201,6 +207,12 @@ var demo = demo || {};
             target: "{that insertVideo}.options.disableVideoInput"
         }]
     });
+
+    demo.metadata.fetchMarkup = function (that) {
+        fluid.fetchResources(that.options.resources, function () {
+            that.events.onMarkupFetched.fire(that.options.resources.markup.resourceText);
+        });
+    };
 
     // Create the metadataPanel if it hasn't been. Otherwise, update the metadataPanel model
     demo.metadata.updateMetadataPanel = function (that, metadataModel) {
@@ -228,36 +240,26 @@ var demo = demo || {};
             metadataPanel.destroy();
         }
     };
-    demo.metadata.getDbName = function (defaultDbName) {
+    demo.metadata.getOperationName = function (defaultOperation) {
         var lookfor = "name";
         var decodedName = decodeURI(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURI(lookfor).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
-        return decodedName ? decodedName : defaultDbName;
+        return decodedName ? decodedName : defaultOperation;
     };
 
-    demo.metadata.disallowVideoInput = function (databaseName, defaultDbName) {
-        return (databaseName !== defaultDbName);
+    demo.metadata.disallowVideoInput = function (operationName, defaultOperation) {
+        return (operationName !== defaultOperation);
     };
 
-    demo.metadata.setDemoBodyCss = function (bodyElm, expandCss, databaseName, defaultDbName, markup) {
+    demo.metadata.setDemoBodyCss = function (bodyElm, expandCss, operationName, defaultOperation, markup) {
         markup = $(markup);
         var videoPlaceHolders = markup.siblings("#videoPlaceHolder");
-        if (databaseName === defaultDbName && videoPlaceHolders.length === 0) {
+        if (operationName === defaultOperation && videoPlaceHolders.length === 0) {
             bodyElm.removeClass(expandCss);
         }
     };
 
-    demo.metadata.getTitle = function (databaseName) {
-        return databaseName.replace(/_/g, " ");
+    demo.metadata.getTitle = function (operationName) {
+        return operationName.replace(/_/g, " ");
     };
-
-    fluid.defaults("gpii.metadata.saveVideoMetadata", {
-        gradeNames: ["fluid.standardRelayComponent", "autoInit"],
-        modelListeners: {
-            "": {
-                func: "{dataSource}.set",
-                args: [{id: "videoMetadata", model: "{that}.model"}]
-            }
-        }
-    });
 
 })(jQuery, fluid);

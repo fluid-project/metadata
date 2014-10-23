@@ -13,12 +13,9 @@
         <link rel="stylesheet" href="css/metadataDemo.css" />
 
         <script type="text/javascript" src="../../src/lib/infusion/infusion-custom.js"></script>
-        <script type="text/javascript" src="../../src/lib/pouchDB/pouchdb.js"></script>
-        <script type="text/javascript" src="../../src/components/pouchDBDataSource/js/pouchDBDataSource.js"></script>
         <script type="text/javascript" src="js/utility.js"></script>
         <script type="text/javascript" src="js/cookieStore.js"></script>
         <script type="text/javascript" src="js/overview.js"></script>
-        <script type="text/javascript" src="js/launcher.js"></script>
 
     </head>
     <body class="gpii-metadataDemo-demo gpii-demo">
@@ -78,49 +75,22 @@
         </section>
 
         <script type="text/javascript">
-        var launchDemo = function (extraOptions) {
-            var defaultOptions = {
-                url: "resource.html?name=%dbName"
-            };
-            var options = $.extend(true, {}, defaultOptions, extraOptions);
-
-            var that = demo.metadata.launcher(options);
-        };
-
         // Create a new resource
         $(".gpiic-metadata-create").click(function (e) {
-            launchDemo({
-                dbName: "Create_new_resource",
-                content: {
-                    markup: "html/newOERContent.html"
-                }
-            });
+            demo.metadata.redirectURL("resource.html?name=Create_new_resource");
             e.preventDefault();
         });
 
         // Edit an existing resource
         $(".gpiic-metadata-edit-climateChange").click(function (e) {
-            launchDemo({
-                dbName: "Climate_Change_Impacts",
-                content: {
-                    markup: "html/predefinedOERContent.html",
-                    metadata: {
-                        url: "https://archive.org/details/gov.ntis.ava11754vnb1",
-                        metadata: {
-                            accessibilityHazard: ["noFlashing"],
-                            accessMode: ["audio"],
-                            keywords: ["dialogue"]
-                        }
-                    }
-                }
-            });
+            demo.metadata.redirectURL("resource.html?name=Climate_Change_Impacts");
             e.preventDefault();
         });
 
         $(".gpiic-metadataDemo-restart").click(function (e) {
             var cookieStore = demo.metadata.cookieStore();
             cookieStore.resetCookie();
-            window.location = "index.html";
+            demo.metadata.redirectURL("index.html");
             e.preventDefault();
         });
         </script>

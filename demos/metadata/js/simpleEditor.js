@@ -43,12 +43,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
                 listener: "{that}.events.onContentAreaReady.fire"
             }
         },
-        modelListeners: {
-            "markup": {
-                func: "gpii.simpleEditor.saveMarkup",
-                args: ["{dataSource}.set", "{change}.value"]
-            }
-        },
         invokers: {
             setContent: {
                 funcName: "gpii.simpleEditor.setContent",
@@ -126,12 +120,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             }
         }
     });
-
-    gpii.simpleEditor.saveMarkup = function (setFunc, newValue) {
-        if (newValue !== undefined) {
-            setFunc({id: "markup", model: newValue});
-        }
-    };
 
     gpii.simpleEditor.setContent = function (elm, content) {
         if (content || content === "") {
