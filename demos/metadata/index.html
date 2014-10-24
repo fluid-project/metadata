@@ -47,7 +47,7 @@
             <div class="row">
                 <div class="small-12 columns">
                     <h2 class="gpii-metadataDemo-page-title">Choose a learning resource to edit</h2>
-                    <a class="gpiic-metadata-edit-climateChange gpii-metadataDemo-landingPage-edit-climateChange" href="resource.html?name=climateChange">
+                    <a class="gpiic-metadata-edit-climateChange gpii-metadataDemo-landingPage-edit-climateChange" href="resource.html?name=Climate_Change_Impacts">
                         <div class="row gpii-metadataDemo-landingPage-resource gpii-metadataDemo-landingPage-resource-first">
                             <div class="small-3 columns gpii-metadataDemo-landingPage-resource-thumbnail-column">
                                 <span class="gpii-metadataDemo-verticalHelper"></span><img src="../shared/images/content-thumbnail.jpg" class="gpii-metadataDemo-landingPage-contentThumb" alt="An image of a farmer's field."/>
@@ -59,7 +59,7 @@
                         </div>
                     </a>
 
-                    <a class="gpiic-metadata-create" href="resource.html?name=new">
+                    <a class="gpiic-metadata-create" href="resource.html?name=Create_new_resource">
                         <div class="row gpii-metadataDemo-landingPage-resource gpii-metadataDemo-landingPage-resource-last">
                             <div class="small-3 columns gpii-metadataDemo-landingPage-resource-thumbnail-column">
                                 <div class="gpii-metadataDemo-landingPage-contentThumb gpii-metadataDemo-landingPage-contentThumb-createNew" alt="A blank image with no content." role="presentation"></div>
@@ -75,18 +75,6 @@
         </section>
 
         <script type="text/javascript">
-        // Create a new resource
-        $(".gpiic-metadata-create").click(function (e) {
-            demo.metadata.redirectURL("resource.html?name=Create_new_resource");
-            e.preventDefault();
-        });
-
-        // Edit an existing resource
-        $(".gpiic-metadata-edit-climateChange").click(function (e) {
-            demo.metadata.redirectURL("resource.html?name=Climate_Change_Impacts");
-            e.preventDefault();
-        });
-
         $(".gpiic-metadataDemo-restart").click(function (e) {
             var cookieStore = demo.metadata.cookieStore();
             cookieStore.resetCookie();

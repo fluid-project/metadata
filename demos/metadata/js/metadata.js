@@ -18,27 +18,27 @@ var demo = demo || {};
     fluid.defaults("demo.metadata", {
         gradeNames: ["fluid.viewRelayComponent", "autoInit"],
         members: {
-            operationName: {
+            pageName: {
                 expander: {
-                    funcName: "demo.metadata.getOperationName",
-                    args: "{that}.options.defaultOperation"
+                    funcName: "demo.metadata.getPageName",
+                    args: "{that}.options.defaultPage"
                 }
             },
             config: {
                 expander: {
                     funcName: "fluid.get",
-                    args: ["{that}.options.config", "{that}.operationName"]
+                    args: ["{that}.options.config", "{that}.pageName"]
                 }
             },
             disableVideoInput: {
                 expander: {
                     funcName: "demo.metadata.disallowVideoInput",
-                    args: ["{that}.operationName", "{that}.options.defaultOperation"]
+                    args: ["{that}.pageName", "{that}.options.defaultPage"]
                 }
             },
             metadataPanelModel: null
         },
-        defaultOperation: "Create_new_resource",
+        defaultPage: "Create_new_resource",
         disableVideoInput: "{that}.disableVideoInput",
         expandCss: "gpii-metadataDemo-expand",
         selectors: {
@@ -54,7 +54,7 @@ var demo = demo || {};
             title: {
                 expander: {
                     funcName: "demo.metadata.getTitle",
-                    args: "{that}.operationName"
+                    args: "{that}.pageName"
                 }
             }
         },
@@ -105,7 +105,7 @@ var demo = demo || {};
             },
             "onMarkupFetched.setDemoBodyCss": {
                 listener: "demo.metadata.setDemoBodyCss",
-                args: ["{that}.dom.demoBody", "{that}.options.expandCss", "{that}.operationName", "{that}.options.defaultOperation", "{arguments}.0"]
+                args: ["{that}.dom.demoBody", "{that}.options.expandCss", "{that}.pageName", "{that}.options.defaultPage", "{arguments}.0"]
             },
             "afterVideoInserted.expandDemoBody": {
                 "this": "{that}.dom.demoBody",
@@ -115,17 +115,12 @@ var demo = demo || {};
             "onReset.resetCookie": {
                 listener: "{cookieStore}.resetCookie"
             },
-            "onReset.destroyMetadataPanel": "{that}.doDestroy",
             "onReset.redirectToIndex": {
                 listener: "demo.metadata.redirectURL",
                 args: "index.html"
             }
         },
         invokers: {
-            "doDestroy": {
-                funcName: "demo.metadata.doDestroy",
-                args: "{that}"
-            },
             "updateMetadataPanel": {
                 funcName: "demo.metadata.updateMetadataPanel",
                 args: ["{that}", "{arguments}.0"]
@@ -225,41 +220,31 @@ var demo = demo || {};
         if (that.metadataPanel) {
             that.metadataPanel.applier.change("url", url);
         } else if (url && url.trim() !== "") {
-            that.doDestroy();
             that.metadataPanelModel = metadataPanelModel;
             that.events.onCreateMetadataPanel.fire();
         }
     };
 
-    demo.metadata.doDestroy = function (that) {
-        var metadataPanel = that.metadataPanel;
-        if (metadataPanel) {
-            metadataPanel.audioPanel.container.html("");
-            metadataPanel.videoPanel.container.html("");
-            metadataPanel.captionsPanel.container.html("");
-            metadataPanel.destroy();
-        }
-    };
-    demo.metadata.getOperationName = function (defaultOperation) {
+    demo.metadata.getPageName = function (defaultPage) {
         var lookfor = "name";
         var decodedName = decodeURI(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURI(lookfor).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
-        return decodedName ? decodedName : defaultOperation;
+        return decodedName ? decodedName : defaultPage;
     };
 
-    demo.metadata.disallowVideoInput = function (operationName, defaultOperation) {
-        return (operationName !== defaultOperation);
+    demo.metadata.disallowVideoInput = function (pageName, defaultPage) {
+        return (pageName !== defaultPage);
     };
 
-    demo.metadata.setDemoBodyCss = function (bodyElm, expandCss, operationName, defaultOperation, markup) {
+    demo.metadata.setDemoBodyCss = function (bodyElm, expandCss, pageName, defaultPage, markup) {
         markup = $(markup);
         var videoPlaceHolders = markup.siblings("#videoPlaceHolder");
-        if (operationName === defaultOperation && videoPlaceHolders.length === 0) {
+        if (pageName === defaultPage && videoPlaceHolders.length === 0) {
             bodyElm.removeClass(expandCss);
         }
     };
 
-    demo.metadata.getTitle = function (operationName) {
-        return operationName.replace(/_/g, " ");
+    demo.metadata.getTitle = function (pageName) {
+        return pageName.replace(/_/g, " ");
     };
 
 })(jQuery, fluid);
