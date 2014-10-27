@@ -35,9 +35,9 @@ var demo = demo || {};
                     funcName: "demo.metadata.disallowVideoInput",
                     args: ["{that}.pageName", "{that}.options.defaultPage"]
                 }
-            },
-            metadataPanelModel: null
+            }
         },
+        model: "{that}.config.metadata",
         defaultPage: "Create_new_resource",
         disableVideoInput: "{that}.disableVideoInput",
         expandCss: "gpii-metadataDemo-expand",
@@ -91,18 +91,6 @@ var demo = demo || {};
                 listener: "{that}.updateMetadataPanel",
                 args: ["{that}.config.metadata"]
             },
-            "onCreate.updateViewerModel": {
-                listener: "{markupViewer}.updateModelMetadata",
-                args: ["{that}.config.metadata"]
-            },
-            "onCreate.updatePreviewModel": {
-                listener: "{preview}.updateModelMetadata",
-                args: ["{that}.config.metadata"]
-            },
-            "onCreate.updateSimpleEditorModel": {
-                listener: "{simpleEditor}.applier.change",
-                args: ["url", "{arguments}.0.url"]
-            },
             "onMarkupFetched.setDemoBodyCss": {
                 listener: "demo.metadata.setDemoBodyCss",
                 args: ["{that}.dom.demoBody", "{that}.options.expandCss", "{that}.pageName", "{that}.options.defaultPage", "{arguments}.0"]
@@ -131,6 +119,9 @@ var demo = demo || {};
                 type: "gpii.simpleEditor",
                 container: "{that}.dom.simpleEditor",
                 options: {
+                    model: {
+                        url: "{metadata}.config.metadata.url"
+                    },
                     modelListeners: {
                         "markup": [{
                             listener: "{markupViewer}.updateModelMarkup",
@@ -154,7 +145,7 @@ var demo = demo || {};
                 container: "{that}.dom.metadataPanel",
                 createOnEvent: "onCreateMetadataPanel",
                 options: {
-                    inputModel: "{metadata}.metadataPanelModel",
+                    inputModel: "{metadata}.config.metadata",
                     modelListeners: {
                         "*": [{
                             listener: "{markupViewer}.updateModelMetadata",
@@ -215,12 +206,8 @@ var demo = demo || {};
         // 1. an object containing the entire metadata model including URL. This is triggered by the initial fetch from the database;
         // 2. a url string. This is triggered by the url change from the simple editor.
         var url = fluid.isPrimitive(metadataModel) ? metadataModel : metadataModel.url;
-        var metadataPanelModel = fluid.isPrimitive(metadataModel) ? {"url": url} : metadataModel;
 
-        if (that.metadataPanel) {
-            that.metadataPanel.applier.change("url", url);
-        } else if (url && url.trim() !== "") {
-            that.metadataPanelModel = metadataPanelModel;
+        if (url && url.trim() !== "") {
             that.events.onCreateMetadataPanel.fire();
         }
     };
