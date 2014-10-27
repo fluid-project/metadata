@@ -22,8 +22,6 @@
         <script src="../lib/highlight/highlight.pack.js"></script>
 
         <script type="text/javascript" src="../../src/lib/infusion/infusion-custom.js"></script>
-        <script type="text/javascript" src="../../src/lib/pouchDB/pouchdb.js"></script>
-        <script type="text/javascript" src="../../src/components/pouchDBDataSource/js/pouchDBDataSource.js"></script>
         <script type="text/javascript" src="../../src/components/metadata/js/indicator.js"></script>
         <script type="text/javascript" src="../../src/components/metadata/js/panel.js"></script>
         <script type="text/javascript" src="../../src/components/metadata/js/resourceInputPanel.js"></script>
@@ -34,7 +32,6 @@
         <script type="text/javascript" src="../../src/components/metadata/js/videoMetadataPanel.js"></script>
         <script type="text/javascript" src="../../src/components/metadata/js/metadataUtils.js"></script>
         <script type="text/javascript" src="js/utility.js"></script>
-        <script type="text/javascript" src="js/launcher.js"></script>
         <script type="text/javascript" src="js/cookieStore.js"></script>
         <script type="text/javascript" src="js/overview.js"></script>
         <script type="text/javascript" src="js/simpleEditor.js"></script>
@@ -144,6 +141,22 @@
 
         <script type="text/javascript">
             var editor = demo.metadata(".gpiic-metadataDemo-demo", {
+                config: {
+                    "Create_new_resource": {
+                        markup: "html/newOERContent.html"
+                    },
+                    "Climate_Change_Impacts": {
+                        markup: "html/predefinedOERContent.html",
+                        metadata: {
+                            url: "https://archive.org/details/gov.ntis.ava11754vnb1",
+                            metadata: {
+                                accessibilityHazard: ["noFlashing"],
+                                accessMode: ["audio"],
+                                keywords: ["dialogue"]
+                            }
+                        }
+                    }
+                },
                 videoPanelTemplate: "../../src/components/metadata/html/video-template.html",
                 audioPanelTemplate: "../../src/components/metadata/html/audio-template.html",
                 audioAttributesTemplate: "../../src/components/metadata/html/audio-attributes-template.html",

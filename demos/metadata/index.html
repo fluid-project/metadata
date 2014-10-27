@@ -13,12 +13,9 @@
         <link rel="stylesheet" href="css/metadataDemo.css" />
 
         <script type="text/javascript" src="../../src/lib/infusion/infusion-custom.js"></script>
-        <script type="text/javascript" src="../../src/lib/pouchDB/pouchdb.js"></script>
-        <script type="text/javascript" src="../../src/components/pouchDBDataSource/js/pouchDBDataSource.js"></script>
         <script type="text/javascript" src="js/utility.js"></script>
         <script type="text/javascript" src="js/cookieStore.js"></script>
         <script type="text/javascript" src="js/overview.js"></script>
-        <script type="text/javascript" src="js/launcher.js"></script>
 
     </head>
     <body class="gpii-metadataDemo-demo gpii-demo">
@@ -50,7 +47,7 @@
             <div class="row">
                 <div class="small-12 columns">
                     <h2 class="gpii-metadataDemo-page-title">Choose a learning resource to edit</h2>
-                    <a class="gpiic-metadata-edit-climateChange gpii-metadataDemo-landingPage-edit-climateChange" href="resource.html?name=climateChange">
+                    <a class="gpiic-metadata-edit-climateChange gpii-metadataDemo-landingPage-edit-climateChange" href="resource.html?name=Climate_Change_Impacts">
                         <div class="row gpii-metadataDemo-landingPage-resource gpii-metadataDemo-landingPage-resource-first">
                             <div class="small-3 columns gpii-metadataDemo-landingPage-resource-thumbnail-column">
                                 <span class="gpii-metadataDemo-verticalHelper"></span><img src="../shared/images/content-thumbnail.jpg" class="gpii-metadataDemo-landingPage-contentThumb" alt="An image of a farmer's field."/>
@@ -62,7 +59,7 @@
                         </div>
                     </a>
 
-                    <a class="gpiic-metadata-create" href="resource.html?name=new">
+                    <a class="gpiic-metadata-create" href="resource.html?name=Create_new_resource">
                         <div class="row gpii-metadataDemo-landingPage-resource gpii-metadataDemo-landingPage-resource-last">
                             <div class="small-3 columns gpii-metadataDemo-landingPage-resource-thumbnail-column">
                                 <div class="gpii-metadataDemo-landingPage-contentThumb gpii-metadataDemo-landingPage-contentThumb-createNew" alt="A blank image with no content." role="presentation"></div>
@@ -78,49 +75,10 @@
         </section>
 
         <script type="text/javascript">
-        var launchDemo = function (extraOptions) {
-            var defaultOptions = {
-                url: "resource.html?name=%dbName"
-            };
-            var options = $.extend(true, {}, defaultOptions, extraOptions);
-
-            var that = demo.metadata.launcher(options);
-        };
-
-        // Create a new resource
-        $(".gpiic-metadata-create").click(function (e) {
-            launchDemo({
-                dbName: "Create_new_resource",
-                content: {
-                    markup: "html/newOERContent.html"
-                }
-            });
-            e.preventDefault();
-        });
-
-        // Edit an existing resource
-        $(".gpiic-metadata-edit-climateChange").click(function (e) {
-            launchDemo({
-                dbName: "Climate_Change_Impacts",
-                content: {
-                    markup: "html/predefinedOERContent.html",
-                    metadata: {
-                        url: "https://archive.org/details/gov.ntis.ava11754vnb1",
-                        metadata: {
-                            accessibilityHazard: ["noFlashing"],
-                            accessMode: ["audio"],
-                            keywords: ["dialogue"]
-                        }
-                    }
-                }
-            });
-            e.preventDefault();
-        });
-
         $(".gpiic-metadataDemo-restart").click(function (e) {
             var cookieStore = demo.metadata.cookieStore();
             cookieStore.resetCookie();
-            window.location = "index.html";
+            demo.metadata.redirectURL("index.html");
             e.preventDefault();
         });
         </script>
